@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.*; //prova
 
 public class Card {
     private String seed;
