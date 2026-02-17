@@ -1,7 +1,7 @@
 package carta;
 import java.util.*;
 
-public abstract class Card {
+public class Card {
     private String seed;
     private String value;
 
