@@ -21,11 +21,11 @@ public class DeckImpl implements Deck {
         for (int j=0; j<2; j++) {
             for (String seed : seeds) {
                 for (String value : values) {
-                    cards.add(new Card(seed, value));
+                    cards.add(new CardImpl(seed, value));
                 }
             }
-            cards.add(new Card("", "Jolly"));
-            cards.add(new Card("", "Jolly"));
+            cards.add(new CardImpl("", "Jolly"));
+            cards.add(new CardImpl("", "Jolly"));
         }
         Collections.shuffle(cards);
     }
