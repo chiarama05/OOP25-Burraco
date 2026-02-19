@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.smartcardio.Card;
 
-import carta.Deck;
+import card.Deck;
 
 public class DrawManager {
 
