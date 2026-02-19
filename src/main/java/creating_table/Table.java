@@ -1,7 +1,7 @@
 package creating_table;
 
 import java.util.*;
-import carta;
+import carta.Card;
 
 public class Table{
 
