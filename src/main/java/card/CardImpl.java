@@ -1,4 +1,4 @@
-package carta;
+package card;
 
 public class CardImpl implements Card{
     private String seed;

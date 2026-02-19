@@ -1,4 +1,4 @@
-package carta;
+package card;
 
 import java.util.*;
 

@@ -1,4 +1,4 @@
-package carta;
+package card;
 
 /**
  * The Card interface represents a generic playing card.
