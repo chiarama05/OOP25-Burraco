@@ -1,6 +1,6 @@
 package core.pickcard;
 
-import javax.smartcardio.Card;
+import card.Card;
 
 public class DrawResult {
 

@@ -4,7 +4,7 @@ import java.util.*;
 
 public interface Deck {
 
-    Card pick();
+    Card draw();
 
     boolean isEmpty();
 

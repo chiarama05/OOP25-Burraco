@@ -1,9 +1,9 @@
 package core.pickcard;
-import core.pickcard.DrawResult;
+import player.Player;
 
 import java.util.List;
 
-import javax.smartcardio.Card;
+import card.Card;
 
 import card.Deck;
 
@@ -27,7 +27,7 @@ public class DrawManager {
             return DrawResult.emptyDeck();
         }
 
-        player.aggiungiCartaMano(card);
+        player.addCardHand(card);
         drawCard = true;
 
         return DrawResult.success(card);

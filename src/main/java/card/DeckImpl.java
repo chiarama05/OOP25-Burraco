@@ -35,7 +35,7 @@ public class DeckImpl implements Deck {
      * Draws and removes the first card from the deck.
      */
     @Override
-    public Card pick() {
+    public Card draw() {
         if (!cards.isEmpty()) {
             return cards.remove(0);
         }
