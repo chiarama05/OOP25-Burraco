@@ -1,4 +1,4 @@
-package core.pickcard;
+package core.drawcard;
 import card.Card;
 
 public class DrawResult {
