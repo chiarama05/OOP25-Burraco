@@ -1,6 +1,6 @@
 package combination;
-import combination.SetUtils;
 
+import combination.SetUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 import card.Card;
@@ -17,7 +17,7 @@ public class CombinationValidator {
             return false;
         } 
         if (StraightUtils.isStraight(cards)) {
-            return StraightUtils.isValidStrsight(cards);
+            return StraightUtils.isValidStraight(cards);
         }
         return SetUtils.isValidSet(cards);
     }

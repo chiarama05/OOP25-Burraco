@@ -8,7 +8,7 @@ import combination.CombinationValidator;
 
 public class StraightUtils {
     
-    public static boolean isSequence(List<Card> cards) {
+    public static boolean isStraight(List<Card> cards) {
         List<Card> real = cards.stream()
                 .filter(c -> !CombinationValidator.isWildcard(c, cards))
                 .collect(Collectors.toList());
@@ -19,7 +19,7 @@ public class StraightUtils {
         return real.stream().allMatch(c -> c.getSeed().equals(suit));
     }
 
-    public static boolean isValidSequence(List<Card> cards) {
+    public static boolean isValidStraight(List<Card> cards) {
         List<Card> real = cards.stream()
                 .filter(c -> !CombinationValidator.isWildcard(c, cards))
                 .collect(Collectors.toList());
@@ -43,10 +43,10 @@ public class StraightUtils {
         return canBeSequential(aceLow, wildcards) || canBeSequential(aceHigh, wildcards);
     }
 
-    public static boolean isNaturalTwo(Card two, List<Card> sequence) {
+    public static boolean isNaturalTwo(Card two, List<Card> straight) {
         if (!two.getValue().equals("2")) return false;
 
-        List<Card> real = sequence.stream()
+        List<Card> real = straight.stream()
                 .filter(c -> !c.getValue().equals("2") && !c.getValue().equals("Jolly"))
                 .collect(Collectors.toList());
 
@@ -87,7 +87,7 @@ public class StraightUtils {
         return true;
     }
 
-    public static List<Card> orderSequence(List<Card> sequence) {
+    public static List<Card> orderStraight(List<Card> sequence) {
 
         List<Card> real = sequence.stream()
                 .filter(c -> !CombinationValidator.isWildcard(c, sequence))
