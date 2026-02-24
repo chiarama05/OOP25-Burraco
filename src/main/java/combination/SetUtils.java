@@ -1,5 +1,5 @@
-package combination.SetUtils;
-import combination.CombinationValidator.CombinationValidator;
+package combination;
+import combination.CombinationValidator;
 
 import java.util.List;
 import java.util.stream.Collectors;
