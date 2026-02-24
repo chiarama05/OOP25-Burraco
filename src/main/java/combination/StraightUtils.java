@@ -7,7 +7,8 @@ import card.Card;
 import combination.CombinationValidator;
 
 public class StraightUtils {
-     public static boolean isSequence(List<Card> cards) {
+    
+    public static boolean isSequence(List<Card> cards) {
         List<Card> real = cards.stream()
                 .filter(c -> !CombinationValidator.isWildcard(c, cards))
                 .collect(Collectors.toList());
@@ -39,31 +40,30 @@ public class StraightUtils {
                 .filter(c -> CombinationValidator.isWildcard(c, cards))
                 .count();
 
-        return canBeSequential(aceLow, wildcards)
-                || canBeSequential(aceHigh, wildcards);
+        return canBeSequential(aceLow, wildcards) || canBeSequential(aceHigh, wildcards);
     }
 
-    public static boolean isNaturalTwo(Carta two, List<Carta> sequence) {
-        if (!two.getValore().equals("2")) return false;
+    public static boolean isNaturalTwo(Card two, List<Card> sequence) {
+        if (!two.getValue().equals("2")) return false;
 
-        List<Carta> real = sequence.stream()
-                .filter(c -> !c.getValore().equals("2") && !c.getValore().equals("Jolly"))
+        List<Card> real = sequence.stream()
+                .filter(c -> !c.getValue().equals("2") && !c.getValue().equals("Jolly"))
                 .collect(Collectors.toList());
 
         if (real.isEmpty()) return false;
 
-        String suit = real.get(0).getSeme();
-        if (!two.getSeme().equals(suit)) return false;
+        String suit = real.get(0).getSeed();
+        if (!two.getSeed().equals(suit)) return false;
 
-        boolean hasAce = real.stream().anyMatch(c -> c.getValore().equals("A"));
-        boolean hasThree = real.stream().anyMatch(c -> c.getValore().equals("3"));
+        boolean hasAce = real.stream().anyMatch(c -> c.getValue().equals("A"));
+        boolean hasThree = real.stream().anyMatch(c -> c.getValue().equals("3"));
 
         return hasAce && hasThree;
     }
 
-    private static int mapValue(Carta c, boolean aceLow) {
-        if (c.getValore().equals("A")) return aceLow ? 1 : 14;
-        return c.getValoreNumerico();
+    private static int mapValue(Card c, boolean aceLow) {
+        if (c.getValue().equals("A")) return aceLow ? 1 : 14;
+        return c.getNumericalValue();
     }
 
     private static boolean canBeSequential(List<Integer> values, long wildcards) {
@@ -87,13 +87,13 @@ public class StraightUtils {
         return true;
     }
 
-    public static List<Carta> orderSequence(List<Carta> sequence) {
+    public static List<Card> orderSequence(List<Card> sequence) {
 
-        List<Carta> real = sequence.stream()
+        List<Card> real = sequence.stream()
                 .filter(c -> !CombinationValidator.isWildcard(c, sequence))
                 .collect(Collectors.toList());
 
-        List<Carta> wild = sequence.stream()
+        List<Card> wild = sequence.stream()
                 .filter(c -> CombinationValidator.isWildcard(c, sequence))
                 .collect(Collectors.toList());
 
@@ -106,14 +106,14 @@ public class StraightUtils {
 
         List<Integer> usedValues = useAceLow ? aceLow : aceHigh;
 
-        Map<Integer, Carta> map = new HashMap<>();
-        for (Carta c : real) {
+        Map<Integer, Card> map = new HashMap<>();
+        for (Card c : real) {
             map.put(mapValue(c, useAceLow), c);
         }
 
         Collections.sort(usedValues);
 
-        List<Carta> result = new ArrayList<>();
+        List<Card> result = new ArrayList<>();
         int wildIndex = 0;
 
         for (int i = 0; i < usedValues.size() - 1; i++) {
