@@ -11,7 +11,7 @@ public class StraightUtils {
     public static boolean isStraight(List<Card> cards) {
         List<Card> real = cards.stream()
                 .filter(c -> !CombinationValidator.isWildcard(c, cards))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()); 
 
         if (real.isEmpty()) return false;
 
