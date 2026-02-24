@@ -36,4 +36,29 @@ public interface Player {
      */
     void setInPot(boolean flag);
 
+    /** 
+     * Adds a new combination to the player. 
+     */
+    void addCombination(List<Card> comb);
+
+    /** 
+     * Returns all combinations of the player. 
+     */
+    List<List<Card>> getCombinations();
+
+    /** 
+     * Returns the number of "Burraco" (combinations of size >= 7). 
+     */
+    int getNumberBurraco();
+
+    /** 
+     * Draws the pot into the hand and clears the pot. 
+     */
+    void drawPot();
+
+    /** 
+     * Checks if the player has finished all cards in hand. 
+     */
+    boolean hasFinishedCards();
+
 }
