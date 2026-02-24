@@ -4,8 +4,8 @@ import java.util.*;
 
 /**
      * Constructs a new deck.
-     * The deck is composed of two standard sets of cards (52 cards each)
-     * plus two Jokers for each set.
+     *  - Two standard 52-card sets
+     *  - Two Jokers for each set (4 Jokers total)
      * After creation, the deck is shuffled randomly.
      */
 public class DeckImpl implements Deck {
@@ -13,6 +13,8 @@ public class DeckImpl implements Deck {
     private List<Card> cards;
 
     public DeckImpl() {
+
+        /* Internal list that stores all the cards in the deck */
         cards = new ArrayList<>();
 
         String[] seeds = {"♠", "♥", "♣", "♦"};
@@ -30,9 +32,10 @@ public class DeckImpl implements Deck {
         Collections.shuffle(cards);
     }
 
-
     /**
      * Draws and removes the first card from the deck.
+     *
+     * @return the drawn card if the deck is not empty, otherwise null.
      */
     @Override
     public Card draw() {
@@ -45,15 +48,21 @@ public class DeckImpl implements Deck {
 
     /**
      * Checks whether the deck is empty.
+     *
+     * @return true if the deck contains no cards, false otherwise.
      */
     @Override
     public boolean isEmpty() {
         return cards.isEmpty();
     }
 
-
     /**
-     * Returns the list of cards currently in the deck.
+     * Returns the current list of cards in the deck.
+     *
+     * Note: This method exposes the internal list directly.
+     * External modifications will affect the deck.
+     *
+     * @return the list of cards.
      */
     @Override
     public List<Card> getCards() {

@@ -45,7 +45,7 @@ public class DiscardManagerImpl implements DiscardManager{
         player.removeCardHand(card);
         discardPile.add(card);
 
-        boolean closingAttempt = player.isInPot() && player.hasFinischedCard();
+        boolean closingAttempt = player.isInPot() && player.hasFinishedCards();
 
         // Check win condition
         if (closingAttempt) {
@@ -63,7 +63,7 @@ public class DiscardManagerImpl implements DiscardManager{
             }
         }
         // Player finished hand without closing → take pot
-        if (player.hasFinischedCard() &&
+        if (player.hasFinishedCards() &&
             !player.isInPot()) {
 
             player.setInPot(true);
