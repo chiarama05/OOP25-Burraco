@@ -2,14 +2,26 @@ package creating_table;
 
 import java.util.*;
 
-import card.Card;
+import card.*;
+import player.*;
 
-public class Table{
+public class TableModelImpl{
 
-    private final List<Card> table = new ArrayList<>();
-    private final String name;
+    private Player player1;
+    private Player player2;
+    private Deck deck;
+    private List<Card> discardPile;
 
-    Table(final String name){
-        this.name=name;
+    private boolean player1Turn = true;
+    private boolean haspicked = false;
+
+    
+    public TableModelImpl() {
+        deck = new DeckImpl();
+        discardPile = new ArrayList<>();
+        player1 = new PlayerImpl();
+        player2 = new PlayerImpl();
     }
 }
+
+   
