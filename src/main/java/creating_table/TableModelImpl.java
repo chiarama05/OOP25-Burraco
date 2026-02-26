@@ -100,8 +100,19 @@ public class TableModelImpl{
         }
     }
 
-    
 
+
+    //CLOSURE AND VICTORY MANAGEMENT
+
+    public boolean canClose(){
+        if(gameFinished){
+            return false;
+        }
+
+        return getCurrentPlayer().getBurracoCount()>=1;
+    }
+
+    
 }
 
    

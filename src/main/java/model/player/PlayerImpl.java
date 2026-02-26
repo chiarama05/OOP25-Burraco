@@ -10,9 +10,22 @@ public class PlayerImpl implements Player{
     private List<Card> hand = new ArrayList<>();
     private List<Card> pot = new ArrayList<>();
     private List<List<Card>> combinations = new ArrayList<>();
+    private final String player1;
+    private final String player2;
 
     /** Flag to track if the player is playing from the pozzetto */
     private boolean inPot = false;
+
+
+    public PlayerImpl(){
+        this.player1="player1";
+        this.player2="player2";
+    }
+
+    public PlayerImpl(final String p1, final String p2){
+        this.player1=p1;
+        this.player2=p2;
+    }
 
     /**
      * Returns the cards in the player's hand.
@@ -41,10 +54,10 @@ public class PlayerImpl implements Player{
     /**
      * Checks if the player's hand is empty.
      */
-    @Override
+   /* @Override
     public boolean emptyHand() {
         return hand.isEmpty();
-    }
+    }*/
 
     /**
      * Checks if the player is currently in the pot.
@@ -73,7 +86,7 @@ public class PlayerImpl implements Player{
     }
 
     @Override
-    public int getNumberBurraco() {
+    public int getBurracoCount() {
         return (int) combinations.stream()
                 .filter(c -> c.size() >= 7)
                 .count();
