@@ -61,4 +61,9 @@ public interface Player {
      */
     boolean hasFinishedCards();
 
+    /**
+     * Adds cards to the player's pot.
+     */
+    void addToPot(List<Card> cards);
+
 }

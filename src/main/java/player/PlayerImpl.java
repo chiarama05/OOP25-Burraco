@@ -90,7 +90,7 @@ public class PlayerImpl implements Player{
         return hand.isEmpty();
     }
 
-    /** Adds a list of cards to the pot */
+    @Override
     public void addToPot(List<Card> cards) {
         pot.addAll(cards);
     }
