@@ -9,7 +9,7 @@ import java.awt.FlowLayout;
 
 import core.discardcard.DiscardManager;
 import model.card.Card;
-import player.Player;
+import model.player.Player;
 
 /**
  * GUI component for handling only the discard pile in Burraco.

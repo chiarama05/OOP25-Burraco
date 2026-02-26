@@ -3,7 +3,7 @@ package core.distributioncard;
 import java.util.List;
 
 import model.deck.Deck;
-import player.Player;
+import model.player.Player;
 import model.card.*;
 
 /**
