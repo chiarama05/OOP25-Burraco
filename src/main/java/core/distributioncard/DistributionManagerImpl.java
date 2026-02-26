@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.card.*;
 import model.deck.Deck;
-import player.Player;
+import model.player.Player;
 
 public class DistributionManagerImpl implements DistributionManager{
 

@@ -1,6 +1,6 @@
 package core.discardcard;
 import model.card.Card;
-import player.Player;
+import model.player.Player;
 
 /**
  * Handles the discard logic of the game.

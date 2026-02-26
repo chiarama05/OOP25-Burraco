@@ -6,7 +6,7 @@ import model.*;
 import model.card.Card;
 import model.deck.Deck;
 import model.deck.DeckImpl;
-import player.*;
+import model.player.*;
 
 public class TableModelImpl{
 

@@ -8,40 +8,38 @@ public class StraightAttachUtils {
 
     public static boolean canAttachToStraight(List<Card> straight, Card newCard) {
 
-        List<Card> ordered = StraightUtils.orderStraight(straight);
+        List<Card> ord = StraightUtils.orderStraight(straight);
 
-        long wildcardCount = ordered.stream()
+        long jollyCount = ord.stream()
                 .filter(c -> CombinationValidator.isWildcard(c, straight))
                 .count();
 
         // -------------------------------------------------
-        // 1️⃣ Se la nuova carta è una matta
+        // Se la nuova è matta
         // -------------------------------------------------
         if (CombinationValidator.isWildcard(newCard, straight)) {
 
-            if (wildcardCount >= 1) {
+            if (jollyCount >= 1) {
 
-                boolean hasNaturalTwo = ordered.stream()
+                boolean hasNaturaleDue = ord.stream()
                         .anyMatch(c ->
                                 c.getValue().equals("2") &&
                                 StraightUtils.isNaturalTwo(c, straight)
                         );
 
-                if (!hasNaturalTwo) {
-                    return false;
-                }
+                if (!hasNaturaleDue) return false;
             }
 
             return true;
         }
 
         // -------------------------------------------------
-        // 2️⃣ Trova prima e ultima carta reale
+        // Trova primo e ultimo NON jolly
         // -------------------------------------------------
         Card first = null;
         Card last = null;
 
-        for (Card c : ordered) {
+        for (Card c : ord) {
             if (!CombinationValidator.isWildcard(c, straight)) {
                 if (first == null) first = c;
                 last = c;
@@ -50,57 +48,64 @@ public class StraightAttachUtils {
 
         if (first == null) return false;
 
-        if (!newCard.getSeed().equals(first.getSeed())) {
-            return false;
-        }
+        // Deve avere stesso seme
+        if (!newCard.getSeed().equals(first.getSeed())) return false;
 
-        int vNew = mapValue(newCard);
-        int vFirst = mapValue(first);
-        int vLast = mapValue(last);
+        int vNew = mapVal(newCard);
+        int vFirst = mapVal(first);
+        int vLast = mapVal(last);
 
         // -------------------------------------------------
-        // 3️⃣ Attacco ai bordi
+        // ATTACCO AI BORDI
         // -------------------------------------------------
 
-        // Sinistra
+        // SINISTRA
         if (vNew == vFirst - 1) return true;
-        if (wildcardCount > 0 && vNew == vFirst - 2) return true;
+        if (jollyCount > 0 && vNew == vFirst - 2) return true;
 
-        // Destra
+        // DESTRA
         if (vNew == vLast + 1) return true;
 
         // K → A
         if (vLast == 13 && newCard.getValue().equals("A")) return true;
 
-        if (wildcardCount > 0) {
+        if (jollyCount > 0) {
+
             if (vLast == 12 && newCard.getValue().equals("A")) return true;
             if (vLast == 13 && newCard.getValue().equals("2")) return true;
         }
 
         // -------------------------------------------------
-        // 4️⃣ Sostituzione matta interna
+        // SOSTITUZIONE MATTA INTERNA
         // -------------------------------------------------
-        for (int i = 0; i < ordered.size(); i++) {
 
-            Card c = ordered.get(i);
+        for (int i = 0; i < ord.size(); i++) {
+
+            Card c = ord.get(i);
 
             if (CombinationValidator.isWildcard(c, straight)) {
 
-                if (i > 0 && i < ordered.size() - 1) {
+                if (i > 0 && i < ord.size() - 1) {
 
-                    Card c1 = ordered.get(i - 1);
-                    Card c2 = ordered.get(i + 1);
+                    Card c1 = ord.get(i - 1);
+                    Card c2 = ord.get(i + 1);
 
                     if (!CombinationValidator.isWildcard(c1, straight)
                             && !CombinationValidator.isWildcard(c2, straight)) {
 
-                        int v1 = mapValue(c1);
-                        int v2 = mapValue(c2);
+                        int v1 = mapVal(c1);
+                        int v2 = mapVal(c2);
 
-                        if (v2 - v1 == 2) {
-                            if (vNew == v1 + 1) {
-                                return true;
-                            }
+                        if (v2 - v1 == 2 ||
+                            (v1 == 13 && v2 == 2) ||
+                            (v1 == 12 && c2.getValue().equals("A"))) {
+
+                            int mattaValue = v1 + 1;
+
+                            if (v1 == 13) mattaValue = 1;
+                            if (v1 == 12 && c2.getValue().equals("A")) mattaValue = 13;
+
+                            if (vNew == mattaValue) return true;
                         }
                     }
                 }
@@ -110,7 +115,7 @@ public class StraightAttachUtils {
         return false;
     }
 
-    private static int mapValue(Card c) {
+    private static int mapVal(Card c) {
         if (c.getValue().equals("A")) return 1;
         return c.getNumericalValue();
     }
