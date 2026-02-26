@@ -34,7 +34,7 @@ public class DiscardManagerImpl implements DiscardManager{
         // Closing rule after taking the pot
         if (player.isInPot()) {
             if (handSizeBefore <= 1 &&
-                player.getNumberBurraco() < 1) {
+                player.getBurracoCount() < 1) {
 
                 return new DiscardResult(false, false, false,
                         "You need at least one Burraco to close the game.");
@@ -50,7 +50,7 @@ public class DiscardManagerImpl implements DiscardManager{
         // Check win condition
         if (closingAttempt) {
 
-            if (player.getNumberBurraco() >= 1) {
+            if (player.getBurracoCount() >= 1) {
                 return new DiscardResult(true, false, true,
                         "Game closed successfully. You win!");
             }else{
