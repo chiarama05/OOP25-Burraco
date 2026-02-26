@@ -7,6 +7,10 @@ import model.player.*;
 
 public class TableModelImpl{
 
+    public enum Winner {
+        NONE, PLAYER1, PLAYER2;
+    }
+
     private final Player player1;
     private final Player player2;
 
@@ -14,9 +18,7 @@ public class TableModelImpl{
     private boolean isPlayer1Turn = true;
     private boolean haspicked = false;
     private boolean gameFinished=false;
-
-   
-    //private Winner winner = Winner.NONE;
+    private Winner winner = Winner.NONE;
 
 
 
@@ -112,7 +114,19 @@ public class TableModelImpl{
         return getCurrentPlayer().getBurracoCount()>=1;
     }
 
-    
+
+    public void confirmClosureAndWin(){
+        if(gameFinished){
+            return;
+        }
+        if(!canClose()){
+            return;
+        }
+
+        gameFinished=true;
+        winner=isPlayer1Turn ? Winner.PLAYER1 : Winner.PLAYER2;
+    }
+
 }
 
    
