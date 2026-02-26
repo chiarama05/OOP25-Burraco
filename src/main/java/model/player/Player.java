@@ -22,9 +22,9 @@ public interface Player {
 
     /**
      * Checks if the player has no cards left in hand.
-     */
+    
     boolean emptyHand();
-
+    */
 
      /**
      * Returns whether the player is currently playing from the "pot".
@@ -49,7 +49,7 @@ public interface Player {
     /** 
      * Returns the number of "Burraco" (combinations of size >= 7). 
      */
-    int getNumberBurraco();
+    int getBurracoCount();
 
     /** 
      * Draws the pot into the hand and clears the pot. 
