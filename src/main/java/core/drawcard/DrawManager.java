@@ -4,7 +4,7 @@ import java.util.List;
 
 import model.card.Card;
 import model.deck.Deck;
-import player.*;
+import model.player.*;
 
 public class DrawManager {
 
