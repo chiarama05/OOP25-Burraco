@@ -1,7 +1,9 @@
-package card;
+package model.jolly;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import model.card.Card;
 
 /**
  * Implementation of the Jolly interface.

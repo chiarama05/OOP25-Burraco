@@ -1,6 +1,8 @@
-package card;
+package model.deck;
 
 import java.util.*;
+
+import model.card.Card;
 
 /**
  * Represents a generic deck of cards.

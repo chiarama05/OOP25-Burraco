@@ -1,7 +1,9 @@
-package card;
+package model.discard;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import model.card.Card;
 
 /**
  * Implementation of the DiscardPile interface using an ArrayList.

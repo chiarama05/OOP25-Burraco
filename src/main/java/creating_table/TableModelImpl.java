@@ -2,7 +2,10 @@ package creating_table;
 
 import java.util.*;
 
-import card.*;
+import model.*;
+import model.card.Card;
+import model.deck.Deck;
+import model.deck.DeckImpl;
 import player.*;
 
 public class TableModelImpl{

@@ -3,8 +3,9 @@ package combination;
 import java.util.*;
 
 import java.util.stream.Collectors;
-import card.Card;
+
 import combination.CombinationValidator;
+import model.card.Card;
 
 public class StraightUtils {
     

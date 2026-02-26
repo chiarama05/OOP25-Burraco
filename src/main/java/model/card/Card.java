@@ -1,4 +1,4 @@
-package card;
+package model.card;
 
 /**
  * The Card interface represents a generic playing card.

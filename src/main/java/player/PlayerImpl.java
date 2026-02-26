@@ -1,8 +1,8 @@
 package player;
-import card.Card;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import model.card.Card;
 
 public class PlayerImpl implements Player{
 
@@ -90,7 +90,7 @@ public class PlayerImpl implements Player{
         return hand.isEmpty();
     }
 
-    /** Adds a list of cards to the pot */
+    @Override
     public void addToPot(List<Card> cards) {
         pot.addAll(cards);
     }

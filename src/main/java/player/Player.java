@@ -1,7 +1,7 @@
 package player;
-import card.Card;
-
 import java.util.List;
+
+import model.card.Card;
 
 public interface Player {
 
@@ -60,5 +60,10 @@ public interface Player {
      * Checks if the player has finished all cards in hand. 
      */
     boolean hasFinishedCards();
+
+    /**
+     * Adds cards to the player's pot.
+     */
+    void addToPot(List<Card> cards);
 
 }
