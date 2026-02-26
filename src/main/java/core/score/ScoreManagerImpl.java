@@ -1,4 +1,4 @@
-package score;
+package core.score;
 
 import java.util.List;
 
