@@ -1,5 +1,5 @@
 package core.drawcard;
-import card.Card;
+import model.card.Card;
 
 public class DrawResult {
 

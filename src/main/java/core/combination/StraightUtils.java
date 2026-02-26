@@ -1,9 +1,8 @@
 package core.combination;
 
+import model.card.*;
 import java.util.*;
-
 import java.util.stream.Collectors;
-import card.Card;
 
 public class StraightUtils {
     

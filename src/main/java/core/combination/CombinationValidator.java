@@ -1,7 +1,12 @@
 package core.combination;
 
 import java.util.*;
-import card.Card;
+import model.card.*;
+import core.combination.SetUtils;
+import model.card.Card;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class CombinationValidator {
 

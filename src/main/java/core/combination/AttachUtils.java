@@ -1,7 +1,8 @@
 package core.combination;
 
 import java.util.List;
-import card.Card;
+
+import model.card.Card;
 
 public class AttachUtils {
 

@@ -1,6 +1,9 @@
-package card;
+package model.deck;
 
 import java.util.*;
+
+import model.card.Card;
+import model.card.CardImpl;
 
 /**
      * Constructs a new deck.

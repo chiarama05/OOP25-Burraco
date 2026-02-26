@@ -1,6 +1,8 @@
-package card;
+package model.discard;
 
 import java.util.List;
+
+import model.card.Card;
 
 /**
  * Interface for a discard pile in a card game.
