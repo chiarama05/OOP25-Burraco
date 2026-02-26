@@ -4,28 +4,22 @@ import java.util.List;
 
 import model.card.Card;
 
+
 public class PlayerImpl implements Player{
+
+    //public static final String DEFAULT1="Player 1";
+    //public static final String DEFAULT2="Player 2";
 
     /** The cards currently in the player's hand */
     private List<Card> hand = new ArrayList<>();
     private List<Card> pot = new ArrayList<>();
     private List<List<Card>> combinations = new ArrayList<>();
-    private final String player1;
-    private final String player2;
+    //private final String player;
+
 
     /** Flag to track if the player is playing from the pozzetto */
     private boolean inPot = false;
 
-
-    public PlayerImpl(){
-        this.player1="player1";
-        this.player2="player2";
-    }
-
-    public PlayerImpl(final String p1, final String p2){
-        this.player1=p1;
-        this.player2=p2;
-    }
 
     /**
      * Returns the cards in the player's hand.

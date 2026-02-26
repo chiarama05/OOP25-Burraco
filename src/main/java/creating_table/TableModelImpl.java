@@ -120,7 +120,7 @@ public class TableModelImpl{
             return;
         }
         if(!canClose()){
-            return;
+            return; //"player : " + getCurrentPlayer() " can't close";
         }
 
         gameFinished=true;
