@@ -1,3 +1,5 @@
+package creating_table;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -71,29 +73,6 @@ public class TableViewImpl{
             }
         });
 
-        
-    //prob utili
-    public JFrame getFrame(){
-        return this.frame;
-    }
-
-    public JPanel getCombPanel1(){
-        return combPanel1;
-    }
-
-    public JPanel getCombPanel2(){
-        return combPanel2;
-    }
-
-    public JPanel getDiscardJPanel(){
-        return discardPanel;
-    }
-
-    public JPanel getDeckPanel(){
-        return deckPanel;
-    }
-
-
         //mostra ridimensionata
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setMinimumSize(new Dimension(900,600));
@@ -101,7 +80,6 @@ public class TableViewImpl{
         frame.pack();
         frame.setVisible(true);
         applyResponsiveFonts(); 
-
     }
 
 
@@ -139,11 +117,9 @@ public class TableViewImpl{
         turnLabel.setFont(scaleFont(baseTitleFont,factor));
 
         setTitledBorderFont(combPanel1,scaleFont(baseTitleFont,factor*0.95));
-        setTitledBoderFont(combPanel2,scaleFont(baseTitleFont,factor * 0.95));
+        setTitledBorderFont(combPanel2,scaleFont(baseTitleFont,factor * 0.95));
         setTitledBorderFont(discardPanel,scaleFont(baseTitleFont,factor*0.9));
         setTitledBorderFont(deckPanel,scaleFont(baseTitleFont,factor*0.9));
-
-
 
         frame.revalidate();
         frame.repaint();
@@ -157,13 +133,13 @@ public class TableViewImpl{
         }
     }
 
-    private void scaleFont(final Font base,double factor){
+    private Font scaleFont(final Font base,double factor){ 
         int newSize=(int) Math.round(base.getSize2D() * factor);
         newSize = Math.max(10,Math.min(newSize,28));
         return base.deriveFont((float) newSize);
     }
 
     private double clamp (double b, double min, double max){
-        return Math.max(min,Math.min(max,v));
+        return Math.max(min,Math.min(max,b)); 
     }
 }
