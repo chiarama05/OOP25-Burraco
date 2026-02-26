@@ -71,6 +71,29 @@ public class TableViewImpl{
             }
         });
 
+        
+    //prob utili
+    public JFrame getFrame(){
+        return this.frame;
+    }
+
+    public JPanel getCombPanel1(){
+        return combPanel1;
+    }
+
+    public JPanel getCombPanel2(){
+        return combPanel2;
+    }
+
+    public JPanel getDiscardJPanel(){
+        return discardPanel;
+    }
+
+    public JPanel getDeckPanel(){
+        return deckPanel;
+    }
+
+
         //mostra ridimensionata
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setMinimumSize(new Dimension(900,600));
@@ -101,5 +124,46 @@ public class TableViewImpl{
 
     public void showNotValideClosure(){
         JOptionPane.showMessageDialog(frame,"You can't discard your last card without even done a Burraco!");
+    }
+
+    public void showWinExit(boolean player1Won){
+        JOptionPane.showMessageDialog(frame, "You can exit now! the winner is... " + (player1Won ? "Player 1" : "Player 2"));
+        frame.dispose();
+        System.exit(0);
+    }
+
+    private void applyResponsiveFonts(){
+        int w = Math.max(frame.getWidth(),1);
+        double factor = clamp(w / 1280.0,0.85,1.4);
+
+        turnLabel.setFont(scaleFont(baseTitleFont,factor));
+
+        setTitledBorderFont(combPanel1,scaleFont(baseTitleFont,factor*0.95));
+        setTitledBoderFont(combPanel2,scaleFont(baseTitleFont,factor * 0.95));
+        setTitledBorderFont(discardPanel,scaleFont(baseTitleFont,factor*0.9));
+        setTitledBorderFont(deckPanel,scaleFont(baseTitleFont,factor*0.9));
+
+
+
+        frame.revalidate();
+        frame.repaint();
+    }
+
+
+    private void setTitledBorderFont(final JComponent comp, final Font font){
+        if(comp.getBorder() instanceof javax.swing.border.TitledBorder tb){
+            tb.setTitleFont(font);
+            comp.repaint();
+        }
+    }
+
+    private void scaleFont(final Font base,double factor){
+        int newSize=(int) Math.round(base.getSize2D() * factor);
+        newSize = Math.max(10,Math.min(newSize,28));
+        return base.deriveFont((float) newSize);
+    }
+
+    private double clamp (double b, double min, double max){
+        return Math.max(min,Math.min(max,v));
     }
 }
