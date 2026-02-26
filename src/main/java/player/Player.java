@@ -1,7 +1,7 @@
 package player;
-import card.Card;
-
 import java.util.List;
+
+import model.card.Card;
 
 public interface Player {
 

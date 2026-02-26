@@ -8,8 +8,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
 import core.discardcard.DiscardManager;
+import model.card.Card;
 import player.Player;
-import card.Card;
 
 /**
  * GUI component for handling only the discard pile in Burraco.

@@ -1,5 +1,5 @@
 package core.discardcard;
-import card.Card;
+import model.card.Card;
 import player.Player;
 
 /**

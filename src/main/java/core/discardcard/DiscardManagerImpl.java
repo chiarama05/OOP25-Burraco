@@ -1,8 +1,8 @@
 package core.discardcard;
 
+import model.card.Card;
+import model.discard.DiscardPile;
 import player.Player;
-import card.Card;
-import card.DiscardPile;
 
 /**
  * Concrete implementation of the discard logic.

@@ -1,6 +1,8 @@
-package card;
+package model.jolly;
 
 import java.util.List;
+
+import model.card.Card;
 
 /**
  * Interface for wildcard (Jolly) behavior in card games.

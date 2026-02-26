@@ -1,8 +1,9 @@
 package core.drawcard;
 
 import java.util.List;
-import card.Deck;
-import card.Card;
+
+import model.card.Card;
+import model.deck.Deck;
 import player.*;
 
 public class DrawManager {

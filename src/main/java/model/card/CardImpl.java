@@ -1,4 +1,4 @@
-package card;
+package model.card;
 
 public class CardImpl implements Card{
     private String seed;

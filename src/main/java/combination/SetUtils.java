@@ -1,9 +1,9 @@
 package combination;
 import combination.CombinationValidator;
+import model.card.Card;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import card.Card;
 
 public class SetUtils {
 
