@@ -1,4 +1,4 @@
-package combination;
+package core.combination;
 
 import java.util.List;
 import card.Card;

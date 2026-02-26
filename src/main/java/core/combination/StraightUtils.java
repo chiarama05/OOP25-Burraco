@@ -1,10 +1,9 @@
-package combination;
+package core.combination;
 
 import java.util.*;
 
 import java.util.stream.Collectors;
 import card.Card;
-import combination.CombinationValidator;
 
 public class StraightUtils {
     

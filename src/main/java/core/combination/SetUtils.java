@@ -1,5 +1,4 @@
-package combination;
-import combination.CombinationValidator;
+package core.combination;
 
 import java.util.List;
 import java.util.stream.Collectors;

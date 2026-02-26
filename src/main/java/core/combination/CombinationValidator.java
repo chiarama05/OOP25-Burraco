@@ -1,8 +1,6 @@
-package combination;
+package core.combination;
 
-import combination.SetUtils;
 import java.util.*;
-import java.util.stream.Collectors;
 import card.Card;
 
 public class CombinationValidator {
