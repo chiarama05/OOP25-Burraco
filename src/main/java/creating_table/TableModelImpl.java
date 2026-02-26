@@ -59,18 +59,48 @@ public class TableModelImpl{
         return winner; 
     }*/
 
+
+    /*turn management --> if the player is not in pot (Pozzetto) and has no cards, then they take the pozzetto  */
     public void switchTurn() {
-        if (gameFinished) return;
+        if (gameFinished){
+            return;
+        }
 
         isPlayer1Turn = !isPlayer1Turn;
 
         Player newCurrent = getCurrentPlayer();
 
-        // If pozzetto must be taken, do it now.
-        if (!newCurrent.isInPot() && newCurrent.hasFinishedCards()) {
-            //newCurrent.takePozzetto(); //
+        if (newCurrent.isInPot() && newCurrent.hasFinishedCards()) {
+            //newCurrent.takePozzetto(); //da creare
         }
     }
+
+    public void mustTakePot(){
+        if (gameFinished){
+            return;
+        }
+
+        Player p=getCurrentPlayer();
+        if(p.hasFinishedCards() && !p.isInPot()){
+            p.setInPot(true);
+            //p.takePozzetto();
+        }
+    }
+
+    public void PotFly(){
+        if(gameFinished){
+            return;
+        }
+
+        Player p=getCurrentPlayer();
+
+        if(p.hasFinishedCards() && !p.isInPot()){
+            p.setInPot(true);
+            mustTakePot();
+        }
+    }
+
+    
 
 }
 
