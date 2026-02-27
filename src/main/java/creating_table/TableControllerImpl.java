@@ -4,10 +4,10 @@ import javax.swing.SwingUtilities;
 
 public class TableControllerImpl implements TableController {
 
-    private final TableModelImpl model;
-    private final TableViewImpl view;
+    private final TableModel model;
+    private final TableView view;
 
-    public TableControllerImpl(final TableModelImpl model, final TableViewImpl view){
+    public TableControllerImpl(final TableModel model, final TableView view){
         this.model=model;
         this.view=view;
     }
