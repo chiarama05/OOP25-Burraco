@@ -1,9 +1,16 @@
 package model.card;
 
+// The CardImpl class is a concrete implementation of the Card interface.
 public class CardImpl implements Card{
     private String seed;
     private String value;
 
+     /**
+     * Constructs a CardImpl with the specified seed and value.
+     *
+     * @param seed  the seed (suit) of the card
+     * @param value the face value of the card
+     */
     public CardImpl(String seed, String value){
         this.seed=seed;
         this.value=value;
@@ -19,6 +26,15 @@ public class CardImpl implements Card{
         return this.value;
     }
 
+    /**
+     * Returns the numerical value associated with the card value.
+     * Face cards are mapped as follows:
+     * A = 1, J = 11, Q = 12, K = 13.
+     * "Jolly" is mapped to 0.
+     * Returns -1 if the value is not recognized.
+     *
+     * @return the numerical value of the card
+     */
     @Override
     public int getNumericalValue(){
         switch(value){
