@@ -28,7 +28,51 @@ public class TableControllerImpl implements TableController {
 
     @Override
     public void refreshTurnLabel(){
-        ui(() -> view.refreshTurnLabel(model.isPlayer1Turn));
+        ui(() -> view.refreshTurnLabel(model.isPlayer1Turn()));
     }
+
+    @Override
+    public void onPotFly(){
+        if(model.isGameFinished()){
+            return;
+        }
+        model.PotFly();
+        ui(view::showPotFly);
+    }
+
+    @Override
+    public void onPotNextTurn(){
+        if(model.isGameFinished()){
+            return;
+        }
+        model.mustTakePot();
+        ui(view::showPotnextTurn);
+    }
+
+    @Override
+    public void attemptClosure(){
+        if(model.isGameFinished()){
+            return;
+        }
+        if(!model.canClose()){
+            ui(view::showNotValideClosure);
+            return;
+        }
+        final boolean player1Wins=model.isPlayer1Turn();
+        model.confirmClosureAndWin();
+        if(model.isGameFinished()){
+            ui(() -> view.showWinExit(player1Wins));
+        }
+    }
+
+    private void ui(final Runnable r){
+        if(SwingUtilities.isEventDispatchThread()){
+            r.run();
+        }
+        else{
+            SwingUtilities.invokeLater(r);
+        }
+    }
+
 }
 
