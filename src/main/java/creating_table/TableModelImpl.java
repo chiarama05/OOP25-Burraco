@@ -5,7 +5,7 @@ import java.util.*;
 import model.card.*;
 import model.player.*;
 
-public class TableModelImpl{
+public class TableModelImpl implements TableModel{
 
     public enum Winner {
         NONE, PLAYER1, PLAYER2;
