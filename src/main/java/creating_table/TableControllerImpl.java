@@ -2,6 +2,8 @@ package creating_table;
 
 import javax.swing.SwingUtilities;
 
+import view.table.TableView;
+
 public class TableControllerImpl implements TableController {
 
     private final TableModel model;

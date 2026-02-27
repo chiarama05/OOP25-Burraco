@@ -1,6 +1,7 @@
-package creating_table;
+package view.table;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
