@@ -1,7 +1,6 @@
 package model.deck;
 
 import java.util.*;
-
 import model.card.Card;
 
 /**
@@ -16,6 +15,7 @@ import model.card.Card;
  * the deck is created and managed.
  */
 public interface Deck {
+
     /**
      * Draws and removes a card from the deck.
      *
