@@ -6,16 +6,34 @@ import model.card.Card;
 import model.deck.Deck;
 import model.player.*;
 
+/**
+ * DrawManager handles the logic related to drawing cards during a player's turn.
+ */
 public class DrawManager {
 
+    /**
+     * Flag that tracks whether the current player has already drawn a card
+     * during this turn.
+     */
     private boolean drawCard = false;
 
-    private void resetTurn(){
+    /**
+     * Resets the draw state at the beginning of a new turn.
+     */
+    public void resetTurn(){
         drawCard = false;
     }
 
+    /**
+     * Draws one card from the deck.
+     *
+     * @param player The current player.
+     * @param deck   The game deck.
+     * @return DrawResult object describing the outcome.
+     */
     public DrawResult drawFromDeck(Player player, Deck deck){
 
+        // Prevent multiple draws in the same turn
         if (drawCard) {
             return DrawResult.alreadyDrawn();
         }
@@ -32,6 +50,13 @@ public class DrawManager {
         return DrawResult.success(card);
     }
 
+    /**
+     * Draws all cards from the discard pile.
+     *
+     * @param player   The current player.
+     * @param discards The discard pile.
+     * @return DrawResult object describing the outcome.
+     */
     public DrawResult drawFromDiscard(Player player, List<Card> discards){
 
         if (drawCard) {

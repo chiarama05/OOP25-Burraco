@@ -18,15 +18,13 @@ public class DiscardManagerImpl implements DiscardManager{
     @Override
     public DiscardResult discard(Player player, Card card){
 
-        // Validate selection
+        // Validate selection 
         if(card == null){
-            return new DiscardResult(false, false, false,
-                    "You must select a card to discard.");
+            return new DiscardResult(false, false, false, "You must select a card to discard.");
         }
 
         if(!player.getHand().contains(card)){
-            return new DiscardResult(false, false, false,
-                    "The selected card is not in the player's hand.");
+            return new DiscardResult(false, false, false, "The selected card is not in the player's hand.");
         }
 
         int handSizeBefore = player.getHand().size();
@@ -36,8 +34,7 @@ public class DiscardManagerImpl implements DiscardManager{
             if (handSizeBefore <= 1 &&
                 player.getBurracoCount() < 1) {
 
-                return new DiscardResult(false, false, false,
-                        "You need at least one Burraco to close the game.");
+                return new DiscardResult(false, false, false, "You need at least one Burraco to close the game.");
             }
         }
 
@@ -51,15 +48,13 @@ public class DiscardManagerImpl implements DiscardManager{
         if (closingAttempt) {
 
             if (player.getBurracoCount() >= 1) {
-                return new DiscardResult(true, false, true,
-                        "Game closed successfully. You win!");
+                return new DiscardResult(true, false, true, "Game closed successfully. You win!");
             }else{
                 // Undo discard
                 discardPile.drawLast();
                 player.addCardHand(card);
 
-                return new DiscardResult(false, false, false,
-                        "Invalid closing attempt. At least one Burraco is required.");
+                return new DiscardResult(false, false, false, "Invalid closing attempt. At least one Burraco is required.");
             }
         }
         // Player finished hand without closing → take pot
@@ -68,11 +63,9 @@ public class DiscardManagerImpl implements DiscardManager{
 
             player.setInPot(true);
 
-            return new DiscardResult(true, true, false,
-                    "Pozzetto taken. Turn ends.");
+            return new DiscardResult(true, true, false, "Pozzetto taken. Turn ends.");
         }
 
-        return new DiscardResult(true, true, false,
-                "Card discarded successfully."); 
+        return new DiscardResult(true, true, false, "Card discarded successfully."); 
     }
 }
