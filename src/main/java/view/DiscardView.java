@@ -46,19 +46,19 @@ public class DiscardView {
 
         // Panels
         handPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        handPanel.setBorder(BorderFactory.createTitledBorder("Mano"));
+        handPanel.setBorder(BorderFactory.createTitledBorder("Deck"));
         frame.add(handPanel, BorderLayout.CENTER);
 
         discardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        discardPanel.setBorder(BorderFactory.createTitledBorder("Scarti"));
+        discardPanel.setBorder(BorderFactory.createTitledBorder("Discard Pile"));
         frame.add(discardPanel, BorderLayout.SOUTH);
 
         // Scarta button
-        discardButton = new JButton("Scarta");
-        discardButton.addActionListener(e -> discardCard());
+        discardButton = new JButton("Discard");
+        //discardButton.addActionListener(e -> discardCard());
         frame.add(discardButton, BorderLayout.EAST);
 
-        updateGUI();
+        //updateGUI();
         frame.setVisible(true);
     }
 }
