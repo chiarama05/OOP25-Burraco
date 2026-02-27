@@ -3,7 +3,7 @@ package creating_table;
 import model.player.*;
 
 public class MainSample {
-    public static void main(final String... args){
+    public static void main(final String[] args){
         final Player player1 = new PlayerImpl();
         final Player player2 = new PlayerImpl();
 
