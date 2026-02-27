@@ -22,7 +22,7 @@ public class AttachUtils {
             return false;
         }
 
-        if (StraightUtils.isStraight(combination)) {
+        if (StraightUtils.isSameSeed(combination)) {
             return StraightAttachUtils.canAttachToStraight(combination, newCard);
         }
 

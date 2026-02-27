@@ -14,7 +14,7 @@ public class CombinationValidator {
         if (wildcards > 1){
             return false;
         } 
-        if (StraightUtils.isStraight(cards)) {
+        if (StraightUtils.isSameSeed(cards)) {
             return StraightUtils.isValidStraight(cards);
         }
         return SetUtils.isValidSet(cards);
