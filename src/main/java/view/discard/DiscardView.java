@@ -1,64 +1,26 @@
 package view.discard;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.swing.*;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-
-import core.discardcard.DiscardManager;
-import model.card.Card;
-import model.player.Player;
+import java.util.List;
+import model.card.*;
+import java.awt.event.ActionListener;
 
 /**
- * GUI component for handling only the discard pile in Burraco.
- * Handles selecting a card and discarding it.
+ * View interface responsible for displaying
+ * the discard pile and handling discard actions.
  */
-public class DiscardView {
+public interface DiscardView {
 
-    private JFrame frame;
-    private JPanel discardPanel, handPanel;
-    private JButton discardButton;
-    private JLabel turnLabel;
+    /**
+     * Updates the graphical representation of the discard pile.
+     *
+     * @param discardPile the list of cards currently in the discard pile
+     */
+    void updateDiscardPile(List<Card> discardPile);
 
-    private DiscardManager discardManager;
-    private Player currentPlayer;
-
-    private Set<Card> selectedCards = new HashSet<>();
-
-    public DiscardView(DiscardManager discardManager, Player currentPlayer) {
-        this.discardManager = discardManager;
-        this.currentPlayer = currentPlayer;
-
-        setupGUI();
-    }
-
-    private void setupGUI(){
-        frame = new JFrame("Discard Pile");
-        frame.setSize(600, 400);
-        frame.setLayout(new BorderLayout());
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        // Turn label
-        turnLabel = new JLabel("Select a card to discard");
-        frame.add(turnLabel, BorderLayout.NORTH);
-
-        // Panels
-        handPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        handPanel.setBorder(BorderFactory.createTitledBorder("Deck"));
-        frame.add(handPanel, BorderLayout.CENTER);
-
-        discardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        discardPanel.setBorder(BorderFactory.createTitledBorder("Discard Pile"));
-        frame.add(discardPanel, BorderLayout.SOUTH);
-
-        // Scarta button
-        discardButton = new JButton("Discard");
-        //discardButton.addActionListener(e -> discardCard());
-        frame.add(discardButton, BorderLayout.EAST);
-
-        //updateGUI();
-        frame.setVisible(true);
-    }
+    /**
+     * Registers a listener for the discard button.
+     *
+     * @param listener the ActionListener triggered when the discard button is pressed
+     */
+    void setDiscardListener(ActionListener listener);
 }
