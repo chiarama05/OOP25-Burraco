@@ -3,6 +3,7 @@ package model.jolly;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import core.combination.StraightUtils;
 import model.card.Card;
 
 /**
@@ -39,46 +40,11 @@ public class JollyImpl implements Jolly {
         if (isPureJolly()) {
             return true;
         }
-
         if (!card.getValue().equals("2")) {
             return false;
         }
 
-        // 2 → acts as a wildcard in straights IF NOT natural 
-        return !isNaturalTwo(card, context);
-    }
-
-
-    /**
-     * Determines if a "2" card is natural in a straight (A-2-3).
-     * A natural two is not considered a wildcard.
-     *
-     * @param two the 2 card to check
-     * @param straight the list of cards forming the straight
-     * @return true if the 2 is natural, false otherwise
-     */
-    private boolean isNaturalTwo(Card two, List<Card> straight) {
-        if (!two.getValue().equals("2")) return false;
-
-        List<Card> realCards = straight.stream()
-                .filter(c -> !c.getValue().equals("2") && !c.getValue().equals("Jolly"))
-                .collect(Collectors.toList());
-
-        if (realCards.isEmpty()) {
-            return false;
-        }
-
-        /* Natural two must have the same suit as the real cards */
-        String suit = realCards.get(0).getSeed();
-        if (!two.getSeed().equals(suit)) {
-            return false;
-        }
-
-        /* Check for presence of Ace and 3 to form a natural sequence (A-2-3) */
-        boolean hasAce = realCards.stream().anyMatch(c -> c.getValue().equals("A"));
-        boolean hasThree = realCards.stream().anyMatch(c -> c.getValue().equals("3"));
-
-        return hasAce && hasThree;
+        return !StraightUtils.isNaturalTwo(card, context);
     }
 
 
