@@ -26,8 +26,20 @@ public class DiscardResult {
         this.gameWon = gameWon;
         this.message = message;
     }
-    public boolean isValid() { return valid; }
-    public boolean isTurnEnds() { return turnEnds; }
-    public boolean isGameWon() { return gameWon; }
-    public String getMessage() { return message; }
+
+    public boolean isValid() { 
+        return valid; 
+    }
+
+    public boolean isTurnEnds() { 
+        return turnEnds; 
+    }
+
+    public boolean isGameWon() { 
+        return gameWon; 
+    }
+    
+    public String getMessage() { 
+        return message; 
+    }
 }

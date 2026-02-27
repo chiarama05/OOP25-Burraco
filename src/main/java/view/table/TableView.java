@@ -1,4 +1,4 @@
-package creating_table;
+package view.table;
 
 public interface TableView {
 

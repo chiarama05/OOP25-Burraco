@@ -5,18 +5,22 @@ import java.util.Set;
 import model.card.*;
 
 /**
- * Manages the logical selection of cards.
- * This class contains ONLY business logic.
+ * SelectionCardManager handles the logical selection of cards..
  */
 public class SelectionCardManager {
 
-    /** Set containing currently selected cards */
+    /** 
+     * Set containing currently selected cards 
+     * */
     private Set<Card> selectedCards = new HashSet<>();
 
     /**
-     * Toggle the selection state of a card.
-     * If the card is selected, it becomes unselected.
-     * If it is not selected, it becomes selected.
+     * Toggles the selection state of a card.
+     *
+     * If the card is already selected, it will be removed.
+     * If it is not selected, it will be added.
+     *
+     * @param card the card whose selection state must be toggled
      */
     public void toggleSelection(Card card) {
         if (selectedCards.contains(card)) {
@@ -27,14 +31,22 @@ public class SelectionCardManager {
     }
 
     /**
-     * Returns true if the card is currently selected.
+     * Checks whether a specific card is currently selected.
+     *
+     * @param card the card to check
+     * @return true if the card is selected, false otherwise
      */
     public boolean isSelected(Card card) {
         return selectedCards.contains(card);
     }
 
     /**
-     * Returns a copy of the selected cards.
+     * Returns a defensive copy of the selected cards.
+     *
+     * A new Set is returned to preserve encapsulation and
+     * prevent external modification of the internal state.
+     *
+     * @return a copy of the selected cards
      */
     public Set<Card> getSelectedCards() {
         return new HashSet<>(selectedCards);
@@ -48,14 +60,18 @@ public class SelectionCardManager {
     }
 
     /**
-     * Returns the number of selected cards.
+     * Returns the number of currently selected cards.
+     *
+     * @return the size of the selection set
      */
     public int getSelectionSize() {
         return selectedCards.size();
     }
 
     /**
-     * Returns true if no cards are selected.
+     * Checks whether no cards are currently selected.
+     *
+     * @return true if the selection set is empty
      */
     public boolean isEmpty() {
         return selectedCards.isEmpty();
