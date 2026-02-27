@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-public class TableViewImpl{
+public class TableViewImpl implements TableView{
     
     private final JFrame frame;
     private final JLabel turnLabel;

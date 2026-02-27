@@ -3,14 +3,18 @@ package creating_table;
 import model.player.*;
 
 public class MainSample {
-    Player player1 = new PlayerImpl();
-    Player player2 = new PlayerImpl();
+    public static void main(final String... args){
+        final Player player1 = new PlayerImpl();
+        final Player player2 = new PlayerImpl();
 
-    TableModel model = new TableModelImpl(p1,p2);
+        
+        TableModel model = new TableModelImpl(player1, player2);
 
-    TableView view = new TableViewwImpl();
+        TableView view = new TableViewImpl();
 
-    TableController controller = new TableControllerImpl(model,view);
-    controller.start();
+        TableController controller = new TableControllerImpl(model,view);
+        controller.start();
+    }
+
     
 }
