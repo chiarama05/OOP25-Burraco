@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import model.card.*;
 
@@ -20,6 +21,9 @@ public class DiscardViewImpl implements DiscardView{
     /** Panel displaying the discard pile */
     private final JPanel discardPanel;
 
+    /** Panel containing the discard button */
+    private final JPanel actionPanel;
+
     /** Button used to discard the selected card */
     private final JButton discardButton;
 
@@ -30,23 +34,36 @@ public class DiscardViewImpl implements DiscardView{
      * @param actionPanel the panel where the discard button is placed
      */
     public DiscardViewImpl(JPanel discardPanel, JPanel actionPanel) {
-
         this.discardPanel = discardPanel;
+        this.actionPanel = actionPanel;
 
+        // Setup discard panel style
+        this.discardPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        this.discardPanel.setBorder(BorderFactory.createTitledBorder("Discard Pile"));
+        this.discardPanel.setBackground(new Color(250, 250, 240));
+
+        // Create discard button and add it to the action panel
         discardButton = new JButton("Discard");
-        actionPanel.add(discardButton);
+        this.actionPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        this.actionPanel.add(discardButton);
     }
 
     /**
-     * Refreshes the discard pile panel.
+     * Refreshes the discard pile panel with the current cards.
+     *
+     * @param discardPile the list of cards currently in the discard pile
      */
     @Override
     public void updateDiscardPile(List<Card> discardPile) {
-
         discardPanel.removeAll();
+
         for (Card c : discardPile) {
             JLabel label = new JLabel(c.toString());
             label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            label.setOpaque(true);
+            label.setBackground(Color.WHITE);
+            label.setPreferredSize(new java.awt.Dimension(60, 90)); // dimensione visiva carta
+            label.setHorizontalAlignment(JLabel.CENTER);
             discardPanel.add(label);
         }
 
@@ -56,9 +73,19 @@ public class DiscardViewImpl implements DiscardView{
 
     /**
      * Attaches a listener to the discard button.
+     *
+     * @param listener the ActionListener triggered when the discard button is pressed
      */
     @Override
     public void setDiscardListener(ActionListener listener) {
         discardButton.addActionListener(listener);
+    }
+
+    /**
+     * Returns the action panel containing the discard button,
+     * so it can be added to the main frame.
+     */
+    public JPanel getActionPanel() {
+        return actionPanel;
     }
 }
