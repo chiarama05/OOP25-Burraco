@@ -25,7 +25,7 @@ public class StraightUtils {
      * @param cards the list of cards to check
      * @return true if all non-wildcards have the same seed, false otherwise
      */
-    public static boolean isSameSuit(List<Card> cards) {
+    public static boolean isSameSeed(List<Card> cards) {
         if (cards == null || cards.isEmpty()) {
             return false;
         }

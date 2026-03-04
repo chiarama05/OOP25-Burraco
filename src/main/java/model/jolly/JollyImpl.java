@@ -1,7 +1,6 @@
 package model.jolly;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import core.combination.StraightUtils;
 import model.card.Card;
