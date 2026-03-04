@@ -68,4 +68,9 @@ public class handImpl extends JPanel implements hand {
     public void setCardSelectionListener(CardSelectionListener listener) {
         this.listener = listener;
     }
+
+    public Card getSingleSelectedCard() {
+    Set<Card> selected = getSelectedCards();
+    return selected.size() == 1 ? selected.iterator().next() : null;
+}
 }
