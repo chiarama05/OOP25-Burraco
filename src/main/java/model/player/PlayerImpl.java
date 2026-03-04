@@ -1,7 +1,7 @@
 package model.player;
 import java.util.ArrayList;
 import java.util.List;
-
+import core.combination.*;
 import model.card.Card;
 
 
@@ -14,6 +14,7 @@ public class PlayerImpl implements Player{
     private List<Card> hand = new ArrayList<>();
     private List<Card> pot = new ArrayList<>();
     private List<List<Card>> combinations = new ArrayList<>();
+    //dovrebbe essere list<Combination>
     //private final String player;
 
 
