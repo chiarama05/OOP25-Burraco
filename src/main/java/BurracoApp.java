@@ -1,5 +1,3 @@
-
-
 import creating_table.TableController;
 import creating_table.TableControllerImpl;
 import creating_table.TableModel;

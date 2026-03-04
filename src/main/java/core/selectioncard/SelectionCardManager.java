@@ -13,6 +13,8 @@ public class SelectionCardManager {
      * Set containing currently selected cards 
      * */
     private Set<Card> selectedCards = new HashSet<>();
+    
+    private final SelectionCardManager selectionManager = new SelectionCardManager();
 
     /**
      * Toggles the selection state of a card.
