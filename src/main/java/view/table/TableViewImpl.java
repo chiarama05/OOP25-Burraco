@@ -8,7 +8,7 @@ import java.awt.event.ComponentEvent;
 import core.discardcard.DiscardManagerImpl;
 import core.distributioncard.DistributionManagerImpl;
 import model.player.PlayerImpl;
-import view.DiscardController;
+import view.bottom.DiscardController;
 import view.discard.DiscardViewImpl;
 import view.distribution.InitialDistributionView;
 import view.hand.handImpl;
