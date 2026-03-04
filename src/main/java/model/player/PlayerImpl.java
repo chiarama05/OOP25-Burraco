@@ -46,6 +46,13 @@ public class PlayerImpl implements Player{
         hand.remove(c);
     }
 
+    @Override
+    public void removeCards(List<Card> cards) {
+    for (Card c : cards) {
+        removeCardHand(c); // usa il metodo già presente
+    }
+}
+
     /**
      * Checks if the player's hand is empty.
      */
@@ -106,5 +113,10 @@ public class PlayerImpl implements Player{
     /** Returns the current pot cards */
     public List<Card> getPot() {
         return pot;
+    }
+
+    @Override
+    public boolean hasCard(Card card) {
+    return hand.contains(card);
     }
 }

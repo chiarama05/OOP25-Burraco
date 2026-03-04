@@ -10,6 +10,8 @@ import model.player.PlayerImpl;
 import view.discard.DiscardViewImpl;
 import view.distribution.InitialDistributionView;
 import view.hand.handImpl;
+import model.card.Card;
+import java.util.List;
 
 public class TableViewImpl implements TableView {
 
@@ -196,4 +198,34 @@ public class TableViewImpl implements TableView {
     private double clamp(double b, double min, double max) {
         return Math.max(min, Math.min(max, b));
     }
+
+
+    public void addCombinationToPlayerPanel(List<Card> cards, boolean player1Turn){
+    JPanel targetPanel = player1Turn ? combPanel1 : combPanel2;
+
+    JPanel newComboPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
+    for(Card c : cards){
+        JButton cardBtn = new JButton(c.toString());
+        newComboPanel.add(cardBtn);
+    }
+
+    targetPanel.add(newComboPanel);
+    targetPanel.revalidate();
+    targetPanel.repaint();
+    }
+
+    public void refreshHand(PlayerImpl player) {
+    deckPanel.removeAll();
+
+    handImpl handView;
+    if (player == player1) {
+        handView = initDist.getPlayer1HandView();
+    } else {
+        handView = initDist.getPlayer2HandView();
+    }
+
+    deckPanel.add(handView, BorderLayout.CENTER);
+    deckPanel.revalidate();
+    deckPanel.repaint();
+}
 }
