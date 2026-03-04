@@ -2,6 +2,8 @@ package view.table;
 
 import javax.swing.*;
 
+import view.discard.DiscardViewImpl;
+
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -81,6 +83,35 @@ public class TableViewImpl implements TableView{
         frame.pack();
         frame.setVisible(true);
         applyResponsiveFonts(); 
+
+        
+        // Create the right-side panel for all action buttons
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS)); // Vertical stacking of buttons
+        rightPanel.setPreferredSize(new Dimension(180, 400)); // Fixed width for the sidebar
+
+
+        // Initialize the DiscardView and retrieve its discard button
+        DiscardViewImpl discardView = new DiscardViewImpl(discardPanel, new JPanel());
+        JButton discardBtn = (JButton) discardView.getActionPanel().getComponent(0); // Access the discard button
+
+        // Create additional action buttons
+        JButton drawDeckBtn = new JButton("Draw from deck");
+        JButton drawDiscardBtn = new JButton("Take discard");
+        JButton putComboBtn = new JButton("Put combionation");
+
+        // Add all action buttons to the right panel
+        // Buttons are centered and constrained to a uniform size
+        // Vertical spacing is added between buttons
+        for (JButton b : new JButton[]{drawDeckBtn, drawDiscardBtn, putComboBtn, discardBtn}) {
+           b.setAlignmentX(Component.CENTER_ALIGNMENT);
+           b.setMaximumSize(new Dimension(160, 40));
+           rightPanel.add(b);
+           rightPanel.add(Box.createVerticalStrut(10));
+        } 
+
+        // Add the completed right-side panel to the frame
+        frame.add(rightPanel, BorderLayout.EAST);
     }
 
 
