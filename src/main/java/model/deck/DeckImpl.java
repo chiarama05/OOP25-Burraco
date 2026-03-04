@@ -17,7 +17,7 @@ public class DeckImpl implements Deck {
     public DeckImpl() {
 
         /* Internal list that stores all the cards in the deck */
-        cards = new ArrayList<>();
+        final List<Card> cards = new ArrayList<>();
 
         String[] seeds = {"♠", "♥", "♣", "♦"};
         String[] values = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
@@ -42,6 +42,7 @@ public class DeckImpl implements Deck {
         }
         return null;
     }
+    // --> return cards.isEmpty() ? null : cards.remove(cards.size()-1);
 
 
     @Override
