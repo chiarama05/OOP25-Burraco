@@ -1,5 +1,7 @@
 package core.discardcard;
 
+import java.util.List;
+
 import model.card.Card;
 import model.discard.DiscardPile;
 import model.player.Player;
@@ -67,5 +69,9 @@ public class DiscardManagerImpl implements DiscardManager{
         }
 
         return new DiscardResult(true, true, false, "Card discarded successfully."); 
+    }
+
+    public List<Card> getDiscardPileCards() {
+        return discardPile.getCards();
     }
 }
