@@ -11,8 +11,7 @@ import view.table.TableViewImpl;
 public class BurracoApp {
     public static void main(final String[] args){
         SwingUtilities.invokeLater(() -> {
-            TableViewImpl table = new TableViewImpl();
-            table.initGame();
+            TableView table = new TableViewImpl();
         });
     }
 }

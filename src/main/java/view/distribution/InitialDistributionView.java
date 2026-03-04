@@ -20,28 +20,17 @@ public class InitialDistributionView {
         this.handPlayer2 = new handImpl();
     }
 
-    /**
-     * Returns a panel containing both players' hands.
-     */
-    public JPanel getHandsPanel() {
-        JPanel handsPanel = new JPanel(new GridLayout(2,1,10,10));
-        handsPanel.add(handPlayer1);
-        handsPanel.add(handPlayer2);
-        return handsPanel;
-    }
+    public handImpl getPlayer1HandView() { return handPlayer1; }
+    public handImpl getPlayer2HandView() { return handPlayer2; }
 
-    /**
-     * Distribute initial cards to both players and refresh GUI.
-     */
     public void distribute(Player player1, Player player2, DistributionManagerImpl distManager) {
-        // Use the concrete DeckImpl for distribution
         distManager.distributeInitialCards(player1, player2, new DeckImpl());
 
-        // Refresh hands
+        // Mostra solo il contenuto interno delle singole mani
         handPlayer1.refreshHand(player1.getHand());
         handPlayer2.refreshHand(player2.getHand());
 
-        // Show initial discard pile
+        // Scarti
         discardPanel.removeAll();
         for (Card c : distManager.getInitialDiscardPile()) {
             JLabel lbl = new JLabel(c.toString());
