@@ -5,12 +5,16 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+import core.discardcard.DiscardManagerImpl;
 import core.distributioncard.DistributionManagerImpl;
 import model.player.PlayerImpl;
+import view.DiscardController;
 import view.discard.DiscardViewImpl;
 import view.distribution.InitialDistributionView;
 import view.hand.handImpl;
 import model.card.Card;
+import model.discard.DiscardPileImpl;
+
 import java.util.List;
 
 public class TableViewImpl implements TableView {
@@ -102,6 +106,13 @@ public class TableViewImpl implements TableView {
         }
 
         frame.add(rightPanel, BorderLayout.EAST);
+
+        DiscardController discardController = new DiscardController(
+        turnoPlayer1 ? player1 : player2,       // giocatore attivo
+        turnoPlayer1 ? initDist.getPlayer1HandView() : initDist.getPlayer2HandView(),
+        new DiscardManagerImpl(new DiscardPileImpl()), // discard manager con la discard pile
+        discardView
+        );
 
         // ==== Resize responsive ====
         frame.addComponentListener(new ComponentAdapter() {
