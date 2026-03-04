@@ -1,7 +1,7 @@
 package model.player;
 import java.util.ArrayList;
 import java.util.List;
-
+import core.combination.*;
 import model.card.Card;
 
 
@@ -14,6 +14,7 @@ public class PlayerImpl implements Player{
     private List<Card> hand = new ArrayList<>();
     private List<Card> pot = new ArrayList<>();
     private List<List<Card>> combinations = new ArrayList<>();
+    //dovrebbe essere list<Combination>
     //private final String player;
 
 
@@ -44,6 +45,13 @@ public class PlayerImpl implements Player{
     public void removeCardHand(Card c) {
         hand.remove(c);
     }
+
+    @Override
+    public void removeCards(List<Card> cards) {
+    for (Card c : cards) {
+        removeCardHand(c); // usa il metodo già presente
+    }
+}
 
     /**
      * Checks if the player's hand is empty.
@@ -105,5 +113,10 @@ public class PlayerImpl implements Player{
     /** Returns the current pot cards */
     public List<Card> getPot() {
         return pot;
+    }
+
+    @Override
+    public boolean hasCard(Card card) {
+    return hand.contains(card);
     }
 }

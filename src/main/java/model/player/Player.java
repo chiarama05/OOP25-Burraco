@@ -20,6 +20,10 @@ public interface Player {
      */
     void removeCardHand(Card c);
 
+    void removeCards(List<Card> cards);
+
+    boolean hasCard(Card card);
+
     /**
      * Checks if the player has no cards left in hand.
     
