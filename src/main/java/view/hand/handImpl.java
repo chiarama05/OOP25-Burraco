@@ -23,30 +23,33 @@ public class handImpl extends JPanel implements hand {
     public void refreshHand(List<Card> hand) {
         removeAll();
 
-        for (Card c : hand) {
-            JButton btn = new JButton(c.toString());
-            btn.setPreferredSize(new Dimension(60, 30));
-            btn.setFont(new Font("Arial", Font.PLAIN, 12));
-            btn.setOpaque(true);
+    for (Card c : hand) {
+        JButton btn = new JButton(c.toString());
+        btn.setPreferredSize(new Dimension(60, 30));
+        btn.setFont(new Font("Arial", Font.PLAIN, 12));
+        btn.setOpaque(true);
+        btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
+        btn.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        // Listener aggiornato
+        btn.addActionListener(e -> {
+            // toggla selezione tramite SelectionCardManager
+            selectionManager.toggleSelection(c);
+
+            // Aggiorna solo il colore del bottone cliccato
             btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
-            btn.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-            btn.addActionListener(e -> {
-                // toggla selezione tramite SelectionCardManager
-                selectionManager.toggleSelection(c);
-                refreshHand(hand); // aggiorna evidenziazione
+            // callback verso controller
+            if (listener != null) {
+                listener.onCardSelected(c);
+            }
+        });
 
-                // callback verso controller
-                if (listener != null) {
-                    listener.onCardSelected(c);
-                }
-            });
+        add(btn);
+    }
 
-            add(btn);
-        }
-
-        revalidate();
-        repaint();
+    revalidate();
+    repaint();
     }
 
     @Override

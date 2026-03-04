@@ -26,6 +26,11 @@ public class CardImpl implements Card{
         return this.value;
     }
 
+    @Override
+    public String toString() {
+        return value + seed; // es: "A♠", "10♥"
+    }
+
     /**
      * Returns the numerical value associated with the card value.
      * Face cards are mapped as follows:

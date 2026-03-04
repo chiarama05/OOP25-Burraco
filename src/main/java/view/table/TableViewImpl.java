@@ -2,7 +2,11 @@ package view.table;
 
 import javax.swing.*;
 
+import core.distributioncard.DistributionManagerImpl;
+import model.player.Player;
+import model.player.PlayerImpl;
 import view.discard.DiscardViewImpl;
+import view.distribution.InitialDistributionView;
 
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -20,6 +24,10 @@ public class TableViewImpl implements TableView{
 
     private final Font baseTitleFont= new Font("Arial", Font.BOLD, 32);
     private final Font baseLabelFont = new Font("Arial", Font.BOLD, 22);
+
+    private final InitialDistributionView initDist;
+    private final PlayerImpl player1;
+    private final PlayerImpl player2;
 
     public TableViewImpl(){
         frame= new JFrame ("Burraco - OOOP Project");
@@ -67,24 +75,18 @@ public class TableViewImpl implements TableView{
         bottomPanel.add(deckPanel,BorderLayout.CENTER);
         frame.add(bottomPanel,BorderLayout.SOUTH);
 
+        // --- DISTRIBUZIONE INIZIALE DELLE CARTE ---
 
-        //resize-responsive
-        frame.addComponentListener(new ComponentAdapter(){
-            @Override
-            public void componentResized(ComponentEvent e ){
-                applyResponsiveFonts();
-            }
-        });
+        player1 = new PlayerImpl();
+        player2 = new PlayerImpl();
+        DistributionManagerImpl distManager = new DistributionManagerImpl();
+        initDist = new InitialDistributionView(discardPanel);
 
-        //mostra ridimensionata
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setMinimumSize(new Dimension(900,600));
+        JPanel handsPanel = initDist.getHandsPanel();
+        frame.add(handsPanel, BorderLayout.WEST);
 
-        frame.pack();
-        frame.setVisible(true);
-        applyResponsiveFonts(); 
+        initDist.distribute(player1, player2, distManager);
 
-        
         // Create the right-side panel for all action buttons
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS)); // Vertical stacking of buttons
@@ -112,6 +114,22 @@ public class TableViewImpl implements TableView{
 
         // Add the completed right-side panel to the frame
         frame.add(rightPanel, BorderLayout.EAST);
+
+
+        //resize-responsive
+        frame.addComponentListener(new ComponentAdapter(){
+            @Override
+            public void componentResized(ComponentEvent e ){
+                applyResponsiveFonts();
+            }
+        });
+
+        //mostra ridimensionata
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setMinimumSize(new Dimension(900,600));
+        frame.pack();
+        frame.setVisible(true);
+        applyResponsiveFonts(); 
     }
 
 
@@ -174,4 +192,18 @@ public class TableViewImpl implements TableView{
     private double clamp (double b, double min, double max){
         return Math.max(min,Math.min(max,b)); 
     }
+
+    public void initGame() {
+    PlayerImpl player1 = new PlayerImpl();
+    PlayerImpl player2 = new PlayerImpl();
+    DistributionManagerImpl distManager = new DistributionManagerImpl();
+    
+    JPanel handsPanel = initDist.getHandsPanel();
+    frame.add(handsPanel, BorderLayout.NORTH); // sopra combinazioni
+
+    initDist.distribute(player1, player2, distManager);
+
+    frame.revalidate();
+    frame.repaint();
+}
 }
