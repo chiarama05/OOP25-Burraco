@@ -34,7 +34,7 @@ public class TableViewImpl implements TableView {
     private final JPanel discardPanel;
     private final JPanel deckPanel;
 
-    private final Font baseTitleFont = new Font("Arial", Font.BOLD, 32);
+    private final Font baseTitleFont = new Font("Arial", Font.BOLD, 23);
 
     private final InitialDistributionView initDist;
     private final PlayerImpl player1;
@@ -78,7 +78,7 @@ public class TableViewImpl implements TableView {
 
         // ==== Deck / mano in basso ====
         deckPanel = new JPanel(new BorderLayout());
-        deckPanel.setBorder(BorderFactory.createTitledBorder("Deck"));
+        deckPanel.setBorder(BorderFactory.createTitledBorder("Hand"));
 
         JPanel centralBottomPanel = new JPanel(new BorderLayout());
         centralBottomPanel.add(discardPanel, BorderLayout.CENTER); // Gli scarti al centro
