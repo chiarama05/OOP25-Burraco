@@ -58,7 +58,7 @@ public class TableViewImpl implements TableView {
         this.commonDeck = new DeckImpl();
 
         // Inizializzazione della variabile di istanza
-        this.deckView = new DeckView(); 
+        DeckView deckView = new DeckView(); 
         new DeckController(deckView, drawManager, this);
 
         // ==== Turno ====
@@ -110,7 +110,7 @@ public class TableViewImpl implements TableView {
         initDist.distribute(player1, player2, distManager);
 
         // Mostra inizialmente la mano del giocatore 1
-        refreshHandPanel();
+        refreshHandPanel(getCurrentPlayer());
         refreshTurnLabel(true);
 
         // ==== Pannello bottoni a destra ====
@@ -165,32 +165,62 @@ public class TableViewImpl implements TableView {
     /**
      * Aggiorna il pannello deckPanel per mostrare solo la mano del giocatore attivo
      */
-    public void refreshHandPanel() {
-        // 1. Identifichiamo il giocatore corrente usando il metodo che hai già
+    public void refreshHandPanel(Player player) {
+       deckPanel.removeAll();
+
+       handImpl handView;
+       if(player==player1){
+            handView=initDist.getPlayer1HandView();
+        }
+        else{
+            handView=initDist.getPlayer2HandView();
+        }
+
+        handView.refreshHand(player.getHand());
+
+        deckPanel.add(handView,BorderLayout.CENTER);
+        deckPanel.revalidate();
+        deckPanel.repaint();
+    }
+  /*    VECCHIO REFRESHHAND --> 1. Identifichiamo il giocatore corrente usando il metodo che hai già
         PlayerImpl currentPlayer = (PlayerImpl) getCurrentPlayer();
     
         // 2. Usiamo il metodo refreshHand (che è quello che fa il lavoro sporco)
         refreshHand(currentPlayer);
-    }
+    */
 
-<<<<<<< HEAD
+public Player getCurrentPlayer(){
+    return turnoPlayer1 ? player1 : player2;
+}
+
+public DeckImpl getCommonDeck(){
+    return this.commonDeck;
+}
+
+
+private Color getCardColor(String cardString){
+    if(cardString.contains("♥") || cardString.contains("♦")) {
+            return Color.RED;
+        }
+        return Color.BLACK;
+}
+
 
 public void switchHand(boolean isPlayer1Turn){
     this.turnoPlayer1=isPlayer1Turn;
-    refreshHandPanel();
+    refreshHandPanel(isPlayer1Turn ? player1 : player2);
 }
 
-=======
     /**
      * Cambia il turno del giocatore e aggiorna la mano visibile
-     */
+     
     public void switchTurn() {
         turnoPlayer1 = !turnoPlayer1;
         this.drawManager.resetTurn();
         refreshTurnLabel(turnoPlayer1);
         refreshHandPanel();
-    }
->>>>>>> 2efa1e324984400dae3c123f173289874a638720
+    }*/
+
 
     // ================= Turno =================
     public void refreshTurnLabel(boolean turnoPlayer1) {
@@ -312,43 +342,4 @@ public void switchHand(boolean isPlayer1Turn){
     targetPanel.add(newComboPanel);
     targetPanel.revalidate();
     targetPanel.repaint();
-    }
-
-    public void refreshHand(PlayerImpl player) {
-    deckPanel.removeAll();
-
-    handImpl handView;
-    if (player == player1) {
-        handView = initDist.getPlayer1HandView();
-    } else {
-        handView = initDist.getPlayer2HandView();
-    }
-
-    handView.refreshHand(player.getHand());
-
-    deckPanel.add(handView, BorderLayout.CENTER);
-    deckPanel.revalidate();
-    deckPanel.repaint();
-<<<<<<< HEAD
-
-=======
->>>>>>> 2efa1e324984400dae3c123f173289874a638720
-}
-
-
-
-    public Player getCurrentPlayer() {
-        return turnoPlayer1 ? player1 : player2;
-    }
-
-    public DeckImpl getCommonDeck() {
-        return this.commonDeck;
-    }
-
-    private Color getCardColor(String cardString) {
-    if (cardString.contains("♥") || cardString.contains("♦")) {
-        return Color.RED;
-    }
-    return Color.BLACK; // Picche e Fiori rimangono neri
-    }
 }
