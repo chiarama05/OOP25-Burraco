@@ -15,7 +15,6 @@ import view.hand.handImpl;
 import model.card.Card;
 import model.deck.DeckImpl;
 import model.discard.DiscardPileImpl;
-import model.deck.DeckImpl;
 import model.player.Player;
 import view.bottom.DeckView;
 import view.bottom.DeckController;
@@ -78,11 +77,11 @@ public class TableViewImpl implements TableView {
 
         // ==== Deck / mano in basso ====
         deckPanel = new JPanel(new BorderLayout());
-        deckPanel.setBorder(BorderFactory.createTitledBorder("Deck"));
+        deckPanel.setBorder(BorderFactory.createTitledBorder("Hand"));
 
         JPanel centralBottomPanel = new JPanel(new BorderLayout());
-        centralBottomPanel.add(discardPanel, BorderLayout.CENTER); // Gli scarti al centro
-        centralBottomPanel.add(deckView, BorderLayout.WEST);       // Il mazzo subito a sinistra degli scarti
+        centralBottomPanel.add(discardPanel, BorderLayout.CENTER); 
+        centralBottomPanel.add(deckView, BorderLayout.WEST);       
 
         // Pannello finale del basso (Mazzo+Scarti sopra, Mano sotto)
         JPanel bottomPanel = new JPanel(new BorderLayout());
@@ -196,17 +195,34 @@ public class TableViewImpl implements TableView {
     // ================= Fonts responsive =================
     private void applyResponsiveFonts() {
         int w = Math.max(frame.getWidth(), 1);
-        double factor = clamp(w / 1280.0, 0.85, 1.4);
+    double factor = clamp(w / 1280.0, 0.7, 1.2); 
 
-        turnLabel.setFont(scaleFont(baseTitleFont, factor));
+    turnLabel.setFont(scaleFont(baseTitleFont, factor));
 
-        setTitledBorderFont(combPanel1, scaleFont(baseTitleFont, factor * 0.95));
-        setTitledBorderFont(combPanel2, scaleFont(baseTitleFont, factor * 0.95));
-        setTitledBorderFont(discardPanel, scaleFont(baseTitleFont, factor * 0.9));
-        setTitledBorderFont(deckPanel, scaleFont(baseTitleFont, factor * 0.9));
+    // Ridimensioniamo i titoli in modo che non rubino spazio alle carte
+    Font titleFont = scaleFont(baseTitleFont, factor * 0.6);
+    setTitledBorderFont(combPanel1, titleFont);
+    setTitledBorderFont(combPanel2, titleFont);
+    setTitledBorderFont(discardPanel, titleFont);
+    setTitledBorderFont(deckPanel, titleFont);
 
-        frame.revalidate();
-        frame.repaint();
+    // Calcoliamo la dimensione della carta
+    int cardWidth = Math.max(45, w / 30); // Leggermente più grandi per vederle bene
+    int cardHeight = (int)(cardWidth * 1.4);
+    
+    // Aggiorniamo il pulsante DECK
+    
+
+    // Aggiorniamo le carte negli scarti
+    for (Component comp : discardPanel.getComponents()) {
+        if (comp instanceof JButton btn) {
+            btn.setPreferredSize(new Dimension(cardWidth, cardHeight));
+        }
+    }
+
+    refreshHandPanel();
+    frame.revalidate();
+    frame.repaint();
     }
 
     private void setTitledBorderFont(final JComponent comp, final Font font) {
