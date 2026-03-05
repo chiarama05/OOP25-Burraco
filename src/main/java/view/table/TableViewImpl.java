@@ -43,7 +43,7 @@ public class TableViewImpl implements TableView {
 
     private final SelectionCardManager selectionManager = new SelectionCardManager();
 
-    private boolean turnoPlayer1 = true; // indica chi è il giocatore attivo
+    private boolean turnoPlayer1=true; //true=Player1 flase=Player2
 
     public TableViewImpl() {
         frame = new JFrame("Burraco - OOOP Project");
@@ -105,6 +105,7 @@ public class TableViewImpl implements TableView {
 
         // Mostra inizialmente la mano del giocatore 1
         refreshHandPanel();
+        refreshTurnLabel(true);
 
         // ==== Pannello bottoni a destra ====
         JPanel rightPanel = new JPanel();
@@ -166,14 +167,12 @@ public class TableViewImpl implements TableView {
         deckPanel.repaint();
     }
 
-    /**
-     * Cambia il turno del giocatore e aggiorna la mano visibile
-     */
-    public void switchTurn() {
-        turnoPlayer1 = !turnoPlayer1;
-        refreshTurnLabel(turnoPlayer1);
-        refreshHandPanel();
-    }
+
+public void switchHand(boolean isPlayer1Turn){
+    this.turnoPlayer1=isPlayer1Turn;
+    refreshHandPanel();
+}
+
 
     // ================= Turno =================
     public void refreshTurnLabel(boolean turnoPlayer1) {
@@ -290,15 +289,12 @@ public class TableViewImpl implements TableView {
     deckPanel.add(handView, BorderLayout.CENTER);
     deckPanel.revalidate();
     deckPanel.repaint();
-<<<<<<< HEAD
+
 }
 
-public Player getCurrentPlayer() {
-=======
-    }
+
 
     public Player getCurrentPlayer() {
->>>>>>> 8eda961984a891e8f053fc50c8a0dc622ad971ab
         return turnoPlayer1 ? player1 : player2;
     }
 
@@ -311,5 +307,5 @@ public Player getCurrentPlayer() {
         return Color.RED;
     }
     return Color.BLACK; // Picche e Fiori rimangono neri
-}
+    }
 }
