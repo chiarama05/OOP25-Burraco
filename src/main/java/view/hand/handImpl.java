@@ -15,7 +15,6 @@ public class handImpl extends JPanel implements hand {
 
     public handImpl() {
         super(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        setBorder(BorderFactory.createTitledBorder("Mano"));
         setBackground(new Color(245, 245, 245));
     }
 
