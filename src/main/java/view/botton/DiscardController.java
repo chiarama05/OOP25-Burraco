@@ -1,4 +1,4 @@
-package view.bottom;
+package view.botton;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

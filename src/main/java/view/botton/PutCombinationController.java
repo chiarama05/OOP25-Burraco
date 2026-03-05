@@ -1,4 +1,4 @@
-package view.bottom;
+package view.botton;
 
 import view.table.TableViewImpl;
 import model.player.PlayerImpl;
@@ -41,9 +41,9 @@ public class PutCombinationController {
                                          .filter(currentPlayer::hasCard) // solo carte nella mano del player
                                          .collect(Collectors.toList());
 
-        if(selected.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Select at least 3 cards!");
-            return;
+        if(selected.size() < 3) {
+        JOptionPane.showMessageDialog(null, "Select at least 3 cards!");
+        return;
         }
 
         if(!CombinationValidator.isValidCombination(selected)) {
@@ -56,11 +56,14 @@ public class PutCombinationController {
             selected = StraightUtils.orderStraight(selected);
         }
 
-        // Rimuovi carte dalla mano del giocatore
+        // Rimuovi le carte dalla mano del giocatore
         currentPlayer.removeCards(selected);
 
-        // Aggiorna la view (pannello combinazioni)
+        // Aggiungi combinazione al pannello
         tableView.addCombinationToPlayerPanel(selected, player1Turn);
+
+        // Aggiorna la mano del player sul pannello
+        tableView.refreshHand(currentPlayer);
 
         // Pulisci la selezione
         selectionManager.clearSelection();
@@ -68,9 +71,6 @@ public class PutCombinationController {
         // Aggiorna il turno
         player1Turn = !player1Turn;
         tableView.refreshTurnLabel(player1Turn);
-
-        // Aggiorna la mano grafica
-        tableView.refreshHand(currentPlayer);
     }
 
     public boolean isPlayer1Turn() {
