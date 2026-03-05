@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import model.card.*;
+import java.awt.Dimension;
 
 /**
  * Concrete implementation of DiscardView.
@@ -55,20 +56,32 @@ public class DiscardViewImpl implements DiscardView{
      */
     @Override
     public void updateDiscardPile(List<Card> discardPile) {
-        discardPanel.removeAll();
+    discardPanel.removeAll();
 
-        for (Card c : discardPile) {
-            JLabel label = new JLabel(c.toString());
-            label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            label.setOpaque(true);
-            label.setBackground(Color.WHITE);
-            label.setPreferredSize(new java.awt.Dimension(60, 90)); // dimensione visiva carta
-            label.setHorizontalAlignment(JLabel.CENTER);
-            discardPanel.add(label);
+    for (Card c : discardPile) {
+        String cardText = c.toString();
+        JLabel label = new JLabel(cardText);
+        label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        label.setOpaque(true);
+        label.setBackground(Color.WHITE);
+        label.setHorizontalAlignment(JLabel.CENTER);
+        
+        // Colore dei semi
+        if (cardText.contains("♥") || cardText.contains("♦")) {
+            label.setForeground(Color.RED);
+        } else {
+            label.setForeground(Color.BLACK);
         }
 
-        discardPanel.revalidate();
-        discardPanel.repaint();
+        // Il dimensionamento verrà gestito dal TableViewImpl via applyResponsiveFonts
+        // o impostiamo un default qui
+        label.setPreferredSize(new Dimension(50, 70)); 
+        
+        discardPanel.add(label);
+    }
+
+    discardPanel.revalidate();
+    discardPanel.repaint();
     }
 
     /**

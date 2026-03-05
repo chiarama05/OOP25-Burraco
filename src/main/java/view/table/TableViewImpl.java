@@ -21,6 +21,9 @@ import model.player.Player;
 import view.botton.PutCombinationController;
 import core.selectioncard.SelectionCardManager;
 
+
+import java.util.ArrayList;
+
 import java.util.List;
 
 public class TableViewImpl implements TableView {
@@ -29,6 +32,8 @@ public class TableViewImpl implements TableView {
     private final core.drawcard.DrawManager drawManager = new core.drawcard.DrawManager();
     private final JFrame frame;
     private final JLabel turnLabel;
+
+    private final DeckView deckView; 
 
     private final JPanel combPanel1;
     private final JPanel combPanel2;
@@ -52,7 +57,8 @@ public class TableViewImpl implements TableView {
 
         this.commonDeck = new DeckImpl();
 
-        DeckView deckView = new DeckView();
+        // Inizializzazione della variabile di istanza
+        this.deckView = new DeckView(); 
         new DeckController(deckView, drawManager, this);
 
         // ==== Turno ====
@@ -160,19 +166,31 @@ public class TableViewImpl implements TableView {
      * Aggiorna il pannello deckPanel per mostrare solo la mano del giocatore attivo
      */
     public void refreshHandPanel() {
-        deckPanel.removeAll();
-        handImpl handToShow = turnoPlayer1 ? initDist.getPlayer1HandView() : initDist.getPlayer2HandView();
-        deckPanel.add(handToShow, BorderLayout.CENTER);
-        deckPanel.revalidate();
-        deckPanel.repaint();
+        // 1. Identifichiamo il giocatore corrente usando il metodo che hai già
+        PlayerImpl currentPlayer = (PlayerImpl) getCurrentPlayer();
+    
+        // 2. Usiamo il metodo refreshHand (che è quello che fa il lavoro sporco)
+        refreshHand(currentPlayer);
     }
 
+<<<<<<< HEAD
 
 public void switchHand(boolean isPlayer1Turn){
     this.turnoPlayer1=isPlayer1Turn;
     refreshHandPanel();
 }
 
+=======
+    /**
+     * Cambia il turno del giocatore e aggiorna la mano visibile
+     */
+    public void switchTurn() {
+        turnoPlayer1 = !turnoPlayer1;
+        this.drawManager.resetTurn();
+        refreshTurnLabel(turnoPlayer1);
+        refreshHandPanel();
+    }
+>>>>>>> 2efa1e324984400dae3c123f173289874a638720
 
     // ================= Turno =================
     public void refreshTurnLabel(boolean turnoPlayer1) {
@@ -202,36 +220,60 @@ public void switchHand(boolean isPlayer1Turn){
 
     // ================= Fonts responsive =================
     private void applyResponsiveFonts() {
-        int w = Math.max(frame.getWidth(), 1);
+    int w = Math.max(frame.getWidth(), 1);
     double factor = clamp(w / 1280.0, 0.7, 1.2); 
 
     turnLabel.setFont(scaleFont(baseTitleFont, factor));
 
-    // Ridimensioniamo i titoli in modo che non rubino spazio alle carte
+    // Ridimensiona i titoli dei pannelli (Player 1, Player 2, Discard, Hand)
     Font titleFont = scaleFont(baseTitleFont, factor * 0.6);
     setTitledBorderFont(combPanel1, titleFont);
     setTitledBorderFont(combPanel2, titleFont);
     setTitledBorderFont(discardPanel, titleFont);
     setTitledBorderFont(deckPanel, titleFont);
 
-    // Calcoliamo la dimensione della carta
-    int cardWidth = Math.max(45, w / 30); // Leggermente più grandi per vederle bene
+    // --- CALCOLO DIMENSIONE UNICA CARTE (PROPORZIONALE) ---
+    int cardWidth = Math.max(45, (int)(w / 25)); 
     int cardHeight = (int)(cardWidth * 1.4);
+    Dimension cardSize = new Dimension(cardWidth, cardHeight);
     
-    // Aggiorniamo il pulsante DECK
-    
-
-    // Aggiorniamo le carte negli scarti
+    // 1. RIDIMENSIONA GLI SCARTI (JLabel)
     for (Component comp : discardPanel.getComponents()) {
-        if (comp instanceof JButton btn) {
-            btn.setPreferredSize(new Dimension(cardWidth, cardHeight));
+        if (comp instanceof JComponent jc) {
+            jc.setPreferredSize(cardSize);
+            jc.setMinimumSize(cardSize);
+            jc.setMaximumSize(cardSize);
+            jc.setFont(new Font("Arial", Font.BOLD, (int)(14 * factor)));
         }
     }
 
-    refreshHandPanel();
+    // 2. RIDIMENSIONA IL MAZZO (Il bottone "DECK")
+    // Grazie al metodo getDeckButton() che abbiamo aggiunto in DeckView
+    JButton deckBtn = deckView.getDeckButton();
+    if (deckBtn != null) {
+        deckBtn.setPreferredSize(cardSize);
+        deckBtn.setMinimumSize(cardSize);
+        deckBtn.setMaximumSize(cardSize);
+        // Scaliamo il font "DECK"
+        deckBtn.setFont(new Font("Arial", Font.ITALIC, (int)(12 * factor)));
+    }
+
+    // 3. RIDIMENSIONA LE CARTE IN MANO
+    // Prendiamo la mano del giocatore corrente
+    view.hand.handImpl currentHand = turnoPlayer1 ? initDist.getPlayer1HandView() : initDist.getPlayer2HandView();
+    if (currentHand != null) {
+        for (Component comp : currentHand.getComponents()) {
+            if (comp instanceof JButton btn) {
+                btn.setPreferredSize(cardSize);
+                btn.setFont(new Font("Arial", Font.BOLD, (int)(14 * factor)));
+            }
+        }
+    }
+
+    // Refresh grafico totale
     frame.revalidate();
     frame.repaint();
-    }
+}
 
     private void setTitledBorderFont(final JComponent comp, final Font font) {
         if (comp.getBorder() instanceof javax.swing.border.TitledBorder tb) {
@@ -254,24 +296,23 @@ public void switchHand(boolean isPlayer1Turn){
     public void addCombinationToPlayerPanel(List<Card> cards, boolean player1Turn){
     JPanel targetPanel = player1Turn ? combPanel1 : combPanel2;
 
-    JPanel newComboPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
-    for(Card c : cards){
-        String cardText = c.toString();
-        JButton cardBtn = new JButton(cardText);
-        
-        // Imposta il colore del testo in base al seme
-        cardBtn.setForeground(getCardColor(cardText)); // AGGIUNTO
-        
-        // Opzionale: rende il font un po' più leggibile
-        cardBtn.setFont(new Font("Arial", Font.BOLD, 14)); // AGGIUNTO
-        
+    JPanel newComboPanel = new JPanel();
+    newComboPanel.setLayout(new BoxLayout(newComboPanel, BoxLayout.Y_AXIS));
+
+    List<Card> sortedCards = new ArrayList<>(cards);
+    sortedCards.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
+
+    for(Card c : sortedCards){
+        JButton cardBtn = new JButton(c.toString());
+        cardBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         newComboPanel.add(cardBtn);
+        newComboPanel.add(Box.createVerticalStrut(5));
     }
 
     targetPanel.add(newComboPanel);
     targetPanel.revalidate();
     targetPanel.repaint();
-}
+    }
 
     public void refreshHand(PlayerImpl player) {
     deckPanel.removeAll();
@@ -283,13 +324,15 @@ public void switchHand(boolean isPlayer1Turn){
         handView = initDist.getPlayer2HandView();
     }
 
-    // ← Passa la mano aggiornata alla view
     handView.refreshHand(player.getHand());
 
     deckPanel.add(handView, BorderLayout.CENTER);
     deckPanel.revalidate();
     deckPanel.repaint();
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2efa1e324984400dae3c123f173289874a638720
 }
 
 

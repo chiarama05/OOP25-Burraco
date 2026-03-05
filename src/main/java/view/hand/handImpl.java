@@ -21,7 +21,7 @@ public class handImpl extends JPanel implements hand {
 
     @Override
     public void refreshHand(List<Card> hand) {
-        removeAll();
+        this.removeAll();
 
         for (Card c : hand) {
             String cardText = c.toString();
