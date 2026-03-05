@@ -16,7 +16,7 @@ public class TurnManagerImpl implements TurnManager{
         this.view=view;
 
         view.refreshTurnLabel(model.isPlayer1Turn());
-        view.refreshHandPanel();
+        view.switchHand(model.isPlayer1Turn());
     }
 
     public Player getCurrentPlayer(){

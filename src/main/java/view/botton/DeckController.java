@@ -42,7 +42,7 @@ import java.awt.event.ActionListener;
         switch (result.getStatus()) {
             case SUCCESS:
                 // 1. Recuperiamo il giocatore attuale
-                tableView.refreshHand((PlayerImpl) currentPlayer);
+                tableView.refreshHandPanel((Player) currentPlayer);
                 break;
 
             case ALREADY_DRAWN:

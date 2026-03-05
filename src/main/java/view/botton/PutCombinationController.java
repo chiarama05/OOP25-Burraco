@@ -63,7 +63,7 @@ public class PutCombinationController {
         tableView.addCombinationToPlayerPanel(selected, player1Turn);
 
         // Aggiorna la mano del player sul pannello
-        tableView.refreshHand(currentPlayer);
+        tableView.refreshHandPanel(currentPlayer);
 
         // Pulisci la selezione
         selectionManager.clearSelection();

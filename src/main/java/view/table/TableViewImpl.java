@@ -58,7 +58,7 @@ public class TableViewImpl implements TableView {
         this.commonDeck = new DeckImpl();
 
         // Inizializzazione della variabile di istanza
-        DeckView deckView = new DeckView(); 
+        this.deckView=new DeckView(); 
         new DeckController(deckView, drawManager, this);
 
         // ==== Turno ====
@@ -189,27 +189,27 @@ public class TableViewImpl implements TableView {
         refreshHand(currentPlayer);
     */
 
-public Player getCurrentPlayer(){
-    return turnoPlayer1 ? player1 : player2;
-}
+    public Player getCurrentPlayer(){
+        return turnoPlayer1 ? player1 : player2;
+    }
 
-public DeckImpl getCommonDeck(){
-    return this.commonDeck;
-}
-
-
-private Color getCardColor(String cardString){
-    if(cardString.contains("♥") || cardString.contains("♦")) {
-            return Color.RED;
-        }
-        return Color.BLACK;
-}
+    public DeckImpl getCommonDeck(){
+        return this.commonDeck;
+    }
 
 
-public void switchHand(boolean isPlayer1Turn){
-    this.turnoPlayer1=isPlayer1Turn;
-    refreshHandPanel(isPlayer1Turn ? player1 : player2);
-}
+    private Color getCardColor(String cardString){
+        if(cardString.contains("♥") || cardString.contains("♦")) {
+                return Color.RED;
+            }
+            return Color.BLACK;
+    }
+
+
+    public void switchHand(boolean isPlayer1Turn){
+        this.turnoPlayer1=isPlayer1Turn;
+        refreshHandPanel(isPlayer1Turn ? player1 : player2);
+    }
 
     /**
      * Cambia il turno del giocatore e aggiorna la mano visibile
@@ -342,4 +342,5 @@ public void switchHand(boolean isPlayer1Turn){
     targetPanel.add(newComboPanel);
     targetPanel.revalidate();
     targetPanel.repaint();
+    }
 }
