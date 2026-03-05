@@ -45,6 +45,7 @@ public class TableViewImpl implements TableView {
     private final InitialDistributionView initDist;
     private final PlayerImpl player1;
     private final PlayerImpl player2;
+    private DiscardController discardController;
 
     private final SelectionCardManager selectionManager = new SelectionCardManager();
 
@@ -138,7 +139,7 @@ public class TableViewImpl implements TableView {
 
         frame.add(rightPanel, BorderLayout.EAST);
 
-        DiscardController discardController = new DiscardController(
+        this.discardController = new DiscardController(
         turnoPlayer1 ? player1 : player2,       // giocatore attivo
         turnoPlayer1 ? initDist.getPlayer1HandView() : initDist.getPlayer2HandView(),
         new DiscardManagerImpl(new DiscardPileImpl()), // discard manager con la discard pile
@@ -209,6 +210,8 @@ public class TableViewImpl implements TableView {
     public void switchHand(boolean isPlayer1Turn){
         this.turnoPlayer1=isPlayer1Turn;
         refreshHandPanel(isPlayer1Turn ? player1 : player2);
+
+        
     }
 
     /**
