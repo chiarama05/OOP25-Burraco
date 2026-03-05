@@ -19,6 +19,7 @@ import model.player.Player;
 import view.bottom.DeckView;
 import view.bottom.DeckController;
 
+
 import java.util.List;
 
 public class TableViewImpl implements TableView {
@@ -150,11 +151,11 @@ public class TableViewImpl implements TableView {
      * Aggiorna il pannello deckPanel per mostrare solo la mano del giocatore attivo
      */
     public void refreshHandPanel() {
-        deckPanel.removeAll();
-        handImpl handToShow = turnoPlayer1 ? initDist.getPlayer1HandView() : initDist.getPlayer2HandView();
-        deckPanel.add(handToShow, BorderLayout.CENTER);
-        deckPanel.revalidate();
-        deckPanel.repaint();
+        // 1. Identifichiamo il giocatore corrente usando il metodo che hai già
+        PlayerImpl currentPlayer = (PlayerImpl) getCurrentPlayer();
+    
+        // 2. Usiamo il metodo refreshHand (che è quello che fa il lavoro sporco)
+        refreshHand(currentPlayer);
     }
 
     /**
@@ -162,6 +163,7 @@ public class TableViewImpl implements TableView {
      */
     public void switchTurn() {
         turnoPlayer1 = !turnoPlayer1;
+        this.drawManager.resetTurn();
         refreshTurnLabel(turnoPlayer1);
         refreshHandPanel();
     }
@@ -274,6 +276,8 @@ public class TableViewImpl implements TableView {
     } else {
         handView = initDist.getPlayer2HandView();
     }
+
+    handView.refreshHand(player.getHand());
 
     deckPanel.add(handView, BorderLayout.CENTER);
     deckPanel.revalidate();
