@@ -24,8 +24,8 @@ public class handImpl extends JPanel implements hand {
 
     for (Card c : hand) {
         JButton btn = new JButton(c.toString());
-        btn.setPreferredSize(new Dimension(50, 70));
-        btn.setFont(new Font("Arial", Font.PLAIN, 12));
+        btn.setPreferredSize(new Dimension(40, 50));
+        btn.setFont(new Font("Arial", Font.PLAIN, 16));
         btn.setOpaque(true);
         btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
         btn.setBorder(BorderFactory.createLineBorder(Color.BLACK));
