@@ -8,17 +8,18 @@ import java.awt.event.ComponentEvent;
 import core.discardcard.DiscardManagerImpl;
 import core.distributioncard.DistributionManagerImpl;
 import model.player.PlayerImpl;
-import view.bottom.DiscardController;
+import view.botton.DeckController;
+import view.botton.DeckView;
+import view.botton.DiscardController;
 import view.discard.DiscardViewImpl;
 import view.distribution.InitialDistributionView;
 import view.hand.handImpl;
 import model.card.Card;
 import model.deck.DeckImpl;
 import model.discard.DiscardPileImpl;
-import model.deck.DeckImpl;
 import model.player.Player;
-import view.bottom.DeckView;
-import view.bottom.DeckController;
+import view.botton.PutCombinationController;
+import core.selectioncard.SelectionCardManager;
 
 import java.util.List;
 
@@ -39,6 +40,8 @@ public class TableViewImpl implements TableView {
     private final InitialDistributionView initDist;
     private final PlayerImpl player1;
     private final PlayerImpl player2;
+
+    private final SelectionCardManager selectionManager = new SelectionCardManager();
 
     private boolean turnoPlayer1 = true; // indica chi è il giocatore attivo
 
@@ -95,7 +98,7 @@ public class TableViewImpl implements TableView {
         player1 = new PlayerImpl();
         player2 = new PlayerImpl();
         DistributionManagerImpl distManager = new DistributionManagerImpl();
-        initDist = new InitialDistributionView(discardPanel);
+        initDist = new InitialDistributionView(discardPanel, selectionManager);
 
         // Distribuisci carte e aggiorna GUI
         initDist.distribute(player1, player2, distManager);
@@ -113,6 +116,11 @@ public class TableViewImpl implements TableView {
 
         JButton drawDiscardBtn = new JButton("Take discard");
         JButton putComboBtn = new JButton("Put combination");
+
+        PutCombinationController putController =
+            new PutCombinationController(this, player1, player2, selectionManager);
+
+        putComboBtn.addActionListener(e -> putController.handlePutCombination());
 
         for (JButton b : new JButton[]{drawDiscardBtn, putComboBtn, discardBtn}) {
             b.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -251,10 +259,14 @@ public class TableViewImpl implements TableView {
         handView = initDist.getPlayer2HandView();
     }
 
+    // ← Passa la mano aggiornata alla view
+    handView.refreshHand(player.getHand());
+
     deckPanel.add(handView, BorderLayout.CENTER);
     deckPanel.revalidate();
     deckPanel.repaint();
 }
+
 public Player getCurrentPlayer() {
         return turnoPlayer1 ? player1 : player2;
     }
