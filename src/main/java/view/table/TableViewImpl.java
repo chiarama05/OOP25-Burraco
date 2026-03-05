@@ -21,6 +21,7 @@ import model.player.Player;
 import view.botton.PutCombinationController;
 import core.selectioncard.SelectionCardManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TableViewImpl implements TableView {
@@ -255,24 +256,23 @@ public class TableViewImpl implements TableView {
     public void addCombinationToPlayerPanel(List<Card> cards, boolean player1Turn){
     JPanel targetPanel = player1Turn ? combPanel1 : combPanel2;
 
-    JPanel newComboPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
-    for(Card c : cards){
-        String cardText = c.toString();
-        JButton cardBtn = new JButton(cardText);
-        
-        // Imposta il colore del testo in base al seme
-        cardBtn.setForeground(getCardColor(cardText)); // AGGIUNTO
-        
-        // Opzionale: rende il font un po' più leggibile
-        cardBtn.setFont(new Font("Arial", Font.BOLD, 14)); // AGGIUNTO
-        
+    JPanel newComboPanel = new JPanel();
+    newComboPanel.setLayout(new BoxLayout(newComboPanel, BoxLayout.Y_AXIS));
+
+    List<Card> sortedCards = new ArrayList<>(cards);
+    sortedCards.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
+
+    for(Card c : sortedCards){
+        JButton cardBtn = new JButton(c.toString());
+        cardBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         newComboPanel.add(cardBtn);
+        newComboPanel.add(Box.createVerticalStrut(5));
     }
 
     targetPanel.add(newComboPanel);
     targetPanel.revalidate();
     targetPanel.repaint();
-}
+    }
 
     public void refreshHand(PlayerImpl player) {
     deckPanel.removeAll();
@@ -290,15 +290,11 @@ public class TableViewImpl implements TableView {
     deckPanel.add(handView, BorderLayout.CENTER);
     deckPanel.revalidate();
     deckPanel.repaint();
-<<<<<<< HEAD
 }
 
-public Player getCurrentPlayer() {
-=======
-    }
+
 
     public Player getCurrentPlayer() {
->>>>>>> 8eda961984a891e8f053fc50c8a0dc622ad971ab
         return turnoPlayer1 ? player1 : player2;
     }
 
