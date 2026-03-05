@@ -1,4 +1,4 @@
-package view.bottom;
+package view.botton;
 
 import javax.swing.*;
 import java.awt.*;

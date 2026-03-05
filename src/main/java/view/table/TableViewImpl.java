@@ -8,7 +8,9 @@ import java.awt.event.ComponentEvent;
 import core.discardcard.DiscardManagerImpl;
 import core.distributioncard.DistributionManagerImpl;
 import model.player.PlayerImpl;
-import view.bottom.DiscardController;
+import view.botton.DeckController;
+import view.botton.DeckView;
+import view.botton.DiscardController;
 import view.discard.DiscardViewImpl;
 import view.distribution.InitialDistributionView;
 import view.hand.handImpl;
@@ -16,9 +18,11 @@ import model.card.Card;
 import model.deck.DeckImpl;
 import model.discard.DiscardPileImpl;
 import model.player.Player;
-import view.bottom.DeckView;
-import view.bottom.DeckController;
+import view.botton.PutCombinationController;
+import core.selectioncard.SelectionCardManager;
 
+
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -39,6 +43,8 @@ public class TableViewImpl implements TableView {
     private final InitialDistributionView initDist;
     private final PlayerImpl player1;
     private final PlayerImpl player2;
+
+    private final SelectionCardManager selectionManager = new SelectionCardManager();
 
     private boolean turnoPlayer1 = true; // indica chi è il giocatore attivo
 
@@ -95,7 +101,7 @@ public class TableViewImpl implements TableView {
         player1 = new PlayerImpl();
         player2 = new PlayerImpl();
         DistributionManagerImpl distManager = new DistributionManagerImpl();
-        initDist = new InitialDistributionView(discardPanel);
+        initDist = new InitialDistributionView(discardPanel, selectionManager);
 
         // Distribuisci carte e aggiorna GUI
         initDist.distribute(player1, player2, distManager);
@@ -113,6 +119,11 @@ public class TableViewImpl implements TableView {
 
         JButton drawDiscardBtn = new JButton("Take discard");
         JButton putComboBtn = new JButton("Put combination");
+
+        PutCombinationController putController =
+            new PutCombinationController(this, player1, player2, selectionManager);
+
+        putComboBtn.addActionListener(e -> putController.handlePutCombination());
 
         for (JButton b : new JButton[]{drawDiscardBtn, putComboBtn, discardBtn}) {
             b.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -248,24 +259,23 @@ public class TableViewImpl implements TableView {
     public void addCombinationToPlayerPanel(List<Card> cards, boolean player1Turn){
     JPanel targetPanel = player1Turn ? combPanel1 : combPanel2;
 
-    JPanel newComboPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
-    for(Card c : cards){
-        String cardText = c.toString();
-        JButton cardBtn = new JButton(cardText);
-        
-        // Imposta il colore del testo in base al seme
-        cardBtn.setForeground(getCardColor(cardText)); // AGGIUNTO
-        
-        // Opzionale: rende il font un po' più leggibile
-        cardBtn.setFont(new Font("Arial", Font.BOLD, 14)); // AGGIUNTO
-        
+    JPanel newComboPanel = new JPanel();
+    newComboPanel.setLayout(new BoxLayout(newComboPanel, BoxLayout.Y_AXIS));
+
+    List<Card> sortedCards = new ArrayList<>(cards);
+    sortedCards.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
+
+    for(Card c : sortedCards){
+        JButton cardBtn = new JButton(c.toString());
+        cardBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         newComboPanel.add(cardBtn);
+        newComboPanel.add(Box.createVerticalStrut(5));
     }
 
     targetPanel.add(newComboPanel);
     targetPanel.revalidate();
     targetPanel.repaint();
-}
+    }
 
     public void refreshHand(PlayerImpl player) {
     deckPanel.removeAll();
@@ -282,7 +292,9 @@ public class TableViewImpl implements TableView {
     deckPanel.add(handView, BorderLayout.CENTER);
     deckPanel.revalidate();
     deckPanel.repaint();
-    }
+}
+
+
 
     public Player getCurrentPlayer() {
         return turnoPlayer1 ? player1 : player2;

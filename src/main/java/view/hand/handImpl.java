@@ -10,13 +10,14 @@ import core.selectioncard.SelectionCardManager;
 
 public class handImpl extends JPanel implements hand {
 
-    private final SelectionCardManager selectionManager = new SelectionCardManager();
+    private final SelectionCardManager selectionManager;
     private CardSelectionListener listener;
 
-    public handImpl() {
-        super(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        setBackground(new Color(245, 245, 245));
-    }
+    public handImpl(SelectionCardManager selectionManager) {
+    super(new FlowLayout(FlowLayout.LEFT, 5, 5));
+    this.selectionManager = selectionManager;
+    setBackground(new Color(245, 245, 245));
+}
 
     @Override
     public void refreshHand(List<Card> hand) {
@@ -77,5 +78,10 @@ public class handImpl extends JPanel implements hand {
     public Card getSingleSelectedCard() {
     Set<Card> selected = getSelectedCards();
     return selected.size() == 1 ? selected.iterator().next() : null;
-}
+    }
+
+    public void updateHand(List<Card> hand) {
+    refreshHand(hand);
+    selectionManager.clearSelection();
+    }
 }

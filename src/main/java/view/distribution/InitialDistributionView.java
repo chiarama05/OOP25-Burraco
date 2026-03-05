@@ -6,6 +6,7 @@ import model.card.*;
 import model.deck.DeckImpl;
 import model.player.Player;
 import core.distributioncard.DistributionManagerImpl;
+import core.selectioncard.SelectionCardManager;
 import view.hand.handImpl;
 
 public class InitialDistributionView {
@@ -14,10 +15,10 @@ public class InitialDistributionView {
     private final handImpl handPlayer2;
     private final JPanel discardPanel;
 
-    public InitialDistributionView(JPanel discardPanel) {
-        this.discardPanel = discardPanel;
-        this.handPlayer1 = new handImpl();
-        this.handPlayer2 = new handImpl();
+    public InitialDistributionView(JPanel discardPanel, SelectionCardManager selectionManager) {
+    this.discardPanel = discardPanel;
+    this.handPlayer1 = new handImpl(selectionManager);
+    this.handPlayer2 = new handImpl(selectionManager);
     }
 
     public handImpl getPlayer1HandView() { return handPlayer1; }
