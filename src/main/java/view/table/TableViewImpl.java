@@ -28,6 +28,8 @@ public class TableViewImpl implements TableView {
     private final JFrame frame;
     private final JLabel turnLabel;
 
+    private final DeckView deckView; 
+
     private final JPanel combPanel1;
     private final JPanel combPanel2;
     private final JPanel discardPanel;
@@ -48,7 +50,8 @@ public class TableViewImpl implements TableView {
 
         this.commonDeck = new DeckImpl();
 
-        DeckView deckView = new DeckView();
+        // Inizializzazione della variabile di istanza
+        this.deckView = new DeckView(); 
         new DeckController(deckView, drawManager, this);
 
         // ==== Turno ====
@@ -194,36 +197,60 @@ public class TableViewImpl implements TableView {
 
     // ================= Fonts responsive =================
     private void applyResponsiveFonts() {
-        int w = Math.max(frame.getWidth(), 1);
+    int w = Math.max(frame.getWidth(), 1);
     double factor = clamp(w / 1280.0, 0.7, 1.2); 
 
     turnLabel.setFont(scaleFont(baseTitleFont, factor));
 
-    // Ridimensioniamo i titoli in modo che non rubino spazio alle carte
+    // Ridimensiona i titoli dei pannelli (Player 1, Player 2, Discard, Hand)
     Font titleFont = scaleFont(baseTitleFont, factor * 0.6);
     setTitledBorderFont(combPanel1, titleFont);
     setTitledBorderFont(combPanel2, titleFont);
     setTitledBorderFont(discardPanel, titleFont);
     setTitledBorderFont(deckPanel, titleFont);
 
-    // Calcoliamo la dimensione della carta
-    int cardWidth = Math.max(45, w / 30); // Leggermente più grandi per vederle bene
+    // --- CALCOLO DIMENSIONE UNICA CARTE (PROPORZIONALE) ---
+    int cardWidth = Math.max(45, (int)(w / 25)); 
     int cardHeight = (int)(cardWidth * 1.4);
+    Dimension cardSize = new Dimension(cardWidth, cardHeight);
     
-    // Aggiorniamo il pulsante DECK
-    
-
-    // Aggiorniamo le carte negli scarti
+    // 1. RIDIMENSIONA GLI SCARTI (JLabel)
     for (Component comp : discardPanel.getComponents()) {
-        if (comp instanceof JButton btn) {
-            btn.setPreferredSize(new Dimension(cardWidth, cardHeight));
+        if (comp instanceof JComponent jc) {
+            jc.setPreferredSize(cardSize);
+            jc.setMinimumSize(cardSize);
+            jc.setMaximumSize(cardSize);
+            jc.setFont(new Font("Arial", Font.BOLD, (int)(14 * factor)));
         }
     }
 
-    refreshHandPanel();
+    // 2. RIDIMENSIONA IL MAZZO (Il bottone "DECK")
+    // Grazie al metodo getDeckButton() che abbiamo aggiunto in DeckView
+    JButton deckBtn = deckView.getDeckButton();
+    if (deckBtn != null) {
+        deckBtn.setPreferredSize(cardSize);
+        deckBtn.setMinimumSize(cardSize);
+        deckBtn.setMaximumSize(cardSize);
+        // Scaliamo il font "DECK"
+        deckBtn.setFont(new Font("Arial", Font.ITALIC, (int)(12 * factor)));
+    }
+
+    // 3. RIDIMENSIONA LE CARTE IN MANO
+    // Prendiamo la mano del giocatore corrente
+    view.hand.handImpl currentHand = turnoPlayer1 ? initDist.getPlayer1HandView() : initDist.getPlayer2HandView();
+    if (currentHand != null) {
+        for (Component comp : currentHand.getComponents()) {
+            if (comp instanceof JButton btn) {
+                btn.setPreferredSize(cardSize);
+                btn.setFont(new Font("Arial", Font.BOLD, (int)(14 * factor)));
+            }
+        }
+    }
+
+    // Refresh grafico totale
     frame.revalidate();
     frame.repaint();
-    }
+}
 
     private void setTitledBorderFont(final JComponent comp, final Font font) {
         if (comp.getBorder() instanceof javax.swing.border.TitledBorder tb) {

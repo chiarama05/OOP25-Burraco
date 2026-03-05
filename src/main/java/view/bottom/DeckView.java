@@ -17,7 +17,6 @@ public class DeckView extends JPanel {
         deckButton.setBackground(Color.WHITE);
         deckButton.setFont(new Font("Arial", Font.ITALIC, 12));
 
-        deckButton.setPreferredSize(new Dimension(80, 110));
         deckButton.setFocusPainted(false);
         
         // Bordo per dare profondità (effetto pila)
