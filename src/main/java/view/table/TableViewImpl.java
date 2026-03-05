@@ -13,12 +13,19 @@ import view.discard.DiscardViewImpl;
 import view.distribution.InitialDistributionView;
 import view.hand.handImpl;
 import model.card.Card;
+import model.deck.DeckImpl;
 import model.discard.DiscardPileImpl;
+import model.deck.DeckImpl;
+import model.player.Player;
+import view.bottom.DeckView;
+import view.bottom.DeckController;
 
 import java.util.List;
 
 public class TableViewImpl implements TableView {
 
+    private final DeckImpl commonDeck; 
+    private final core.drawcard.DrawManager drawManager = new core.drawcard.DrawManager();
     private final JFrame frame;
     private final JLabel turnLabel;
 
@@ -39,6 +46,11 @@ public class TableViewImpl implements TableView {
         frame = new JFrame("Burraco - OOOP Project");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
+
+        this.commonDeck = new DeckImpl();
+
+        DeckView deckView = new DeckView();
+        new DeckController(deckView, drawManager, this);
 
         // ==== Turno ====
         turnLabel = new JLabel("Turn: Player 1");
@@ -68,8 +80,13 @@ public class TableViewImpl implements TableView {
         deckPanel = new JPanel(new BorderLayout());
         deckPanel.setBorder(BorderFactory.createTitledBorder("Deck"));
 
+        JPanel centralBottomPanel = new JPanel(new BorderLayout());
+        centralBottomPanel.add(discardPanel, BorderLayout.CENTER); // Gli scarti al centro
+        centralBottomPanel.add(deckView, BorderLayout.WEST);       // Il mazzo subito a sinistra degli scarti
+
+        // Pannello finale del basso (Mazzo+Scarti sopra, Mano sotto)
         JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.add(discardPanel, BorderLayout.NORTH);
+        bottomPanel.add(centralBottomPanel, BorderLayout.NORTH); 
         bottomPanel.add(deckPanel, BorderLayout.CENTER);
 
         frame.add(bottomPanel, BorderLayout.SOUTH);
@@ -94,11 +111,10 @@ public class TableViewImpl implements TableView {
         DiscardViewImpl discardView = new DiscardViewImpl(discardPanel, new JPanel());
         JButton discardBtn = (JButton) discardView.getActionPanel().getComponent(0);
 
-        JButton drawDeckBtn = new JButton("Draw from deck");
         JButton drawDiscardBtn = new JButton("Take discard");
         JButton putComboBtn = new JButton("Put combination");
 
-        for (JButton b : new JButton[]{drawDeckBtn, drawDiscardBtn, putComboBtn, discardBtn}) {
+        for (JButton b : new JButton[]{drawDiscardBtn, putComboBtn, discardBtn}) {
             b.setAlignmentX(Component.CENTER_ALIGNMENT);
             b.setMaximumSize(new Dimension(160, 40));
             rightPanel.add(b);
@@ -239,4 +255,11 @@ public class TableViewImpl implements TableView {
     deckPanel.revalidate();
     deckPanel.repaint();
 }
+public Player getCurrentPlayer() {
+        return turnoPlayer1 ? player1 : player2;
+    }
+
+    public DeckImpl getCommonDeck() {
+        return this.commonDeck;
+    }
 }
