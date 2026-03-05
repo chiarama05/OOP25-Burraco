@@ -1,6 +1,12 @@
 import javax.swing.SwingUtilities;
 
 import creating_table.TableModelImpl;
+import core.discardcard.DiscardManagerImpl;
+import core.distributioncard.DistributionManagerImpl;
+import core.drawcard.DrawManager;
+import core.selectioncard.SelectionCardManager;
+import model.deck.DeckImpl;
+import model.discard.DiscardPileImpl;
 import model.player.PlayerImpl;
 import model.turn.TurnManagerImpl;
 import view.table.TableViewImpl;
@@ -14,11 +20,18 @@ public class BurracoApp {
             TableModelImpl model = new TableModelImpl(p1, p2);
 
             
-            TableViewImpl view = new TableViewImpl();
+            DeckImpl deck= new DeckImpl();
+            DiscardPileImpl discardPile = new DiscardPileImpl();
+            SelectionCardManager selectionManager=new SelectionCardManager();
+            DrawManager drawManager = new DrawManager();
+            DistributionManagerImpl distManager=new DistributionManagerImpl();
+            DiscardManagerImpl discardManager = new DiscardManagerImpl(discardPile);
 
-            TurnManagerImpl turnManager = new TurnManagerImpl(model, view);
+            TableViewImpl view = new TableViewImpl(p1,p2,deck,selectionManager,drawManager,distManager);
 
-            view.refreshTurnLabel(model.isPlayer1Turn());
+            TurnManagerImpl turnManager = new TurnManagerImpl(model, view,drawManager);
+
+            view.wireControllers(turnManager,discardManager);
         });
     }
 }

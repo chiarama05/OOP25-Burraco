@@ -1,76 +1,68 @@
 package view.table;
 
+import core.discardcard.DiscardManagerImpl;
+import core.distributioncard.DistributionManagerImpl;
+import core.drawcard.DrawManager;
+import core.selectioncard.SelectionCardManager;
+import model.card.Card;
+import model.deck.DeckImpl;
+import model.player.*;
+import view.botton.*;
+import view.discard.DiscardViewImpl;
+import view.distribution.InitialDistributionView;
+import view.hand.handImpl;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-
-import core.discardcard.DiscardManagerImpl;
-import core.distributioncard.DistributionManagerImpl;
-import model.player.PlayerImpl;
-import view.botton.DeckController;
-import view.botton.DeckView;
-import view.botton.DiscardController;
-import view.discard.DiscardViewImpl;
-import view.distribution.InitialDistributionView;
-import view.hand.handImpl;
-import model.card.Card;
-import model.deck.DeckImpl;
-import model.discard.DiscardPileImpl;
-import model.player.Player;
-import view.botton.PutCombinationController;
-import core.selectioncard.SelectionCardManager;
-
-
 import java.util.ArrayList;
-
 import java.util.List;
 
 public class TableViewImpl implements TableView {
 
-    private final DeckImpl commonDeck; 
-    private final core.drawcard.DrawManager drawManager = new core.drawcard.DrawManager();
+    private final DeckImpl commonDeck;
+    private final DrawManager drawManager;
     private final JFrame frame;
     private final JLabel turnLabel;
-
-    private final DeckView deckView; 
-
+    private final DeckView deckView;
     private final JPanel combPanel1;
     private final JPanel combPanel2;
     private final JPanel discardPanel;
     private final JPanel deckPanel;
-
     private final Font baseTitleFont = new Font("Arial", Font.BOLD, 23);
-
     private final InitialDistributionView initDist;
     private final PlayerImpl player1;
     private final PlayerImpl player2;
+    private final SelectionCardManager selectionManager;
+    private DiscardViewImpl discardView;
+    private boolean turnoPlayer1 = true;
+
+    
+    private DeckController deckController;
     private DiscardController discardController;
+    private final JButton putComboBtn;
 
-    private final SelectionCardManager selectionManager = new SelectionCardManager();
+    public TableViewImpl(PlayerImpl player1,PlayerImpl player2,DeckImpl commonDeck, SelectionCardManager selectionManager, DrawManager drawManager, DistributionManagerImpl distManager) {
 
-    private boolean turnoPlayer1=true; //true=Player1 flase=Player2
+        this.player1 = player1;
+        this.player2 = player2;
+        this.commonDeck = commonDeck;
+        this.selectionManager = selectionManager;
+        this.drawManager = drawManager;
 
-    public TableViewImpl() {
         frame = new JFrame("Burraco - OOOP Project");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
-        this.commonDeck = new DeckImpl();
-
-        // Inizializzazione della variabile di istanza
-        this.deckView=new DeckView(); 
-        new DeckController(deckView, drawManager, this);
-
-        // ==== Turno ====
+        // ==== Turn ====
         turnLabel = new JLabel("Turn: Player 1");
         turnLabel.setFont(baseTitleFont);
         turnLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         frame.add(turnLabel, BorderLayout.NORTH);
 
-        // ==== Combinazioni centro ====
+        // ==== Central Combinations ====
         JPanel combinationPanel = new JPanel(new GridLayout(1, 2, 20, 10));
-
         combPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         combPanel1.setBorder(BorderFactory.createTitledBorder("Player 1"));
         combinationPanel.add(new JScrollPane(combPanel1));
@@ -81,54 +73,41 @@ public class TableViewImpl implements TableView {
 
         frame.add(combinationPanel, BorderLayout.CENTER);
 
-        // ==== Scarti sopra le mani ====
+// ==== Discards and Decks ====
         discardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         discardPanel.setBorder(BorderFactory.createTitledBorder("Discard Pile"));
         discardPanel.setBackground(new Color(250, 250, 240));
 
-        // ==== Deck / mano in basso ====
+        deckView = new DeckView();
+
+        JPanel centralBottomPanel = new JPanel(new BorderLayout());
+        centralBottomPanel.add(discardPanel, BorderLayout.CENTER);
+        centralBottomPanel.add(deckView, BorderLayout.WEST);
+
+        // ==== Deck / Hand in the south====
         deckPanel = new JPanel(new BorderLayout());
         deckPanel.setBorder(BorderFactory.createTitledBorder("Hand"));
 
-        JPanel centralBottomPanel = new JPanel(new BorderLayout());
-        centralBottomPanel.add(discardPanel, BorderLayout.CENTER); 
-        centralBottomPanel.add(deckView, BorderLayout.WEST);       
-
-        // Pannello finale del basso (Mazzo+Scarti sopra, Mano sotto)
         JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.add(centralBottomPanel, BorderLayout.NORTH); 
+        bottomPanel.add(centralBottomPanel, BorderLayout.NORTH);
         bottomPanel.add(deckPanel, BorderLayout.CENTER);
-
         frame.add(bottomPanel, BorderLayout.SOUTH);
 
-        // ==== Inizializzazione giocatori e distribuzione carte ====
-        player1 = new PlayerImpl();
-        player2 = new PlayerImpl();
-        DistributionManagerImpl distManager = new DistributionManagerImpl();
+        // ==== Distribuzione iniziale ====
         initDist = new InitialDistributionView(discardPanel, selectionManager);
-
-        // Distribuisci carte e aggiorna GUI
-        initDist.distribute(player1, player2, distManager);
-
-        // Mostra inizialmente la mano del giocatore 1
-        refreshHandPanel(getCurrentPlayer());
-        refreshTurnLabel(true);
+        distManager.distributeInitialCards(player1, player2, commonDeck);
+        // Versione a 3 parametri (quella che hai in progetto oggi)
+        initDist.distribute(player1, player2, distManager,commonDeck);
 
         // ==== Pannello bottoni a destra ====
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
         rightPanel.setPreferredSize(new Dimension(180, 400));
 
-        DiscardViewImpl discardView = new DiscardViewImpl(discardPanel, new JPanel());
+        discardView = new DiscardViewImpl(discardPanel, new JPanel());
         JButton discardBtn = (JButton) discardView.getActionPanel().getComponent(0);
-
         JButton drawDiscardBtn = new JButton("Take discard");
-        JButton putComboBtn = new JButton("Put combination");
-
-        PutCombinationController putController =
-            new PutCombinationController(this, player1, player2, selectionManager);
-
-        putComboBtn.addActionListener(e -> putController.handlePutCombination());
+        this.putComboBtn = new JButton("Put combination");
 
         for (JButton b : new JButton[]{drawDiscardBtn, putComboBtn, discardBtn}) {
             b.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -136,15 +115,7 @@ public class TableViewImpl implements TableView {
             rightPanel.add(b);
             rightPanel.add(Box.createVerticalStrut(10));
         }
-
         frame.add(rightPanel, BorderLayout.EAST);
-
-        this.discardController = new DiscardController(
-        turnoPlayer1 ? player1 : player2,       // giocatore attivo
-        turnoPlayer1 ? initDist.getPlayer1HandView() : initDist.getPlayer2HandView(),
-        new DiscardManagerImpl(new DiscardPileImpl()), // discard manager con la discard pile
-        discardView
-        );
 
         // ==== Resize responsive ====
         frame.addComponentListener(new ComponentAdapter() {
@@ -161,43 +132,43 @@ public class TableViewImpl implements TableView {
         applyResponsiveFonts();
     }
 
+
+
+
     // ================= Funzioni per le mani =================
 
-    /**
-     * Aggiorna il pannello deckPanel per mostrare solo la mano del giocatore attivo
-     */
+    public void wireControllers(final model.turn.TurnManager turnManager, final core.discardcard.DiscardManagerImpl discardManager){
+        this.deckController=new DeckController(deckView,drawManager,this,turnManager);
+        PutCombinationController putController=new PutCombinationController(this,turnManager,selectionManager);
+        putComboBtn.addActionListener(e -> putController.handlePutCombination());
+        this.discardController=new DiscardController(this,turnManager,discardManager,discardView);
+    }
+
+
     public void refreshHandPanel(Player player) {
-       deckPanel.removeAll();
+        deckPanel.removeAll();
 
-       handImpl handView;
-       if(player==player1){
-            handView=initDist.getPlayer1HandView();
-        }
-        else{
-            handView=initDist.getPlayer2HandView();
-        }
-
+        handImpl handView=getHandViewForPlayer(player);
         handView.refreshHand(player.getHand());
 
         deckPanel.add(handView,BorderLayout.CENTER);
         deckPanel.revalidate();
         deckPanel.repaint();
     }
-  /*    VECCHIO REFRESHHAND --> 1. Identifichiamo il giocatore corrente usando il metodo che hai già
-        PlayerImpl currentPlayer = (PlayerImpl) getCurrentPlayer();
-    
-        // 2. Usiamo il metodo refreshHand (che è quello che fa il lavoro sporco)
-        refreshHand(currentPlayer);
-    */
+ 
+    public handImpl getHandViewForPlayer(Player player){
+        return (player==player1) ? initDist.getPlayer1HandView() : initDist.getPlayer2HandView();
+    }
+
+    public boolean isPlayer1(Player player){
+        return player==player1;
+    }
 
     public Player getCurrentPlayer(){
         return turnoPlayer1 ? player1 : player2;
     }
 
-    public DeckImpl getCommonDeck(){
-        return this.commonDeck;
-    }
-
+    
 
     private Color getCardColor(String cardString){
         if(cardString.contains("♥") || cardString.contains("♦")) {
@@ -208,21 +179,8 @@ public class TableViewImpl implements TableView {
 
 
     public void switchHand(boolean isPlayer1Turn){
-        this.turnoPlayer1=isPlayer1Turn;
         refreshHandPanel(isPlayer1Turn ? player1 : player2);
-
-        
     }
-
-    /**
-     * Cambia il turno del giocatore e aggiorna la mano visibile
-     
-    public void switchTurn() {
-        turnoPlayer1 = !turnoPlayer1;
-        this.drawManager.resetTurn();
-        refreshTurnLabel(turnoPlayer1);
-        refreshHandPanel();
-    }*/
 
 
     // ================= Turno =================
@@ -233,6 +191,11 @@ public class TableViewImpl implements TableView {
     }
 
     // ================= Messaggi =================
+
+    public DeckImpl getCommonDeck(){
+        return this.commonDeck;
+    }
+    
     public void showPotFly() {
         JOptionPane.showMessageDialog(frame, "You close your hand on 'fly', you can continue to play in this same turn!");
     }
@@ -291,7 +254,7 @@ public class TableViewImpl implements TableView {
         deckBtn.setFont(new Font("Arial", Font.ITALIC, (int)(12 * factor)));
     }
 
-    // 3. RIDIMENSIONA LE CARTE IN MANO
+    /* 3. RIDIMENSIONA LE CARTE IN MANO
     // Prendiamo la mano del giocatore corrente
     view.hand.handImpl currentHand = turnoPlayer1 ? initDist.getPlayer1HandView() : initDist.getPlayer2HandView();
     if (currentHand != null) {
@@ -299,6 +262,18 @@ public class TableViewImpl implements TableView {
             if (comp instanceof JButton btn) {
                 btn.setPreferredSize(cardSize);
                 btn.setFont(new Font("Arial", Font.BOLD, (int)(14 * factor)));
+            }
+        }
+    }*/
+
+    for(Player p : new Player[]{player1,player2}){
+        handImpl hv= getHandViewForPlayer(p);
+        if(hv!=null){
+            for(Component comp : hv.getComponents()){
+                if(comp instanceof JButton btn){
+                    btn.setPreferredSize(cardSize);
+                    btn.setFont(new Font("Arial", Font.BOLD,(int)(14*factor)));
+                }
             }
         }
     }

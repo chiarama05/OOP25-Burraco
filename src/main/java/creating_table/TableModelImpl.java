@@ -1,9 +1,5 @@
 package creating_table;
-
-import java.util.*;
-
-import model.card.*;
-import model.player.*;
+import model.player.Player;
 
 public class TableModelImpl implements TableModel{
 
@@ -13,20 +9,12 @@ public class TableModelImpl implements TableModel{
 
     private final Player player1;
     private final Player player2;
-
-
     private boolean isPlayer1Turn = true;
-    private boolean haspicked = false;
     private boolean gameFinished=false;
     private Winner winner = Winner.NONE;
 
 
-
-    /*public TableModelImpl(){
-        this(PlayerImpl());
-    }*/
-
-    public TableModelImpl(Player p1, Player p2){
+    public TableModelImpl(final Player p1, final Player p2){
         this.player1=p1;
         this.player2=p2;
     }
@@ -57,11 +45,6 @@ public class TableModelImpl implements TableModel{
         return gameFinished; 
     }
 
-    /*public Winner getWinner() {
-        return winner; 
-    }*/
-
-
     /*turn management --> if the player is not in pot (Pozzetto) and has no cards, then they take the pozzetto  */
     public void switchTurn() {
         if (gameFinished){
@@ -69,12 +52,6 @@ public class TableModelImpl implements TableModel{
         }
 
         isPlayer1Turn = !isPlayer1Turn;
-
-        Player newCurrent = getCurrentPlayer();
-
-        if (newCurrent.isInPot() && newCurrent.hasFinishedCards()) {
-            //newCurrent.takePozzetto(); //da creare
-        }
     }
 
     public void mustTakePot(){
@@ -85,7 +62,6 @@ public class TableModelImpl implements TableModel{
         Player p=getCurrentPlayer();
         if(p.hasFinishedCards() && !p.isInPot()){
             p.setInPot(true);
-            //p.takePozzetto();
         }
     }
 
@@ -120,7 +96,7 @@ public class TableModelImpl implements TableModel{
             return;
         }
         if(!canClose()){
-            return; //"player : " + getCurrentPlayer() " can't close";
+            return;
         }
 
         gameFinished=true;
@@ -128,5 +104,3 @@ public class TableModelImpl implements TableModel{
     }
 
 }
-
-   

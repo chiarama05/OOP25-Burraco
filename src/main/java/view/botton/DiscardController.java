@@ -1,31 +1,33 @@
 package view.botton;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Set;
-
 import model.card.Card;
 import model.player.Player;
 import core.discardcard.DiscardManagerImpl;
 import core.discardcard.DiscardResult;
 import view.discard.DiscardViewImpl;
 import view.hand.handImpl;
+import view.table.TableViewImpl;
+import model.turn.TurnManager;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Set;
 
 public class DiscardController {
 
-    private final Player player;
-    private final handImpl handView;
+    private final TableViewImpl tableView;
+    private final TurnManager turnManager;
     private final DiscardManagerImpl discardManager;
     private final DiscardViewImpl discardView;
 
-    public DiscardController(Player player, handImpl handView, DiscardManagerImpl discardManager, DiscardViewImpl discardView) {
-        this.player = player;
-        this.handView = handView;
+    public DiscardController(TableViewImpl tableView, TurnManager turnManager, DiscardManagerImpl discardManager, DiscardViewImpl discardView) {
+        this.tableView = tableView;
+        this.turnManager = turnManager;
         this.discardManager = discardManager;
         this.discardView = discardView;
 
         // Collega il listener al bottone
-        discardView.setDiscardListener(new ActionListener() {
+        this.discardView.setDiscardListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 handleDiscard();
@@ -37,29 +39,39 @@ public class DiscardController {
      * Logica del discard quando si clicca il bottone
      */
     private void handleDiscard() {
-        Set<Card> selected = handView.getSelectedCards();
+        Player current=turnManager.getCurrentPlayer();
+        handImpl handView=tableView.getHandViewForPlayer(current);
 
+        Set<Card> selected = handView.getSelectedCards();
         if (selected.size() != 1) {
-            // Se non c'è esattamente una carta selezionata
-            System.out.println("Seleziona una e una sola carta da scartare!");
+            System.out.println("You have to select just one card to discard!");
             return;
         }
 
         Card cardToDiscard = selected.iterator().next();
+        DiscardResult result = discardManager.discard(current, cardToDiscard);
 
-        // Chiamata al DiscardManager
-        DiscardResult result = discardManager.discard(player, cardToDiscard);
-
-        // Mostra messaggio (puoi anche usare JOptionPane)
         System.out.println(result.getMessage());
 
-        if (result.isValid()) {
-            // Aggiorna la mano e cancella la selezione
-            handView.refreshHand(player.getHand());
-            handView.clearSelection();
-
-            // Aggiorna la discard pile visiva
-            discardView.updateDiscardPile(discardManager.getDiscardPileCards());
+        if(!result.isValid()){
+            return;
         }
+        handView.refreshHand(current.getHand());
+        handView.clearSelection();
+
+        // Aggiorna la discard pile visiva
+        discardView.updateDiscardPile(discardManager.getDiscardPileCards());
+
+
+        if(result.isGameWon()){
+            tableView.showWinExit(tableView.isPlayer1(current));
+            return;
+        }
+        
+        if(result.isTurnEnds()){
+            turnManager.nextTurn();
+        }
+        
     }
 }
+

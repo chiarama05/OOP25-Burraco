@@ -4,7 +4,7 @@ import core.drawcard.DrawManager;
 import core.drawcard.DrawResult;
 import model.deck.Deck;
 import model.player.Player;
-import model.player.PlayerImpl;
+import model.turn.TurnManager;
 import view.table.TableViewImpl;
 
 import javax.swing.*;
@@ -17,13 +17,15 @@ import java.awt.event.ActionListener;
     private final DeckView deckView;
     private final DrawManager drawManager;
     private final TableViewImpl tableView;
+    private final TurnManager turnManager;
+    
 
-    public DeckController(DeckView deckView, DrawManager drawManager, TableViewImpl tableView) {
+    public DeckController(DeckView deckView, DrawManager drawManager, TableViewImpl tableView, TurnManager turnManager) {
         this.deckView = deckView;
         this.drawManager = drawManager;
         this.tableView = tableView;
+        this.turnManager=turnManager;
 
-        // Registra questo controller come listener del bottone nel DeckView
         this.deckView.getDeckButton().addActionListener(this);
     }
 
@@ -36,13 +38,12 @@ import java.awt.event.ActionListener;
         Player currentPlayer = tableView.getCurrentPlayer();
         Deck deck = tableView.getCommonDeck();
 
-        // Tenta di pescare tramite il DrawManager (che ha già il controllo boolean drawCard)
+    
         DrawResult result = drawManager.drawFromDeck(currentPlayer, deck);
 
         switch (result.getStatus()) {
             case SUCCESS:
-                // 1. Recuperiamo il giocatore attuale
-                tableView.refreshHandPanel((Player) currentPlayer);
+                tableView.refreshHandPanel(currentPlayer);
                 break;
 
             case ALREADY_DRAWN:
