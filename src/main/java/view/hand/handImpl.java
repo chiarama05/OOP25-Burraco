@@ -22,33 +22,39 @@ public class handImpl extends JPanel implements hand {
     public void refreshHand(List<Card> hand) {
         removeAll();
 
-    for (Card c : hand) {
-        JButton btn = new JButton(c.toString());
-        btn.setPreferredSize(new Dimension(40, 50));
-        btn.setFont(new Font("Arial", Font.PLAIN, 16));
-        btn.setOpaque(true);
-        btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
-        btn.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-        // Listener aggiornato
-        btn.addActionListener(e -> {
-            // toggla selezione tramite SelectionCardManager
-            selectionManager.toggleSelection(c);
-
-            // Aggiorna solo il colore del bottone cliccato
-            btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
-
-            // callback verso controller
-            if (listener != null) {
-                listener.onCardSelected(c);
+        for (Card c : hand) {
+            String cardText = c.toString();
+            JButton btn = new JButton(cardText);
+            
+            // --- LOGICA COLORE SEMI ---
+            if (cardText.contains("♥") || cardText.contains("♦")) {
+                btn.setForeground(Color.RED);
+            } else {
+                btn.setForeground(Color.BLACK);
             }
-        });
+            // ---------------------------
 
-        add(btn);
-    }
+            btn.setPreferredSize(new Dimension(50, 70)); // Leggermente più grandi per leggibilità
+            btn.setFont(new Font("Arial", Font.BOLD, 16));
+            btn.setOpaque(true);
+            
+            // Sfondo Giallo se selezionata, Bianco altrimenti
+            btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
+            btn.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
-    revalidate();
-    repaint();
+            btn.addActionListener(e -> {
+                selectionManager.toggleSelection(c);
+                btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
+                if (listener != null) {
+                    listener.onCardSelected(c);
+                }
+            });
+
+            add(btn);
+        }
+
+        revalidate();
+        repaint();
     }
 
     @Override

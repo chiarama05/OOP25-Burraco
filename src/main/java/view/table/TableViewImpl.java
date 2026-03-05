@@ -232,14 +232,22 @@ public class TableViewImpl implements TableView {
 
     JPanel newComboPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
     for(Card c : cards){
-        JButton cardBtn = new JButton(c.toString());
+        String cardText = c.toString();
+        JButton cardBtn = new JButton(cardText);
+        
+        // Imposta il colore del testo in base al seme
+        cardBtn.setForeground(getCardColor(cardText)); // AGGIUNTO
+        
+        // Opzionale: rende il font un po' più leggibile
+        cardBtn.setFont(new Font("Arial", Font.BOLD, 14)); // AGGIUNTO
+        
         newComboPanel.add(cardBtn);
     }
 
     targetPanel.add(newComboPanel);
     targetPanel.revalidate();
     targetPanel.repaint();
-    }
+}
 
     public void refreshHand(PlayerImpl player) {
     deckPanel.removeAll();
@@ -254,12 +262,20 @@ public class TableViewImpl implements TableView {
     deckPanel.add(handView, BorderLayout.CENTER);
     deckPanel.revalidate();
     deckPanel.repaint();
-}
-public Player getCurrentPlayer() {
+    }
+
+    public Player getCurrentPlayer() {
         return turnoPlayer1 ? player1 : player2;
     }
 
     public DeckImpl getCommonDeck() {
         return this.commonDeck;
     }
+
+    private Color getCardColor(String cardString) {
+    if (cardString.contains("♥") || cardString.contains("♦")) {
+        return Color.RED;
+    }
+    return Color.BLACK; // Picche e Fiori rimangono neri
+}
 }
