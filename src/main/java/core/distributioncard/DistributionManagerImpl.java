@@ -11,7 +11,7 @@ public class DistributionManagerImpl implements DistributionManager{
     private List<Card> discardPile = new ArrayList<>();
 
     @Override
-    public void distributeInitialCards(Player player1, Player player2, Deck deck){
+    public void distributeInitialCards(Player player1, Player player2, Deck deck, model.discard.DiscardPile modelDiscardPile){
 
         // Distributes 11 cards to each player
         for (int i = 0; i < 11; i++) {
@@ -32,7 +32,7 @@ public class DistributionManagerImpl implements DistributionManager{
         player2.addToPot(pot2);
 
         // First card to discard pile
-        discardPile.add(deck.draw());
+        modelDiscardPile.add(deck.draw());
     }
 
     @Override

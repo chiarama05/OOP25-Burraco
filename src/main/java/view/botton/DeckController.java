@@ -42,26 +42,20 @@ import java.awt.event.ActionListener;
         DrawResult result = drawManager.drawFromDeck(currentPlayer, deck);
 
         switch (result.getStatus()) {
-            case SUCCESS:
-                tableView.refreshHandPanel(currentPlayer);
-                break;
+        case SUCCESS: 
+        tableView.refreshHandPanel(currentPlayer);
+        break;
 
-            case ALREADY_DRAWN:
-                JOptionPane.showMessageDialog(null, 
-                    "You have already drawn a card this turn!", 
-                    "Action Not Allowed", 
-                    JOptionPane.WARNING_MESSAGE);
-                break;
+        case ALREADY_DRAWN:
+        JOptionPane.showMessageDialog(null, "You have already drawn a card this turn!");
+        break;
 
-            case EMPTY_DECK:
-                JOptionPane.showMessageDialog(null, 
-                    "The deck is empty!", 
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
-                break;
+        case EMPTY_DECK:
+        JOptionPane.showMessageDialog(null, "The deck is empty!");
+        break;
 
-            default:
-                break;
-        }
+        default:
+        break;
+    }
     }
 }

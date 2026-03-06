@@ -37,6 +37,7 @@ public class TableViewImpl implements TableView {
     private final SelectionCardManager selectionManager;
     private DiscardViewImpl discardView;
     private boolean turnoPlayer1 = true;
+    private final model.discard.DiscardPile discardPileModel;
 
     
     private DeckController deckController;
@@ -73,7 +74,7 @@ public class TableViewImpl implements TableView {
 
         frame.add(combinationPanel, BorderLayout.CENTER);
 
-// ==== Discards and Decks ====
+        // ==== Discards and Decks ====
         discardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         discardPanel.setBorder(BorderFactory.createTitledBorder("Discard Pile"));
         discardPanel.setBackground(new Color(250, 250, 240));
@@ -94,17 +95,17 @@ public class TableViewImpl implements TableView {
         frame.add(bottomPanel, BorderLayout.SOUTH);
 
         // ==== Distribuzione iniziale ====
+        this.discardPileModel = new model.discard.DiscardPileImpl();
+        this.discardView = new DiscardViewImpl(discardPanel, new JPanel());
+        
         initDist = new InitialDistributionView(discardPanel, selectionManager);
-        distManager.distributeInitialCards(player1, player2, commonDeck);
-        // Versione a 3 parametri (quella che hai in progetto oggi)
-        initDist.distribute(player1, player2, distManager,commonDeck);
+        initDist.distribute(player1, player2, distManager,commonDeck, discardView, discardPileModel);
 
         // ==== Pannello bottoni a destra ====
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
         rightPanel.setPreferredSize(new Dimension(180, 400));
 
-        discardView = new DiscardViewImpl(discardPanel, new JPanel());
         JButton discardBtn = (JButton) discardView.getActionPanel().getComponent(0);
         JButton drawDiscardBtn = new JButton("Take discard");
         this.putComboBtn = new JButton("Put combination");
@@ -141,7 +142,7 @@ public class TableViewImpl implements TableView {
         this.deckController=new DeckController(deckView,drawManager,this,turnManager);
         PutCombinationController putController=new PutCombinationController(this,turnManager,selectionManager);
         putComboBtn.addActionListener(e -> putController.handlePutCombination());
-        this.discardController=new DiscardController(this,turnManager,discardManager,discardView);
+        this.discardController=new DiscardController(this,turnManager,discardManager,discardView, discardPileModel, drawManager);
     }
 
 

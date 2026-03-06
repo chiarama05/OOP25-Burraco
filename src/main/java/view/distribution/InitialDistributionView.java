@@ -30,23 +30,14 @@ public class InitialDistributionView {
         return handPlayer2; 
     }
 
-    public void distribute(PlayerImpl player1, PlayerImpl player2, DistributionManagerImpl distManager, Deck deck) {
-        distManager.distributeInitialCards(player1, player2, deck);
+    public void distribute(PlayerImpl player1, PlayerImpl player2, DistributionManagerImpl distManager, Deck deck, 
+                           view.discard.DiscardView discardView, model.discard.DiscardPile modelDiscardPile) {
+
+        distManager.distributeInitialCards(player1, player2, deck, modelDiscardPile);
 
         handPlayer1.refreshHand(player1.getHand());
         handPlayer2.refreshHand(player2.getHand());
 
-        discardPanel.removeAll();
-        for (Card c : distManager.getInitialDiscardPile()) {
-            JLabel lbl = new JLabel(c.toString());
-            lbl.setOpaque(true);
-            lbl.setBackground(Color.WHITE);
-            lbl.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            lbl.setPreferredSize(new Dimension(60, 90));
-            lbl.setHorizontalAlignment(SwingConstants.CENTER);
-            discardPanel.add(lbl);
-        }
-        discardPanel.revalidate();
-        discardPanel.repaint();
+        discardView.updateDiscardPile(modelDiscardPile.getCards());
     }
 }

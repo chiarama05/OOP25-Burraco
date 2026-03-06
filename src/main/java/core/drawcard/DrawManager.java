@@ -73,4 +73,8 @@ public class DrawManager {
 
         return DrawResult.successMultiple();
     }
+
+    public boolean hasDrawn() {
+    return drawCard;
+}
 }
