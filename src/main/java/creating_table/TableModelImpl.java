@@ -62,9 +62,11 @@ public class TableModelImpl implements TableModel{
         Player p=getCurrentPlayer();
         if(p.hasFinishedCards() && !p.isInPot()){
             p.setInPot(true);
+            System.out.println("Congratulation! " +p + "you have just took the pot! ");
         }
     }
 
+    //sono la stessa cosa potfly e musttakepot si comportano uguali 
     public void PotFly(){
         if(gameFinished){
             return;
