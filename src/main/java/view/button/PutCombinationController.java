@@ -52,6 +52,14 @@ public class PutCombinationController {
         currentPlayer.removeCards(selected);
         tableView.addCombinationToPlayerPanel(selected, tableView.isPlayer1(currentPlayer));
         tableView.refreshHandPanel(currentPlayer);
+
+        if(currentPlayer.hasFinishedCards() && !currentPlayer.isInPot()){
+            currentPlayer.setInPot(true);
+            currentPlayer.drawPot();
+            tableView.refreshHandPanel(currentPlayer);
+            tableView.showPotFly();
+        }
+
         selectionManager.clearSelection();
 
     }
