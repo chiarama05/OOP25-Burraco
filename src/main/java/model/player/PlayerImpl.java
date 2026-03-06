@@ -14,13 +14,24 @@ public class PlayerImpl implements Player{
     private List<Card> hand = new ArrayList<>();
     private List<Card> pot = new ArrayList<>();
     private List<List<Card>> combinations = new ArrayList<>();
-    //dovrebbe essere list<Combination>
-    //private final String player;
 
+    private String name;
 
-    /** Flag to track if the player is playing from the pozzetto */
     private boolean inPot = false;
 
+    public PlayerImpl() {
+        this.name = "Giocatore";
+    }
+
+
+    public PlayerImpl(String name) {
+        this.name = name;
+    }
+
+
+    public String getName() {
+        return this.name;
+    }
 
     /**
      * Returns the cards in the player's hand.
