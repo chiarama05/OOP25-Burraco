@@ -9,13 +9,23 @@ import model.deck.DeckImpl;
 import model.discard.DiscardPileImpl;
 import model.player.PlayerImpl;
 import model.turn.TurnManagerImpl;
+import view.start.SetUpMenuView;
+import view.start.SetUpMenuViewImpl;
+import view.start.StartMenuView;
+import view.start.StartMenuViewImpl;
 import view.table.TableViewImpl;
 
 public class BurracoApp {
     public static void main(final String[] args){
+
         SwingUtilities.invokeLater(() -> {
-            PlayerImpl p1 = new PlayerImpl();
-            PlayerImpl p2 = new PlayerImpl();
+            StartMenuView startMenu = new StartMenuViewImpl(() -> {
+                SetUpMenuView setupMenu = new SetUpMenuViewImpl((scoreThreshold, nameP1, nameP2) -> {
+                
+                // 2. Tutta la logica di inizializzazione parte solo DOPO il click
+                System.out.println("Partita avviata con limite: " + scoreThreshold);
+            PlayerImpl p1 = new PlayerImpl(nameP1);
+            PlayerImpl p2 = new PlayerImpl(nameP2);
             TableModelImpl model = new TableModelImpl(p1, p2);
 
             
@@ -32,5 +42,10 @@ public class BurracoApp {
 
             view.wireControllers(turnManager,discardManager);
         });
-    }
+        setupMenu.display();
+    });
+    startMenu.display();
+});
 }
+}
+
