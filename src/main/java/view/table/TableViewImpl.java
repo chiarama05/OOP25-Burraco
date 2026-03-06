@@ -39,7 +39,7 @@ public class TableViewImpl implements TableView {
     private boolean turnoPlayer1 = true;
     private final model.discard.DiscardPile discardPileModel;
 
-    
+    private JButton takeDiscardBtn;
     private DeckController deckController;
     private DiscardController discardController;
     private final JButton putComboBtn;
@@ -107,10 +107,10 @@ public class TableViewImpl implements TableView {
         rightPanel.setPreferredSize(new Dimension(180, 400));
 
         JButton discardBtn = (JButton) discardView.getActionPanel().getComponent(0);
-        JButton drawDiscardBtn = new JButton("Take discard");
+        this.takeDiscardBtn = new JButton("Take discard");
         this.putComboBtn = new JButton("Put combination");
 
-        for (JButton b : new JButton[]{drawDiscardBtn, putComboBtn, discardBtn}) {
+        for (JButton b : new JButton[]{takeDiscardBtn, putComboBtn, discardBtn}) {
             b.setAlignmentX(Component.CENTER_ALIGNMENT);
             b.setMaximumSize(new Dimension(160, 40));
             rightPanel.add(b);
@@ -137,9 +137,9 @@ public class TableViewImpl implements TableView {
 
 
     // ================= Funzioni per le mani =================
-
     public void wireControllers(final model.turn.TurnManager turnManager, final core.discardcard.DiscardManagerImpl discardManager){
         this.deckController=new DeckController(deckView,drawManager,this,turnManager);
+        new TakeDiscardController(takeDiscardBtn, drawManager, this, turnManager, discardPileModel, discardView);
         PutCombinationController putController=new PutCombinationController(this,turnManager,selectionManager);
         putComboBtn.addActionListener(e -> putController.handlePutCombination());
         this.discardController=new DiscardController(this,turnManager,discardManager,discardView, discardPileModel, drawManager);
