@@ -59,13 +59,24 @@ public class TableModelImpl implements TableModel{
             return;
         }
 
-        Player p=getCurrentPlayer();
+        final Player p=getCurrentPlayer();
         if(p.hasFinishedCards() && !p.isInPot()){
             p.setInPot(true);
             System.out.println("Congratulation! " +p + "you have just took the pot! ");
         }
     }
 
+    public void PotFly(){
+        if(gameFinished){
+            return;
+        }
+        final Player p = getCurrentPlayer();
+        if(p.hasFinishedCards() && !p.isInPot()){
+            p.setInPot(true);
+            p.drawPot();
+            System.out.println("So impressive! you took 'pozzetto al volo' !");
+        }
+    }
 
     //CLOSURE AND VICTORY MANAGEMENT
 

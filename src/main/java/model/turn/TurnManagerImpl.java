@@ -35,7 +35,6 @@ public class TurnManagerImpl implements TurnManager{
         }
 
         model.switchTurn();
-
         if(this.drawManager!=null){
             this.drawManager.resetTurn();
         }

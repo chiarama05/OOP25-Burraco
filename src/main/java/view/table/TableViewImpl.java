@@ -172,6 +172,7 @@ public class TableViewImpl implements TableView {
 
     public void switchHand(boolean isPlayer1Turn){
         this.turnoPlayer1 = isPlayer1Turn;
+        JOptionPane.showMessageDialog(frame, "it's "+(turnoPlayer1 ? "Player 1" : "Player 2")+" turn, dont look "+ (turnoPlayer1 ? "Player 2" : "Player 1") + "!" );
         refreshHandPanel(isPlayer1Turn ? player1 : player2);
     }
 
