@@ -35,11 +35,16 @@ import java.awt.event.ActionListener;
     }
 
     private void handleDrawAction() {
-        Player currentPlayer = tableView.getCurrentPlayer();
+        Player currentPlayer = turnManager.getCurrentPlayer(); 
         Deck deck = tableView.getCommonDeck();
 
     
         DrawResult result = drawManager.drawFromDeck(currentPlayer, deck);
+
+        if (result.getStatus() == DrawResult.Status.SUCCESS) {
+            
+            tableView.refreshHandPanel(currentPlayer);
+        }
 
         switch (result.getStatus()) {
         case SUCCESS: 

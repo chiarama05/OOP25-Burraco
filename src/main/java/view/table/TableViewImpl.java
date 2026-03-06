@@ -180,6 +180,7 @@ public class TableViewImpl implements TableView {
 
 
     public void switchHand(boolean isPlayer1Turn){
+        this.turnoPlayer1 = isPlayer1Turn;
         refreshHandPanel(isPlayer1Turn ? player1 : player2);
     }
 
