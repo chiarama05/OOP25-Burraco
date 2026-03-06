@@ -20,6 +20,8 @@ public interface TableModel{
     void switchTurn();
 
     void mustTakePot();
+
+    void PotFly();
     
     boolean canClose();
 

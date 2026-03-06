@@ -18,9 +18,7 @@ public class PutCombinationController {
     private final TableViewImpl tableView;
     private final TurnManager turnManager;
     private final SelectionCardManager selectionManager;
-
-    //private boolean player1Turn;
-
+    
     public PutCombinationController(TableViewImpl tableView, TurnManager turnManager, SelectionCardManager selectionManager) {
         this.tableView = tableView;
         this.selectionManager = selectionManager;
