@@ -1,4 +1,4 @@
-package view.botton;
+package view.button;
 
 import view.table.TableViewImpl;
 import model.player.Player;
@@ -53,8 +53,6 @@ public class PutCombinationController {
         tableView.addCombinationToPlayerPanel(selected, tableView.isPlayer1(currentPlayer));
         tableView.refreshHandPanel(currentPlayer);
         selectionManager.clearSelection();
-
-        //we end the turn here, with discard
 
     }
 }

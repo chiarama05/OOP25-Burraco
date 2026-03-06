@@ -1,4 +1,4 @@
-package view.botton;
+package view.button;
 
 import model.card.Card;
 import model.player.Player;

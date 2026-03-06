@@ -14,7 +14,6 @@ import view.table.TableViewImpl;
 public class BurracoApp {
     public static void main(final String[] args){
         SwingUtilities.invokeLater(() -> {
-
             PlayerImpl p1 = new PlayerImpl();
             PlayerImpl p2 = new PlayerImpl();
             TableModelImpl model = new TableModelImpl(p1, p2);

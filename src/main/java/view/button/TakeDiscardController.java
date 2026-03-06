@@ -1,4 +1,4 @@
-package view.botton;
+package view.button;
 
 import java.awt.event.ActionListener;
 import core.drawcard.DrawManager;

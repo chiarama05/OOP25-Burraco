@@ -7,7 +7,7 @@ import core.selectioncard.SelectionCardManager;
 import model.card.Card;
 import model.deck.DeckImpl;
 import model.player.*;
-import view.botton.*;
+import view.button.*;
 import view.discard.DiscardViewImpl;
 import view.distribution.InitialDistributionView;
 import view.hand.handImpl;
@@ -18,6 +18,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TableViewImpl implements TableView {
 
@@ -56,13 +57,14 @@ public class TableViewImpl implements TableView {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
-        // ==== Turn ====
+        
+        
         turnLabel = new JLabel("Turn: Player 1");
         turnLabel.setFont(baseTitleFont);
         turnLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         frame.add(turnLabel, BorderLayout.NORTH);
 
-        // ==== Central Combinations ====
+        
         JPanel combinationPanel = new JPanel(new GridLayout(1, 2, 20, 10));
         combPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         combPanel1.setBorder(BorderFactory.createTitledBorder("Player 1"));
@@ -74,7 +76,8 @@ public class TableViewImpl implements TableView {
 
         frame.add(combinationPanel, BorderLayout.CENTER);
 
-        // ==== Discards and Decks ====
+        
+        
         discardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         discardPanel.setBorder(BorderFactory.createTitledBorder("Discard Pile"));
         discardPanel.setBackground(new Color(250, 250, 240));
@@ -85,7 +88,8 @@ public class TableViewImpl implements TableView {
         centralBottomPanel.add(discardPanel, BorderLayout.CENTER);
         centralBottomPanel.add(deckView, BorderLayout.WEST);
 
-        // ==== Deck / Hand in the south====
+        
+        
         deckPanel = new JPanel(new BorderLayout());
         deckPanel.setBorder(BorderFactory.createTitledBorder("Hand"));
 
@@ -94,14 +98,14 @@ public class TableViewImpl implements TableView {
         bottomPanel.add(deckPanel, BorderLayout.CENTER);
         frame.add(bottomPanel, BorderLayout.SOUTH);
 
-        // ==== Distribuzione iniziale ====
+        
         this.discardPileModel = new model.discard.DiscardPileImpl();
         this.discardView = new DiscardViewImpl(discardPanel, new JPanel());
         
         initDist = new InitialDistributionView(discardPanel, selectionManager);
         initDist.distribute(player1, player2, distManager,commonDeck, discardView, discardPileModel);
 
-        // ==== Pannello bottoni a destra ====
+
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
         rightPanel.setPreferredSize(new Dimension(180, 400));
@@ -118,7 +122,6 @@ public class TableViewImpl implements TableView {
         }
         frame.add(rightPanel, BorderLayout.EAST);
 
-        // ==== Resize responsive ====
         frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -134,9 +137,6 @@ public class TableViewImpl implements TableView {
     }
 
 
-
-
-    // ================= Funzioni per le mani =================
     public void wireControllers(final model.turn.TurnManager turnManager, final core.discardcard.DiscardManagerImpl discardManager){
         this.deckController=new DeckController(deckView,drawManager,this,turnManager);
         new TakeDiscardController(takeDiscardBtn, drawManager, this, turnManager, discardPileModel, discardView);
@@ -169,15 +169,6 @@ public class TableViewImpl implements TableView {
         return turnoPlayer1 ? player1 : player2;
     }
 
-    
-
-    private Color getCardColor(String cardString){
-        if(cardString.contains("♥") || cardString.contains("♦")) {
-                return Color.RED;
-            }
-            return Color.BLACK;
-    }
-
 
     public void switchHand(boolean isPlayer1Turn){
         this.turnoPlayer1 = isPlayer1Turn;
@@ -185,14 +176,12 @@ public class TableViewImpl implements TableView {
     }
 
 
-    // ================= Turno =================
     public void refreshTurnLabel(boolean turnoPlayer1) {
         turnLabel.setText("Turn: " + (turnoPlayer1 ? "Player 1" : "Player 2"));
         frame.revalidate();
         frame.repaint();
     }
 
-    // ================= Messaggi =================
 
     public DeckImpl getCommonDeck(){
         return this.commonDeck;
@@ -216,26 +205,24 @@ public class TableViewImpl implements TableView {
         System.exit(0);
     }
 
-    // ================= Fonts responsive =================
     private void applyResponsiveFonts() {
     int w = Math.max(frame.getWidth(), 1);
     double factor = clamp(w / 1280.0, 0.7, 1.2); 
 
     turnLabel.setFont(scaleFont(baseTitleFont, factor));
 
-    // Ridimensiona i titoli dei pannelli (Player 1, Player 2, Discard, Hand)
+
     Font titleFont = scaleFont(baseTitleFont, factor * 0.6);
     setTitledBorderFont(combPanel1, titleFont);
     setTitledBorderFont(combPanel2, titleFont);
     setTitledBorderFont(discardPanel, titleFont);
     setTitledBorderFont(deckPanel, titleFont);
 
-    // --- CALCOLO DIMENSIONE UNICA CARTE (PROPORZIONALE) ---
     int cardWidth = Math.max(45, (int)(w / 25)); 
     int cardHeight = (int)(cardWidth * 1.4);
     Dimension cardSize = new Dimension(cardWidth, cardHeight);
     
-    // 1. RIDIMENSIONA GLI SCARTI (JLabel)
+    
     for (Component comp : discardPanel.getComponents()) {
         if (comp instanceof JComponent jc) {
             jc.setPreferredSize(cardSize);
@@ -245,8 +232,6 @@ public class TableViewImpl implements TableView {
         }
     }
 
-    // 2. RIDIMENSIONA IL MAZZO (Il bottone "DECK")
-    // Grazie al metodo getDeckButton() che abbiamo aggiunto in DeckView
     JButton deckBtn = deckView.getDeckButton();
     if (deckBtn != null) {
         deckBtn.setPreferredSize(cardSize);
@@ -255,18 +240,6 @@ public class TableViewImpl implements TableView {
         // Scaliamo il font "DECK"
         deckBtn.setFont(new Font("Arial", Font.ITALIC, (int)(12 * factor)));
     }
-
-    /* 3. RIDIMENSIONA LE CARTE IN MANO
-    // Prendiamo la mano del giocatore corrente
-    view.hand.handImpl currentHand = turnoPlayer1 ? initDist.getPlayer1HandView() : initDist.getPlayer2HandView();
-    if (currentHand != null) {
-        for (Component comp : currentHand.getComponents()) {
-            if (comp instanceof JButton btn) {
-                btn.setPreferredSize(cardSize);
-                btn.setFont(new Font("Arial", Font.BOLD, (int)(14 * factor)));
-            }
-        }
-    }*/
 
     for(Player p : new Player[]{player1,player2}){
         handImpl hv= getHandViewForPlayer(p);
@@ -303,24 +276,17 @@ public class TableViewImpl implements TableView {
     }
 
 
-    public void addCombinationToPlayerPanel(List<Card> cards, boolean player1Turn){
+    public void addCombinationToPlayerPanel(List<Card> cards, boolean player1Turn) {
     JPanel targetPanel = player1Turn ? combPanel1 : combPanel2;
 
-    JPanel newComboPanel = new JPanel();
-    newComboPanel.setLayout(new BoxLayout(newComboPanel, BoxLayout.Y_AXIS));
+    AttachedButton comboBtn = new AttachedButton(cards, this);
 
-    List<Card> sortedCards = new ArrayList<>(cards);
-    sortedCards.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
-
-    for(Card c : sortedCards){
-        JButton cardBtn = new JButton(c.toString());
-        cardBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        newComboPanel.add(cardBtn);
-        newComboPanel.add(Box.createVerticalStrut(5));
-    }
-
-    targetPanel.add(newComboPanel);
+    targetPanel.add(comboBtn);
     targetPanel.revalidate();
     targetPanel.repaint();
     }
+
+    public SelectionCardManager getSelectionManager() {
+    return this.selectionManager;
+}
 }

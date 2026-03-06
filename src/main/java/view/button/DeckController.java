@@ -1,4 +1,4 @@
-package view.botton;
+package view.button;
 
 import core.drawcard.DrawManager;
 import core.drawcard.DrawResult;
