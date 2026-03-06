@@ -66,21 +66,6 @@ public class TableModelImpl implements TableModel{
         }
     }
 
-    //sono la stessa cosa potfly e musttakepot si comportano uguali 
-    public void PotFly(){
-        if(gameFinished){
-            return;
-        }
-
-        Player p=getCurrentPlayer();
-
-        if(p.hasFinishedCards() && !p.isInPot()){
-            p.setInPot(true);
-            mustTakePot();
-        }
-    }
-
-
 
     //CLOSURE AND VICTORY MANAGEMENT
 
