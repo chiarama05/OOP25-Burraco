@@ -324,7 +324,7 @@ public class TableViewImpl implements TableView {
         }
     }
 
-    AttachedButton comboBtn = new AttachedButton(orderedCards, this);
+    AttachedButton comboBtn = new AttachedButton(orderedCards, this, player1Turn);
 
     targetPanel.add(comboBtn);
     targetPanel.revalidate();

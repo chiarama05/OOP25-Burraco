@@ -4,6 +4,7 @@ import model.card.Card;
 import model.player.Player;
 import core.combination.AttachUtils;
 import core.combination.StraightUtils;
+import view.burraco.BurracoStyleManager;
 import view.table.TableViewImpl;
 
 import javax.swing.*;
@@ -17,10 +18,12 @@ public class AttachedButton extends JButton {
 
     private final List<Card> cards;
     private final TableViewImpl tableView;
+    private final boolean isPlayer1Owner;
 
-    public AttachedButton(List<Card> initialCards, TableViewImpl tableView) {
+    public AttachedButton(List<Card> initialCards, TableViewImpl tableView, boolean isPlayer1Owner) {
         this.cards = new ArrayList<>(initialCards);
         this.tableView = tableView;
+        this.isPlayer1Owner = isPlayer1Owner;
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.WHITE);
@@ -38,13 +41,19 @@ public class AttachedButton extends JButton {
 
     private void handleAttach() {
         Player currentPlayer = tableView.getCurrentPlayer();
+
+        boolean isCurrentPlayer1 = tableView.isPlayer1(currentPlayer);
+        if (isCurrentPlayer1 != isPlayer1Owner) {
+           JOptionPane.showMessageDialog(this, "You can only attach cards to your own combinations!");
+           return;
+        }
         
         List<Card> selected = tableView.getSelectionManager().getSelectedCards().stream()
                 .filter(currentPlayer::hasCard)
                 .collect(Collectors.toList());
 
         if (selected.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Seleziona prima le carte dalla mano!");
+            JOptionPane.showMessageDialog(this, "Select the card from your hand first!");
             return;
         }
 
@@ -65,7 +74,7 @@ public class AttachedButton extends JButton {
             tableView.getSelectionManager().clearSelection();
             tableView.refreshHandPanel(currentPlayer);
         } else {
-            JOptionPane.showMessageDialog(this, "Combinazione non valida per questa pila!");
+            JOptionPane.showMessageDialog(this, "Invalid combination for this stack!");
         }
     }
 
@@ -80,6 +89,12 @@ public class AttachedButton extends JButton {
         } else {
             cards.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
         }
+
+        this.setBorder(BorderFactory.createCompoundBorder(
+            BurracoStyleManager.getBurracoBorder(cards),
+            BorderFactory.createEmptyBorder(10, 5, 10, 5)
+        ));
+        this.setBackground(BurracoStyleManager.getBurracoBackground(cards));
 
         for (Card c : cards) {
             JLabel label = new JLabel(c.toString());

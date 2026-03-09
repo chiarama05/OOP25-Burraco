@@ -22,8 +22,6 @@ public class BurracoApp {
             StartMenuView startMenu = new StartMenuViewImpl(() -> {
                 SetUpMenuView setupMenu = new SetUpMenuViewImpl((scoreThreshold, nameP1, nameP2) -> {
                 
-            
-            //questo si vede solo a terminale servirebbe jpane 
             System.out.println("Game started with limit: " + scoreThreshold);
             PlayerImpl p1 = new PlayerImpl(nameP1);
             PlayerImpl p2 = new PlayerImpl(nameP2);
