@@ -11,6 +11,8 @@ import view.button.*;
 import view.discard.DiscardViewImpl;
 import view.distribution.InitialDistributionView;
 import view.hand.handImpl;
+import view.score.ScoreView;
+import view.score.ScoreViewImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -227,6 +229,8 @@ public class TableViewImpl implements TableView {
         JOptionPane.showMessageDialog(frame, "You can exit now! the winner is... " + (player1Won ? "Player 1" : "Player 2"));
         frame.dispose();
         System.exit(0);
+        ScoreView scoreScreen = new ScoreViewImpl(player1, player2, nameP1, nameP2);
+        scoreScreen.display();
     }
 
     private void applyResponsiveFonts() {
