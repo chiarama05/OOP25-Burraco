@@ -181,12 +181,22 @@ public class TableViewImpl implements TableView {
 
 
     public void switchHand(boolean isPlayer1Turn){
-        this.turnoPlayer1 = isPlayer1Turn;
-        String activeName = isPlayer1Turn ? nameP1 : nameP2;
-        String idleName = isPlayer1Turn ? nameP2 : nameP1;
-    
-        JOptionPane.showMessageDialog(frame, "It's " + activeName + " turn, don't look " + idleName + "!");
-        refreshHandPanel(isPlayer1Turn ? player1 : player2);
+       this.turnoPlayer1 = isPlayer1Turn;
+    String activeName = isPlayer1Turn ? nameP1 : nameP2;
+    String idleName = isPlayer1Turn ? nameP2 : nameP1;
+
+    deckPanel.removeAll();
+    deckPanel.add(new JLabel("Waiting for " + activeName + "...", SwingConstants.CENTER));
+    deckPanel.revalidate();
+    deckPanel.repaint();
+
+    JOptionPane.showMessageDialog(frame, 
+        "TURN OVER\n\n" + idleName + ", please leave the seat.\n" + 
+        activeName + ", press OK when you are ready to see your cards.", 
+        "Change Player", 
+        JOptionPane.WARNING_MESSAGE);
+
+    refreshHandPanel(isPlayer1Turn ? player1 : player2);
     }
 
 
