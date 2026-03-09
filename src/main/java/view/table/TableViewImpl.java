@@ -39,13 +39,17 @@ public class TableViewImpl implements TableView {
     private DiscardViewImpl discardView;
     private boolean turnoPlayer1 = true;
     private final model.discard.DiscardPile discardPileModel;
+    private final String nameP1;
+    private final String nameP2;
 
     private JButton takeDiscardBtn;
     private DeckController deckController;
     private DiscardController discardController;
     private final JButton putComboBtn;
 
-    public TableViewImpl(PlayerImpl player1,PlayerImpl player2,DeckImpl commonDeck, SelectionCardManager selectionManager, DrawManager drawManager, DistributionManagerImpl distManager) {
+    public TableViewImpl(PlayerImpl player1, PlayerImpl player2, DeckImpl commonDeck, 
+                         SelectionCardManager selectionManager, DrawManager drawManager, 
+                         DistributionManagerImpl distManager, String n1, String n2) {
 
         this.player1 = player1;
         this.player2 = player2;
@@ -53,26 +57,32 @@ public class TableViewImpl implements TableView {
         this.selectionManager = selectionManager;
         this.drawManager = drawManager;
 
+        this.nameP1 = (n1 == null || n1.isEmpty()) ? "Player 1" : n1;
+        this.nameP2 = (n2 == null || n2.isEmpty()) ? "Player 2" : n2;
+
         frame = new JFrame("Burraco - OOOP Project");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
+        this.turnLabel = new JLabel("Turn: " + nameP1); 
+        this.turnLabel.setFont(baseTitleFont);
+        frame.add(turnLabel, BorderLayout.NORTH);
         
-        
-        turnLabel = new JLabel("Turn: Player 1");
         turnLabel.setFont(baseTitleFont);
         turnLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-        frame.add(turnLabel, BorderLayout.NORTH);
+  
 
         
         JPanel combinationPanel = new JPanel(new GridLayout(1, 2, 20, 10));
         combPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        combPanel1.setBorder(BorderFactory.createTitledBorder("Player 1"));
+        combPanel1.setBorder(BorderFactory.createTitledBorder(nameP1));
         combinationPanel.add(new JScrollPane(combPanel1));
 
         combPanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        combPanel2.setBorder(BorderFactory.createTitledBorder("Player 2"));
+        combPanel2.setBorder(BorderFactory.createTitledBorder(nameP2));
         combinationPanel.add(new JScrollPane(combPanel2));
+
+    
 
         frame.add(combinationPanel, BorderLayout.CENTER);
 
@@ -172,13 +182,16 @@ public class TableViewImpl implements TableView {
 
     public void switchHand(boolean isPlayer1Turn){
         this.turnoPlayer1 = isPlayer1Turn;
-        JOptionPane.showMessageDialog(frame, "it's "+(turnoPlayer1 ? "Player 1" : "Player 2")+" turn, dont look "+ (turnoPlayer1 ? "Player 2" : "Player 1") + "!" );
+        String activeName = isPlayer1Turn ? nameP1 : nameP2;
+        String idleName = isPlayer1Turn ? nameP2 : nameP1;
+    
+        JOptionPane.showMessageDialog(frame, "It's " + activeName + " turn, don't look " + idleName + "!");
         refreshHandPanel(isPlayer1Turn ? player1 : player2);
     }
 
 
     public void refreshTurnLabel(boolean turnoPlayer1) {
-        turnLabel.setText("Turn: " + (turnoPlayer1 ? "Player 1" : "Player 2"));
+        turnLabel.setText("Turn: " + (turnoPlayer1 ? nameP1 : nameP2));
         frame.revalidate();
         frame.repaint();
     }

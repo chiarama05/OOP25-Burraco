@@ -37,7 +37,7 @@ public class BurracoApp {
             DistributionManagerImpl distManager=new DistributionManagerImpl();
             DiscardManagerImpl discardManager = new DiscardManagerImpl(discardPile);
 
-            TableViewImpl view = new TableViewImpl(p1,p2,deck,selectionManager,drawManager,distManager);
+            TableViewImpl view = new TableViewImpl(p1,p2,deck,selectionManager,drawManager,distManager,nameP1,nameP2);
 
             TurnManagerImpl turnManager = new TurnManagerImpl(model, view,drawManager);
 

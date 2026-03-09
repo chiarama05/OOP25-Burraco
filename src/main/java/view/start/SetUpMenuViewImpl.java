@@ -16,7 +16,7 @@ public class SetUpMenuViewImpl implements SetUpMenuView{
 
     public SetUpMenuViewImpl(OnConfigurationCompleteListener listener) {
         this.listener = listener;
-        this.frame = new JFrame("Configurazione Partita");
+        this.frame = new JFrame("Game Configuration");
         setupUI();
     }
 
@@ -28,15 +28,15 @@ public class SetUpMenuViewImpl implements SetUpMenuView{
         JPanel panel = new JPanel(new GridLayout(6, 1, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        panel.add(new JLabel("Nome Giocatore 1:"));
-        name1 = new JTextField("Giocatore 1");
+        panel.add(new JLabel("Name Player 1:"));
+        name1 = new JTextField("");
         panel.add(name1);
 
-        panel.add(new JLabel("Nome Giocatore 2:"));
-        name2 = new JTextField("Giocatore 2");
+        panel.add(new JLabel("Name Player 2:"));
+        name2 = new JTextField("");
         panel.add(name2);
 
-        panel.add(new JLabel("Seleziona Punteggio Vittoria:"));
+        panel.add(new JLabel("Select Victory Score:"));
         JPanel btnPanel = new JPanel(new FlowLayout());
         btnPanel.add(createScoreBtn(1005));
         btnPanel.add(createScoreBtn(1505));
