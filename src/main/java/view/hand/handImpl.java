@@ -21,42 +21,35 @@ public class handImpl extends JPanel implements hand {
 
     @Override
     public void refreshHand(List<Card> hand) {
-        this.removeAll();
+    this.removeAll();
 
-        for (Card c : hand) {
-            String cardText = c.toString();
-            JButton btn = new JButton(cardText);
-            
-            // --- LOGICA COLORE SEMI ---
-            if (cardText.contains("♥") || cardText.contains("♦")) {
-                btn.setForeground(Color.RED);
-            } else {
-                btn.setForeground(Color.BLACK);
-            }
-            // ---------------------------
+    for (Card c : hand) {
+        String cardText = c.toString();
+        JButton btn = new JButton(cardText);
 
-            btn.setPreferredSize(new Dimension(50, 70)); // Leggermente più grandi per leggibilità
-            btn.setFont(new Font("Arial", Font.BOLD, 16));
-            btn.setOpaque(true);
-            
-            // Sfondo Giallo se selezionata, Bianco altrimenti
-            btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
-            btn.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-
-            btn.addActionListener(e -> {
-                selectionManager.toggleSelection(c);
-                btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
-                if (listener != null) {
-                    listener.onCardSelected(c);
-                }
-            });
-
-            add(btn);
+        btn.setFont(new Font("Monospaced", Font.BOLD, 19));
+        if (cardText.contains("♥") || cardText.contains("♦")) {
+            btn.setForeground(Color.RED);
+        } else {
+            btn.setForeground(Color.BLACK);
         }
+        btn.setPreferredSize(new Dimension(60, 85));
+        btn.setOpaque(true);
+        btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
+        btn.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        btn.addActionListener(e -> {
+            selectionManager.toggleSelection(c);
+            btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
+            if (listener != null) {
+                listener.onCardSelected(c);
+            }
+        });
 
-        revalidate();
-        repaint();
+        add(btn);
     }
+    revalidate();
+    repaint();
+}    
 
     @Override
     public Set<Card> getSelectedCards() {

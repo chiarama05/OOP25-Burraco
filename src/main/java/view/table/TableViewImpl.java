@@ -62,7 +62,7 @@ public class TableViewImpl implements TableView {
         this.nameP1 = (n1 == null || n1.isEmpty()) ? "Player 1" : n1;
         this.nameP2 = (n2 == null || n2.isEmpty()) ? "Player 2" : n2;
 
-        frame = new JFrame("Burraco - OOOP Project");
+        frame = new JFrame("Burraco - OOP Project");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
@@ -135,6 +135,7 @@ public class TableViewImpl implements TableView {
         frame.add(rightPanel, BorderLayout.EAST);
 
         frame.addComponentListener(new ComponentAdapter() {
+            
             @Override
             public void componentResized(ComponentEvent e) {
                 applyResponsiveFonts();
@@ -233,12 +234,12 @@ public class TableViewImpl implements TableView {
         scoreScreen.display();
     }
 
+
     private void applyResponsiveFonts() {
     int w = Math.max(frame.getWidth(), 1);
     double factor = clamp(w / 1280.0, 0.7, 1.2); 
 
     turnLabel.setFont(scaleFont(baseTitleFont, factor));
-
 
     Font titleFont = scaleFont(baseTitleFont, factor * 0.6);
     setTitledBorderFont(combPanel1, titleFont);
@@ -246,42 +247,38 @@ public class TableViewImpl implements TableView {
     setTitledBorderFont(discardPanel, titleFont);
     setTitledBorderFont(deckPanel, titleFont);
 
-    int cardWidth = Math.max(45, (int)(w / 25)); 
-    int cardHeight = (int)(cardWidth * 1.4);
-    Dimension cardSize = new Dimension(cardWidth, cardHeight);
     
+    Dimension fixedCardSize = new Dimension(60, 85); 
     
     for (Component comp : discardPanel.getComponents()) {
         if (comp instanceof JComponent jc) {
-            jc.setPreferredSize(cardSize);
-            jc.setMinimumSize(cardSize);
-            jc.setMaximumSize(cardSize);
-            jc.setFont(new Font("Arial", Font.BOLD, (int)(14 * factor)));
+            jc.setPreferredSize(fixedCardSize);
+            jc.setMinimumSize(fixedCardSize);
+            jc.setMaximumSize(fixedCardSize);
+            jc.setFont(new Font("Monospaced", Font.BOLD, 19));
         }
     }
 
     JButton deckBtn = deckView.getDeckButton();
     if (deckBtn != null) {
-        deckBtn.setPreferredSize(cardSize);
-        deckBtn.setMinimumSize(cardSize);
-        deckBtn.setMaximumSize(cardSize);
-        // Scaliamo il font "DECK"
+        deckBtn.setPreferredSize(fixedCardSize);
+        deckBtn.setMinimumSize(fixedCardSize);
+        deckBtn.setMaximumSize(fixedCardSize);
         deckBtn.setFont(new Font("Arial", Font.ITALIC, (int)(12 * factor)));
     }
 
-    for(Player p : new Player[]{player1,player2}){
-        handImpl hv= getHandViewForPlayer(p);
-        if(hv!=null){
+    for(Player p : new Player[]{player1, player2}){
+        handImpl hv = getHandViewForPlayer(p);
+        if(hv != null){
             for(Component comp : hv.getComponents()){
                 if(comp instanceof JButton btn){
-                    btn.setPreferredSize(cardSize);
-                    btn.setFont(new Font("Arial", Font.BOLD,(int)(14*factor)));
+                    btn.setPreferredSize(fixedCardSize);
+                    btn.setFont(new Font("Monospaced", Font.BOLD, 19));
                 }
             }
         }
     }
 
-    // Refresh grafico totale
     frame.revalidate();
     frame.repaint();
 }

@@ -5,11 +5,11 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.FlowLayout;
+
 import java.awt.event.ActionListener;
 import model.card.*;
-import java.awt.Dimension;
+
+import java.awt.*;
 
 /**
  * Concrete implementation of DiscardView.
@@ -55,9 +55,8 @@ public class DiscardViewImpl implements DiscardView{
      * @param discardPile the list of cards currently in the discard pile
      */
     @Override
-    public void updateDiscardPile(List<Card> discardPile) {
+public void updateDiscardPile(List<Card> discardPile) {
     discardPanel.removeAll();
-
     for (Card c : discardPile) {
         String cardText = c.toString();
         JLabel label = new JLabel(cardText);
@@ -65,24 +64,22 @@ public class DiscardViewImpl implements DiscardView{
         label.setOpaque(true);
         label.setBackground(Color.WHITE);
         label.setHorizontalAlignment(JLabel.CENTER);
-        
-        // Colore dei semi
+        label.setFont(new Font("Monospaced", Font.BOLD, 19));
+
         if (cardText.contains("♥") || cardText.contains("♦")) {
             label.setForeground(Color.RED);
         } else {
             label.setForeground(Color.BLACK);
         }
-
-        // Il dimensionamento verrà gestito dal TableViewImpl via applyResponsiveFonts
-        // o impostiamo un default qui
-        label.setPreferredSize(new Dimension(50, 70)); 
-        
+        label.setPreferredSize(new Dimension(60, 85));
         discardPanel.add(label);
     }
 
     discardPanel.revalidate();
     discardPanel.repaint();
-    }
+
+}
+
 
     /**
      * Attaches a listener to the discard button.
