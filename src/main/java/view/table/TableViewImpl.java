@@ -153,7 +153,7 @@ public class TableViewImpl implements TableView {
     public void wireControllers(final model.turn.TurnManager turnManager, final core.discardcard.DiscardManagerImpl discardManager){
         this.deckController=new DeckController(deckView,drawManager,this,turnManager);
         new TakeDiscardController(takeDiscardBtn, drawManager, this, turnManager, discardPileModel, discardView);
-        PutCombinationController putController=new PutCombinationController(this,turnManager,selectionManager);
+        PutCombinationController putController=new PutCombinationController(this,turnManager,selectionManager, this.drawManager);
         putComboBtn.addActionListener(e -> putController.handlePutCombination());
         this.discardController=new DiscardController(this,turnManager,discardManager,discardView, discardPileModel, drawManager);
     }
@@ -335,4 +335,8 @@ public class TableViewImpl implements TableView {
     public SelectionCardManager getSelectionManager() {
     return selectionManager;
     }
+
+    public DrawManager getDrawManager() {
+    return this.drawManager;
+}
 }

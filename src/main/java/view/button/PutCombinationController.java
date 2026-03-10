@@ -5,6 +5,7 @@ import model.player.Player;
 import model.card.Card;
 import core.combination.CombinationValidator;
 import core.combination.StraightUtils;
+import core.drawcard.DrawManager;
 import core.selectioncard.SelectionCardManager;
 import model.turn.TurnManager;
 
@@ -18,14 +19,21 @@ public class PutCombinationController {
     private final TableViewImpl tableView;
     private final TurnManager turnManager;
     private final SelectionCardManager selectionManager;
+    private final DrawManager drawManager;
     
-    public PutCombinationController(TableViewImpl tableView, TurnManager turnManager, SelectionCardManager selectionManager) {
+    public PutCombinationController(TableViewImpl tableView, TurnManager turnManager, SelectionCardManager selectionManager, DrawManager drawManager) {
         this.tableView = tableView;
         this.selectionManager = selectionManager;
         this.turnManager=turnManager;
+        this.drawManager = drawManager;
+
     }
 
     public void handlePutCombination() {
+        if (!drawManager.hasDrawn()) {
+        JOptionPane.showMessageDialog(null, "You can't put down combinations before you draw!");
+        return;
+    }
         Player currentPlayer = turnManager.getCurrentPlayer();
 
         // Recupera le carte selezionate tramite SelectionCardManager
