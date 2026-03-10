@@ -56,24 +56,31 @@ public class StraightAttachUtils {
         int vLast = mapVal(last);
 
         // -------------------------------------------------
-        // ATTACCO AI BORDI
-        // -------------------------------------------------
+// ATTACCO AI BORDI (LOGICA SIMMETRICA)
+// -------------------------------------------------
 
-        // SINISTRA
-        if (vNew == vFirst - 1) return true;
-        if (jollyCount > 0 && vNew == vFirst - 2) return true;
+// --- ATTACCO A SINISTRA (Basso) ---
+// Esempio: 5-6-7 -> attacco 4 (vFirst-1)
+if (vNew == vFirst - 1) return true;
+// Esempio: Jolly-5-6-7 (Jolly fa il 4) -> attacco 3 (vFirst-2)
+if (jollyCount > 0 && vNew == vFirst - 2) return true;
 
-        // DESTRA
-        if (vNew == vLast + 1) return true;
+// --- ATTACCO A DESTRA (Alto) ---
+// Esempio: 5-6-7 -> attacco 8 (vLast+1)
+if (vNew == vLast + 1) return true;
+// Esempio: 5-6-7-Jolly (Jolly fa l'8) -> attacco 9 (vLast+2)
+if (jollyCount > 0 && vNew == vLast + 2) return true;
 
-        // K → A
-        if (vLast == 13 && newCard.getValue().equals("A")) return true;
+// --- CASI SPECIALI: ASSO E 2 ---
+// K -> A
+if (vLast == 13 && newCard.getValue().equals("A")) return true;
 
-        if (jollyCount > 0) {
-
-            if (vLast == 12 && newCard.getValue().equals("A")) return true;
-            if (vLast == 13 && newCard.getValue().equals("2")) return true;
-        }
+if (jollyCount > 0) {
+    // Q - Jolly(K) -> attacco A
+    if (vLast == 12 && newCard.getValue().equals("A")) return true;
+    // K - Jolly(A) -> attacco 2 (come matta successiva)
+    if (vLast == 13 && newCard.getValue().equals("2")) return true;
+}
 
         // -------------------------------------------------
         // SOSTITUZIONE MATTA INTERNA
