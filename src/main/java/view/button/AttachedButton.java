@@ -71,8 +71,13 @@ public class AttachedButton extends JButton {
         }
 
         if (canAttachAll) {
+            int sizeBefore = this.cards.size();
             this.cards.addAll(selected);
             currentPlayer.removeCards(selected);
+
+            if (sizeBefore < 7 && this.cards.size() >= 7) {
+               tableView.getSoundController().playBurracoSound();
+            }
             
             updateVisuals(); 
             tableView.getSelectionManager().clearSelection();

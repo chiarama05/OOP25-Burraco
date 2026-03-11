@@ -57,6 +57,9 @@ public class PutCombinationController {
         
         currentPlayer.removeCards(selected);
         tableView.addCombinationToPlayerPanel(selected, tableView.isPlayer1(currentPlayer));
+        if (selected.size() >= 7) {
+           tableView.getSoundController().playBurracoSound();
+        }
         tableView.refreshHandPanel(currentPlayer);
 
         if(currentPlayer.hasFinishedCards() && !currentPlayer.isInPot()){

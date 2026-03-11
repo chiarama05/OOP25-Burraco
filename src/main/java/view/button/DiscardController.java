@@ -10,6 +10,7 @@ import view.hand.handImpl;
 import view.table.TableViewImpl;
 import model.turn.TurnManager;
 import model.discard.DiscardPile;
+import view.sound.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -87,6 +88,10 @@ public class DiscardController {
         if(result.isGameWon()){
             tableView.showWinExit(tableView.isPlayer1(current));
             return;
+        }
+
+        if (current.hasFinishedCards()) {
+            tableView.getSoundController().playRoundEndSound();
         }
         
         if(result.isTurnEnds()){

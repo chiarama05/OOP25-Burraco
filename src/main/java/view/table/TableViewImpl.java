@@ -13,6 +13,7 @@ import view.distribution.InitialDistributionView;
 import view.hand.handImpl;
 import view.score.ScoreView;
 import view.score.ScoreViewImpl;
+import view.sound.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,6 +44,7 @@ public class TableViewImpl implements TableView {
     private final model.discard.DiscardPile discardPileModel;
     private final String nameP1;
     private final String nameP2;
+    private final SoundController audioController = new SoundControllerImpl();
 
     private JButton takeDiscardBtn;
     private DeckController deckController;
@@ -226,7 +228,14 @@ public class TableViewImpl implements TableView {
         JOptionPane.showMessageDialog(frame, "You can't discard your last card without even done a Burraco!");
     }
 
+    public SoundController getSoundController() {
+        return this.audioController;
+    }
+
     public void showWinExit(boolean player1Won) {
+        //SUONO VITTORIA
+        this.getSoundController().playVictorySound();
+
         JOptionPane.showMessageDialog(frame, "You can exit now! the winner is... " + (player1Won ? "Player 1" : "Player 2"));
         frame.dispose();
         System.exit(0);
