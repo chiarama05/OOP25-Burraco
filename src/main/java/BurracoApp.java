@@ -35,17 +35,17 @@ public class BurracoApp {
                 PlayerImpl p2 = new PlayerImpl(nameP2);
                 TableModelImpl model = new TableModelImpl(p1, p2);
 
-                DeckImpl deck = new DeckImpl();
-                DiscardPileImpl discardPile = new DiscardPileImpl();
-                SelectionCardManager selectionManager = new SelectionCardManager();
+                //DeckImpl deck = new DeckImpl();
+                //DiscardPileImpl discardPile = new DiscardPileImpl();
+                //SelectionCardManager selectionManager = new SelectionCardManager();
                 DrawManager drawManager = new DrawManager();
-                DistributionManagerImpl distManager = new DistributionManagerImpl();
-                DiscardManagerImpl discardManager = new DiscardManagerImpl(discardPile);
+                //DistributionManagerImpl distManager = new DistributionManagerImpl();
+                //DiscardManagerImpl discardManager = new DiscardManagerImpl(discardPile);
 
-                TableViewImpl view = new TableViewImpl(p1, p2, deck, selectionManager, drawManager, distManager, nameP1, nameP2,scoreThreshold);
+                TableViewImpl view = new TableViewImpl(p1, p2, drawManager, nameP1, nameP2, scoreThreshold);
                 TurnManagerImpl turnManager = new TurnManagerImpl(model, view, drawManager);
 
-                view.wireControllers(turnManager, discardManager);
+                view.wireControllers(turnManager);
             }
 
             @Override

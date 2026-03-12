@@ -68,7 +68,7 @@ public class AttachedButton extends JButton {
             }
         }
 
-        TurnPlayOutcome outcome= tableView.getTurnValidator().canPlaycaardsNow(currentPlayer,selected.size());
+        TurnPlayOutcome outcome= tableView.getTurnValidator().canPlayCardsNow(currentPlayer,selected.size());
         if(!outcome.isAllowed()){
             JOptionPane.showMessageDialog(this,outcome.getMessage() != null ? outcome.getMessage() : "Action not allowed.");
             return;

@@ -6,6 +6,7 @@ import core.drawcard.DrawManager;
 import core.selectioncard.SelectionCardManager;
 import model.card.Card;
 import model.deck.DeckImpl;
+import model.discard.DiscardPileImpl;
 import model.player.*;
 import view.button.*;
 import view.discard.DiscardViewImpl;
@@ -54,16 +55,16 @@ public class TableViewImpl implements TableView {
     private DiscardController discardController;
     private final JButton putComboBtn;
 
-    public TableViewImpl(PlayerImpl player1, PlayerImpl player2, DeckImpl commonDeck, 
-                         SelectionCardManager selectionManager, DrawManager drawManager, 
-                         DistributionManagerImpl distManager, String n1, String n2, int winLimit) {
+    public TableViewImpl(PlayerImpl player1, PlayerImpl player2, DrawManager drawManager, String n1, String n2, int winLimit) {
 
+        this.turnValidator=new TurnValidatorImpl();
         this.player1 = player1;
         this.player2 = player2;
-        this.commonDeck = commonDeck;
-        this.selectionManager = selectionManager;
+        this.commonDeck = new DeckImpl();
+        this.selectionManager = new SelectionCardManager();
         this.drawManager = drawManager;
         this.winLimit = winLimit;
+        DistributionManagerImpl distManager = new DistributionManagerImpl();
 
         this.nameP1 = (n1 == null || n1.isEmpty()) ? "Player 1" : n1;
         this.nameP2 = (n2 == null || n2.isEmpty()) ? "Player 2" : n2;
@@ -157,9 +158,9 @@ public class TableViewImpl implements TableView {
 
 
     //da mettere nel controller 
-    public void wireControllers(final model.turn.TurnManager turnManager, final core.discardcard.DiscardManagerImpl discardManager){
+    public void wireControllers(final model.turn.TurnManager turnManager){
 
-        this.turnValidator=new TurnValidatorImpl();
+        DiscardManagerImpl discardManager = new DiscardManagerImpl(new DiscardPileImpl());
         this.deckController=new DeckController(deckView,drawManager,this,turnManager);
         new TakeDiscardController(takeDiscardBtn, drawManager, this, turnManager, discardPileModel, discardView);
         

@@ -20,7 +20,8 @@ public class TurnManagerImpl implements TurnManager{
 
         view.refreshTurnLabel(model.isPlayer1Turn());
         view.switchHand(model.isPlayer1Turn());
-        view.getTurnValidator().startTurn(model.getCurrentPlayer());
+        drawManager.resetTurn();
+        view.getTurnValidator().startTurn(model.getCurrentPlayer());   
     }
 
     public Player getCurrentPlayer(){
@@ -31,20 +32,22 @@ public class TurnManagerImpl implements TurnManager{
     public void nextTurn(){
 
         final Player prev= model.getCurrentPlayer();
+
         if(prev.isInPot() && prev.hasFinishedCards()){
             prev.drawPot();
         }
 
         model.switchTurn();
-        if(this.drawManager!=null){
-            this.drawManager.resetTurn();
-        }
+        drawManager.resetTurn();
 
-        view.getTurnValidator().startTurn(model.getCurrentPlayer());
+        /*if(this.drawManager!=null){
+            this.drawManager.resetTurn();
+        }*/
+
         view.refreshTurnLabel(model.isPlayer1Turn());
         view.switchHand(model.isPlayer1Turn());
-
         model.mustTakePot();
+        view.getTurnValidator().startTurn(model.getCurrentPlayer());
     }
 
     @Override
