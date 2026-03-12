@@ -152,6 +152,7 @@ public class TableViewImpl implements TableView {
     }
 
 
+    //da mettere nel controller 
     public void wireControllers(final model.turn.TurnManager turnManager, final core.discardcard.DiscardManagerImpl discardManager){
         this.deckController=new DeckController(deckView,drawManager,this,turnManager);
         new TakeDiscardController(takeDiscardBtn, drawManager, this, turnManager, discardPileModel, discardView);
@@ -191,7 +192,7 @@ public class TableViewImpl implements TableView {
     String idleName = isPlayer1Turn ? nameP2 : nameP1;
 
     deckPanel.removeAll();
-    deckPanel.add(new JLabel("Waiting for " + activeName + "...", SwingConstants.CENTER));
+    //deckPanel.add(new JLabel("Waiting for " + activeName + "...", SwingConstants.CENTER));
     deckPanel.revalidate();
     deckPanel.repaint();
 
@@ -201,7 +202,7 @@ public class TableViewImpl implements TableView {
         "Change Player", 
         JOptionPane.WARNING_MESSAGE);
 
-    refreshHandPanel(isPlayer1Turn ? player1 : player2);
+    refreshHandPanel(getCurrentPlayer());
     }
 
 
