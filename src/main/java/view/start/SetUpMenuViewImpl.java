@@ -29,7 +29,7 @@ public class SetUpMenuViewImpl implements SetUpMenuView{
     private void setupUI() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(450, 600);
-        frame.setResizable(true); // <--- Ora lo schermo si può ingrandire!
+        frame.setResizable(true); 
         frame.setLocationRelativeTo(null);
 
         // Usiamo GridBagLayout: è l'unico che permette di tenere i componenti "fissi" al centro

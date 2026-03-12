@@ -1,6 +1,8 @@
 package view.score;
 
 import model.player.Player;
+import model.player.PlayerImpl;
+import view.table.TableViewImpl;
 import core.score.ScoreManager;
 import core.score.ScoreManagerImpl;
 
@@ -12,10 +14,14 @@ public class ScoreViewImpl implements ScoreView{
 
     private final JFrame frame;
     private final ScoreManager scoreManager;
+    private final int targetScore;
+    private final TableViewImpl tableView;
 
-    public ScoreViewImpl(Player p1, Player p2, String name1, String name2) {
+    public ScoreViewImpl(Player p1, Player p2, String name1, String name2, int targetScore, TableViewImpl tableView) {
         this.scoreManager = new ScoreManagerImpl();
         this.frame = new JFrame("Burraco - Final Standings");
+        this.targetScore = targetScore;
+        this.tableView = tableView;
         
         setupUI(p1, p2, name1, name2);
     }
@@ -41,27 +47,38 @@ public class ScoreViewImpl implements ScoreView{
         gridPanel.setBorder(new EmptyBorder(40, 30, 40, 30));
 
         // Calcolo punteggi reali
-        int s1 = scoreManager.calculateFinalScore(p1);
-        int s2 = scoreManager.calculateFinalScore(p2);
+        int roundS1 = scoreManager.calculateFinalScore(p1);
+        int roundS2 = scoreManager.calculateFinalScore(p2);
 
-        
+        // 2. Aggiorna il totale storico dei giocatori
+        ((PlayerImpl)p1).addPointsToMatch(roundS1);
+        ((PlayerImpl)p2).addPointsToMatch(roundS2);
+
+        int totalS1 = ((PlayerImpl)p1).getMatchTotalScore();
+        int totalS2 = ((PlayerImpl)p2).getMatchTotalScore();
+
+        System.out.println("Punti Round P1: " + roundS1 + " | Totale: " + totalS1);
+
+        // 3. Mostra i totali nella griglia
         gridPanel.add(createStyledLabel(name1));
-        gridPanel.add(createScoreValueLabel(s1));
+        gridPanel.add(createScoreValueLabel(totalS1));
         gridPanel.add(createStyledLabel(name2));
-        gridPanel.add(createScoreValueLabel(s2));
+        gridPanel.add(createScoreValueLabel(totalS2));
 
-        mainPanel.add(gridPanel, BorderLayout.CENTER);
-
-        // --- BOTTONE CHIUDI ---
-        JButton exitBtn = new JButton("ESCI DAL GIOCO");
-        exitBtn.setFont(new Font("Arial", Font.BOLD, 20));
-        exitBtn.setBackground(Color.YELLOW);
-        exitBtn.setForeground(Color.BLACK);
-        exitBtn.addActionListener(e -> System.exit(0));
-        
-        mainPanel.add(exitBtn, BorderLayout.SOUTH);
-
-        frame.add(mainPanel);
+        // 4. Logica del bottone (CONTINUA o FINE)
+        JButton actionBtn;
+        if (totalS1 >= targetScore || totalS2 >= targetScore) {
+            String winner = totalS1 > totalS2 ? name1 : name2;
+            actionBtn = new JButton("CAMPIONE: " + winner + " (ESCI)");
+            actionBtn.addActionListener(e -> System.exit(0));
+        } else {
+            actionBtn = new JButton("PROSSIMO ROUND (Target: " + targetScore + ")");
+            actionBtn.addActionListener(e -> {
+                frame.dispose();
+                tableView.startNewRound(); // Metodo da implementare per pulire il tavolo
+            });
+        }
+        mainPanel.add(actionBtn, BorderLayout.SOUTH);
     }
 
     private JLabel createStyledLabel(String text) {

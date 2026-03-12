@@ -15,14 +15,24 @@ public class DeckImpl implements Deck {
     private List<Card> cards;
 
     public DeckImpl() {
-
-        /* Internal list that stores all the cards in the deck */
         this.cards = new ArrayList<>();
+        initializeDeck();
+    }
 
+    /**
+     * Svuota il mazzo e lo rigenera completamente.
+     */
+    public void reset() {
+        this.cards.clear();
+        initializeDeck();
+    }
+
+    private void initializeDeck() {
         String[] seeds = {"♠", "♥", "♣", "♦"};
         String[] values = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
 
-        for (int j=0; j<2; j++) {
+        // Due mazzi da 54 carte (52 + 2 Jolly) = 108 carte
+        for (int j = 0; j < 2; j++) {
             for (String seed : seeds) {
                 for (String value : values) {
                     cards.add(new CardImpl(seed, value));
@@ -42,7 +52,7 @@ public class DeckImpl implements Deck {
         }
         return null;
     }
-    // --> return cards.isEmpty() ? null : cards.remove(cards.size()-1);
+    
 
 
     @Override

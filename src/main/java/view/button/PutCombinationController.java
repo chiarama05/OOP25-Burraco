@@ -64,6 +64,7 @@ public class PutCombinationController {
             selected = StraightUtils.orderStraight(selected);
         }
 
+        currentPlayer.addCombination(selected);
         currentPlayer.removeCards(selected); 
         
         tableView.addCombinationToPlayerPanel(selected, tableView.isPlayer1(currentPlayer));
