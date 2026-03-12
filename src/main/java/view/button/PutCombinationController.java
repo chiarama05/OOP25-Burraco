@@ -42,7 +42,7 @@ public class PutCombinationController {
             .collect(Collectors.toList());
 
     if (selected.size() < 3) {
-        JOptionPane.showMessageDialog(null, "At least 3 cards needed!");
+        JOptionPane.showMessageDialog(null, "At least 3 cards are needed to form a scale or a tris!");
         return;
     }
 
