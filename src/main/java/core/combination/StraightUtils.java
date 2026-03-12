@@ -206,12 +206,19 @@ public class StraightUtils {
     // Gestione Matte rimanenti (Jolly o 2 liberi)
     // Se la sequenza finisce con l'Asso basso (1), la matta non può stare prima.
     // Se la sequenza inizia con 3, 2, la matta può stare in cima (Asso).
-    while (wildIndex < wild.size()) {
-        // In Burraco, la matta solitamente si mette in fondo a meno che non rimpiazzi 
-        // una carta specifica. Qui la mettiamo in coda per default.
-        result.add(wild.get(wildIndex++));
-    }
+    // ... (codice precedente di orderStraight)
 
+    // Gestione Matte rimanenti
+    while (wildIndex < wild.size()) {
+        Card w = wild.get(wildIndex++);
+        // Se l'asso è basso (1, 2, 3...), la matta NON può andare prima dell'Asso.
+        // La mettiamo in fondo, a meno che non manchi il 2 nella scala A-3
+        if (finalUseAceLow && real.get(0).getValue().equals("A") && real.size() > 1 && mapValue(real.get(1), true) == 3) {
+             result.add(1, w); // Metti il jolly in posizione del '2'
+        } else {
+             result.add(w); // Default: in fondo
+        }
+    }
     return result;
 }
 }
