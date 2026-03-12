@@ -216,12 +216,40 @@ public class TableViewImpl implements TableView {
         return this.commonDeck;
     }
     
+    /**
+    * Aggiorna il titolo del pannello del giocatore per indicare che ha preso il pozzetto.
+    */
+    public void markPotTaken(boolean isPlayer1) {
+       JPanel targetPanel = isPlayer1 ? combPanel1 : combPanel2;
+       String baseName = isPlayer1 ? nameP1 : nameP2;
+    
+       if (targetPanel.getBorder() instanceof javax.swing.border.TitledBorder tb) {
+           tb.setTitle(baseName + " - Pot Taken");
+           targetPanel.repaint();
+        }
+    }
+
+    /**
+    * Metodo opzionale se vuoi resettare il titolo all'inizio di una nuova partita.
+    */
+    public void resetPlayerTitles() {
+      if (combPanel1.getBorder() instanceof javax.swing.border.TitledBorder tb1) {
+          tb1.setTitle(nameP1);
+        }
+      if (combPanel2.getBorder() instanceof javax.swing.border.TitledBorder tb2) {
+          tb2.setTitle(nameP2);
+        }
+        combPanel1.repaint();
+        combPanel2.repaint();
+    }
+
+
     public void showPotFly() {
         JOptionPane.showMessageDialog(frame, "You close your hand on 'fly', you can continue to play in this same turn!");
     }
 
     public void showPotnextTurn() {
-        JOptionPane.showMessageDialog(frame, "You can take your pot! You can play it in the NEXT turn!");
+        JOptionPane.showMessageDialog(frame, "You have taken your pot! You can play it in the NEXT turn!");
     }
 
     public void showNotValideClosure() {
