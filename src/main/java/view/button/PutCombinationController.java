@@ -65,16 +65,15 @@ public class PutCombinationController {
             selected = StraightUtils.orderStraight(selected);
         }
 
-        currentPlayer.addCombination(selected);
         currentPlayer.removeCards(selected); 
-        
+        //currentPlayer.addCombination(selected);
         tableView.addCombinationToPlayerPanel(selected, tableView.isPlayer1(currentPlayer));
         
         if (selected.size() >= 7){
             tableView.getSoundController().playBurracoSound();
         }
         
-        if(outcome.triggerPotFly()){
+        if(outcome.triggersPotFly()){
             currentPlayer.setInPot(true);
             currentPlayer.drawPot();
             tableView.showPotFly();
