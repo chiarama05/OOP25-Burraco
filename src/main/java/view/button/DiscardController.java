@@ -84,6 +84,17 @@ public class DiscardController {
         // Aggiorna la discard pile visiva
         discardView.updateDiscardPile(discardPileModel.getCards());
 
+        if (current.hasFinishedCards()) { // Se il giocatore ha finito le carte
+            
+            // Aggiorna il titolo sulla TableView: "Nome - Pot Taken"
+            tableView.markPotTaken(tableView.isPlayer1(current));
+            
+            // Riproduci il suono di fine round/pozzetto
+            tableView.getSoundController().playRoundEndSound();
+            
+            // Mostra il messaggio informativo
+            tableView.showPotnextTurn();
+        }
 
         if(result.isGameWon()){
             tableView.showWinExit(tableView.isPlayer1(current));
