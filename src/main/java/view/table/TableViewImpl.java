@@ -204,7 +204,7 @@ public class TableViewImpl implements TableView {
     String idleName = isPlayer1Turn ? nameP2 : nameP1;
 
     deckPanel.removeAll();
-    //deckPanel.add(new JLabel("Waiting for " + activeName + "...", SwingConstants.CENTER));
+    deckPanel.add(new JLabel("Waiting for " + activeName + "...", SwingConstants.CENTER));
     deckPanel.revalidate();
     deckPanel.repaint();
 

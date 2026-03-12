@@ -20,8 +20,17 @@ public class TurnManagerImpl implements TurnManager{
 
         view.refreshTurnLabel(model.isPlayer1Turn());
         view.switchHand(model.isPlayer1Turn());
-        drawManager.resetTurn();
-        view.getTurnValidator().startTurn(model.getCurrentPlayer());   
+
+       
+        if (this.drawManager != null) {
+            this.drawManager.resetTurn();
+        }
+
+       
+
+        if(view.getTurnValidator()!=null){
+            view.getTurnValidator().startTurn(model.getCurrentPlayer());
+        } 
     }
 
     public Player getCurrentPlayer(){
@@ -38,16 +47,19 @@ public class TurnManagerImpl implements TurnManager{
         }
 
         model.switchTurn();
-        drawManager.resetTurn();
+         // drawManager.resetTurn()
 
-        /*if(this.drawManager!=null){
+        if (this.drawManager != null) {
             this.drawManager.resetTurn();
-        }*/
+        }
 
         view.refreshTurnLabel(model.isPlayer1Turn());
         view.switchHand(model.isPlayer1Turn());
         model.mustTakePot();
+
+        if(view.getTurnValidator()!=null){
         view.getTurnValidator().startTurn(model.getCurrentPlayer());
+        } 
     }
 
     @Override
