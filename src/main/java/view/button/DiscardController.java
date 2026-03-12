@@ -53,15 +53,18 @@ public class DiscardController {
             "You must draw from the deck or take the discard pile before discarding!", 
             "Action Required", 
             JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+            return;
+        }
 
         Player current=turnManager.getCurrentPlayer();
         handImpl handView=tableView.getHandViewForPlayer(current);
 
         Set<Card> selected = handView.getSelectedCards();
         if (selected.size() != 1) {
-            System.out.println("Select exactly one card to discard!");
+            JOptionPane.showMessageDialog(null, 
+               "Select exactly one card to discard!", 
+               "Selection Error", 
+               JOptionPane.WARNING_MESSAGE); 
             return;
         }
 
@@ -84,25 +87,15 @@ public class DiscardController {
         // Aggiorna la discard pile visiva
         discardView.updateDiscardPile(discardPileModel.getCards());
 
-        if (current.hasFinishedCards()) { // Se il giocatore ha finito le carte
-            
-            // Aggiorna il titolo sulla TableView: "Nome - Pot Taken"
+        if (current.hasFinishedCards()) { 
             tableView.markPotTaken(tableView.isPlayer1(current));
-            
-            // Riproduci il suono di fine round/pozzetto
             tableView.getSoundController().playRoundEndSound();
-            
-            // Mostra il messaggio informativo
             tableView.showPotnextTurn();
         }
 
         if(result.isGameWon()){
             tableView.showWinExit(tableView.isPlayer1(current));
             return;
-        }
-
-        if (current.hasFinishedCards()) {
-            tableView.getSoundController().playRoundEndSound();
         }
         
         if(result.isTurnEnds()){

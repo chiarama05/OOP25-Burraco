@@ -229,9 +229,7 @@ public class TableViewImpl implements TableView {
         }
     }
 
-    /**
-    * Metodo opzionale se vuoi resettare il titolo all'inizio di una nuova partita.
-    */
+    
     public void resetPlayerTitles() {
       if (combPanel1.getBorder() instanceof javax.swing.border.TitledBorder tb1) {
           tb1.setTitle(nameP1);
