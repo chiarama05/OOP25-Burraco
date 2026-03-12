@@ -20,6 +20,7 @@ public class TurnManagerImpl implements TurnManager{
 
         view.refreshTurnLabel(model.isPlayer1Turn());
         view.switchHand(model.isPlayer1Turn());
+        view.getTurnValidator().startTurn(model.getCurrentPlayer());
     }
 
     public Player getCurrentPlayer(){
@@ -38,7 +39,8 @@ public class TurnManagerImpl implements TurnManager{
         if(this.drawManager!=null){
             this.drawManager.resetTurn();
         }
-        
+
+        view.getTurnValidator().startTurn(model.getCurrentPlayer());
         view.refreshTurnLabel(model.isPlayer1Turn());
         view.switchHand(model.isPlayer1Turn());
 

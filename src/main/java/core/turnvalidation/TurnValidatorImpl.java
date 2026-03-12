@@ -14,6 +14,10 @@ public class TurnValidatorImpl implements TurnValidator {
         this.allowPotFly = allowPotFly;
     }
 
+    @Override
+    public void startTurn(Player player){
+        //
+    }
 
     @Override
     public TurnPlayOutcome canPlayCardsNow(Player player, int cardsToPlay) {

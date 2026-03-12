@@ -11,4 +11,6 @@ public interface TurnValidator {
     default void onCardsPlayed(Player player, int cardsPlayed) { 
     //
     }
+
+    void startTurn(Player player);
 }

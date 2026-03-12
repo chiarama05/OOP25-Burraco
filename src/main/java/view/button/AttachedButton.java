@@ -4,6 +4,7 @@ import model.card.Card;
 import model.player.Player;
 import core.combination.AttachUtils;
 import core.combination.StraightUtils;
+import core.turnvalidation.TurnPlayOutcome;
 import view.burraco.BurracoStyleManager;
 import view.table.TableViewImpl;
 
@@ -20,17 +21,14 @@ public class AttachedButton extends JButton {
     private final TableViewImpl tableView;
     private final boolean isPlayer1Owner;
 
-    public AttachedButton(List<Card> initialCards, TableViewImpl tableView, boolean isPlayer1Owner) {
+    public AttachedButton(final List<Card> initialCards, final TableViewImpl tableView, final boolean isPlayer1Owner) {
         this.cards = new ArrayList<>(initialCards);
         this.tableView = tableView;
         this.isPlayer1Owner = isPlayer1Owner;
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.WHITE);
-        this.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.GRAY, 1),
-                BorderFactory.createEmptyBorder(10, 5, 10, 5)
-        ));
+        this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.GRAY, 1),BorderFactory.createEmptyBorder(10, 5, 10, 5)));
 
 
         updateVisuals();
@@ -40,58 +38,76 @@ public class AttachedButton extends JButton {
     }
 
     private void handleAttach() {
+
         if (!tableView.getDrawManager().hasDrawn()) {
         JOptionPane.showMessageDialog(this, "You have to draw from the deck or from the discard pile first!");
         return;
-    }
-        Player currentPlayer = tableView.getCurrentPlayer();
+        }
 
+        Player currentPlayer = tableView.getCurrentPlayer();
         boolean isCurrentPlayer1 = tableView.isPlayer1(currentPlayer);
+
         if (isCurrentPlayer1 != isPlayer1Owner) {
            JOptionPane.showMessageDialog(this, "You can only attach cards to your own combinations!");
            return;
         }
         
-        List<Card> selected = tableView.getSelectionManager().getSelectedCards().stream()
-                .filter(currentPlayer::hasCard)
-                .collect(Collectors.toList());
+        List<Card> selected = tableView.getSelectionManager().getSelectedCards().stream().filter(currentPlayer::hasCard).collect(Collectors.toList());
 
         if (selected.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Select the card from your hand first!");
+            JOptionPane.showMessageDialog(this, "Select the card(s) from your hand first!");
             return;
         }
 
-       
-        boolean canAttachAll = true;
-        for (Card c : selected) {
-            if (!AttachUtils.canAttach(this.cards, c)) {
-                canAttachAll = false;
+
+        boolean canAttachAll=true;
+        for(Card c: selected){
+            if(!AttachUtils.canAttach(this.cards, c)){
+                canAttachAll=false;
                 break;
             }
         }
 
-        if (canAttachAll) {
+        TurnPlayOutcome outcome= tableView.getTurnValidator().canPlaycaardsNow(currentPlayer,selected.size());
+        if(!outcome.isAllowed()){
+            JOptionPane.showMessageDialog(this,outcome.getMessage() != null ? outcome.getMessage() : "Action not allowed.");
+            return;
+        }
+
+        int sizeBefore=this.cards.size();
+        this.cards.addAll(selected);
+        currentPlayer.removeCards(selected);
+
+        if (sizeBefore < 7 && this.cards.size() >= 7) {
+               tableView.getSoundController().playBurracoSound();
+        }
+
+
+        if(outcome.triggersPotFly()){
+            currentPlayer.setInPot(true);
+            currentPlayer.drawPot();
+            tableView.showPotFly();
+            tableView.markPotTaken(tableView.isPlayer1(currentPlayer));
+        }
+
+        updateVisuals();
+        tableView.getSelectionManager().clearSelection();
+        tableView.refreshHandPanel(currentPlayer);
+
+       /* if (canAttachAll) {
             int sizeBefore = this.cards.size();
             this.cards.addAll(selected);
-
-            for (List<Card> playerComb : currentPlayer.getCombinations()) {
-            // Se la lista del player contiene la prima carta del mazzetto, è la lista giusta
-            if (!this.cards.isEmpty() && playerComb.contains(this.cards.get(0))) {
-            playerComb.clear();    // Puliamo la vecchia lista del player
-            playerComb.addAll(this.cards); // Ci mettiamo dentro tutte le carte (ora sono 7 o più)
-            break;
-        }
-    }
             currentPlayer.removeCards(selected);
 
-            if (sizeBefore < 7 && this.cards.size() >= 7) {
-               tableView.getSoundController().playBurracoSound();
-            }
+           
             
             updateVisuals(); 
             tableView.getSelectionManager().clearSelection();
             tableView.refreshHandPanel(currentPlayer);
-        }
+        } 
+        else {
+            JOptionPane.showMessageDialog(this, "Invalid combination for this stack!");
+        }*/
     }
 
     public void updateVisuals() {

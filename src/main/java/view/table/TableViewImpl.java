@@ -14,6 +14,7 @@ import view.hand.handImpl;
 import view.score.ScoreView;
 import view.score.ScoreViewImpl;
 import view.sound.*;
+import core.turnvalidation.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,6 +47,7 @@ public class TableViewImpl implements TableView {
     private final String nameP2;
     private final SoundController audioController = new SoundControllerImpl();
     private final int winLimit;
+    private TurnValidator turnValidator;
 
     private JButton takeDiscardBtn;
     private DeckController deckController;
@@ -156,11 +158,15 @@ public class TableViewImpl implements TableView {
 
     //da mettere nel controller 
     public void wireControllers(final model.turn.TurnManager turnManager, final core.discardcard.DiscardManagerImpl discardManager){
+
+        this.turnValidator=new TurnValidatorImpl();
         this.deckController=new DeckController(deckView,drawManager,this,turnManager);
         new TakeDiscardController(takeDiscardBtn, drawManager, this, turnManager, discardPileModel, discardView);
-        PutCombinationController putController=new PutCombinationController(this,turnManager,selectionManager, this.drawManager);
+        
+        PutCombinationController putController=new PutCombinationController(this,turnManager,selectionManager, this.drawManager,this.turnValidator);
         putComboBtn.addActionListener(e -> putController.handlePutCombination());
         this.discardController=new DiscardController(this,turnManager,discardManager,discardView, discardPileModel, drawManager);
+        this.turnValidator.startTurn(turnManager.getCurrentPlayer());
     }
 
 
@@ -187,6 +193,9 @@ public class TableViewImpl implements TableView {
         return turnoPlayer1 ? player1 : player2;
     }
 
+    public TurnValidator getTurnValidator(){
+        return this.turnValidator;
+    }
 
     public void switchHand(boolean isPlayer1Turn){
     this.turnoPlayer1 = isPlayer1Turn;
