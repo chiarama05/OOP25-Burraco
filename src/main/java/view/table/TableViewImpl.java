@@ -186,7 +186,7 @@ public class TableViewImpl implements TableView {
 
 
     public void switchHand(boolean isPlayer1Turn){
-       this.turnoPlayer1 = isPlayer1Turn;
+    this.turnoPlayer1 = isPlayer1Turn;
     String activeName = isPlayer1Turn ? nameP1 : nameP2;
     String idleName = isPlayer1Turn ? nameP2 : nameP1;
 
