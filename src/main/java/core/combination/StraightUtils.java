@@ -163,64 +163,57 @@ public class StraightUtils {
         return true;
     }
 
-    /**
-     * Orders a valid straight by placing real cards in sequence
-     * and inserting wildcards where necessary to fill gaps.
-     *
-     * @param sequence list of cards forming a straight (may include wildcards)
-     * @return a new list of cards ordered as a valid straight
-     */
     public static List<Card> orderStraight(List<Card> sequence) {
-        
-        List<Card> real = sequence.stream()
-                .filter(c -> !CombinationValidator.isWildcard(c, sequence))
-                .collect(Collectors.toList());
+    List<Card> real = sequence.stream()
+            .filter(c -> !CombinationValidator.isWildcard(c, sequence))
+            .collect(Collectors.toList());
+    List<Card> wild = sequence.stream()
+            .filter(c -> CombinationValidator.isWildcard(c, sequence))
+            .collect(Collectors.toList());
 
-        List<Card> wild = sequence.stream()
-                .filter(c -> CombinationValidator.isWildcard(c, sequence))
-                .collect(Collectors.toList());
+    if (real.isEmpty()) return new ArrayList<>(sequence);
 
-        if (real.isEmpty()) {
-            return new ArrayList<>(sequence);
-        }
+    // Determiniamo se l'asso è basso (1) o alto (14)
+    List<Integer> aceLowVals = real.stream().map(c -> mapValue(c, true)).sorted().collect(Collectors.toList());
+    List<Integer> aceHighVals = real.stream().map(c -> mapValue(c, false)).sorted().collect(Collectors.toList());
 
-        List<Integer> aceLow = real.stream().map(c -> mapValue(c, true)).collect(Collectors.toList());
-        List<Integer> aceHigh = real.stream().map(c -> mapValue(c, false)).collect(Collectors.toList());
+    // Se entrambi sono validi, preferiamo l'asso basso se c'è un 2 o 3, alto se c'è un K o Q
+    boolean useAceLow = canBeSequential(aceLowVals, wild.size());
+    if (useAceLow && canBeSequential(aceHighVals, wild.size())) {
+        // Se ho sia A che K, l'asso è sicuramente alto
+        if (real.stream().anyMatch(c -> c.getValue().equals("K"))) useAceLow = false;
+    }
 
-        boolean useAceLow = canBeSequential(aceLow, wild.size());
+    final boolean finalUseAceLow = useAceLow;
+    real.sort(Comparator.comparingInt(c -> mapValue(c, finalUseAceLow)));
 
-        List<Integer> usedValues = useAceLow ? aceLow : aceHigh;
+    List<Card> result = new ArrayList<>();
+    int wildIndex = 0;
 
-        Map<Integer, Card> map = new HashMap<>();
-        for (Card c : real) {
-            map.put(mapValue(c, useAceLow), c);
-        }
-
-        Collections.sort(usedValues);
-
-        List<Card> result = new ArrayList<>();
-        int wildIndex = 0;
-
-        // Reconstruct the straight, filling gaps with wildcards
-        for (int i = 0; i < usedValues.size() - 1; i++) {
-            int v1 = usedValues.get(i);
-            int v2 = usedValues.get(i + 1);
-            result.add(map.get(v1));
+    // Ricostruzione con gestione gap
+    for (int i = 0; i < real.size(); i++) {
+        result.add(real.get(i));
+        if (i < real.size() - 1) {
+            int v1 = mapValue(real.get(i), finalUseAceLow);
+            int v2 = mapValue(real.get(i+1), finalUseAceLow);
             int gap = v2 - v1 - 1;
-
             while (gap-- > 0 && wildIndex < wild.size()) {
                 result.add(wild.get(wildIndex++));
             }
         }
-
-        result.add(map.get(usedValues.get(usedValues.size() - 1)));
-
-        while (wildIndex < wild.size()) {
-            result.add(wild.get(wildIndex++));
-        }
-
-        return result;
     }
+
+    // Gestione Matte rimanenti (Jolly o 2 liberi)
+    // Se la sequenza finisce con l'Asso basso (1), la matta non può stare prima.
+    // Se la sequenza inizia con 3, 2, la matta può stare in cima (Asso).
+    while (wildIndex < wild.size()) {
+        // In Burraco, la matta solitamente si mette in fondo a meno che non rimpiazzi 
+        // una carta specifica. Qui la mettiamo in coda per default.
+        result.add(wild.get(wildIndex++));
+    }
+
+    return result;
+}
 }
 
 

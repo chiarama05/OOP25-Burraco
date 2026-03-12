@@ -60,27 +60,25 @@ public class StraightAttachUtils {
 // -------------------------------------------------
 
 // --- ATTACCO A SINISTRA (Basso) ---
-// Esempio: 5-6-7 -> attacco 4 (vFirst-1)
+// Se ho 2-3 e provo ad attaccare A (vNew=1, vFirst=2)
 if (vNew == vFirst - 1) return true;
-// Esempio: Jolly-5-6-7 (Jolly fa il 4) -> attacco 3 (vFirst-2)
+
+// Se ho Jolly-3-4 (Jolly fa il 2) e attacco A (vNew=1, vFirst=3, jollyCount=1)
 if (jollyCount > 0 && vNew == vFirst - 2) return true;
 
-// --- ATTACCO A DESTRA (Alto) ---
-// Esempio: 5-6-7 -> attacco 8 (vLast+1)
-if (vNew == vLast + 1) return true;
-// Esempio: 5-6-7-Jolly (Jolly fa l'8) -> attacco 9 (vLast+2)
-if (jollyCount > 0 && vNew == vLast + 2) return true;
 
-// --- CASI SPECIALI: ASSO E 2 ---
-// K -> A
+// --- ATTACCO A DESTRA (Alto) ---
+// Caso normale: 5-6 -> attacco 7
+if (vNew == vLast + 1) return true;
+
+// CASO SPECIALE ASSO ALTO: K (13) -> attacco A
 if (vLast == 13 && newCard.getValue().equals("A")) return true;
 
-if (jollyCount > 0) {
-    // Q - Jolly(K) -> attacco A
-    if (vLast == 12 && newCard.getValue().equals("A")) return true;
-    // K - Jolly(A) -> attacco 2 (come matta successiva)
-    if (vLast == 13 && newCard.getValue().equals("2")) return true;
-}
+// Se c'è una matta in fondo: Q(12)-Jolly(13) -> attacco A
+if (jollyCount > 0 && vLast == 12 && newCard.getValue().equals("A")) return true;
+
+// Se c'è una matta che fa l'Asso: K(13)-Jolly(14) -> attacco 2
+if (jollyCount > 0 && vLast == 13 && newCard.getValue().equals("2")) return true;
 
         // -------------------------------------------------
         // SOSTITUZIONE MATTA INTERNA
@@ -123,7 +121,11 @@ if (jollyCount > 0) {
     }
 
     private static int mapVal(Card c) {
-        if (c.getValue().equals("A")) return 1;
-        return c.getNumericalValue();
+    if (c.getValue().equals("A")) {
+        // Restituiamo 1 di default, ma la logica di attacco 
+        // deve saper gestire anche il caso 14 (dopo il K)
+        return 1;
     }
+    return c.getNumericalValue();
+}
 }
