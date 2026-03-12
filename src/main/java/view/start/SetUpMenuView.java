@@ -7,6 +7,7 @@ public interface SetUpMenuView {
 
     interface OnConfigurationCompleteListener {
         void onConfigComplete(int score, String p1, String p2);
+        void onBackClicked();
     }
 
 }

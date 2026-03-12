@@ -16,35 +16,45 @@ import view.start.StartMenuViewImpl;
 import view.table.TableViewImpl;
 
 public class BurracoApp {
-    public static void main(final String[] args){
+    public static void main(final String[] args) {
+        SwingUtilities.invokeLater(() -> showStartMenu());
+    }
 
-        SwingUtilities.invokeLater(() -> {
-            StartMenuView startMenu = new StartMenuViewImpl(() -> {
-                SetUpMenuView setupMenu = new SetUpMenuViewImpl((scoreThreshold, nameP1, nameP2) -> {
-                
-            System.out.println("Game started with limit: " + scoreThreshold);
-            PlayerImpl p1 = new PlayerImpl(nameP1);
-            PlayerImpl p2 = new PlayerImpl(nameP2);
-            TableModelImpl model = new TableModelImpl(p1, p2);
+    private static void showStartMenu() {
+        StartMenuView startMenu = new StartMenuViewImpl(() -> showSetupMenu());
+        startMenu.display();
+    }
 
+    private static void showSetupMenu() {
+        SetUpMenuView.OnConfigurationCompleteListener listener = new SetUpMenuView.OnConfigurationCompleteListener() {
             
-            DeckImpl deck= new DeckImpl();
-            DiscardPileImpl discardPile = new DiscardPileImpl();
-            SelectionCardManager selectionManager=new SelectionCardManager();
-            DrawManager drawManager = new DrawManager();
-            DistributionManagerImpl distManager=new DistributionManagerImpl();
-            DiscardManagerImpl discardManager = new DiscardManagerImpl(discardPile);
+            @Override
+            public void onConfigComplete(int scoreThreshold, String nameP1, String nameP2) {
+                System.out.println("Game started with limit: " + scoreThreshold);
+                PlayerImpl p1 = new PlayerImpl(nameP1);
+                PlayerImpl p2 = new PlayerImpl(nameP2);
+                TableModelImpl model = new TableModelImpl(p1, p2);
 
-            TableViewImpl view = new TableViewImpl(p1,p2,deck,selectionManager,drawManager,distManager,nameP1,nameP2);
+                DeckImpl deck = new DeckImpl();
+                DiscardPileImpl discardPile = new DiscardPileImpl();
+                SelectionCardManager selectionManager = new SelectionCardManager();
+                DrawManager drawManager = new DrawManager();
+                DistributionManagerImpl distManager = new DistributionManagerImpl();
+                DiscardManagerImpl discardManager = new DiscardManagerImpl(discardPile);
 
-            TurnManagerImpl turnManager = new TurnManagerImpl(model, view,drawManager);
+                TableViewImpl view = new TableViewImpl(p1, p2, deck, selectionManager, drawManager, distManager, nameP1, nameP2);
+                TurnManagerImpl turnManager = new TurnManagerImpl(model, view, drawManager);
 
-            view.wireControllers(turnManager,discardManager);
-        });
+                view.wireControllers(turnManager, discardManager);
+            }
+
+            @Override
+            public void onBackClicked() {
+                showStartMenu();
+            }
+        };
+
+        SetUpMenuView setupMenu = new SetUpMenuViewImpl(listener);
         setupMenu.display();
-    });
-    startMenu.display();
-});
+    }
 }
-}
-
