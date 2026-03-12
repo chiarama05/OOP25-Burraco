@@ -196,7 +196,7 @@ public class TableViewImpl implements TableView {
     deckPanel.repaint();
 
     JOptionPane.showMessageDialog(frame, 
-        "TURN OVER\n\n" + idleName + ", please leave the seat.\n" + 
+        idleName + ", please leave the seat.\n" + 
         activeName + ", press OK when you are ready to see your cards.", 
         "Change Player", 
         JOptionPane.WARNING_MESSAGE);

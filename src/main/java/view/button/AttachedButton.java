@@ -41,7 +41,7 @@ public class AttachedButton extends JButton {
 
     private void handleAttach() {
         if (!tableView.getDrawManager().hasDrawn()) {
-        JOptionPane.showMessageDialog(this, "Devi prima pescare dal mazzo o dagli scarti!");
+        JOptionPane.showMessageDialog(this, "You have to draw from the deck or from the discard pile first!");
         return;
     }
         Player currentPlayer = tableView.getCurrentPlayer();
