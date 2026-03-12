@@ -73,6 +73,15 @@ public class AttachedButton extends JButton {
         if (canAttachAll) {
             int sizeBefore = this.cards.size();
             this.cards.addAll(selected);
+
+            for (List<Card> playerComb : currentPlayer.getCombinations()) {
+            // Se la lista del player contiene la prima carta del mazzetto, è la lista giusta
+            if (!this.cards.isEmpty() && playerComb.contains(this.cards.get(0))) {
+            playerComb.clear();    // Puliamo la vecchia lista del player
+            playerComb.addAll(this.cards); // Ci mettiamo dentro tutte le carte (ora sono 7 o più)
+            break;
+        }
+    }
             currentPlayer.removeCards(selected);
 
             if (sizeBefore < 7 && this.cards.size() >= 7) {
@@ -82,8 +91,6 @@ public class AttachedButton extends JButton {
             updateVisuals(); 
             tableView.getSelectionManager().clearSelection();
             tableView.refreshHandPanel(currentPlayer);
-        } else {
-            JOptionPane.showMessageDialog(this, "Invalid combination for this stack!");
         }
     }
 

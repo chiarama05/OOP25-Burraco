@@ -45,6 +45,7 @@ public class TableViewImpl implements TableView {
     private final String nameP1;
     private final String nameP2;
     private final SoundController audioController = new SoundControllerImpl();
+    private final int winLimit;
 
     private JButton takeDiscardBtn;
     private DeckController deckController;
@@ -53,13 +54,14 @@ public class TableViewImpl implements TableView {
 
     public TableViewImpl(PlayerImpl player1, PlayerImpl player2, DeckImpl commonDeck, 
                          SelectionCardManager selectionManager, DrawManager drawManager, 
-                         DistributionManagerImpl distManager, String n1, String n2) {
+                         DistributionManagerImpl distManager, String n1, String n2, int winLimit) {
 
         this.player1 = player1;
         this.player2 = player2;
         this.commonDeck = commonDeck;
         this.selectionManager = selectionManager;
         this.drawManager = drawManager;
+        this.winLimit = winLimit;
 
         this.nameP1 = (n1 == null || n1.isEmpty()) ? "Player 1" : n1;
         this.nameP2 = (n2 == null || n2.isEmpty()) ? "Player 2" : n2;
@@ -259,14 +261,45 @@ public class TableViewImpl implements TableView {
         return this.audioController;
     }
 
+    public void startNewRound() {
+    // 1. Resetta i dati logici dei giocatori (mani e combinazioni)
+    // Assicurati che PlayerImpl abbia il metodo resetForNewRound() visto prima
+    player1.resetForNewRound();
+    player2.resetForNewRound();
+
+    // 2. Resetta il mazzo e la pila degli scarti
+    commonDeck.reset(); 
+    discardPileModel.getCards().clear();
+
+    // 3. Pulisci la GUI
+    combPanel1.removeAll();
+    combPanel2.removeAll();
+    discardPanel.removeAll();
+    
+    // Ripristina i titoli (togliendo "Pot Taken")
+    resetPlayerTitles();
+
+    // 4. Ridistribuisci le carte (chiama il manager della distribuzione)
+    // Passa i riferimenti corretti che già usi nel costruttore
+    initDist.distribute(player1, player2, new DistributionManagerImpl(), commonDeck, discardView, discardPileModel);
+
+    // 5. Reset del turno
+    drawManager.resetTurn();
+    this.turnoPlayer1 = true; // Ripartiamo dal giocatore 1
+    refreshTurnLabel(true);
+    refreshHandPanel(player1);
+
+    // 6. Rinfresca tutto il frame
+    frame.revalidate();
+    frame.repaint();
+
+    JOptionPane.showMessageDialog(frame, "Nuovo Round iniziato!");
+}
     public void showWinExit(boolean player1Won) {
         //SUONO VITTORIA
         this.getSoundController().playVictorySound();
 
-        JOptionPane.showMessageDialog(frame, "You can exit now! the winner is... " + (player1Won ? "Player 1" : "Player 2"));
-        frame.dispose();
-        System.exit(0);
-        ScoreView scoreScreen = new ScoreViewImpl(player1, player2, nameP1, nameP2);
+        ScoreView scoreScreen = new ScoreViewImpl(player1, player2, nameP1, nameP2, this.winLimit, this);
         scoreScreen.display();
     }
 

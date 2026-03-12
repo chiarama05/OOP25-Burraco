@@ -87,15 +87,15 @@ public class DiscardController {
         // Aggiorna la discard pile visiva
         discardView.updateDiscardPile(discardPileModel.getCards());
 
+        if (result.isGameWon()) {
+        tableView.showWinExit(tableView.isPlayer1(current));
+        return; // Esci subito, non eseguire altro
+        }
+
         if (current.hasFinishedCards()) { 
             tableView.markPotTaken(tableView.isPlayer1(current));
             tableView.getSoundController().playRoundEndSound();
             tableView.showPotnextTurn();
-        }
-
-        if(result.isGameWon()){
-            tableView.showWinExit(tableView.isPlayer1(current));
-            return;
         }
         
         if(result.isTurnEnds()){

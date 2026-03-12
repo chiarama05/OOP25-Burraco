@@ -19,6 +19,22 @@ public class PlayerImpl implements Player{
 
     private boolean inPot = false;
 
+    private int matchTotalScore = 0;
+    public void addPointsToMatch(int points) {
+        this.matchTotalScore += points;
+    }
+
+    public int getMatchTotalScore() {
+        return this.matchTotalScore;
+    }
+    
+    // Metodo per resettare le carte ma non i punti tra un round e l'altro
+    public void resetForNewRound() {
+        this.hand.clear();
+    this.combinations.clear();
+    this.setInPot(false);
+    }
+
     public PlayerImpl() {
         this.name = "Giocatore";
     }
