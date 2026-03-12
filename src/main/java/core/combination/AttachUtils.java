@@ -12,20 +12,17 @@ import model.card.Card;
  */
 public class AttachUtils {
 
-    /**
-     * Determines whether a new card can be legally attached to the given combination
-     */
     public static boolean canAttach(List<Card> combination, Card newCard) {
+    if (combination == null || combination.isEmpty()) return false;
 
-        // A card cannot be attached to a null or empty combination
-        if (combination == null || combination.isEmpty()) {
-            return false;
-        }
-
-        if (StraightUtils.isSameSeed(combination)) {
-            return StraightAttachUtils.canAttachToStraight(combination, newCard);
-        }
-
+    if (SetUtils.isValidSet(combination)) {
         return SetAttachUtils.canAttachToSet(combination, newCard);
     }
+
+    if (StraightUtils.isSameSeed(combination)) {
+        return StraightAttachUtils.canAttachToStraight(combination, newCard);
+    }
+
+    return false;
+}
 }

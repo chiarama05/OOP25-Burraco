@@ -5,20 +5,22 @@ import model.card.*;
 
 public class CombinationValidator {
 
-    public static boolean isValidCombination(List<Card> cards) {
-        if (cards == null || cards.size() < 3) {
-            return false;
-        }
-    
-        long wildcards = cards.stream().filter(c -> isWildcard(c, cards)).count();
-        if (wildcards > 1){
-            return false;
-        } 
-        if (StraightUtils.isSameSeed(cards)) {
-            return StraightUtils.isValidStraight(cards);
-        }
-        return SetUtils.isValidSet(cards);
+   public static boolean isValidCombination(List<Card> cards) {
+    if (cards == null || cards.size() < 3) return false;
+
+    long wildcards = cards.stream().filter(c -> isWildcard(c, cards)).count();
+    if (wildcards > 1) return false;
+
+    if (SetUtils.isValidSet(cards)) {
+        return true;
     }
+
+    if (StraightUtils.isSameSeed(cards)) {
+        return StraightUtils.isValidStraight(cards);
+    }
+
+    return false;
+}
 
     public static boolean isWildcard(Card c, List<Card> context) {
         if (c.getValue().equals("Jolly")) return true;

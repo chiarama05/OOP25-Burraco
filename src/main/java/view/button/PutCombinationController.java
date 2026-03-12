@@ -4,6 +4,7 @@ import view.table.TableViewImpl;
 import model.player.Player;
 import model.card.Card;
 import core.combination.CombinationValidator;
+import core.combination.SetUtils;
 import core.combination.StraightUtils;
 import core.drawcard.DrawManager;
 import core.selectioncard.SelectionCardManager;
@@ -30,46 +31,38 @@ public class PutCombinationController {
     }
 
     public void handlePutCombination() {
-        if (!drawManager.hasDrawn()) {
-        JOptionPane.showMessageDialog(null, "You can't put down combinations before you draw!");
+    if (!drawManager.hasDrawn()) {
+        JOptionPane.showMessageDialog(null, "Draw a card first!");
         return;
     }
-        Player currentPlayer = turnManager.getCurrentPlayer();
 
-        // Recupera le carte selezionate tramite SelectionCardManager
-        Set<Card> selectedSet = selectionManager.getSelectedCards();
-        List<Card> selected = selectedSet.stream().filter(currentPlayer::hasCard) .collect(Collectors.toList());
+    Player currentPlayer = turnManager.getCurrentPlayer();
+    
+    List<Card> selected = selectionManager.getSelectedCards().stream()
+            .collect(Collectors.toList());
 
-        if(selected.size() < 3) {
-        JOptionPane.showMessageDialog(null, "At least a 'tris' is needed!");
+    if (selected.size() < 3) {
+        JOptionPane.showMessageDialog(null, "At least 3 cards needed!");
         return;
-        }
-
-        if(!CombinationValidator.isValidCombination(selected)) {
-            JOptionPane.showMessageDialog(null, "Invalid combination!");
-            return;
-        }
-
-        if(StraightUtils.isSameSeed(selected)) {
-            selected = StraightUtils.orderStraight(selected);
-        }
-
-        
-        currentPlayer.removeCards(selected);
-        tableView.addCombinationToPlayerPanel(selected, tableView.isPlayer1(currentPlayer));
-        if (selected.size() >= 7) {
-           tableView.getSoundController().playBurracoSound();
-        }
-        tableView.refreshHandPanel(currentPlayer);
-
-        if(currentPlayer.hasFinishedCards() && !currentPlayer.isInPot()){
-            currentPlayer.setInPot(true);
-            currentPlayer.drawPot();
-            tableView.refreshHandPanel(currentPlayer);
-            tableView.showPotFly();
-        }
-
-        selectionManager.clearSelection();
-
     }
+
+    if (!CombinationValidator.isValidCombination(selected)) {
+        JOptionPane.showMessageDialog(null, "Invalid combination!");
+        return;
+    }
+
+    if (StraightUtils.isSameSeed(selected) && !SetUtils.isValidSet(selected)) {
+        selected = StraightUtils.orderStraight(selected);
+    }
+
+    currentPlayer.removeCards(selected); 
+    
+    tableView.addCombinationToPlayerPanel(selected, tableView.isPlayer1(currentPlayer));
+    
+    if (selected.size() >= 7) tableView.getSoundController().playBurracoSound();
+    
+    tableView.refreshHandPanel(currentPlayer);
+    
+    selectionManager.clearSelection();
+}
 }
