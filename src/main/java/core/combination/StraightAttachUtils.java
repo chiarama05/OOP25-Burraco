@@ -54,32 +54,43 @@ public class StraightAttachUtils {
         int vNew = mapVal(newCard);
         int vFirst = mapVal(first);
         int vLast = mapVal(last);
-
-        // -------------------------------------------------
-// ATTACCO AI BORDI (LOGICA SIMMETRICA)
+// -------------------------------------------------
+// ATTACCO AI BORDI (LOGICA DINAMICA MATTE)
 // -------------------------------------------------
 
+// Una matta è "libera" di muoversi se è ad una delle due estremità
+boolean hasFreeWildcard = CombinationValidator.isWildcard(ord.get(0), straight) || 
+                          CombinationValidator.isWildcard(ord.get(ord.size() - 1), straight);
+
 // --- ATTACCO A SINISTRA (Basso) ---
-// Se ho 2-3 e provo ad attaccare A (vNew=1, vFirst=2)
+// Caso normale: 5-6 -> attacco 4
 if (vNew == vFirst - 1) return true;
 
-// Se ho Jolly-3-4 (Jolly fa il 2) e attacco A (vNew=1, vFirst=3, jollyCount=1)
-if (jollyCount > 0 && vNew == vFirst - 2) return true;
+// Caso con salto: 6-7-Jolly -> attacco 4. 
+// Se ho una matta libera (anche se è a destra!) e attacco la posizione vFirst - 2
+if (hasFreeWildcard && vNew == vFirst - 2) return true;
 
 
 // --- ATTACCO A DESTRA (Alto) ---
-// Caso normale: 5-6 -> attacco 7
+// Caso normale: 7-8 -> attacco 9
 if (vNew == vLast + 1) return true;
 
-// CASO SPECIALE ASSO ALTO: K (13) -> attacco A
-if (vLast == 13 && newCard.getValue().equals("A")) return true;
+// Caso con salto: Jolly-4-5 -> attacco 7
+// Se ho una matta libera (anche se è a sinistra!) e attacco la posizione vLast + 2
+if (hasFreeWildcard && vNew == vLast + 2) return true;
 
-// Se c'è una matta in fondo: Q(12)-Jolly(13) -> attacco A
-if (jollyCount > 0 && vLast == 12 && newCard.getValue().equals("A")) return true;
 
-// Se c'è una matta che fa l'Asso: K(13)-Jolly(14) -> attacco 2
-if (jollyCount > 0 && vLast == 13 && newCard.getValue().equals("2")) return true;
+// --- CASI SPECIALI ASSO (Sempre validi se c'è una matta libera o adiacenza) ---
+if (newCard.getValue().equals("A")) {
+    // Asso basso: ho 2-3 (vFirst=2) oppure Jolly-3-4 (vFirst=3 + matta libera)
+    if (vFirst == 2 || (hasFreeWildcard && vFirst == 3)) return true;
+    
+    // Asso alto: ho K(13) oppure Q(12) + matta libera
+    if (vLast == 13 || (hasFreeWildcard && vLast == 12)) return true;
+}
 
+// Caso K con matta libera: Jolly-Q-K -> attacco 2 (Asso diventa matta o aggancio)
+if (hasFreeWildcard && vLast == 13 && newCard.getValue().equals("2")) return true;
         // -------------------------------------------------
         // SOSTITUZIONE MATTA INTERNA
         // -------------------------------------------------
