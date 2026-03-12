@@ -8,6 +8,8 @@ import core.combination.SetUtils;
 import core.combination.StraightUtils;
 import core.drawcard.DrawManager;
 import core.selectioncard.SelectionCardManager;
+import core.turnvalidation.TurnPlayOutcome;
+import core.turnvalidation.TurnValidator;
 import model.turn.TurnManager;
 
 import javax.swing.*;
@@ -21,13 +23,14 @@ public class PutCombinationController {
     private final TurnManager turnManager;
     private final SelectionCardManager selectionManager;
     private final DrawManager drawManager;
+    private final TurnValidator turnValidator;
     
-    public PutCombinationController(TableViewImpl tableView, TurnManager turnManager, SelectionCardManager selectionManager, DrawManager drawManager) {
+    public PutCombinationController(TableViewImpl tableView, TurnManager turnManager, SelectionCardManager selectionManager, DrawManager drawManager, TurnValidator turnValidator) {
         this.tableView = tableView;
         this.selectionManager = selectionManager;
         this.turnManager=turnManager;
         this.drawManager = drawManager;
-
+        this.turnValidator=turnValidator;
     }
 
     public void handlePutCombination() {
@@ -51,11 +54,9 @@ public class PutCombinationController {
             return;
         }
 
-        int handSizeBefore=currentPlayer.getHand().size();
-        int reimainingAfter=handSizeBefore-selected.size();
-
-        if(reimainingAfter<1){
-            JOptionPane.showMessageDialog(null, "You must discard, you must have at least one card in your hand to discard");
+        TurnPlayOutcome outcome= turnValidator.canPlayCardsNow(currentPlayer, selected.size());
+        if(!outcome.isAllowed()){
+            JOptionPane.showMessageDialog(null, outcome.getMessage()!=null ? outcome.getMessage() : "Action not allowed");
             return;
         }
 
@@ -72,6 +73,13 @@ public class PutCombinationController {
             tableView.getSoundController().playBurracoSound();
         }
         
+        if(outcome.triggerPotFly()){
+            currentPlayer.setInPot(true);
+            currentPlayer.drawPot();
+            tableView.showPotFly();
+            tableView.markPotTaken(tableView.isPlayer1(currentPlayer));
+        }
+
         tableView.refreshHandPanel(currentPlayer);
         selectionManager.clearSelection();
     }
