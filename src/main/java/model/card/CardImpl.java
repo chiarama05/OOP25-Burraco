@@ -4,6 +4,7 @@ package model.card;
 public class CardImpl implements Card{
     private String seed;
     private String value;
+    private boolean wildcard = false;
 
      /**
      * Constructs a CardImpl with the specified seed and value.
@@ -14,6 +15,14 @@ public class CardImpl implements Card{
     public CardImpl(String seed, String value){
         this.seed=seed;
         this.value=value;
+    }
+
+    public void setAsWildcard(boolean status) {
+        this.wildcard = status;
+    }
+
+    public boolean isUsedAsWildcard() {
+        return this.wildcard;
     }
 
     @Override

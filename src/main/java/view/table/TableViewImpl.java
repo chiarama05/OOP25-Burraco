@@ -24,7 +24,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TableViewImpl implements TableView {
 
@@ -81,13 +80,15 @@ public class TableViewImpl implements TableView {
         turnLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
   
 
-        
         JPanel combinationPanel = new JPanel(new GridLayout(1, 2, 20, 10));
+
         combPanel1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        combPanel1.setBackground(new Color(0, 102, 51));
         combPanel1.setBorder(BorderFactory.createTitledBorder(nameP1));
         combinationPanel.add(new JScrollPane(combPanel1));
 
         combPanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        combPanel2.setBackground(new Color(0, 102, 51));
         combPanel2.setBorder(BorderFactory.createTitledBorder(nameP2));
         combinationPanel.add(new JScrollPane(combPanel2));
 

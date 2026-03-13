@@ -23,8 +23,13 @@ public class CombinationValidator {
 }
 
     public static boolean isWildcard(Card c, List<Card> context) {
-        if (c.getValue().equals("Jolly")) return true;
-        if (!c.getValue().equals("2")) return false;
-        return !StraightUtils.isNaturalTwo(c, context);
+    if (c.getValue().equals("Jolly")) return true;
+    if (!c.getValue().equals("2")) return false;
+
+    if (c instanceof CardImpl && ((CardImpl) c).isUsedAsWildcard()) {
+        return true;
+    }
+
+    return !StraightUtils.isNaturalTwo(c, context);
     }
 }
