@@ -1,5 +1,6 @@
 package view.table;
 
+
 import core.discardcard.DiscardManagerImpl;
 import core.distributioncard.DistributionManagerImpl;
 import core.drawcard.DrawManager;
@@ -17,6 +18,7 @@ import view.hand.handImpl;
 import view.score.ScoreView;
 import view.score.ScoreViewImpl;
 import view.sound.*;
+import view.Utils; 
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,33 +29,37 @@ import java.util.List;
 
 public class TableViewImpl implements TableView {
 
+    //RIMUOVERE I RIFERIMENTI AI MODEL
     private final DeckImpl commonDeck;
     private final DrawManager drawManager;
-    private final JFrame frame;
-    private final JLabel turnLabel;
     private final DeckView deckView;
-    private final JPanel combPanel1;
-    private final JPanel combPanel2;
-    private final JPanel discardPanel;
-    private final JPanel deckPanel;
-    private final Font baseTitleFont = new Font("Arial", Font.BOLD, 23);
     private final InitialDistributionView initDist;
     private final PlayerImpl player1;
     private final PlayerImpl player2;
     private final SelectionCardManager selectionManager;
     private DiscardViewImpl discardView;
-    private boolean turnoPlayer1 = true;
     private final model.discard.DiscardPile discardPileModel;
-    private final String nameP1;
-    private final String nameP2;
-    private final SoundController audioController = new SoundControllerImpl();
     private final int winLimit;
     private final core.resetround.ResetManager resetManager = new core.resetround.ResetManagerImpl();
-
-    private JButton takeDiscardBtn;
     private DeckController deckController;
     private DiscardController discardController;
+    private boolean turnoPlayer1 = true; 
+
+
+    //TENERE I JFRAME E JPANEL
+    private final JFrame frame;
+    private final JLabel turnLabel;
+    private final JPanel combPanel1;
+    private final JPanel combPanel2;
+    private final JPanel discardPanel;
+    private final JPanel deckPanel;
+    private final Font baseTitleFont = new Font("Arial", Font.BOLD, 23);
+    private final String nameP1;
+    private final String nameP2;
+    private final SoundController audioController = new SoundControllerImpl(); //va fuori in cartella soundManager
+    private JButton takeDiscardBtn;
     private final JButton putComboBtn;
+
 
     public TableViewImpl(PlayerImpl player1, PlayerImpl player2, DrawManager drawManager, String n1, String n2, int winLimit) {
 
@@ -91,12 +97,7 @@ public class TableViewImpl implements TableView {
         combPanel2.setBackground(new Color(0, 102, 51));
         combPanel2.setBorder(BorderFactory.createTitledBorder(nameP2));
         combinationPanel.add(new JScrollPane(combPanel2));
-
-    
-
         frame.add(combinationPanel, BorderLayout.CENTER);
-
-        
         
         discardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         discardPanel.setBorder(BorderFactory.createTitledBorder("Discard Pile"));
@@ -108,8 +109,6 @@ public class TableViewImpl implements TableView {
         centralBottomPanel.add(discardPanel, BorderLayout.CENTER);
         centralBottomPanel.add(deckView, BorderLayout.WEST);
 
-        
-        
         deckPanel = new JPanel(new BorderLayout());
         deckPanel.setBorder(BorderFactory.createTitledBorder("Hand"));
 
@@ -144,7 +143,6 @@ public class TableViewImpl implements TableView {
 
         frame.addComponentListener(new ComponentAdapter() {
             
-            @Override
             public void componentResized(ComponentEvent e) {
                 applyResponsiveFonts();
             }
@@ -158,8 +156,14 @@ public class TableViewImpl implements TableView {
     }
 
 
-    //da mettere nel controller 
-     public void wireControllers(final model.turn.TurnManager turnManager){
+
+
+
+
+
+
+    //nel controller
+    public void wireControllers(final model.turn.TurnManager turnManager){
 
         DiscardManagerImpl discardManager = new DiscardManagerImpl(new DiscardPileImpl());
         this.deckController=new DeckController(deckView,drawManager,this,turnManager);
@@ -171,6 +175,12 @@ public class TableViewImpl implements TableView {
     }
 
 
+
+
+
+
+
+    //TENERE
     public void refreshHandPanel(Player player) {
         deckPanel.removeAll();
 
@@ -181,20 +191,41 @@ public class TableViewImpl implements TableView {
         deckPanel.revalidate();
         deckPanel.repaint();
     }
- 
+
+
+
+
+
+    //VA NEL GAMECONTROLLER
     public handImpl getHandViewForPlayer(Player player){
         return (player==player1) ? initDist.getPlayer1HandView() : initDist.getPlayer2HandView();
     }
 
+
+
+
+
+
+    //VA NEL TURNCONTROLLER
     public boolean isPlayer1(Player player){
         return player==player1;
     }
 
+
+
+
+
+     //VA NEL TURNCONTROLLER
     public Player getCurrentPlayer(){
         return turnoPlayer1 ? player1 : player2;
     }
 
    
+
+
+
+
+     //VA NEL TURNCONTROLLER
     public void switchHand(boolean isPlayer1Turn){
     this.turnoPlayer1 = isPlayer1Turn;
     String activeName = isPlayer1Turn ? nameP1 : nameP2;
@@ -215,6 +246,12 @@ public class TableViewImpl implements TableView {
     }
 
 
+
+
+
+
+
+    // TENERE
     public void refreshTurnLabel(boolean turnoPlayer1) {
         turnLabel.setText("Turn: " + (turnoPlayer1 ? nameP1 : nameP2));
         frame.revalidate();
@@ -222,13 +259,21 @@ public class TableViewImpl implements TableView {
     }
 
 
+
+
+
+
+     //VA NEL GAMECONTROLLER
     public DeckImpl getCommonDeck(){
         return this.commonDeck;
     }
     
-    /**
-    * Aggiorna il titolo del pannello del giocatore per indicare che ha preso il pozzetto.
-    */
+   
+
+
+
+
+    //TENERE
     public void markPotTaken(boolean isPlayer1) {
        JPanel targetPanel = isPlayer1 ? combPanel1 : combPanel2;
        String baseName = isPlayer1 ? nameP1 : nameP2;
@@ -238,6 +283,12 @@ public class TableViewImpl implements TableView {
            targetPanel.repaint();
         }
     }
+
+
+
+
+
+
 
     
     public void resetPlayerTitles() {
@@ -252,6 +303,13 @@ public class TableViewImpl implements TableView {
     }
 
 
+
+
+
+
+
+
+    //TENERE
     public void showPotFly() {
         JOptionPane.showMessageDialog(frame, "You close your hand on 'fly', you can continue to play in this same turn!");
     }
@@ -264,10 +322,18 @@ public class TableViewImpl implements TableView {
         JOptionPane.showMessageDialog(frame, "You can't discard your last card without even done a Burraco!");
     }
 
+
+
+
+    // RIMUOVERE (VA ALTROVE)
     public SoundController getSoundController() {
         return this.audioController;
     }
 
+
+
+
+    // TENERE
     public void startNewRound() {
 
         combPanel1.removeAll();
@@ -281,11 +347,23 @@ public class TableViewImpl implements TableView {
         JOptionPane.showMessageDialog(frame, "New Round started!");
     }
 
+
+
+
+
+
+    //VA NEL ROUNDCONTROLLER
     public void handleNewRoundRequest() {
     RoundController rc = new RoundControllerImpl(this, resetManager, player1, player2, commonDeck, discardPileModel);
     rc.processNewRound();
     }
 
+
+
+
+
+
+     //VA NEL ROUNDCONTROLLER
     public void showWinExit(boolean player1Won) {
         int totalS1 = ((PlayerImpl)player1).getMatchTotalScore();
         int totalS2 = ((PlayerImpl)player2).getMatchTotalScore();
@@ -297,9 +375,14 @@ public class TableViewImpl implements TableView {
     }
 
 
+
+
+
+
+    //TENERE
     private void applyResponsiveFonts() {
     int w = Math.max(frame.getWidth(), 1);
-    double factor = clamp(w / 1280.0, 0.7, 1.2); 
+    double factor = Utils.clamp(w / 1280.0, 0.7, 1.2); 
 
     turnLabel.setFont(scaleFont(baseTitleFont, factor));
 
@@ -308,8 +391,6 @@ public class TableViewImpl implements TableView {
     setTitledBorderFont(combPanel2, titleFont);
     setTitledBorderFont(discardPanel, titleFont);
     setTitledBorderFont(deckPanel, titleFont);
-
-    
     Dimension fixedCardSize = new Dimension(60, 85); 
     
     for (Component comp : discardPanel.getComponents()) {
@@ -320,7 +401,6 @@ public class TableViewImpl implements TableView {
             jc.setFont(new Font("Monospaced", Font.BOLD, 19));
         }
     }
-
     JButton deckBtn = deckView.getDeckButton();
     if (deckBtn != null) {
         deckBtn.setPreferredSize(fixedCardSize);
@@ -345,28 +425,36 @@ public class TableViewImpl implements TableView {
     frame.repaint();
 }
 
-    private void setTitledBorderFont(final JComponent comp, final Font font) {
+
+
+
+
+
+// TENERE
+private void setTitledBorderFont(final JComponent comp, final Font font) {
         if (comp.getBorder() instanceof javax.swing.border.TitledBorder tb) {
             tb.setTitleFont(font);
             comp.repaint();
         }
     }
 
-    private Font scaleFont(final Font base, double factor) {
+
+
+
+
+// TENERE
+private Font scaleFont(final Font base, double factor) {
         int newSize = (int) Math.round(base.getSize2D() * factor);
         newSize = Math.max(10, Math.min(newSize, 28));
         return base.deriveFont((float) newSize);
-    }
-
-    private double clamp(double b, double min, double max) {
-        return Math.max(min, Math.min(max, b));
     }
 
 
     
 
 
-    public void addCombinationToPlayerPanel(List<Card> cards, boolean player1Turn) {
+// TENERE
+public void addCombinationToPlayerPanel(List<Card> cards, boolean player1Turn) {
     JPanel targetPanel = player1Turn ? combPanel1 : combPanel2;
     List<Card> preparedCards = core.combination.CombinationManager.prepareForDisplay(cards);
     AttachedButton comboBtn = new AttachedButton(preparedCards, this, player1Turn);
@@ -379,13 +467,25 @@ public class TableViewImpl implements TableView {
     targetPanel.repaint();
     }
 
+
+
+
+
+
+    // RIMUOVERE 
     public SelectionCardManager getSelectionManager() {
     return this.selectionManager;
     }
 
+
+    // RIMOSSO VA NEL CORE
     public DrawManager getDrawManager() {
     return this.drawManager;
 }
+
+
+
+
 @Override
 public JPanel getDiscardPanel() {
     return this.discardPanel;
