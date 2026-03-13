@@ -34,7 +34,7 @@ public class StartMenuViewImpl implements StartMenuView{
     gbc.gridy = 0;
     panel.add(title, gbc);
 
-    JButton newBtn = new JButton("NEW GAME");
+    JButton newBtn = new JButton("NEW MATCH");
     newBtn.setFont(new Font("Arial", Font.BOLD, 18));
     newBtn.setPreferredSize(new Dimension(200, 60)); // Pulsante più grande
     newBtn.addActionListener(e -> {

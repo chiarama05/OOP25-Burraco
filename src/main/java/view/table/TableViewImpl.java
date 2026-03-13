@@ -3,6 +3,8 @@ package view.table;
 import core.discardcard.DiscardManagerImpl;
 import core.distributioncard.DistributionManagerImpl;
 import core.drawcard.DrawManager;
+import core.resetround.RoundController;
+import core.resetround.RoundControllerImpl;
 import core.selectioncard.SelectionCardManager;
 import model.card.Card;
 import model.deck.DeckImpl;
@@ -47,6 +49,7 @@ public class TableViewImpl implements TableView {
     private final String nameP2;
     private final SoundController audioController = new SoundControllerImpl();
     private final int winLimit;
+    private final core.resetround.ResetManager resetManager = new core.resetround.ResetManagerImpl();
 
     private JButton takeDiscardBtn;
     private DeckController deckController;
@@ -265,42 +268,28 @@ public class TableViewImpl implements TableView {
     }
 
     public void startNewRound() {
-    // 1. Resetta i dati logici dei giocatori (mani e combinazioni)
-    // Assicurati che PlayerImpl abbia il metodo resetForNewRound() visto prima
-    player1.resetForNewRound();
-    player2.resetForNewRound();
 
-    // 2. Resetta il mazzo e la pila degli scarti
-    commonDeck.reset(); 
-    discardPileModel.getCards().clear();
+        combPanel1.removeAll();
+        combPanel2.removeAll();
+        discardPanel.removeAll();
+        resetPlayerTitles();
 
-    // 3. Pulisci la GUI
-    combPanel1.removeAll();
-    combPanel2.removeAll();
-    discardPanel.removeAll();
-    
-    // Ripristina i titoli (togliendo "Pot Taken")
-    resetPlayerTitles();
+        frame.revalidate();
+        frame.repaint();
 
-    // 4. Ridistribuisci le carte (chiama il manager della distribuzione)
-    // Passa i riferimenti corretti che già usi nel costruttore
-    initDist.distribute(player1, player2, new DistributionManagerImpl(), commonDeck, discardView, discardPileModel);
+        JOptionPane.showMessageDialog(frame, "New Round started!");
+    }
 
-    // 5. Reset del turno
-    drawManager.resetTurn();
-    this.turnoPlayer1 = true; // Ripartiamo dal giocatore 1
-    refreshTurnLabel(true);
-    refreshHandPanel(player1);
+    public void handleNewRoundRequest() {
+    RoundController rc = new RoundControllerImpl(this, resetManager, player1, player2, commonDeck, discardPileModel);
+    rc.processNewRound();
+    }
 
-    // 6. Rinfresca tutto il frame
-    frame.revalidate();
-    frame.repaint();
-
-    JOptionPane.showMessageDialog(frame, "Nuovo Round iniziato!");
-}
     public void showWinExit(boolean player1Won) {
-        //SUONO VITTORIA
-        this.getSoundController().playVictorySound();
+        int totalS1 = ((PlayerImpl)player1).getMatchTotalScore();
+        int totalS2 = ((PlayerImpl)player2).getMatchTotalScore();
+
+        this.getSoundController().playRoundEndSound();
 
         ScoreView scoreScreen = new ScoreViewImpl(player1, player2, nameP1, nameP2, this.winLimit, this);
         scoreScreen.display();
@@ -405,10 +394,14 @@ public class TableViewImpl implements TableView {
     }
 
     public SelectionCardManager getSelectionManager() {
-    return selectionManager;
+    return this.selectionManager;
     }
 
     public DrawManager getDrawManager() {
     return this.drawManager;
+}
+@Override
+public JPanel getDiscardPanel() {
+    return this.discardPanel;
 }
 }

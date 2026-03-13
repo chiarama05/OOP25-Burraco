@@ -23,7 +23,11 @@ public class ScoreViewImpl implements ScoreView{
         this.targetScore = targetScore;
         this.tableView = tableView;
 
-        new view.sound.SoundControllerImpl().playRoundEndSound();
+        int totalS1 = ((PlayerImpl)p1).getMatchTotalScore();
+        int totalS2 = ((PlayerImpl)p2).getMatchTotalScore();
+        if (totalS1 >= targetScore || totalS2 >= targetScore) {
+        new view.sound.SoundControllerImpl().playVictorySound();
+        }
         setupUI(p1, p2, name1, name2);
     }
 
@@ -37,7 +41,7 @@ public class ScoreViewImpl implements ScoreView{
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         // --- TITOLO ---
-        JLabel titleLabel = new JLabel("TABELLONE PUNTEGGI", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("SCOREBOARD", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial Black", Font.BOLD, 24));
         titleLabel.setForeground(Color.YELLOW); 
         mainPanel.add(titleLabel, BorderLayout.NORTH);
@@ -78,10 +82,10 @@ public class ScoreViewImpl implements ScoreView{
         if (totalS1 >= targetScore || totalS2 >= targetScore) {
             new view.sound.SoundControllerImpl().playVictorySound();
             String winner = totalS1 > totalS2 ? name1 : name2;
-            actionBtn = new JButton("CAMPIONE: " + winner + " (ESCI)");
+            actionBtn = new JButton("WINNER: " + winner + " (EXIT)");
             actionBtn.addActionListener(e -> System.exit(0));
         } else {
-            actionBtn = new JButton("PROSSIMO ROUND (Target: " + targetScore + ")");
+            actionBtn = new JButton("NEXT ROUND (" + targetScore + ")");
 
             actionBtn.setFont(new Font("Arial Black", Font.BOLD, 18));
             actionBtn.setBackground(Color.YELLOW);
@@ -139,13 +143,13 @@ public class ScoreViewImpl implements ScoreView{
     panel.add(Box.createVerticalStrut(20));
 
     
-    panel.add(createRow("Punteggio a terra", String.valueOf(aTerra), false));
-    panel.add(createRow("Burrachi", String.valueOf(burrachiPuliti + burrachiSporchi), false));
-    panel.add(createRow("Burrachi Puliti", String.valueOf(burrachiPuliti), false));
-    panel.add(createRow("Burrachi Sporchi", String.valueOf(burrachiSporchi * 100), false));
-    panel.add(createRow("Chiusura", String.valueOf(chiusura), false));
-    panel.add(createRow("Mazzetto non preso", String.valueOf(mazzetto), false));
-    panel.add(createRow("Carte pagate", "-" + carteInMano, false));
+    panel.add(createRow("Board Score", String.valueOf(aTerra), false));
+    panel.add(createRow("Burraco", String.valueOf(burrachiPuliti + burrachiSporchi), false));
+    panel.add(createRow("Clean Burraco", String.valueOf(burrachiPuliti), false));
+    panel.add(createRow("Dirty Burraco", String.valueOf(burrachiSporchi * 100), false));
+    panel.add(createRow("Closure", String.valueOf(chiusura), false));
+    panel.add(createRow("Pot not taken", String.valueOf(mazzetto), false));
+    panel.add(createRow("Paid cards", "-" + carteInMano, false));
 
     panel.add(Box.createVerticalStrut(10));
     JSeparator sep = new JSeparator();
@@ -154,10 +158,10 @@ public class ScoreViewImpl implements ScoreView{
     panel.add(Box.createVerticalStrut(10));
     
     panel.add(Box.createVerticalStrut(10));
-    panel.add(createRow("Totale Mano", String.valueOf(totaleMano), true));
+    panel.add(createRow("Round Score", String.valueOf(totaleMano), true));
     
     int totalePartita = ((PlayerImpl)p).getMatchTotalScore();
-    panel.add(createRow("TOTALE PARTITA", String.valueOf(totalePartita), true));
+    panel.add(createRow("TOTAL MATCH", String.valueOf(totalePartita), true));
     panel.add(Box.createVerticalGlue());
 
     return panel;
