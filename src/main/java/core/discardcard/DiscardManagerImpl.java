@@ -80,8 +80,8 @@ if (!player.isInPot() && player.hasFinishedCards()) {
 }
 
 // 3. Scarto normale
-return new DiscardResult(true, false, false, "Card discarded successfully.");
-    }
+return new DiscardResult(true, true, false, "Card discarded successfully.");
+}
 
     public List<Card> getDiscardPileCards() {
         return discardPile.getCards();

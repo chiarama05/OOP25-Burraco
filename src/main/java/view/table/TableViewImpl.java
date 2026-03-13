@@ -15,7 +15,6 @@ import view.hand.handImpl;
 import view.score.ScoreView;
 import view.score.ScoreViewImpl;
 import view.sound.*;
-import core.turnvalidation.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,7 +47,6 @@ public class TableViewImpl implements TableView {
     private final String nameP2;
     private final SoundController audioController = new SoundControllerImpl();
     private final int winLimit;
-    private TurnValidator turnValidator;
 
     private JButton takeDiscardBtn;
     private DeckController deckController;
@@ -57,7 +55,6 @@ public class TableViewImpl implements TableView {
 
     public TableViewImpl(PlayerImpl player1, PlayerImpl player2, DrawManager drawManager, String n1, String n2, int winLimit) {
 
-        this.turnValidator=new TurnValidatorImpl();
         this.player1 = player1;
         this.player2 = player2;
         this.commonDeck = new DeckImpl();
@@ -158,16 +155,15 @@ public class TableViewImpl implements TableView {
 
 
     //da mettere nel controller 
-    public void wireControllers(final model.turn.TurnManager turnManager){
+     public void wireControllers(final model.turn.TurnManager turnManager){
 
         DiscardManagerImpl discardManager = new DiscardManagerImpl(new DiscardPileImpl());
         this.deckController=new DeckController(deckView,drawManager,this,turnManager);
         new TakeDiscardController(takeDiscardBtn, drawManager, this, turnManager, discardPileModel, discardView);
         
-        PutCombinationController putController=new PutCombinationController(this,turnManager,selectionManager, this.drawManager,this.turnValidator);
+        PutCombinationController putController=new PutCombinationController(this,turnManager,selectionManager, this.drawManager);
         putComboBtn.addActionListener(e -> putController.handlePutCombination());
         this.discardController=new DiscardController(this,turnManager,discardManager,discardView, discardPileModel, drawManager);
-        this.turnValidator.startTurn(turnManager.getCurrentPlayer());
     }
 
 
@@ -194,10 +190,7 @@ public class TableViewImpl implements TableView {
         return turnoPlayer1 ? player1 : player2;
     }
 
-    public TurnValidator getTurnValidator(){
-        return this.turnValidator;
-    }
-
+   
     public void switchHand(boolean isPlayer1Turn){
     this.turnoPlayer1 = isPlayer1Turn;
     String activeName = isPlayer1Turn ? nameP1 : nameP2;
