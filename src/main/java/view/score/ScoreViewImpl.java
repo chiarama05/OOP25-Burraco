@@ -28,7 +28,7 @@ public class ScoreViewImpl implements ScoreView{
 
     private void setupUI(Player p1, Player p2, String name1, String name2) {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(500, 450);
+        frame.setSize(600, 650);
         frame.setLocationRelativeTo(null);
         
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -37,14 +37,22 @@ public class ScoreViewImpl implements ScoreView{
 
         // --- TITOLO ---
         JLabel titleLabel = new JLabel("TABELLONE PUNTEGGI", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial Black", Font.BOLD, 26));
-        titleLabel.setForeground(Color.BLACK); // Scritta nera e grande
+        titleLabel.setFont(new Font("Arial Black", Font.BOLD, 24));
+        titleLabel.setForeground(Color.YELLOW); // Scritta nera e grande
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
         // --- TABELLA PUNTEGGI ---
         JPanel gridPanel = new JPanel(new GridLayout(2, 2, 10, 20));
         gridPanel.setOpaque(false);
         gridPanel.setBorder(new EmptyBorder(40, 30, 40, 30));
+
+        JPanel centerPanel = new JPanel(new GridLayout(1, 2, 20, 0));
+        centerPanel.setOpaque(false);
+
+        centerPanel.add(createPlayerStatsPanel(p1, name1));
+        centerPanel.add(createPlayerStatsPanel(p2, name2));
+
+        mainPanel.add(centerPanel, BorderLayout.CENTER);
 
         // Calcolo punteggi reali
         int roundS1 = scoreManager.calculateFinalScore(p1);
@@ -75,11 +83,99 @@ public class ScoreViewImpl implements ScoreView{
             actionBtn = new JButton("PROSSIMO ROUND (Target: " + targetScore + ")");
             actionBtn.addActionListener(e -> {
                 frame.dispose();
-                tableView.startNewRound(); // Metodo da implementare per pulire il tavolo
+                tableView.startNewRound(); 
             });
         }
         mainPanel.add(actionBtn, BorderLayout.SOUTH);
+
+        frame.add(mainPanel);
+        frame.revalidate();
+        frame.repaint();
     }
+
+    private int calculateOnlyCardsOnTable(Player p) {
+    int total = 0;
+    for (java.util.List<model.card.Card> combination : p.getCombinations()) {
+        for (model.card.Card card : combination) {
+            total += core.score.CardPointCalculator.getCardPoints(card);
+        }
+    }
+    return total;
+    }
+
+    private JPanel createPlayerStatsPanel(Player p, String name) {
+    JPanel panel = new JPanel();
+    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+    panel.setOpaque(false);
+
+    int aTerra = calculateOnlyCardsOnTable(p);
+    int burrachiSporchi = ((ScoreManagerImpl)scoreManager).countDirtyBurraco(p);
+    int burrachiPuliti = ((ScoreManagerImpl)scoreManager).countCleanBurraco(p);
+    
+    int chiusura = p.hasFinishedCards() ? 100 : 0;
+    int mazzetto = p.isInPot() ? 0 : -100;
+    int carteInMano = scoreManager.calculateRemainingHandValue(p);
+    int totaleMano = scoreManager.calculateFinalScore(p);
+
+    
+    JLabel nameLabel = new JLabel(name.toUpperCase());
+    nameLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
+    nameLabel.setForeground(Color.WHITE);
+    nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    panel.add(nameLabel);
+    panel.add(Box.createVerticalStrut(20));
+
+    
+    panel.add(createRow("Punteggio a terra", String.valueOf(aTerra), false));
+    panel.add(createRow("Burrachi", String.valueOf(burrachiPuliti + burrachiSporchi), false));
+    panel.add(createRow("Burrachi Puliti", String.valueOf(burrachiPuliti), false));
+    panel.add(createRow("Burrachi Sporchi", String.valueOf(burrachiSporchi * 100), false));
+    panel.add(createRow("Chiusura", String.valueOf(chiusura), false));
+    panel.add(createRow("Mazzetto non preso", String.valueOf(mazzetto), false));
+    panel.add(createRow("Carte pagate", "-" + carteInMano, false));
+    
+    panel.add(Box.createVerticalStrut(10));
+    panel.add(createRow("Totale Mano", String.valueOf(totaleMano), true));
+    
+    int totalePartita = ((model.player.PlayerImpl)p).getMatchTotalScore();
+    panel.add(createRow("Totale Partita", String.valueOf(totalePartita), true));
+
+    return panel;
+}
+
+
+class BackgroundPanel extends JPanel {
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        int w = getWidth();
+        int h = getHeight();
+        Color color1 = new Color(53, 102, 73); 
+        Color color2 = new Color(94, 153, 115); 
+        GradientPaint gp = new GradientPaint(0, 0, color1, 0, h, color2);
+        g2d.setPaint(gp);
+        g2d.fillRect(0, 0, w, h);
+    }
+}
+
+    private JPanel createRow(String label, String value, boolean bold) {
+    JPanel row = new JPanel(new BorderLayout());
+    row.setOpaque(false);
+    JLabel lLabel = new JLabel(label);
+    JLabel lValue = new JLabel(value);
+    
+    Font f = new Font("Arial", bold ? Font.BOLD : Font.PLAIN, 16);
+    lLabel.setFont(f);
+    lValue.setFont(f);
+    lLabel.setForeground(Color.WHITE);
+    lValue.setForeground(Color.YELLOW); 
+
+    row.add(lLabel, BorderLayout.WEST);
+    row.add(lValue, BorderLayout.EAST);
+    row.setMaximumSize(new Dimension(250, 30));
+    return row;
+}
 
     private JLabel createStyledLabel(String text) {
         JLabel l = new JLabel(text.toUpperCase() + ":");

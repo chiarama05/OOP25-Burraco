@@ -11,4 +11,12 @@ public interface ScoreManager {
      * Calculates the final score of a player.
      */
     int calculateFinalScore(Player player);
+
+    int calculateBurracoBonus(Player player);
+
+    int calculateRemainingHandValue(Player player);
+
+    int countCleanBurraco(Player player); 
+
+    int countDirtyBurraco(Player player);
 }
