@@ -20,6 +20,12 @@ public class ScoreManagerImpl implements ScoreManager{
 
         int totalScore = 0;
 
+        for (List<Card> combination : player.getCombinations()) {
+        for (Card card : combination) {
+            totalScore += CardPointCalculator.getCardPoints(card);
+        }
+        }
+
         // Closure bonus
         if (player.hasFinishedCards()) {
             totalScore += CLOSURE_BONUS;
@@ -42,7 +48,8 @@ public class ScoreManagerImpl implements ScoreManager{
     /**
      * Calculates burraco bonuses (clean or dirty).
      */
-    private int calculateBurracoBonus(Player player) {
+    @Override
+    public int calculateBurracoBonus(Player player) {
 
         int bonus = 0;
 
@@ -78,10 +85,22 @@ public class ScoreManagerImpl implements ScoreManager{
         return true;
     }
 
+    public int countCleanBurraco(Player player) {
+    return (int) player.getCombinations().stream()
+            .filter(c -> c.size() >= 7 && isCleanBurraco(c)).count();
+    }
+
+    public int countDirtyBurraco(Player player) {
+    return (int) player.getCombinations().stream()
+            .filter(c -> c.size() >= 7 && !isCleanBurraco(c)).count();
+    }
+    
+
     /**
      * Calculates total value of remaining cards in hand.
      */
-    private int calculateRemainingHandValue(Player player) {
+    @Override
+    public int calculateRemainingHandValue(Player player) {
 
         int total = 0;
 
