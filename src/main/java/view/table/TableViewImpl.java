@@ -363,33 +363,18 @@ public class TableViewImpl implements TableView {
     }
 
 
+    
+
+
     public void addCombinationToPlayerPanel(List<Card> cards, boolean player1Turn) {
     JPanel targetPanel = player1Turn ? combPanel1 : combPanel2;
+    List<Card> preparedCards = core.combination.CombinationManager.prepareForDisplay(cards);
+    AttachedButton comboBtn = new AttachedButton(preparedCards, this, player1Turn);
+    JPanel wrapper = new JPanel(new BorderLayout());
+    wrapper.setOpaque(false); 
+    wrapper.add(comboBtn, BorderLayout.NORTH);
 
-    List<Card> orderedCards = new ArrayList<>(cards);
-
-    // Controlla se c'è un jolly
-    int jokerIndex = -1;
-    for (int i = 0; i < orderedCards.size(); i++) {
-        if (orderedCards.get(i).getValue().equals("Jolly")) {
-            jokerIndex = i;
-            break;
-        }
-    }
-
-    if (jokerIndex != -1) {
-        boolean jokerAtExtremes =
-                jokerIndex == 0 || jokerIndex == orderedCards.size() - 1;
-
-        if (jokerAtExtremes) {
-            Card joker = orderedCards.remove(jokerIndex);
-            orderedCards.add(joker); // lo spostiamo in fondo
-        }
-    }
-
-    AttachedButton comboBtn = new AttachedButton(orderedCards, this, player1Turn);
-
-    targetPanel.add(comboBtn);
+    targetPanel.add(wrapper);
     targetPanel.revalidate();
     targetPanel.repaint();
     }
