@@ -1,5 +1,6 @@
 package core.combination;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import model.card.Card;
@@ -7,30 +8,33 @@ import model.card.Card;
 public class StraightAttachUtils {
 
     public static boolean canAttachToStraight(List<Card> straight, Card newCard) {
-
         List<Card> ord = StraightUtils.orderStraight(straight);
 
-        long jollyCount = ord.stream()
+        // 1. CALCOLO DELLE MATTE GIÀ PRESENTI
+        // Usiamo CombinationValidator.isWildcard che tiene conto del 2 naturale
+        long jollyCount = straight.stream()
                 .filter(c -> CombinationValidator.isWildcard(c, straight))
                 .count();
 
-        // -------------------------------------------------
-        // Se la nuova è matta
-        // -------------------------------------------------
-        if (CombinationValidator.isWildcard(newCard, straight)) {
+        // 2. LOGICA DEL "2" (NATURALE VS MATTA)
+        if (newCard.getValue().equals("2")) {
+            List<Card> futureStraight = new ArrayList<>(straight);
+            futureStraight.add(newCard);
 
-            if (jollyCount >= 1) {
-
-                boolean hasNaturaleDue = ord.stream()
-                        .anyMatch(c ->
-                                c.getValue().equals("2") &&
-                                StraightUtils.isNaturalTwo(c, straight)
-                        );
-
-                if (!hasNaturaleDue) return false;
+            // Se il 2 che sto per aggiungere SAREBBE NATURALE nella nuova scala
+            if (!CombinationValidator.isWildcard(newCard, futureStraight)) {
+                // Posso sempre aggiungerlo (il 2 naturale non occupa lo slot matta)
+                // A patto che ci sia spazio nella sequenza (gestito sotto dai mapVal)
+            } else {
+                // Se il 2 che sto aggiungendo è una MATTA
+                if (jollyCount >= 1) return false; // Se c'è già un Jolly/2-matta, rifiuta
             }
-
-            return true;
+        } 
+        
+        // 3. LOGICA DEL JOLLY PURO
+        else if (newCard.getValue().equals("Jolly")) {
+            if (jollyCount >= 1) return false; // Se c'è già una matta, rifiuta
+            return true; // Il Jolly può sempre essere attaccato se non ce ne sono altri
         }
 
         // -------------------------------------------------

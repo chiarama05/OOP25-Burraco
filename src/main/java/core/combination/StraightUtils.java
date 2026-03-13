@@ -82,37 +82,28 @@ public class StraightUtils {
         return canBeSequential(aceLow, wildcards) || canBeSequential(aceHigh, wildcards);
     }
 
-    /**
-     * Determines if a "2" card is natural in a straight (A-2-3).
-     * A natural two is not considered a wildcard.
-     *
-     * @param two the 2 card to check
-     * @param straight the list of cards forming the straight
-     * @return true if the 2 is natural, false otherwise
-     */
+
     public static boolean isNaturalTwo(Card two, List<Card> straight) {
-        if (!two.getValue().equals("2")) {
-            return false;
-        }
+    if (!two.getValue().equals("2")) return false;
 
-        List<Card> real = straight.stream()
-                .filter(c -> !c.getValue().equals("2") && !c.getValue().equals("Jolly"))
-                .collect(Collectors.toList());
-
-        if (real.isEmpty()) {
-            return false;
-        }
-
-        // Natural two must have the same seed as the other real cards
-        String seed = real.get(0).getSeed();
-        if (!two.getSeed().equals(seed)) return false;
-
-        // Check for presence of Ace and Three to form natural A-2-3
-        boolean hasAce = real.stream().anyMatch(c -> c.getValue().equals("A"));
-        boolean hasThree = real.stream().anyMatch(c -> c.getValue().equals("3"));
-
-        return hasAce && hasThree;
+    // Se la carta è stata esplicitamente marcata come matta, non è naturale
+    if (two instanceof CardImpl && ((CardImpl) two).isUsedAsWildcard()) {
+        return false;
     }
+
+    // Controllo del seme (deve essere uguale alle altre carte reali)
+    String scaleSuit = straight.stream()
+            .filter(c -> !c.getValue().equals("Jolly") && !c.getValue().equals("2"))
+            .findFirst()
+            .map(Card::getSeed)
+            .orElse(two.getSeed());
+
+    if (!two.getSeed().equals(scaleSuit)) return false;
+
+    boolean hasThree = straight.stream().anyMatch(c -> c.getValue().equals("3") && c.getSeed().equals(scaleSuit));
+    
+    return hasThree;
+}
 
 
     /**
@@ -165,8 +156,8 @@ public class StraightUtils {
 
     public static List<Card> orderStraight(List<Card> sequence) {
     List<Card> real = sequence.stream()
-            .filter(c -> !CombinationValidator.isWildcard(c, sequence))
-            .collect(Collectors.toList());
+        .filter(c -> !CombinationValidator.isWildcard(c, sequence)) 
+        .collect(Collectors.toList());
     List<Card> wild = sequence.stream()
             .filter(c -> CombinationValidator.isWildcard(c, sequence))
             .collect(Collectors.toList());
@@ -211,16 +202,28 @@ public class StraightUtils {
     // Gestione Matte rimanenti
     while (wildIndex < wild.size()) {
         Card w = wild.get(wildIndex++);
-        // Se l'asso è basso (1, 2, 3...), la matta NON può andare prima dell'Asso.
-        // La mettiamo in fondo, a meno che non manchi il 2 nella scala A-3
-        if (finalUseAceLow && real.get(0).getValue().equals("A") && real.size() > 1 && mapValue(real.get(1), true) == 3) {
-             result.add(1, w); // Metti il jolly in posizione del '2'
+        
+        // 1. Se la matta è un 2 e può essere naturale (A-2-3), NON deve finire qui 
+        // perché è già stata inserita nella lista 'real' all'inizio del metodo.
+        
+        // 2. Se l'asso è basso (1, 2, 3...), la matta NON può andare prima dell'Asso.
+        if (finalUseAceLow && real.get(0).getValue().equals("A")) {
+             // Se c'è un buco tra A e 3 (e non è stato riempito), lo mettiamo lì
+             if (real.size() > 1 && mapValue(real.get(1), true) == 3 && !result.stream().anyMatch(c -> c.getValue().equals("2") && !CombinationValidator.isWildcard(c, sequence))) {
+                 result.add(1, w); 
+             } else {
+                 result.add(0, w); // Mettiamo la matta in cima (sopra il Re o l'Asso alto)
+             }
         } else {
-             result.add(w); // Default: in fondo
+             // In una scala normale, la matta di solito va in fondo o in cima.
+             // Per evitare che "salti" vicino al 2 naturale, la aggiungiamo sempre in fondo.
+             result.add(0, w); 
         }
     }
-    return result;
-}
+    
+    // Rimuovi eventuali duplicati visivi se il 2 naturale era stato contato due volte
+    return result.stream().distinct().collect(Collectors.toList());
+    }
 }
 
 
