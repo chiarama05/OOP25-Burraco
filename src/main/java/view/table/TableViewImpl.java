@@ -4,8 +4,6 @@ package view.table;
 import core.discardcard.DiscardManagerImpl;
 import core.distributioncard.DistributionManagerImpl;
 import core.drawcard.DrawManager;
-import core.resetround.RoundController;
-import core.resetround.RoundControllerImpl;
 import core.selectioncard.SelectionCardManager;
 import model.card.Card;
 import model.deck.DeckImpl;
@@ -21,6 +19,10 @@ import view.sound.*;
 import view.Utils; 
 
 import javax.swing.*;
+
+import controller.RoundController;
+import controller.RoundControllerImpl;
+
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -190,6 +192,7 @@ public class TableViewImpl implements TableView {
         deckPanel.add(handView,BorderLayout.CENTER);
         deckPanel.revalidate();
         deckPanel.repaint();
+        frame.repaint();
     }
 
 
@@ -489,5 +492,14 @@ public void addCombinationToPlayerPanel(List<Card> cards, boolean player1Turn) {
 @Override
 public JPanel getDiscardPanel() {
     return this.discardPanel;
+}
+
+@Override
+public view.discard.DiscardViewImpl getDiscardView() {
+    return this.discardView;
+}
+
+public InitialDistributionView getInitDist() {
+    return this.initDist;
 }
 }

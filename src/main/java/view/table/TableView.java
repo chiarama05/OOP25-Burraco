@@ -26,4 +26,6 @@ public interface TableView {
     SelectionCardManager getSelectionManager();
 
     JPanel getDiscardPanel();
+
+    public view.discard.DiscardViewImpl getDiscardView();
 }

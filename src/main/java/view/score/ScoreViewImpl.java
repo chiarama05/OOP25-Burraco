@@ -85,7 +85,7 @@ public class ScoreViewImpl implements ScoreView{
             actionBtn = new JButton("WINNER: " + winner + " (EXIT)");
             actionBtn.addActionListener(e -> System.exit(0));
         } else {
-            actionBtn = new JButton("NEXT ROUND (" + targetScore + ")");
+            actionBtn = new JButton("NEXT ROUND (Goal: \" + targetScore + \")");
 
             actionBtn.setFont(new Font("Arial Black", Font.BOLD, 18));
             actionBtn.setBackground(Color.YELLOW);
@@ -98,10 +98,10 @@ public class ScoreViewImpl implements ScoreView{
             if (totalS1 >= targetScore || totalS2 >= targetScore) {
             System.exit(0);
             } else {
-            frame.dispose();
-            tableView.startNewRound();
-            }
-        });
+            frame.dispose(); 
+            tableView.handleNewRoundRequest(); 
+        }
+    });
         }
         mainPanel.add(actionBtn, BorderLayout.SOUTH);
 

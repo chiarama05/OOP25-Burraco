@@ -1,13 +1,16 @@
-package core.resetround;
+package controller;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import core.distributioncard.DistributionManagerImpl;
+import core.resetround.ResetManager;
 import model.deck.DeckImpl;
 import model.discard.DiscardPile;
 import model.player.PlayerImpl;
 import view.distribution.InitialDistributionView;
 import view.table.TableView;
+import java.awt.Window;
 
 public class RoundControllerImpl implements RoundController{
 
@@ -32,26 +35,36 @@ public class RoundControllerImpl implements RoundController{
     @Override
     public void processNewRound() {
 
-        // 1. Reset logico
+        
         resetManager.resetRound(player1, player2, commonDeck, discardPile);
 
-        // 2. Pulizia grafica
+       
         tableView.startNewRound();
 
-        // 3. Ridistribuzione
-        // Usiamo il selection manager che ora è visibile tramite l'interfaccia TableView
-        InitialDistributionView initDist = new InitialDistributionView(
-        tableView.getDiscardPanel(), 
-        tableView.getSelectionManager()
+        InitialDistributionView currentDist = ((view.table.TableViewImpl)tableView).getInitDist();
+
+        currentDist.distribute(
+        player1, player2, new DistributionManagerImpl(), 
+        commonDeck, tableView.getDiscardView(), discardPile
     );
-        initDist.distribute(player1, player2, new DistributionManagerImpl(), 
-                           commonDeck, null, discardPile);
         
-        // 4. Reset stato partita tramite DrawManager
+        
         tableView.getDrawManager().resetTurn();
         
-        // 5. Refresh finale UI
         tableView.refreshTurnLabel(true);
         tableView.refreshHandPanel(player1);
+
+        tableView.getDiscardView().updateDiscardPile(discardPile.getCards());
+
+        if (tableView instanceof view.table.TableViewImpl tvImpl) {
+        tvImpl.getDiscardPanel().revalidate();
+        tvImpl.getDiscardPanel().repaint();
+        // Recupera il frame principale e forza un refresh totale
+        Window w = SwingUtilities.getWindowAncestor(tvImpl.getDiscardPanel());
+        if (w != null) {
+            w.revalidate();
+            w.repaint();
+        }
+    }
     }
 }

@@ -1,5 +1,7 @@
 package controller;
 
-public class RoundController {
+public interface RoundController {
+
+    void processNewRound();
 
 }
