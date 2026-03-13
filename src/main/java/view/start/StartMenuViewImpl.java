@@ -19,38 +19,40 @@ public class StartMenuViewImpl implements StartMenuView{
     }
 
     private void setupUI() {
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 400);
-        frame.setLocationRelativeTo(null);
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setSize(600, 450); // Larghezza aumentata a 600 come l'altro
+    frame.setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(new Color(0, 102, 51));
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(20, 20, 20, 20);
+    JPanel panel = new JPanel(new GridBagLayout());
+    panel.setBackground(new Color(0, 102, 51));
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.insets = new Insets(25, 25, 25, 25);
 
-        JLabel title = new JLabel("BURRACO GAME");
-        title.setFont(new Font("Serif", Font.BOLD, 45));
-        title.setForeground(Color.YELLOW);
-        gbc.gridy = 0;
-        panel.add(title, gbc);
+    JLabel title = new JLabel("BURRACO GAME");
+    title.setFont(new Font("Serif", Font.BOLD, 55)); // Titolo più imponente
+    title.setForeground(Color.YELLOW);
+    gbc.gridy = 0;
+    panel.add(title, gbc);
 
-        JButton newBtn = new JButton("NEW GAME");
-        newBtn.setPreferredSize(new Dimension(150, 50));
-        newBtn.addActionListener(e -> {
-            close();
-            listener.onStartClicked(); // Notifica il Main di aprire il setup
-        });
-        gbc.gridy = 1;
-        panel.add(newBtn, gbc);
+    JButton newBtn = new JButton("NEW GAME");
+    newBtn.setFont(new Font("Arial", Font.BOLD, 18));
+    newBtn.setPreferredSize(new Dimension(200, 60)); // Pulsante più grande
+    newBtn.addActionListener(e -> {
+        close();
+        listener.onStartClicked();
+    });
+    gbc.gridy = 1;
+    panel.add(newBtn, gbc);
 
-        JButton rulesBtn = new JButton("RULES");
-        rulesBtn.setPreferredSize(new Dimension(150, 50));
-        rulesBtn.addActionListener(e -> showRules());
-        gbc.gridy = 2;
-        panel.add(rulesBtn, gbc);
+    JButton rulesBtn = new JButton("RULES");
+    rulesBtn.setFont(new Font("Arial", Font.BOLD, 18));
+    rulesBtn.setPreferredSize(new Dimension(200, 60)); // Pulsante più grande
+    rulesBtn.addActionListener(e -> showRules());
+    gbc.gridy = 2;
+    panel.add(rulesBtn, gbc);
 
-        frame.add(panel);
-    }
+    frame.add(panel);
+}
 
     private void showRules() {
     String message = "BURRACO GAME RULES\n\n" +
