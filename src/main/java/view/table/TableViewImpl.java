@@ -344,10 +344,15 @@ public class TableViewImpl implements TableView {
         discardPanel.removeAll();
         resetPlayerTitles();
 
+        this.turnoPlayer1 = true;
+        refreshTurnLabel(true);
+
         frame.revalidate();
         frame.repaint();
 
         JOptionPane.showMessageDialog(frame, "New Round started!");
+
+        refreshHandPanel(player1);
     }
 
 
@@ -368,10 +373,6 @@ public class TableViewImpl implements TableView {
 
      //VA NEL ROUNDCONTROLLER
     public void showWinExit(boolean player1Won) {
-        int totalS1 = ((PlayerImpl)player1).getMatchTotalScore();
-        int totalS2 = ((PlayerImpl)player2).getMatchTotalScore();
-
-        this.getSoundController().playRoundEndSound();
 
         ScoreView scoreScreen = new ScoreViewImpl(player1, player2, nameP1, nameP2, this.winLimit, this);
         scoreScreen.display();

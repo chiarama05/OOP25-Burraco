@@ -31,8 +31,9 @@ public class PlayerImpl implements Player{
     // Metodo per resettare le carte ma non i punti tra un round e l'altro
     public void resetForNewRound() {
         this.hand.clear();
-    this.combinations.clear();
-    this.setInPot(false);
+        this.combinations.clear();
+        this.pot.clear();
+        this.setInPot(false);
     }
 
     public PlayerImpl() {

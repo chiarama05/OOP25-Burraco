@@ -2,6 +2,7 @@ package view.score;
 
 import model.player.Player;
 import model.player.PlayerImpl;
+import view.sound.SoundControllerImpl;
 import view.table.TableViewImpl;
 import core.score.ScoreManager;
 import core.score.ScoreManagerImpl;
@@ -23,91 +24,83 @@ public class ScoreViewImpl implements ScoreView{
         this.targetScore = targetScore;
         this.tableView = tableView;
 
-        int totalS1 = ((PlayerImpl)p1).getMatchTotalScore();
-        int totalS2 = ((PlayerImpl)p2).getMatchTotalScore();
-        if (totalS1 >= targetScore || totalS2 >= targetScore) {
-        new view.sound.SoundControllerImpl().playVictorySound();
+        // 1. CALCOLO LOGICO DEI PUNTI (va fatto subito per decidere il suono)
+        int roundS1 = scoreManager.calculateFinalScore(p1);
+        int roundS2 = scoreManager.calculateFinalScore(p2);
+
+        ((PlayerImpl) p1).addPointsToMatch(roundS1);
+        ((PlayerImpl) p2).addPointsToMatch(roundS2);
+
+        int totalS1 = ((PlayerImpl) p1).getMatchTotalScore();
+        int totalS2 = ((PlayerImpl) p2).getMatchTotalScore();
+
+        // 2. DEFINIZIONE matchOver (Risolve l'errore della variabile)
+        boolean matchOver = totalS1 >= targetScore || totalS2 >= targetScore;
+
+        // 3. GESTIONE SUONI
+        if (matchOver) {
+            new SoundControllerImpl().playVictorySound();
+        } else {
+            new SoundControllerImpl().playRoundEndSound();
         }
-        setupUI(p1, p2, name1, name2);
+
+        setupUI(p1, p2, name1, name2, matchOver);
     }
 
-    private void setupUI(Player p1, Player p2, String name1, String name2) {
+    private void setupUI(Player p1, Player p2, String name1, String name2, boolean matchOver) {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(600, 700);
+        frame.setSize(650, 750);
         frame.setLocationRelativeTo(null);
         
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        BackgroundPanel mainPanel = new BackgroundPanel();
+        mainPanel.setLayout(new BorderLayout());
         mainPanel.setBackground(new Color(0, 102, 51)); 
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         // --- TITOLO ---
         JLabel titleLabel = new JLabel("SCOREBOARD", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial Black", Font.BOLD, 24));
+        titleLabel.setFont(new Font("Arial Black", Font.BOLD, 26));
         titleLabel.setForeground(Color.YELLOW); 
+        titleLabel.setBorder(new EmptyBorder(0, 0, 40, 0));
         mainPanel.add(titleLabel, BorderLayout.NORTH);
-
-        // ---CALCOLO LOGICO---
-        int roundS1 = scoreManager.calculateFinalScore(p1);
-        int roundS2 = scoreManager.calculateFinalScore(p2);
-
-        ((PlayerImpl)p1).addPointsToMatch(roundS1);
-        ((PlayerImpl)p2).addPointsToMatch(roundS2);
-
-        int totalS1 = ((PlayerImpl)p1).getMatchTotalScore();
-        int totalS2 = ((PlayerImpl)p2).getMatchTotalScore();
-
-        // --- TABELLA PUNTEGGI ---
-        JPanel gridPanel = new JPanel(new GridLayout(2, 2, 10, 20));
-        gridPanel.setOpaque(false);
-        gridPanel.setBorder(new EmptyBorder(40, 30, 40, 30));
 
         JPanel centerPanel = new JPanel(new GridLayout(1, 2, 30, 0));
         centerPanel.setOpaque(false);
 
-        centerPanel.add(createPlayerStatsPanel(p1, name1, roundS1));
-        centerPanel.add(createPlayerStatsPanel(p2, name2, roundS2));
+        int totalS1 = ((PlayerImpl)p1).getMatchTotalScore();
+        int totalS2 = ((PlayerImpl)p2).getMatchTotalScore();
+
+        // Determiniamo chi è il vincitore per mostrare la coppa
+        boolean p1Winner = matchOver && (totalS1 > totalS2);
+        boolean p2Winner = matchOver && (totalS2 > totalS1);
+
+        centerPanel.add(createPlayerStatsPanel(p1, name1, p1Winner));
+        centerPanel.add(createPlayerStatsPanel(p2, name2, p2Winner));
 
         mainPanel.add(centerPanel, BorderLayout.CENTER);
 
-        
-        // Mostra i totali nella griglia
-        gridPanel.add(createStyledLabel(name1));
-        gridPanel.add(createScoreValueLabel(totalS1));
-        gridPanel.add(createStyledLabel(name2));
-        gridPanel.add(createScoreValueLabel(totalS2));
-
-
-        // Logica del bottone (CONTINUA o FINE)
+        // --- BOTTONE AZIONE ---
         JButton actionBtn;
-        if (totalS1 >= targetScore || totalS2 >= targetScore) {
-            new view.sound.SoundControllerImpl().playVictorySound();
-            String winner = totalS1 > totalS2 ? name1 : name2;
-            actionBtn = new JButton("WINNER: " + winner + " (EXIT)");
+        if (matchOver) {
+            String winnerName = totalS1 > totalS2 ? name1 : name2;
+            actionBtn = new JButton("CHAMPION: " + winnerName.toUpperCase() + " (EXIT)");
             actionBtn.addActionListener(e -> System.exit(0));
         } else {
-            actionBtn = new JButton("NEXT ROUND (Goal: \" + targetScore + \")");
-
-            actionBtn.setFont(new Font("Arial Black", Font.BOLD, 18));
-            actionBtn.setBackground(Color.YELLOW);
-            actionBtn.setForeground(new Color(0, 102, 51)); // Verde scuro
-            actionBtn.setFocusPainted(false);
-            actionBtn.setBorder(BorderFactory.createEmptyBorder(15, 0, 15, 0)); // Più alto
-            actionBtn.setOpaque(true);
-            actionBtn.setBorderPainted(false);
+            // Qui mostriamo il target score correttamente
+            actionBtn = new JButton("NEXT ROUND (Target: " + targetScore + " pts)");
             actionBtn.addActionListener(e -> {
-            if (totalS1 >= targetScore || totalS2 >= targetScore) {
-            System.exit(0);
-            } else {
-            frame.dispose(); 
-            tableView.handleNewRoundRequest(); 
+                frame.dispose();
+                tableView.handleNewRoundRequest();
+            });
         }
-    });
-        }
+        styleButton(actionBtn);
+        JPanel buttonContainer = new JPanel(new BorderLayout());
+        buttonContainer.setOpaque(false);
+        buttonContainer.setBorder(new EmptyBorder(40, 0, 10, 0));
+        buttonContainer.add(actionBtn, BorderLayout.CENTER);
         mainPanel.add(actionBtn, BorderLayout.SOUTH);
 
         frame.add(mainPanel);
-        frame.revalidate();
-        frame.repaint();
     }
 
     private int calculateOnlyCardsOnTable(Player p) {
@@ -120,10 +113,21 @@ public class ScoreViewImpl implements ScoreView{
     return total;
     }
 
-    private JPanel createPlayerStatsPanel(Player p, String name, int roundScore) {
+    private JPanel createPlayerStatsPanel(Player p, String name, boolean isWinner) {
     JPanel panel = new JPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     panel.setOpaque(false);
+
+    String displayName = isWinner ? "🏆 " + name.toUpperCase() + " 🏆" : name.toUpperCase();
+
+    Color brightGold = new Color(255, 215, 0);
+    JLabel nameLabel = new JLabel(displayName);
+        nameLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
+        nameLabel.setForeground(isWinner ? brightGold : Color.YELLOW);
+        nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        panel.add(nameLabel);
+        panel.add(Box.createVerticalStrut(20));
 
     int aTerra = calculateOnlyCardsOnTable(p);
     int burrachiSporchi = ((ScoreManagerImpl)scoreManager).countDirtyBurraco(p);
@@ -134,18 +138,8 @@ public class ScoreViewImpl implements ScoreView{
     int carteInMano = scoreManager.calculateRemainingHandValue(p);
     int totaleMano = scoreManager.calculateFinalScore(p);
 
-    
-    JLabel nameLabel = new JLabel(name.toUpperCase());
-    nameLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
-    nameLabel.setForeground(Color.YELLOW);
-    nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-    panel.add(nameLabel);
-    panel.add(Box.createVerticalStrut(20));
-
-    
     panel.add(createRow("Board Score", String.valueOf(aTerra), false));
-    panel.add(createRow("Burraco", String.valueOf(burrachiPuliti + burrachiSporchi), false));
-    panel.add(createRow("Clean Burraco", String.valueOf(burrachiPuliti), false));
+    panel.add(createRow("Clean Burraco", String.valueOf(burrachiPuliti*200), false));
     panel.add(createRow("Dirty Burraco", String.valueOf(burrachiSporchi * 100), false));
     panel.add(createRow("Closure", String.valueOf(chiusura), false));
     panel.add(createRow("Pot not taken", String.valueOf(mazzetto), false));
@@ -167,6 +161,15 @@ public class ScoreViewImpl implements ScoreView{
     return panel;
 }
 
+    private void styleButton(JButton btn) {
+        btn.setFont(new Font("Arial Black", Font.BOLD, 18));
+        btn.setBackground(Color.YELLOW);
+        btn.setForeground(new Color(0, 102, 51));
+        btn.setFocusPainted(false);
+        btn.setOpaque(true);
+        btn.setBorderPainted(false);
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }
 
 class BackgroundPanel extends JPanel {
     @Override
@@ -200,21 +203,6 @@ class BackgroundPanel extends JPanel {
     row.setMaximumSize(new Dimension(250, 30));
     return row;
 }
-
-    private JLabel createStyledLabel(String text) {
-        JLabel l = new JLabel(text.toUpperCase() + ":");
-        l.setFont(new Font("Arial Black", Font.BOLD, 22));
-        l.setForeground(Color.BLACK);
-        return l;
-    }
-
-    private JLabel createScoreValueLabel(int score) {
-        JLabel l = new JLabel(score + " PT");
-        l.setFont(new Font("Arial Black", Font.BOLD, 24));
-        // Se il punteggio è negativo lo facciamo risaltare (tipico del Burraco)
-        l.setForeground(score < 0 ? new Color(150, 0, 0) : Color.BLACK);
-        return l;
-    }
 
     @Override
     public void display() {

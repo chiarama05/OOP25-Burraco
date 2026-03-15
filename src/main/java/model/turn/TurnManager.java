@@ -6,6 +6,8 @@ public interface TurnManager {
 
     void nextTurn();
 
+    public void resetForNewRound();
+
     void tryClosure();
 
     Player getCurrentPlayer();

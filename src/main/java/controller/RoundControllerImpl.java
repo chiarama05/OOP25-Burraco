@@ -34,11 +34,9 @@ public class RoundControllerImpl implements RoundController{
 
     @Override
     public void processNewRound() {
-
         
         resetManager.resetRound(player1, player2, commonDeck, discardPile);
 
-       
         tableView.startNewRound();
 
         InitialDistributionView currentDist = ((view.table.TableViewImpl)tableView).getInitDist();
@@ -47,7 +45,6 @@ public class RoundControllerImpl implements RoundController{
         player1, player2, new DistributionManagerImpl(), 
         commonDeck, tableView.getDiscardView(), discardPile
     );
-        
         
         tableView.getDrawManager().resetTurn();
         

@@ -46,6 +46,23 @@ public class TurnManagerImpl implements TurnManager{
     }
 
     @Override
+    public void resetForNewRound() {
+    // 1. Forza il modello a tornare al giocatore 1
+    if (!model.isPlayer1Turn()) {
+        model.switchTurn(); 
+    }
+    
+    // 2. Resetta il manager della pesca
+    if (this.drawManager != null) {
+        this.drawManager.resetTurn();
+    }
+
+    // 3. Aggiorna la grafica immediatamente
+    view.refreshTurnLabel(true);
+    view.refreshHandPanel(model.getCurrentPlayer());
+    }
+
+    @Override
     public void tryClosure(){
         if(!model.canClose()){
             view.showNotValideClosure();
