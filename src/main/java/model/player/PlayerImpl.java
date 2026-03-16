@@ -1,7 +1,6 @@
 package model.player;
 import java.util.ArrayList;
 import java.util.List;
-import core.combination.*;
 import model.card.Card;
 
 
@@ -37,7 +36,7 @@ public class PlayerImpl implements Player{
     }
 
     public PlayerImpl() {
-        this.name = "Giocatore";
+        this.name = "Player";
     }
 
 

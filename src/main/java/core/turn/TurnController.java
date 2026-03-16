@@ -3,8 +3,6 @@ package core.turn;
 import model.turn.Turn;
 import view.table.TableView;
 
-import javax.swing.JOptionPane;
-
 import core.drawcard.DrawManager;
 
 public class TurnController {

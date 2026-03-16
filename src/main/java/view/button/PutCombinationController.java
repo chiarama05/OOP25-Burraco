@@ -8,7 +8,6 @@ import core.combination.CombinationValidator;
 import core.combination.SetUtils;
 import core.combination.StraightUtils;
 import core.drawcard.DrawManager;
-import core.selectioncard.SelectionCardManager;
 import core.pot.PotManager;
 
 import javax.swing.*;
@@ -16,22 +15,18 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class PutCombinationController {
 
     private final TableView tableView;
     private final GameController gameController; 
-    private final SelectionCardManager selectionManager;
     private final DrawManager drawManager; 
     private final PotManager potManager;
 
-    public PutCombinationController(TableView tableView, GameController gameController, 
-                                    SelectionCardManager sel, DrawManager drawManager, 
-                                    PotManager potManager) {
+    public PutCombinationController(TableView tableView, GameController gameController,
+                                    DrawManager drawManager, PotManager potManager) {
         this.tableView = tableView;
         this.gameController = gameController;
-        this.selectionManager = sel;
         this.drawManager = drawManager; 
         this.potManager = potManager;
     }

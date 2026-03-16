@@ -58,7 +58,7 @@ public class DiscardController {
 
         Set<Card> selected = handView.getSelectedCards();
         if (selected.size() != 1) {
-            notifier.notifySelectionError("Seleziona esattamente una carta!");
+            notifier.notifySelectionError("Select only one card!");
             return;
         }
 

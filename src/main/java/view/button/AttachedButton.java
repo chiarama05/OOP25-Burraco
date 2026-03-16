@@ -7,14 +7,12 @@ import core.combination.StraightUtils;
 import view.burraco.BurracoStyleManager;
 import view.controller.GameController; 
 import view.table.TableView;
-import view.table.TableViewImpl;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AttachedButton extends JButton {
 

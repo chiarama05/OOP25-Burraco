@@ -8,10 +8,8 @@ import view.button.*;
 import view.discard.DiscardViewImpl;
 import view.distribution.InitialDistributionView;
 import view.hand.handImpl;
-import model.turn.*;
 import view.notification.GameNotifier;
 import view.notification.GameNotifierImpl;
-import view.Utils; 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -122,7 +120,7 @@ public class TableViewImpl implements TableView {
     
 
     core.turn.TurnController turnCtrl = new core.turn.TurnController(turnModel, this, drawManager);
-    core.pot.PotManager potCtrl = new core.pot.PotManager(turnModel, this, notifier);
+    core.pot.PotManager potCtrl = new core.pot.PotManager(turnModel, this);
     core.closure.ClosureManager closureCtrl = new core.closure.ClosureManager(turnModel, this, notifier, this.targetScore);
 
     new view.button.DeckController(deckView, drawManager, this, gameController);
@@ -139,7 +137,6 @@ public class TableViewImpl implements TableView {
     PutCombinationController putComboCtrl = new PutCombinationController(
         this, 
         gameController, 
-        gameController.getSelectionManager(), 
         drawManager,
         potCtrl
     );
@@ -172,7 +169,7 @@ public class TableViewImpl implements TableView {
     
     @Override 
     public void markPotTaken(boolean isP1) {
-        ((javax.swing.border.TitledBorder)(isP1 ? combPanel1 : combPanel2).getBorder()).setTitle((isP1 ? nameP1 : nameP2) + " [POZZETTO PRESO]");
+        ((javax.swing.border.TitledBorder)(isP1 ? combPanel1 : combPanel2).getBorder()).setTitle((isP1 ? nameP1 : nameP2) + " [POT TAKEN]");
         frame.repaint();
     }
 
@@ -185,7 +182,7 @@ public class TableViewImpl implements TableView {
 
     @Override public void switchHand(boolean isP1) { 
         deckPanel.removeAll();
-    deckPanel.add(new JLabel("Cambio turno in corso...", SwingConstants.CENTER));
+    deckPanel.add(new JLabel("Shift turn in progress...", SwingConstants.CENTER));
     deckPanel.revalidate();
     deckPanel.repaint();
 
@@ -193,10 +190,10 @@ public class TableViewImpl implements TableView {
     String idleName = isP1 ? nameP2 : nameP1;
 
     JOptionPane.showMessageDialog(frame, 
-        idleName + ", turno terminato.\n\n" +
-        "Passa il computer a " + activeName + ".\n" +
-        activeName + ", premi OK quando sei pronto per vedere le tue carte.", 
-        "Privacy Turno", 
+        idleName + ", turn ended.\n\n" +
+        "Hand the turn over to " + activeName + ".\n" +
+        activeName + ", Press OK when you are ready to see your cards.", 
+        "Turn Privacy", 
         JOptionPane.INFORMATION_MESSAGE);
 
    
@@ -205,24 +202,35 @@ public class TableViewImpl implements TableView {
     }
 
 
-    @Override public handImpl getHandViewForPlayer(Player p) { return (p == player1) ? initDist.getPlayer1HandView() : initDist.getPlayer2HandView(); }
-    @Override public DiscardViewImpl getDiscardView() { return discardView; }
-    @Override public JPanel getDiscardPanel() { return discardPanel; }
-    @Override public void startNewRound() { combPanel1.removeAll(); combPanel2.removeAll(); discardPanel.removeAll(); frame.repaint(); }
+    @Override public handImpl getHandViewForPlayer(Player p) { 
+        return (p == player1) ? initDist.getPlayer1HandView() : initDist.getPlayer2HandView(); 
+    }
+
+    @Override public DiscardViewImpl getDiscardView() { 
+        return discardView; 
+    }
+
+    @Override public JPanel getDiscardPanel() { 
+        return discardPanel; 
+    }
+
+    @Override public void startNewRound() { 
+        combPanel1.removeAll(); combPanel2.removeAll(); discardPanel.removeAll(); frame.repaint(); 
+    }
 
     public DrawManager getDrawManager() {
-    return this.drawManager;
+        return this.drawManager;
     }
 
     public InitialDistributionView getInitDist() {
-    return this.initDist;
+        return this.initDist;
     }
 
     public view.controller.GameController getGameController() {
-    return this.gameController;
+        return this.gameController;
     }
 
     public void setTargetScore(int score) {
-    this.targetScore = score;
+        this.targetScore = score;
     }
 }

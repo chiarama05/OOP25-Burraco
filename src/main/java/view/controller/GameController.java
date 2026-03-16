@@ -64,9 +64,21 @@ public class GameController {
     return this.turnModel;
     }
 
-    public boolean canDraw() { return !hasDrawn; }
-    public void setHasDrawn(boolean value) { this.hasDrawn = value; }
-    public boolean hasAlreadyDrawn() { return hasDrawn; }
-    public PlayerImpl getPlayer1() { return player1; }
-    public PlayerImpl getPlayer2() { return player2; }
+    public boolean canDraw() { 
+        return !hasDrawn; 
+    }
+
+    public void setHasDrawn(boolean value) { 
+        this.hasDrawn = value; 
+    }
+
+    public boolean hasAlreadyDrawn() { 
+        return hasDrawn; 
+    }
+    public PlayerImpl getPlayer1() { 
+        return player1; 
+    }
+    public PlayerImpl getPlayer2() { 
+        return player2; 
+    }
 }
