@@ -46,63 +46,70 @@ public class StraightUtils {
     }
 
 
-    /**
-     * Verifies if the given list of cards can form a valid straight.
-     * Wildcards (Jolly or usable Twos) can fill gaps in the sequence.
-     * The Ace can be considered as low (1) or high (14).
-     *
-     * @param cards the list of cards to check
-     * @return true if the cards can form a valid straight, false otherwise
-     */
     public static boolean isValidStraight(List<Card> cards) {
-        List<Card> real = cards.stream()
-                .filter(c -> !CombinationValidator.isWildcard(c, cards))
-                .collect(Collectors.toList());
+    if (cards == null || cards.size() < 3) return false;
 
-        if (real.isEmpty()) {
-            return false;
-        } 
+    // --- TENTATIVO 1: Considera i 2 come potenziali carte naturali ---
+    // (Un 2 è naturale solo se è dello stesso seme delle altre e c'è un A o un 3)
+    if (checkLogic(cards, false)) return true;
 
-        // Map real cards to numeric values (Ace as low and high)
-        List<Integer> aceLow = real.stream()
-                .map(c -> mapValue(c, true))
-                .sorted()
-                .collect(Collectors.toList());
+    // --- TENTATIVO 2: Considera i 2 (anche dello stesso seme) come MATTE ---
+    // Questo risolve il caso 3-2-5 dove il 2 deve "fare il 4"
+    if (checkLogic(cards, true)) return true;
 
-        List<Integer> aceHigh = real.stream()
-                .map(c -> mapValue(c, false))
-                .sorted()
-                .collect(Collectors.toList());
+    return false;
+}
 
-        long wildcards = cards.stream()
-                .filter(c -> CombinationValidator.isWildcard(c, cards))
-                .count();
+private static boolean checkLogic(List<Card> cards, boolean forceTwosAsWildcards) {
+    List<Card> real = new ArrayList<>();
+    int wildcards = 0;
 
-        // Check if either low-Ace or high-Ace sequence is valid
-        return canBeSequential(aceLow, wildcards) || canBeSequential(aceHigh, wildcards);
+    for (Card c : cards) {
+        if (c.getValue().equals("Jolly")) {
+            wildcards++;
+        } else if (c.getValue().equals("2")) {
+            // Se forziamo i 2 come matte O se il 2 è di seme diverso, è una matta
+            if (forceTwosAsWildcards || !isSameSeedAsRest(c, cards)) {
+                wildcards++;
+            } else {
+                // Altrimenti lo trattiamo come naturale (valore 2)
+                real.add(c);
+            }
+        } else {
+            real.add(c);
+        }
+    }
+
+    // Regola del Burraco/Scala: massimo 1 matta (Jolly o un 2 usato come matta)
+    if (wildcards > 1) return false;
+
+    if (real.isEmpty()) return false;
+
+    // Test con Asso basso (1) e Asso alto (14)
+    List<Integer> aceLow = real.stream().map(c -> mapValue(c, true)).sorted().collect(Collectors.toList());
+    List<Integer> aceHigh = real.stream().map(c -> mapValue(c, false)).sorted().collect(Collectors.toList());
+
+    return canBeSequential(aceLow, wildcards) || canBeSequential(aceHigh, wildcards);
+}
+
+private static boolean isSameSeedAsRest(Card two, List<Card> cards) {
+    return cards.stream()
+        .filter(c -> !c.getValue().equals("Jolly") && !c.getValue().equals("2"))
+        .findFirst()
+        .map(firstReal -> firstReal.getSeed().equals(two.getSeed()))
+        .orElse(true);
     }
 
 
-    public static boolean isNaturalTwo(Card two, List<Card> straight) {
+   public static boolean isNaturalTwo(Card two, List<Card> straight) {
     if (!two.getValue().equals("2")) return false;
-
-    // Se la carta è stata esplicitamente marcata come matta, non è naturale
-    if (two instanceof CardImpl && ((CardImpl) two).isUsedAsWildcard()) {
-        return false;
-    }
-
-    // Controllo del seme (deve essere uguale alle altre carte reali)
-    String scaleSuit = straight.stream()
-            .filter(c -> !c.getValue().equals("Jolly") && !c.getValue().equals("2"))
-            .findFirst()
-            .map(Card::getSeed)
-            .orElse(two.getSeed());
-
-    if (!two.getSeed().equals(scaleSuit)) return false;
-
-    boolean hasThree = straight.stream().anyMatch(c -> c.getValue().equals("3") && c.getSeed().equals(scaleSuit));
     
-    return hasThree;
+    String suit = two.getSeed();
+    // Un 2 è naturale solo se nella lista ci sono l'Asso o il 3 di quel seme
+    boolean hasAce = straight.stream().anyMatch(c -> c.getValue().equals("A") && c.getSeed().equals(suit));
+    boolean hasThree = straight.stream().anyMatch(c -> c.getValue().equals("3") && c.getSeed().equals(suit));
+    
+    return hasAce || hasThree;
 }
 
 
@@ -155,75 +162,69 @@ public class StraightUtils {
     }
 
     public static List<Card> orderStraight(List<Card> sequence) {
-    List<Card> real = sequence.stream()
-        .filter(c -> !CombinationValidator.isWildcard(c, sequence)) 
-        .collect(Collectors.toList());
-    List<Card> wild = sequence.stream()
+    if (sequence == null || sequence.isEmpty()) return new ArrayList<>();
+
+    // 1. Separiamo le carte reali dalle matte
+    List<Card> realCards = sequence.stream()
+            .filter(c -> !CombinationValidator.isWildcard(c, sequence))
+            .collect(Collectors.toList());
+    
+    List<Card> wildcards = sequence.stream()
             .filter(c -> CombinationValidator.isWildcard(c, sequence))
             .collect(Collectors.toList());
 
-    if (real.isEmpty()) return new ArrayList<>(sequence);
+    if (realCards.isEmpty()) return new ArrayList<>(sequence);
 
-    // Determiniamo se l'asso è basso (1) o alto (14)
-    List<Integer> aceLowVals = real.stream().map(c -> mapValue(c, true)).sorted().collect(Collectors.toList());
-    List<Integer> aceHighVals = real.stream().map(c -> mapValue(c, false)).sorted().collect(Collectors.toList());
-
-    // Se entrambi sono validi, preferiamo l'asso basso se c'è un 2 o 3, alto se c'è un K o Q
-    boolean useAceLow = canBeSequential(aceLowVals, wild.size());
-    if (useAceLow && canBeSequential(aceHighVals, wild.size())) {
-        // Se ho sia A che K, l'asso è sicuramente alto
-        if (real.stream().anyMatch(c -> c.getValue().equals("K"))) useAceLow = false;
-    }
-
-    final boolean finalUseAceLow = useAceLow;
-    real.sort(Comparator.comparingInt(c -> mapValue(c, finalUseAceLow)));
+    // 2. Determiniamo se l'asso è basso o alto per l'ordinamento
+    boolean useAceLow = decideIfAceIsLow(realCards, wildcards.size());
+    realCards.sort(Comparator.comparingInt(c -> mapValue(c, useAceLow)));
 
     List<Card> result = new ArrayList<>();
-    int wildIndex = 0;
+    int wildUsed = 0;
 
-    // Ricostruzione con gestione gap
-    for (int i = 0; i < real.size(); i++) {
-        result.add(real.get(i));
-        if (i < real.size() - 1) {
-            int v1 = mapValue(real.get(i), finalUseAceLow);
-            int v2 = mapValue(real.get(i+1), finalUseAceLow);
+    // 3. COSTRUZIONE DELLA SCALA E RIEMPIMENTO BUCHI
+    for (int i = 0; i < realCards.size(); i++) {
+        result.add(realCards.get(i));
+        
+        if (i < realCards.size() - 1) {
+            int v1 = mapValue(realCards.get(i), useAceLow);
+            int v2 = mapValue(realCards.get(i + 1), useAceLow);
             int gap = v2 - v1 - 1;
-            while (gap-- > 0 && wildIndex < wild.size()) {
-                result.add(wild.get(wildIndex++));
+
+            // Se c'è un buco (es. tra 3 e 5) e abbiamo una matta, la mettiamo in mezzo
+            while (gap > 0 && wildUsed < wildcards.size()) {
+                result.add(wildcards.get(wildUsed++));
+                gap--;
             }
         }
     }
 
-    // Gestione Matte rimanenti (Jolly o 2 liberi)
-    // Se la sequenza finisce con l'Asso basso (1), la matta non può stare prima.
-    // Se la sequenza inizia con 3, 2, la matta può stare in cima (Asso).
-    // ... (codice precedente di orderStraight)
-
-    // Gestione Matte rimanenti
-    while (wildIndex < wild.size()) {
-        Card w = wild.get(wildIndex++);
-        
-        // 1. Se la matta è un 2 e può essere naturale (A-2-3), NON deve finire qui 
-        // perché è già stata inserita nella lista 'real' all'inizio del metodo.
-        
-        // 2. Se l'asso è basso (1, 2, 3...), la matta NON può andare prima dell'Asso.
-        if (finalUseAceLow && real.get(0).getValue().equals("A")) {
-             // Se c'è un buco tra A e 3 (e non è stato riempito), lo mettiamo lì
-             if (real.size() > 1 && mapValue(real.get(1), true) == 3 && !result.stream().anyMatch(c -> c.getValue().equals("2") && !CombinationValidator.isWildcard(c, sequence))) {
-                 result.add(1, w); 
-             } else {
-                 result.add(0, w); // Mettiamo la matta in cima (sopra il Re o l'Asso alto)
-             }
+    // 4. GESTIONE MATTE RIMANENTI (se non servono nei buchi, vanno ai bordi)
+    while (wildUsed < wildcards.size()) {
+        Card w = wildcards.get(wildUsed++);
+        // Se c'è spazio "sotto" (es. scala inizia dal 3, mettiamo la matta per fare il 2)
+        int firstVal = mapValue(result.get(0), useAceLow);
+        if (firstVal > 1) {
+            result.add(0, w);
         } else {
-             // In una scala normale, la matta di solito va in fondo o in cima.
-             // Per evitare che "salti" vicino al 2 naturale, la aggiungiamo sempre in fondo.
-             result.add(0, w); 
+            // Altrimenti la mettiamo in coda (sopra il Re o l'Asso alto)
+            result.add(w);
         }
     }
-    
-    // Rimuovi eventuali duplicati visivi se il 2 naturale era stato contato due volte
-    return result.stream().distinct().collect(Collectors.toList());
+
+    return result;
+}
+
+// Metodo di supporto per decidere l'Asso
+private static boolean decideIfAceIsLow(List<Card> real, int wildCount) {
+    List<Integer> lowVals = real.stream().map(c -> mapValue(c, true)).sorted().collect(Collectors.toList());
+    if (canBeSequential(lowVals, wildCount)) {
+        // Se ho un Re, l'asso è quasi certamente alto (tranne scale lunghissime)
+        if (real.stream().anyMatch(c -> c.getValue().equals("K"))) return false;
+        return true;
     }
+    return false;
+}
 }
 
 

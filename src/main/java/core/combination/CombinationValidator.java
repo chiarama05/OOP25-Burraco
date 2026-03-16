@@ -26,10 +26,9 @@ public class CombinationValidator {
     if (c.getValue().equals("Jolly")) return true;
     if (!c.getValue().equals("2")) return false;
 
-    if (c instanceof CardImpl && ((CardImpl) c).isUsedAsWildcard()) {
-        return true;
-    }
+    // Se l'utente lo ha bloccato forzatamente come matta
+    if (c instanceof CardImpl && ((CardImpl) c).isUsedAsWildcard()) return true;
 
     return !StraightUtils.isNaturalTwo(c, context);
-    }
+}
 }
