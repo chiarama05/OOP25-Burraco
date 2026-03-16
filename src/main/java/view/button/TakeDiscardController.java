@@ -5,7 +5,7 @@ import core.drawcard.DrawManager;
 import core.drawcard.DrawResult;
 import model.discard.DiscardPile;
 import model.player.Player;
-import model.turn.TurnManager;
+import model.turn.Turn;
 import view.table.TableViewImpl;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -14,12 +14,12 @@ public class TakeDiscardController implements ActionListener{
 
     private final DrawManager drawManager;
     private final TableViewImpl tableView;
-    private final TurnManager turnManager;
+    private final Turn turnManager;
     private final DiscardPile discardPileModel;
     private final view.discard.DiscardViewImpl discardView;
 
     public TakeDiscardController(JButton button, DrawManager drawManager, TableViewImpl tableView, 
-                                 TurnManager turnManager, DiscardPile discardPileModel, 
+                                 Turn turnManager, DiscardPile discardPileModel, 
                                  view.discard.DiscardViewImpl discardView) {
         this.drawManager = drawManager;
         this.tableView = tableView;

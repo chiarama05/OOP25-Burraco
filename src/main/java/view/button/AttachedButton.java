@@ -5,6 +5,8 @@ import model.player.Player;
 import core.combination.AttachUtils;
 import core.combination.StraightUtils;
 import view.burraco.BurracoStyleManager;
+import view.controller.GameController; 
+import view.table.TableView;
 import view.table.TableViewImpl;
 
 import javax.swing.*;
@@ -17,12 +19,14 @@ import java.util.stream.Collectors;
 public class AttachedButton extends JButton {
 
     private final List<Card> cards;
-    private final TableViewImpl tableView;
+    private final TableView tableView;
+    private final GameController gameController; 
     private final boolean isPlayer1Owner;
 
-    public AttachedButton(List<Card> initialCards, TableViewImpl tableView, boolean isPlayer1Owner) {
+    public AttachedButton(List<Card> initialCards, TableView tableView, GameController gameController, boolean isPlayer1Owner) {
         this.cards = new ArrayList<>(initialCards);
         this.tableView = tableView;
+        this.gameController = gameController; 
         this.isPlayer1Owner = isPlayer1Owner;
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -32,36 +36,36 @@ public class AttachedButton extends JButton {
                 BorderFactory.createEmptyBorder(10, 5, 10, 5)
         ));
 
-
         updateVisuals();
-
 
         this.addActionListener(e -> handleAttach());
     }
 
     private void handleAttach() {
-        if (!tableView.getDrawManager().hasDrawn()) {
-        JOptionPane.showMessageDialog(this, "You have to draw from the deck or from the discard pile first!");
-        return;
-    }
-        Player currentPlayer = tableView.getCurrentPlayer();
-
-        boolean isCurrentPlayer1 = tableView.isPlayer1(currentPlayer);
-        if (isCurrentPlayer1 != isPlayer1Owner) {
-           JOptionPane.showMessageDialog(this, "You can only attach cards to your own combinations!");
-           return;
-        }
         
-        List<Card> selected = tableView.getSelectionManager().getSelectedCards().stream()
-                .filter(currentPlayer::hasCard)
-                .collect(Collectors.toList());
+        if (!gameController.getDrawManager().hasDrawn()) {
+        JOptionPane.showMessageDialog(this, "You have to draw first!");
+        return;
+        }
 
+        // CHIEDI AL GAMECONTROLLER
+        Player currentPlayer = gameController.getCurrentPlayer();
+
+        java.util.Set<Card> selectedSet = tableView.getHandViewForPlayer(currentPlayer).getSelectedCards();
+        
+        
+        List<Card> selected = new ArrayList<>(selectedSet);
         if (selected.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Select the card from your hand first!");
             return;
         }
 
-       
+        boolean isCurrentPlayer1 = gameController.isPlayer1(currentPlayer);
+        if (isCurrentPlayer1 != isPlayer1Owner) {
+            JOptionPane.showMessageDialog(this, "You can only attach cards to your own combinations!");
+            return;
+        }
+
         boolean canAttachAll = true;
         for (Card c : selected) {
             if (!AttachUtils.canAttach(this.cards, c)) {
@@ -74,23 +78,27 @@ public class AttachedButton extends JButton {
             int sizeBefore = this.cards.size();
             this.cards.addAll(selected);
 
+            // Sincronizzazione con il modello del player
             for (List<Card> playerComb : currentPlayer.getCombinations()) {
-            // Se la lista del player contiene la prima carta del mazzetto, è la lista giusta
-            if (!this.cards.isEmpty() && playerComb.contains(this.cards.get(0))) {
-            playerComb.clear();    // Puliamo la vecchia lista del player
-            playerComb.addAll(this.cards); // Ci mettiamo dentro tutte le carte (ora sono 7 o più)
-            break;
-        }
-    }
+                if (!this.cards.isEmpty() && playerComb.contains(this.cards.get(0))) {
+                    playerComb.clear();
+                    playerComb.addAll(this.cards);
+                    break;
+                }
+            }
+            
             currentPlayer.removeCards(selected);
 
+            // AUDIO DAL GAMECONTROLLER
             if (sizeBefore < 7 && this.cards.size() >= 7) {
-               tableView.getSoundController().playBurracoSound();
+               gameController.getSoundController().playBurracoSound();
             }
             
             updateVisuals(); 
-            tableView.getSelectionManager().clearSelection();
+            tableView.getHandViewForPlayer(currentPlayer).clearSelection();
             tableView.refreshHandPanel(currentPlayer);
+        }else {
+            JOptionPane.showMessageDialog(this, "These cards cannot be attached to this combination!");
         }
     }
 
@@ -99,7 +107,7 @@ public class AttachedButton extends JButton {
 
         if (StraightUtils.isSameSeed(cards)) {
             List<Card> ordered = StraightUtils.orderStraight(cards);
-            Collections.reverse(ordered); // [K, Q, J...]
+            Collections.reverse(ordered); 
             cards.clear();
             cards.addAll(ordered);
         } else {

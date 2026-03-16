@@ -1,8 +1,16 @@
 package core.selectioncard;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import javax.swing.JOptionPane;
+
 import model.card.*;
+import model.player.Player;
+import view.controller.GameController;
+import view.table.TableViewImpl;
 
 /**
  * SelectionCardManager handles the logical selection of cards..
@@ -77,4 +85,43 @@ public class SelectionCardManager {
         return selectedCards.isEmpty();
     }
 
+    /**
+     * Tenta di calare le carte selezionate sul tavolo.
+     */
+    public void processCombination(Player player, TableViewImpl view, GameController controller) {
+        if (selectedCards.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Seleziona prima delle carte!");
+        return; 
+    }
+
+        
+        List<Card> cardsToPut = new ArrayList<>(selectedCards);
+
+        
+        if (core.combination.CombinationValidator.isValidCombination(cardsToPut)) {
+        
+        // 1. Rimuovi dalla mano (Logica)
+        for (Card c : cardsToPut) {
+            player.removeCardHand(c);
+        }
+        
+        // 2. Aggiungi al giocatore (Logica)
+        player.getCombinations().add(cardsToPut);
+
+        // 3. AGGIORNA IL TAVOLO (Grafica)
+        // Questo metodo deve aggiungere un AttachedButton ai pannelli verdi
+        view.addCombinationToPlayerPanel(cardsToPut, controller.isPlayer1(player));
+        
+        // 4. AGGIORNA LA MANO (Grafica)
+        // Fondamentale per far sparire le carte selezionate dalla vista
+        view.refreshHandPanel(player);
+
+        // 5. Pulisci selezione
+        clearSelection();
+        
+        System.out.println("Combinazione calata con successo!");
+    } else {
+        JOptionPane.showMessageDialog(null, "Combinazione non valida ai fini del regolamento!");
+    }
+}
 }

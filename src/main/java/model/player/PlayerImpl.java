@@ -124,8 +124,11 @@ public class PlayerImpl implements Player{
 
     @Override
     public void drawPot() {
-        hand.addAll(pot);
-        pot.clear();
+        if (!pot.isEmpty()) {
+        this.hand.addAll(new ArrayList<>(pot)); 
+        this.pot.clear(); 
+        this.inPot = true;
+    }
     }
 
     @Override
@@ -135,7 +138,8 @@ public class PlayerImpl implements Player{
 
     @Override
     public void addToPot(List<Card> cards) {
-        pot.addAll(cards);
+        this.pot.clear();
+        this.pot.addAll(cards);
     }
 
     /** Returns the current pot cards */

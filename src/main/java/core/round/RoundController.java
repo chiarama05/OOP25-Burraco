@@ -1,4 +1,4 @@
-package controller;
+package core.round;
 
 public interface RoundController {
 

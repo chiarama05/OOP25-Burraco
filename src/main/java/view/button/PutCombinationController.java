@@ -1,6 +1,7 @@
 package view.button;
 
-import view.table.TableViewImpl;
+import view.controller.GameController;
+import view.table.TableView; 
 import model.player.Player;
 import model.card.Card;
 import core.combination.CombinationValidator;
@@ -8,74 +9,80 @@ import core.combination.SetUtils;
 import core.combination.StraightUtils;
 import core.drawcard.DrawManager;
 import core.selectioncard.SelectionCardManager;
-import model.turn.TurnManager;
+import core.pot.PotManager;
 
 import javax.swing.*;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PutCombinationController {
 
-    private final TableViewImpl tableView;
-    private final TurnManager turnManager;
+    private final TableView tableView;
+    private final GameController gameController; 
     private final SelectionCardManager selectionManager;
-    private final DrawManager drawManager;
-    
-    public PutCombinationController(TableViewImpl tableView, TurnManager turnManager, SelectionCardManager selectionManager, DrawManager drawManager) {
-        this.tableView = tableView;
-        this.selectionManager = selectionManager;
-        this.turnManager=turnManager;
-        this.drawManager = drawManager;
+    private final DrawManager drawManager; 
+    private final PotManager potManager;
 
+    public PutCombinationController(TableView tableView, GameController gameController, 
+                                    SelectionCardManager sel, DrawManager drawManager, 
+                                    PotManager potManager) {
+        this.tableView = tableView;
+        this.gameController = gameController;
+        this.selectionManager = sel;
+        this.drawManager = drawManager; 
+        this.potManager = potManager;
     }
 
     public void handlePutCombination() {
-
+        
         if (!drawManager.hasDrawn()) {
-            JOptionPane.showMessageDialog(null, "Draw a card first!");
-            return;
-        }
+        JOptionPane.showMessageDialog(null, "Draw a card first!");
+        return;
+    }
 
-        Player currentPlayer = turnManager.getCurrentPlayer();
-        
-        List<Card> selected = selectionManager.getSelectedCards().stream().collect(Collectors.toList());
+    Player current = gameController.getCurrentPlayer();
+    Set<Card> selectedSet = tableView.getHandViewForPlayer(current).getSelectedCards();
+    List<Card> selected = new ArrayList<>(selectedSet);
 
-        if (selected.size() < 3) {
-            JOptionPane.showMessageDialog(null, "At least 3 cards are needed to form a scale or a tris!");
-            return;
-        }
+    if (selected.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Select cards from your hand first!");
+        return;
+    }
 
-        if (!CombinationValidator.isValidCombination(selected)) {
-            JOptionPane.showMessageDialog(null, "Invalid combination!");
-            return;
-        }
+    if (selected.size() < 3) {
+        JOptionPane.showMessageDialog(null, "At least 3 cards are needed!");
+        return;
+    }
+
+    if (!CombinationValidator.isValidCombination(selected)) {
+        JOptionPane.showMessageDialog(null, "Invalid combination!");
+        return;
+    }
+
+  
+    if (StraightUtils.isSameSeed(selected) && !SetUtils.isValidSet(selected)) {
+        selected = StraightUtils.orderStraight(selected);
+    }
 
 
+    current.addCombination(selected);
+    current.removeCards(selected); 
 
-       /* per chiusura con burraco -->  int handSizeBefore=currentPlayer.getHand().size();
-        int reimainingAfter=handSizeBefore-selected.size();
+    tableView.addCombinationToPlayerPanel(selected, gameController.isPlayer1(current));
 
-        if(reimainingAfter<1){
-            JOptionPane.showMessageDialog(null, "You must discard, you must have at least one card in your hand to discard");
-            return;
-        }*/
+    if (selected.size() >= 7) {
+        gameController.getSoundController().playBurracoSound();
+    }
 
-
-        if (StraightUtils.isSameSeed(selected) && !SetUtils.isValidSet(selected)) {
-            selected = StraightUtils.orderStraight(selected);
-        }
-
-        currentPlayer.addCombination(selected);
-        currentPlayer.removeCards(selected); 
-        
-        tableView.addCombinationToPlayerPanel(selected, tableView.isPlayer1(currentPlayer));
-        
-        if (selected.size() >= 7){
-            tableView.getSoundController().playBurracoSound();
-        }
-        
-        tableView.refreshHandPanel(currentPlayer);
-        selectionManager.clearSelection();
+    if (current.hasFinishedCards() && !current.isInPot()) {
+        potManager.handlePot(false); 
+    } else {
+       
+        tableView.refreshHandPanel(current);
+    }
+    tableView.getHandViewForPlayer(current).clearSelection();
     }
 }

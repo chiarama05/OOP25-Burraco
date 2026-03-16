@@ -5,6 +5,8 @@ import model.card.Card;
 
 public interface Player {
 
+    String getName();
+
     /**
      * Returns the cards currently in the player's hand.
      */

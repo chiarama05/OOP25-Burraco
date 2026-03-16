@@ -29,61 +29,28 @@ public class DiscardManagerImpl implements DiscardManager{
             return new DiscardResult(false, false, false, "The selected card is not in the player's hand.");
         }
 
-        int handSizeBefore = player.getHand().size();
-
-        // Closing rule after taking the pot
-        if (player.isInPot()) {
-            if (handSizeBefore <= 1 &&
-                player.getBurracoCount() < 1) {
-
-                return new DiscardResult(false, false, false, "You need at least one Burraco to close the game.");
-            }
-        }
-
-        // Perform discard
         player.removeCardHand(card);
         discardPile.add(card);
 
-        boolean closingAttempt = player.isInPot() && player.hasFinishedCards();
 
-        // Check win condition
-        if (closingAttempt) {
-
-            if (player.getBurracoCount() >= 1) {
-                return new DiscardResult(true, false, true, "Game closed successfully. You win!");
-            }else{
-                // Undo discard
-                discardPile.drawLast();
-                player.addCardHand(card);
-
-                return new DiscardResult(false, false, false, "Invalid closing attempt. At least one Burraco is required.");
-            }
-        }
-        // Player finished hand without closing → take pot
+        
         if (player.isInPot() && player.hasFinishedCards()) {
-    if (player.getBurracoCount() >= 1) {
-        // Ritorna true per la validità e la vittoria, ma FALSE per "prendere il pozzetto"
-        return new DiscardResult(true, false, true, "Game closed successfully. You win!");
-    } else {
-        // Rollback se non ha burraco
-        discardPile.drawLast();
-        player.addCardHand(card);
-        return new DiscardResult(false, false, false, "Invalid closing attempt. At least one Burraco is required.");
-    }
-}
+        if (player.getBurracoCount() >= 1) {
+            return new DiscardResult(true, false, true, "Victory!");
+        } else {
+        
+            discardPile.drawLast();
+            player.addCardHand(card);
+            return new DiscardResult(false, false, false, "Need a Burraco to close!");
+        }
+        }
 
-// 2. Caso Presa Pozzetto: NON è ancora nel pozzetto e finisce le carte
-if (!player.isInPot() && player.hasFinishedCards()) {
-    player.setInPot(true);
-    // Ritorna true per "isPotTaken" (secondo parametro) ma false per "isGameWon"
-    return new DiscardResult(true, true, false, "Pozzetto taken. Turn ends.");
-}
+        
+        if (!player.isInPot() && player.hasFinishedCards()) {
+        return new DiscardResult(true, true, false, "Pot taken!");
+        }
 
-// 3. Scarto normale
-return new DiscardResult(true, true, false, "Card discarded successfully.");
-}
-
-    public List<Card> getDiscardPileCards() {
-        return discardPile.getCards();
+       
+        return new DiscardResult(true, true, false, "Discard done.");
     }
 }

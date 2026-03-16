@@ -1,19 +1,15 @@
-import javax.swing.SwingUtilities;
 
-import creating_table.TableModelImpl;
-import core.discardcard.DiscardManagerImpl;
+
+import javax.swing.SwingUtilities;
 import core.distributioncard.DistributionManagerImpl;
-import core.drawcard.DrawManager;
-import core.selectioncard.SelectionCardManager;
-import model.deck.DeckImpl;
-import model.discard.DiscardPileImpl;
 import model.player.PlayerImpl;
-import model.turn.TurnManagerImpl;
+import model.turn.TurnImpl;
 import view.start.SetUpMenuView;
 import view.start.SetUpMenuViewImpl;
 import view.start.StartMenuView;
 import view.start.StartMenuViewImpl;
 import view.table.TableViewImpl;
+import view.controller.GameController;
 
 public class BurracoApp {
     public static void main(final String[] args) {
@@ -30,22 +26,30 @@ public class BurracoApp {
             
             @Override
             public void onConfigComplete(int scoreThreshold, String nameP1, String nameP2) {
-                System.out.println("Game started with limit: " + scoreThreshold);
+                
                 PlayerImpl p1 = new PlayerImpl(nameP1);
                 PlayerImpl p2 = new PlayerImpl(nameP2);
-                TableModelImpl model = new TableModelImpl(p1, p2);
+                
+                
+                TableViewImpl view = new TableViewImpl(p1, p2, nameP1, nameP2);
 
-                //DeckImpl deck = new DeckImpl();
-                //DiscardPileImpl discardPile = new DiscardPileImpl();
-                //SelectionCardManager selectionManager = new SelectionCardManager();
-                DrawManager drawManager = new DrawManager();
-                //DistributionManagerImpl distManager = new DistributionManagerImpl();
-                //DiscardManagerImpl discardManager = new DiscardManagerImpl(discardPile);
+                
+                TurnImpl turnManager = new TurnImpl(p1, p2);
 
-                TableViewImpl view = new TableViewImpl(p1, p2, drawManager, nameP1, nameP2, scoreThreshold);
-                TurnManagerImpl turnManager = new TurnManagerImpl(model, view, drawManager);
-
+                view.setTargetScore(scoreThreshold);
                 view.wireControllers(turnManager);
+                
+                
+                GameController gc = view.getGameController(); 
+                view.getInitDist().distribute(
+                    p1, p2, 
+                    new DistributionManagerImpl(), 
+                    gc.getCommonDeck(), 
+                    view.getDiscardView(), 
+                    gc.getDiscardPile()
+                );
+
+                view.refreshHandPanel(p1);
             }
 
             @Override

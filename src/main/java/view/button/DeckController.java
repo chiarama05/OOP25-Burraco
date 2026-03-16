@@ -4,8 +4,8 @@ import core.drawcard.DrawManager;
 import core.drawcard.DrawResult;
 import model.deck.Deck;
 import model.player.Player;
-import model.turn.TurnManager;
-import view.table.TableViewImpl;
+import view.controller.GameController; 
+import view.table.TableView; 
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -16,15 +16,14 @@ import java.awt.event.ActionListener;
 
     private final DeckView deckView;
     private final DrawManager drawManager;
-    private final TableViewImpl tableView;
-    private final TurnManager turnManager;
-    
+    private final TableView tableView;
+    private final GameController gameController; 
 
-    public DeckController(DeckView deckView, DrawManager drawManager, TableViewImpl tableView, TurnManager turnManager) {
+    public DeckController(DeckView deckView, DrawManager drawManager, TableView tableView, GameController gameController) {
         this.deckView = deckView;
         this.drawManager = drawManager;
         this.tableView = tableView;
-        this.turnManager=turnManager;
+        this.gameController = gameController;
 
         this.deckView.getDeckButton().addActionListener(this);
     }
@@ -35,32 +34,29 @@ import java.awt.event.ActionListener;
     }
 
     private void handleDrawAction() {
-        Player currentPlayer = turnManager.getCurrentPlayer(); 
-        Deck deck = tableView.getCommonDeck();
+        
+        Player currentPlayer = gameController.getCurrentPlayer(); 
+        Deck deck = gameController.getCommonDeck(); 
 
-    
         DrawResult result = drawManager.drawFromDeck(currentPlayer, deck);
 
-        if (result.getStatus() == DrawResult.Status.SUCCESS) {
-            
-            tableView.refreshHandPanel(currentPlayer);
-        }
-
+        
         switch (result.getStatus()) {
-        case SUCCESS: 
-        tableView.refreshHandPanel(currentPlayer);
-        break;
+            case SUCCESS: 
+                
+                tableView.refreshHandPanel(currentPlayer);
+                break;
 
-        case ALREADY_DRAWN:
-        JOptionPane.showMessageDialog(null, "You have already drawn a card this turn!");
-        break;
+            case ALREADY_DRAWN:
+                JOptionPane.showMessageDialog(null, "You have already drawn a card this turn!");
+                break;
 
-        case EMPTY_DECK:
-        JOptionPane.showMessageDialog(null, "The deck is empty!");
-        break;
+            case EMPTY_DECK:
+                JOptionPane.showMessageDialog(null, "The deck is empty!");
+                break;
 
-        default:
-        break;
-    }
+            default:
+                break;
+        }
     }
 }

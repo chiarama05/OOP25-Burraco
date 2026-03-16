@@ -17,14 +17,17 @@ public class ScoreViewImpl implements ScoreView{
     private final ScoreManager scoreManager;
     private final int targetScore;
     private final TableViewImpl tableView;
+    private final view.controller.GameController gameController;
 
-    public ScoreViewImpl(Player p1, Player p2, String name1, String name2, int targetScore, TableViewImpl tableView) {
+    public ScoreViewImpl(Player p1, Player p2, String name1, String name2, int targetScore, 
+                         TableViewImpl tableView, view.controller.GameController gameController) {
         this.scoreManager = new ScoreManagerImpl();
         this.frame = new JFrame("Burraco - Final Standings");
         this.targetScore = targetScore;
         this.tableView = tableView;
+        this.gameController = gameController;
 
-        // 1. CALCOLO LOGICO DEI PUNTI (va fatto subito per decidere il suono)
+
         int roundS1 = scoreManager.calculateFinalScore(p1);
         int roundS2 = scoreManager.calculateFinalScore(p2);
 
@@ -34,10 +37,10 @@ public class ScoreViewImpl implements ScoreView{
         int totalS1 = ((PlayerImpl) p1).getMatchTotalScore();
         int totalS2 = ((PlayerImpl) p2).getMatchTotalScore();
 
-        // 2. DEFINIZIONE matchOver (Risolve l'errore della variabile)
+
         boolean matchOver = totalS1 >= targetScore || totalS2 >= targetScore;
 
-        // 3. GESTIONE SUONI
+
         if (matchOver) {
             new SoundControllerImpl().playVictorySound();
         } else {
@@ -70,7 +73,7 @@ public class ScoreViewImpl implements ScoreView{
         int totalS1 = ((PlayerImpl)p1).getMatchTotalScore();
         int totalS2 = ((PlayerImpl)p2).getMatchTotalScore();
 
-        // Determiniamo chi è il vincitore per mostrare la coppa
+
         boolean p1Winner = matchOver && (totalS1 > totalS2);
         boolean p2Winner = matchOver && (totalS2 > totalS1);
 
@@ -86,12 +89,23 @@ public class ScoreViewImpl implements ScoreView{
             actionBtn = new JButton("CHAMPION: " + winnerName.toUpperCase() + " (EXIT)");
             actionBtn.addActionListener(e -> System.exit(0));
         } else {
-            // Qui mostriamo il target score correttamente
+            
             actionBtn = new JButton("NEXT ROUND (Target: " + targetScore + " pts)");
             actionBtn.addActionListener(e -> {
                 frame.dispose();
-                tableView.handleNewRoundRequest();
-            });
+                gameController.getTurnModel().resetForNewRound();
+                core.round.ResetManager resetManager = new core.round.ResetManagerImpl();
+                core.round.RoundController rc = new core.round.RoundControllerImpl(
+        tableView, 
+        resetManager, 
+        (PlayerImpl)p1, 
+        (PlayerImpl)p2, 
+        gameController 
+        );
+        rc.processNewRound();
+        tableView.refreshTurnLabel(true);
+        });
+
         }
         styleButton(actionBtn);
         JPanel buttonContainer = new JPanel(new BorderLayout());
@@ -213,5 +227,4 @@ class BackgroundPanel extends JPanel {
     public void close() {
         frame.dispose();
     }
-
 }
