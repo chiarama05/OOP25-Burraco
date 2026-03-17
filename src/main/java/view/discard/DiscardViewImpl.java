@@ -58,18 +58,27 @@ public class DiscardViewImpl implements DiscardView{
 public void updateDiscardPile(List<Card> discardPile) {
     discardPanel.removeAll();
     for (Card c : discardPile) {
-        String cardText = c.toString();
-        JLabel label = new JLabel(cardText);
+        boolean isJolly = c.getValue().equalsIgnoreCase("Jolly");
+        String textToShow = isJolly ? c.getSeed() : c.toString();
+        JLabel label = new JLabel(textToShow);
         label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         label.setOpaque(true);
         label.setBackground(Color.WHITE);
         label.setHorizontalAlignment(JLabel.CENTER);
-        label.setFont(new Font("Monospaced", Font.BOLD, 19));
 
-        if (cardText.contains("♥") || cardText.contains("♦")) {
-            label.setForeground(Color.RED);
+
+        if (isJolly) {
+
+            label.setFont(new Font("Segoe UI Symbol", Font.BOLD, 28)); 
+            label.setForeground(new Color(153, 0, 255)); // Viola
         } else {
-            label.setForeground(Color.BLACK);
+            label.setFont(new Font("Monospaced", Font.BOLD, 19));
+
+            if (textToShow.contains("♥") || textToShow.contains("♦")) {
+                label.setForeground(Color.RED);
+            } else {
+                label.setForeground(Color.BLACK);
+            }
         }
         label.setPreferredSize(new Dimension(60, 85));
         discardPanel.add(label);

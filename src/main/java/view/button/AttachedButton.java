@@ -121,13 +121,20 @@ public class AttachedButton extends JButton {
         this.setBackground(BurracoStyleManager.getBurracoBackground(cards));
 
         for (Card c : cards) {
-            JLabel label = new JLabel(c.toString());
+            boolean isJolly = c.getValue().equalsIgnoreCase("Jolly");
+            String textToShow = isJolly ? c.getSeed() : c.toString();
+            JLabel label = new JLabel(textToShow);
+            if (isJolly) {
+            // Usiamo un font che supporti bene i simboli e lo facciamo GRANDE
+            label.setFont(new Font("Segoe UI Symbol", Font.BOLD, 28)); 
+            label.setForeground(new Color(153, 0, 255)); // Viola Burraco
+            } else {
             label.setFont(new Font("Monospaced", Font.BOLD, 22));
             label.setForeground(getCardColor(c.toString()));
+            }
             label.setAlignmentX(Component.CENTER_ALIGNMENT);
-            
             this.add(label);
-            this.add(Box.createVerticalStrut(8)); // Spazio tra le carte
+            this.add(Box.createVerticalStrut(8));
         }
 
         this.revalidate();

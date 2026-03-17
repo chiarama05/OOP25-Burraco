@@ -38,8 +38,8 @@ public class DeckImpl implements Deck {
                     cards.add(new CardImpl(seed, value));
                 }
             }
-            cards.add(new CardImpl("", "Jolly"));
-            cards.add(new CardImpl("", "Jolly"));
+            cards.add(new CardImpl("♕", "Jolly"));
+            cards.add(new CardImpl("♕", "Jolly"));
         }
         Collections.shuffle(cards);
     }

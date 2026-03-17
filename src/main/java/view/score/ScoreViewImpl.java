@@ -86,7 +86,7 @@ public class ScoreViewImpl implements ScoreView{
         JButton actionBtn;
         if (matchOver) {
             String winnerName = totalS1 > totalS2 ? name1 : name2;
-            actionBtn = new JButton("CHAMPION: " + winnerName.toUpperCase() + " (EXIT)");
+            actionBtn = new JButton("CHAMPION: " + winnerName.toUpperCase() + " (FINISH GAME)");
             actionBtn.addActionListener(e -> System.exit(0));
         } else {
             

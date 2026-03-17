@@ -24,16 +24,27 @@ public class handImpl extends JPanel implements hand {
     this.removeAll();
 
     for (Card c : hand) {
-        String cardText = c.toString();
-        JButton btn = new JButton(cardText);
+ 
+    boolean isJolly = c.getValue().equalsIgnoreCase("Jolly");
+    
 
+    String displayField = isJolly ? c.getSeed() : c.toString();
+    
+    JButton btn = new JButton(displayField);
+
+    if (isJolly) {
+        // --- STILE CORONA JOLLY ---
+        btn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 27)); 
+        btn.setForeground(new Color(153, 0, 255)); // Viola regale
+    } else {
         btn.setFont(new Font("Monospaced", Font.BOLD, 19));
-        if (cardText.contains("♥") || cardText.contains("♦")) {
+        if (displayField.contains("♥") || displayField.contains("♦")) {
             btn.setForeground(Color.RED);
         } else {
             btn.setForeground(Color.BLACK);
         }
-        btn.setPreferredSize(new Dimension(60, 85));
+    }
+        btn.setPreferredSize(new Dimension(65, 90));
         btn.setOpaque(true);
         btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
         btn.setBorder(BorderFactory.createLineBorder(Color.GRAY));

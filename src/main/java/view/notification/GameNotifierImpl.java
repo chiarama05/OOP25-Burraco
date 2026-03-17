@@ -38,7 +38,7 @@ public class GameNotifierImpl implements GameNotifier{
 
     @Override
     public void notifySelectionError(String message) {
-        JOptionPane.showMessageDialog(parent, message, "Errore Selezione", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(parent, message, "Error Selection", JOptionPane.WARNING_MESSAGE);
     }
 
 }
