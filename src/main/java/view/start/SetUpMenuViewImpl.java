@@ -77,15 +77,15 @@ panel.add(createLabel("Name Player 2:"), gbc);
 gbc.gridy = 4;
 name2 = new JTextField("Player 2", 20);
 name2.setFont(new Font("Arial", Font.PLAIN, 20));
-name2.setPreferredSize(new Dimension(300, 45));  // Stessa altezza generosa
-name2.setHorizontalAlignment(JTextField.LEFT);  // Testo allineato a sinistra
+name2.setPreferredSize(new Dimension(300, 45));  
+name2.setHorizontalAlignment(JTextField.LEFT);  
 panel.add(name2, gbc);
 
     // --- PUNTI ---
     gbc.gridy = 5;
     panel.add(createLabel("Points to win:"), gbc);
     gbc.gridy = 6;
-    JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10)); // Più spazio tra i tasti
+    JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10)); 
     btnPanel.setOpaque(false);
     btnPanel.add(createScoreBtn(1005));
     btnPanel.add(createScoreBtn(1505));

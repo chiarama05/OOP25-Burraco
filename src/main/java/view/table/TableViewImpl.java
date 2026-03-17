@@ -124,20 +124,40 @@ public class TableViewImpl implements TableView {
         b.setAlignmentX(Component.CENTER_ALIGNMENT);
         b.setFont(new Font("Arial", Font.BOLD, 14));
         b.setMaximumSize(new Dimension(170, 45));
+        b.setCursor(new Cursor(Cursor.HAND_CURSOR));
         b.setBorder(BorderFactory.createLineBorder(new Color(230, 200, 215), 1));
         b.setContentAreaFilled(false);
+
+        final boolean[] isHovered = {false};
         b.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
             
         @Override
         public void paint(Graphics g, JComponent c) {
             Graphics2D g2 = (Graphics2D) g.create();
-            GradientPaint gp = new GradientPaint(0, 0, pinkUp, 0, c.getHeight(), pinkDown);
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            
+            // Se il mouse è sopra, invertiamo o scuriamo i colori
+            Color c1 = isHovered[0] ? pinkDown : pinkUp; 
+            Color c2 = isHovered[0] ? new Color(255, 180, 200) : pinkDown;
+            
+            GradientPaint gp = new GradientPaint(0, 0, c1, 0, c.getHeight(), c2);
             g2.setPaint(gp);
             g2.fillRect(0, 0, c.getWidth(), c.getHeight()); 
             g2.dispose();
             super.paint(g, c);
+            }
+        });
+        b.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseEntered(java.awt.event.MouseEvent e) {
+            isHovered[0] = true;
+            b.repaint();
         }
-    });
+        public void mouseExited(java.awt.event.MouseEvent e) {
+            isHovered[0] = false;
+            b.repaint();
+        }
+        });
+
         rightPanel.add(b);
         rightPanel.add(Box.createVerticalStrut(10));
     }

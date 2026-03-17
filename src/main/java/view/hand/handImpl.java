@@ -35,7 +35,7 @@ public class handImpl extends JPanel implements hand {
     if (isJolly) {
         // --- STILE CORONA JOLLY ---
         btn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 27)); 
-        btn.setForeground(new Color(153, 0, 255)); // Viola regale
+        btn.setForeground(new Color(219, 112, 147)); 
     } else {
         btn.setFont(new Font("Monospaced", Font.BOLD, 19));
         if (displayField.contains("♥") || displayField.contains("♦")) {

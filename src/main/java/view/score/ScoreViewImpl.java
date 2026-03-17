@@ -63,7 +63,7 @@ public class ScoreViewImpl implements ScoreView{
 
         // --- TITOLO ---
         JLabel titleLabel = new JLabel("SCOREBOARD", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial Black", Font.BOLD, 26));
+        titleLabel.setFont(new Font("Arial Black", Font.BOLD, 28));
         titleLabel.setForeground(new Color(255, 182, 193)); 
         titleLabel.setBorder(new EmptyBorder(0, 0, 40, 0));
         mainPanel.add(titleLabel, BorderLayout.NORTH);
@@ -106,12 +106,16 @@ public class ScoreViewImpl implements ScoreView{
                 tableView.refreshTurnLabel(true);
             });
         }
-        styleButton(actionBtn);
+        actionBtn.setFont(new Font("Arial Black", Font.BOLD, 18));
+        actionBtn.setForeground(Color.BLACK); 
+        actionBtn.setPreferredSize(new Dimension(500, 60));
+        actionBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
         JPanel buttonContainer = new JPanel(new BorderLayout());
         buttonContainer.setOpaque(false);
         buttonContainer.setBorder(new EmptyBorder(40, 0, 10, 0));
-        buttonContainer.add(actionBtn, BorderLayout.CENTER);
-        mainPanel.add(actionBtn, BorderLayout.SOUTH);
+        buttonContainer.add(actionBtn);
+        mainPanel.add(buttonContainer, BorderLayout.SOUTH);
 
         frame.add(mainPanel);
     }
@@ -133,10 +137,9 @@ public class ScoreViewImpl implements ScoreView{
 
     String displayName = isWinner ? "🏆 " + name.toUpperCase() + " 🏆" : name.toUpperCase();
 
-    Color brightGold = new Color(255, 215, 0);
     JLabel nameLabel = new JLabel(displayName);
         nameLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
-        nameLabel.setForeground(isWinner ? brightGold : Color.YELLOW);
+        nameLabel.setForeground(isWinner ? new Color(219, 112, 147) : Color.WHITE);
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         panel.add(nameLabel);
@@ -174,16 +177,6 @@ public class ScoreViewImpl implements ScoreView{
     return panel;
 }
 
-    private void styleButton(JButton btn) {
-        btn.setFont(new Font("Arial Black", Font.BOLD, 18));
-        btn.setBackground(Color.YELLOW);
-        btn.setForeground(new Color(0, 102, 51));
-        btn.setFocusPainted(false);
-        btn.setOpaque(true);
-        btn.setBorderPainted(false);
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }
-
 class BackgroundPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
@@ -209,7 +202,7 @@ class BackgroundPanel extends JPanel {
     lLabel.setFont(f);
     lValue.setFont(f);
     lLabel.setForeground(Color.WHITE);
-    lValue.setForeground(Color.YELLOW); 
+    lValue.setForeground(new Color(219, 112, 147));
 
     row.add(lLabel, BorderLayout.WEST);
     row.add(lValue, BorderLayout.EAST);
