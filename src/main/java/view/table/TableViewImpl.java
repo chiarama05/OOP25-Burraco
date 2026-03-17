@@ -42,7 +42,7 @@ public class TableViewImpl implements TableView {
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setLayout(new BorderLayout());
 
-    // Definiamo i parametri stilistici comuni
+
     Font font = new Font("Arial", Font.BOLD, 20);
     Font fontTurn = new Font("Arial", Font.BOLD, 25);
     Color lightgreen = new Color(180, 220, 180); 
@@ -131,10 +131,9 @@ public class TableViewImpl implements TableView {
         @Override
         public void paint(Graphics g, JComponent c) {
             Graphics2D g2 = (Graphics2D) g.create();
-            // Crea la sfumatura verticale
             GradientPaint gp = new GradientPaint(0, 0, pinkUp, 0, c.getHeight(), pinkDown);
             g2.setPaint(gp);
-            g2.fillRect(0, 0, c.getWidth(), c.getHeight()); // fillRect = QUADRATO
+            g2.fillRect(0, 0, c.getWidth(), c.getHeight()); 
             g2.dispose();
             super.paint(g, c);
         }
