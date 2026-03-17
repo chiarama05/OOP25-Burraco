@@ -92,7 +92,7 @@ public class TableViewImpl implements TableView {
     deckPanel = new JPanel(new BorderLayout());
     deckPanel.setBackground(lightgreen);
     deckPanel.setBorder(BorderFactory.createTitledBorder(
-        null, "Hand", 0, 0, font, Color.BLACK));
+        BorderFactory.createLineBorder(Color.WHITE, 1), "Hand", 0, 0, font, Color.BLACK));
 
     JPanel bottomPanel = new JPanel(new BorderLayout());
     bottomPanel.setBackground(lightgreen);
@@ -127,6 +127,7 @@ public class TableViewImpl implements TableView {
         b.setBorder(BorderFactory.createLineBorder(new Color(230, 200, 215), 1));
         b.setContentAreaFilled(false);
         b.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+            
         @Override
         public void paint(Graphics g, JComponent c) {
             Graphics2D g2 = (Graphics2D) g.create();

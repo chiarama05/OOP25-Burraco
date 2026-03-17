@@ -41,7 +41,7 @@ public class DiscardViewImpl implements DiscardView{
         // Setup discard panel style
         this.discardPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         this.discardPanel.setBorder(BorderFactory.createTitledBorder(
-        null, 
+        BorderFactory.createLineBorder(Color.WHITE, 1), 
         "Discard Pile", 
         0, 0, 
         new Font("Arial", Font.BOLD, 20), 
