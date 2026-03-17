@@ -1,6 +1,5 @@
 package view.distribution;
 
-import model.card.Card;
 import model.deck.Deck;
 import model.player.PlayerImpl;
 import core.distributioncard.DistributionManagerImpl;
@@ -8,16 +7,13 @@ import core.selectioncard.SelectionCardManager;
 import view.hand.handImpl;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class InitialDistributionView {
 
     private final handImpl handPlayer1;
     private final handImpl handPlayer2;
-    private final JPanel discardPanel;
 
     public InitialDistributionView(JPanel discardPanel, SelectionCardManager selectionManager) {
-    this.discardPanel = discardPanel;
     this.handPlayer1 = new handImpl(selectionManager);
     this.handPlayer2 = new handImpl(selectionManager);
     }

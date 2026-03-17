@@ -8,10 +8,8 @@ import view.button.*;
 import view.discard.DiscardViewImpl;
 import view.distribution.InitialDistributionView;
 import view.hand.handImpl;
-import model.turn.*;
 import view.notification.GameNotifier;
 import view.notification.GameNotifierImpl;
-import view.Utils; 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -38,69 +36,97 @@ public class TableViewImpl implements TableView {
     this.nameP1 = (n1 == null || n1.isEmpty()) ? "Player 1" : n1;
     this.nameP2 = (n2 == null || n2.isEmpty()) ? "Player 2" : n2;
 
+    // --- CONFIGURAZIONE BASE ---
     frame = new JFrame("Burraco - OOP Project");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setLayout(new BorderLayout());
 
+    // Definiamo i parametri stilistici comuni
+    Font font = new Font("Arial", Font.BOLD, 20);
+    Font fontTurn = new Font("Arial", Font.BOLD, 25);
+    Color lightgreen = new Color(180, 220, 180); 
+
+    frame.getContentPane().setBackground(lightgreen);
+
     // --- NORD: Turno ---
     this.turnLabel = new JLabel("Turn: " + nameP1); 
-    this.turnLabel.setFont(new Font("Arial", Font.BOLD, 23));
+    this.turnLabel.setFont(fontTurn);
     this.turnLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
     frame.add(turnLabel, BorderLayout.NORTH);
 
     // --- CENTRO: Pannelli Combinazioni ---
     JPanel combinationPanel = new JPanel(new GridLayout(1, 2, 20, 10));
+    combinationPanel.setBackground(lightgreen); 
+    
     combPanel1 = createSection(nameP1);
     combPanel2 = createSection(nameP2);
-    combinationPanel.add(new JScrollPane(combPanel1));
-    combinationPanel.add(new JScrollPane(combPanel2));
+
+    
+    JScrollPane scroll1 = new JScrollPane(combPanel1);
+    JScrollPane scroll2 = new JScrollPane(combPanel2);
+    
+    for (JScrollPane s : new JScrollPane[]{scroll1, scroll2}) {
+        s.setBorder(BorderFactory.createEmptyBorder()); 
+        s.getViewport().setBackground(lightgreen); 
+        s.setBackground(lightgreen);              
+    }
+
+    combinationPanel.add(scroll1);
+    combinationPanel.add(scroll2);
     frame.add(combinationPanel, BorderLayout.CENTER);
 
-    // --- SUD: Mazzo, Scarti e Mano ---
-    discardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
-    discardPanel.setBorder(BorderFactory.createTitledBorder("Discard Pile"));
-    discardPanel.setBackground(new Color(250, 250, 240));
+    this.discardPanel = new JPanel();
 
+    // --- SUD: Mazzo, Scarti e Mano ---
     this.deckView = new DeckView();
-    // Forziamo il tasto Deck ad essere grande come una carta (es. 70x100)
     this.deckView.getDeckButton().setPreferredSize(new Dimension(70, 100));
+    this.deckView.setBackground(lightgreen);
+
 
     JPanel centralBottomPanel = new JPanel(new BorderLayout());
+    centralBottomPanel.setBackground(lightgreen);
     centralBottomPanel.add(discardPanel, BorderLayout.CENTER);
     centralBottomPanel.add(deckView, BorderLayout.WEST);
 
     deckPanel = new JPanel(new BorderLayout());
-    deckPanel.setBorder(BorderFactory.createTitledBorder("Hand"));
+    deckPanel.setBackground(lightgreen);
+    deckPanel.setBorder(BorderFactory.createTitledBorder(
+        null, "Hand", 0, 0, font, Color.BLACK));
 
     JPanel bottomPanel = new JPanel(new BorderLayout());
+    bottomPanel.setBackground(lightgreen);
     bottomPanel.add(centralBottomPanel, BorderLayout.NORTH);
     bottomPanel.add(deckPanel, BorderLayout.CENTER);
+    
     frame.add(bottomPanel, BorderLayout.SOUTH);
 
     // --- EST: Barra Laterale (Bottoni) ---
     rightPanel = new JPanel();
     rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
     rightPanel.setPreferredSize(new Dimension(180, 400));
+    rightPanel.setBackground(lightgreen); 
     
-    // Inizializziamo i bottoni (ma i listener li mettiamo in wireControllers)
-    this.takeDiscardBtn = new JButton("Take discard");
-    this.putComboBtn = new JButton("Put combination");
+    this.takeDiscardBtn = new JButton("TAKE DISCARD");
+    this.putComboBtn = new JButton("PUT COMBINATION");
 
-    // Inizializziamo le view degli scarti per poter prendere il bottone Discard
     this.discardView = new DiscardViewImpl(discardPanel, new JPanel());
+
+
     JButton discardBtn = (JButton) discardView.getActionPanel().getComponent(0);
-    discardBtn.setText("Discard");   
+    discardBtn.setText("DISCARD");
+
     this.initDist = new InitialDistributionView(discardPanel, new SelectionCardManager());
     
-
     for (JButton b : new JButton[]{takeDiscardBtn, putComboBtn, discardBtn}) {
         b.setAlignmentX(Component.CENTER_ALIGNMENT);
-        b.setMaximumSize(new Dimension(160, 40));
+        b.setFont(new Font("Arial", Font.BOLD, 14));
+        b.setMaximumSize(new Dimension(170, 45));
         rightPanel.add(b);
         rightPanel.add(Box.createVerticalStrut(10));
     }
     frame.add(rightPanel, BorderLayout.EAST);
 
+    // AVVIO
     frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
     frame.setMinimumSize(new Dimension(900, 600));
     frame.setVisible(true);
@@ -109,7 +135,10 @@ public class TableViewImpl implements TableView {
     private JPanel createSection(String title) {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
         p.setBackground(new Color(0, 102, 51));
-        p.setBorder(BorderFactory.createTitledBorder(null, title, 0, 0, null, Color.WHITE));
+        p.setBorder(BorderFactory.createTitledBorder(
+        BorderFactory.createLineBorder(Color.WHITE), 
+        title, 0, 0, 
+        new Font("Arial", Font.BOLD, 20), Color.WHITE));
         return p;
     }
 
@@ -122,7 +151,7 @@ public class TableViewImpl implements TableView {
     
 
     core.turn.TurnController turnCtrl = new core.turn.TurnController(turnModel, this, drawManager);
-    core.pot.PotManager potCtrl = new core.pot.PotManager(turnModel, this, notifier);
+    core.pot.PotManager potCtrl = new core.pot.PotManager(turnModel, this);
     core.closure.ClosureManager closureCtrl = new core.closure.ClosureManager(turnModel, this, notifier, this.targetScore);
 
     new view.button.DeckController(deckView, drawManager, this, gameController);
@@ -139,7 +168,6 @@ public class TableViewImpl implements TableView {
     PutCombinationController putComboCtrl = new PutCombinationController(
         this, 
         gameController, 
-        gameController.getSelectionManager(), 
         drawManager,
         potCtrl
     );
@@ -172,7 +200,7 @@ public class TableViewImpl implements TableView {
     
     @Override 
     public void markPotTaken(boolean isP1) {
-        ((javax.swing.border.TitledBorder)(isP1 ? combPanel1 : combPanel2).getBorder()).setTitle((isP1 ? nameP1 : nameP2) + " [POZZETTO PRESO]");
+        ((javax.swing.border.TitledBorder)(isP1 ? combPanel1 : combPanel2).getBorder()).setTitle((isP1 ? nameP1 : nameP2) + " [POT TAKEN]");
         frame.repaint();
     }
 
@@ -185,7 +213,7 @@ public class TableViewImpl implements TableView {
 
     @Override public void switchHand(boolean isP1) { 
         deckPanel.removeAll();
-    deckPanel.add(new JLabel("Cambio turno in corso...", SwingConstants.CENTER));
+    deckPanel.add(new JLabel("Shift turn in progress...", SwingConstants.CENTER));
     deckPanel.revalidate();
     deckPanel.repaint();
 
@@ -193,10 +221,10 @@ public class TableViewImpl implements TableView {
     String idleName = isP1 ? nameP2 : nameP1;
 
     JOptionPane.showMessageDialog(frame, 
-        idleName + ", turno terminato.\n\n" +
-        "Passa il computer a " + activeName + ".\n" +
-        activeName + ", premi OK quando sei pronto per vedere le tue carte.", 
-        "Privacy Turno", 
+        idleName + ", turn ended.\n\n" +
+        "Hand the turn over to " + activeName + ".\n" +
+        activeName + ", Press OK when you are ready to see your cards.", 
+        "Turn Privacy", 
         JOptionPane.INFORMATION_MESSAGE);
 
    
@@ -205,24 +233,35 @@ public class TableViewImpl implements TableView {
     }
 
 
-    @Override public handImpl getHandViewForPlayer(Player p) { return (p == player1) ? initDist.getPlayer1HandView() : initDist.getPlayer2HandView(); }
-    @Override public DiscardViewImpl getDiscardView() { return discardView; }
-    @Override public JPanel getDiscardPanel() { return discardPanel; }
-    @Override public void startNewRound() { combPanel1.removeAll(); combPanel2.removeAll(); discardPanel.removeAll(); frame.repaint(); }
+    @Override public handImpl getHandViewForPlayer(Player p) { 
+        return (p == player1) ? initDist.getPlayer1HandView() : initDist.getPlayer2HandView(); 
+    }
+
+    @Override public DiscardViewImpl getDiscardView() { 
+        return discardView; 
+    }
+
+    @Override public JPanel getDiscardPanel() { 
+        return discardPanel; 
+    }
+
+    @Override public void startNewRound() { 
+        combPanel1.removeAll(); combPanel2.removeAll(); discardPanel.removeAll(); frame.repaint(); 
+    }
 
     public DrawManager getDrawManager() {
-    return this.drawManager;
+        return this.drawManager;
     }
 
     public InitialDistributionView getInitDist() {
-    return this.initDist;
+        return this.initDist;
     }
 
     public view.controller.GameController getGameController() {
-    return this.gameController;
+        return this.gameController;
     }
 
     public void setTargetScore(int score) {
-    this.targetScore = score;
+        this.targetScore = score;
     }
 }

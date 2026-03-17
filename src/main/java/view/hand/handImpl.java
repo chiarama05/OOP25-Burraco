@@ -16,7 +16,7 @@ public class handImpl extends JPanel implements hand {
     public handImpl(SelectionCardManager selectionManager) {
     super(new FlowLayout(FlowLayout.LEFT, 5, 5));
     this.selectionManager = selectionManager;
-    setBackground(new Color(245, 245, 245));
+    setBackground(new Color(180, 220, 180));
 }
 
     @Override

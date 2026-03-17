@@ -1,7 +1,5 @@
 package core.discardcard;
 
-import java.util.List;
-
 import model.card.Card;
 import model.discard.DiscardPile;
 import model.player.Player;

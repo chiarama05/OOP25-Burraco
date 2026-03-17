@@ -13,9 +13,11 @@ public class DeckView extends JPanel {
 
         deckButton = new JButton("DECK");
         
-       
         deckButton.setBackground(Color.WHITE);
-        deckButton.setFont(new Font("Arial", Font.ITALIC, 12));
+        deckButton.setFont(new Font("Arial", Font.BOLD, 18));
+
+        deckButton.setPreferredSize(new Dimension(70, 100));
+
 
         deckButton.setFocusPainted(false);
         
