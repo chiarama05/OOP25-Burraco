@@ -40,8 +40,15 @@ public class DiscardViewImpl implements DiscardView{
 
         // Setup discard panel style
         this.discardPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        this.discardPanel.setBorder(BorderFactory.createTitledBorder("Discard Pile"));
-        this.discardPanel.setBackground(new Color(250, 250, 240));
+        this.discardPanel.setBorder(BorderFactory.createTitledBorder(
+        null, 
+        "Discard Pile", 
+        0, 0, 
+        new Font("Arial", Font.BOLD, 18), 
+        Color.BLACK
+        ));
+
+       this.discardPanel.setBackground(new Color(220, 250, 220));
 
         // Create discard button and add it to the action panel
         discardButton = new JButton("Discard");
@@ -55,7 +62,7 @@ public class DiscardViewImpl implements DiscardView{
      * @param discardPile the list of cards currently in the discard pile
      */
     @Override
-public void updateDiscardPile(List<Card> discardPile) {
+    public void updateDiscardPile(List<Card> discardPile) {
     discardPanel.removeAll();
     for (Card c : discardPile) {
         String cardText = c.toString();

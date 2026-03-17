@@ -36,61 +36,92 @@ public class TableViewImpl implements TableView {
     this.nameP1 = (n1 == null || n1.isEmpty()) ? "Player 1" : n1;
     this.nameP2 = (n2 == null || n2.isEmpty()) ? "Player 2" : n2;
 
+    // --- CONFIGURAZIONE BASE ---
     frame = new JFrame("Burraco - OOP Project");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setLayout(new BorderLayout());
 
+    // Definiamo i parametri stilistici comuni
+    Font font = new Font("Arial", Font.BOLD, 20);
+    Font fontTurn = new Font("Arial", Font.BOLD, 25);
+    Color lightgreen = new Color(180, 220, 180); // Il tuo colore target
+    Color darkgreen = new Color(0, 102, 51);
+
+    frame.getContentPane().setBackground(lightgreen);
+
     // --- NORD: Turno ---
     this.turnLabel = new JLabel("Turn: " + nameP1); 
-    this.turnLabel.setFont(new Font("Arial", Font.BOLD, 23));
+    this.turnLabel.setFont(fontTurn);
     this.turnLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
     frame.add(turnLabel, BorderLayout.NORTH);
 
     // --- CENTRO: Pannelli Combinazioni ---
     JPanel combinationPanel = new JPanel(new GridLayout(1, 2, 20, 10));
+    combinationPanel.setBackground(lightgreen); // Sfondo dietro i tavoli
+    
     combPanel1 = createSection(nameP1);
     combPanel2 = createSection(nameP2);
-    combinationPanel.add(new JScrollPane(combPanel1));
-    combinationPanel.add(new JScrollPane(combPanel2));
+
+    // Configurazione JScrollPane per renderli uniformi
+    JScrollPane scroll1 = new JScrollPane(combPanel1);
+    JScrollPane scroll2 = new JScrollPane(combPanel2);
+    
+    for (JScrollPane s : new JScrollPane[]{scroll1, scroll2}) {
+        s.setBorder(BorderFactory.createEmptyBorder()); // Toglie il bordo grigio
+        s.getViewport().setBackground(lightgreen); // Colore interno se il tavolo è piccolo
+        s.setBackground(lightgreen);               // Colore esterno
+    }
+
+    combinationPanel.add(scroll1);
+    combinationPanel.add(scroll2);
     frame.add(combinationPanel, BorderLayout.CENTER);
 
-    // --- SUD: Mazzo, Scarti e Mano ---
-    discardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
-    discardPanel.setBorder(BorderFactory.createTitledBorder("Discard Pile"));
-    discardPanel.setBackground(new Color(250, 250, 240));
+    this.discardPanel = new JPanel();
 
+    // --- SUD: Mazzo, Scarti e Mano ---
     this.deckView = new DeckView();
-    // Forziamo il tasto Deck ad essere grande come una carta (es. 70x100)
     this.deckView.getDeckButton().setPreferredSize(new Dimension(70, 100));
+    this.deckView.setBackground(lightgreen);
+
 
     JPanel centralBottomPanel = new JPanel(new BorderLayout());
+    centralBottomPanel.setBackground(lightgreen);
     centralBottomPanel.add(discardPanel, BorderLayout.CENTER);
     centralBottomPanel.add(deckView, BorderLayout.WEST);
 
     deckPanel = new JPanel(new BorderLayout());
-    deckPanel.setBorder(BorderFactory.createTitledBorder("Hand"));
+    deckPanel.setBackground(lightgreen);
+    deckPanel.setBorder(BorderFactory.createTitledBorder(
+        null, "Hand", 0, 0, font, Color.BLACK));
 
     JPanel bottomPanel = new JPanel(new BorderLayout());
+    bottomPanel.setBackground(lightgreen);
     bottomPanel.add(centralBottomPanel, BorderLayout.NORTH);
     bottomPanel.add(deckPanel, BorderLayout.CENTER);
+    
     frame.add(bottomPanel, BorderLayout.SOUTH);
 
     // --- EST: Barra Laterale (Bottoni) ---
     rightPanel = new JPanel();
     rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
     rightPanel.setPreferredSize(new Dimension(180, 400));
+    rightPanel.setBackground(lightgreen); 
     
-    // Inizializziamo i bottoni (ma i listener li mettiamo in wireControllers)
     this.takeDiscardBtn = new JButton("Take discard");
     this.putComboBtn = new JButton("Put combination");
 
-    // Inizializziamo le view degli scarti per poter prendere il bottone Discard
+
+   // Inizializziamo DiscardView (configurerà lei il discardPanel internamente)
     this.discardView = new DiscardViewImpl(discardPanel, new JPanel());
+
+
     JButton discardBtn = (JButton) discardView.getActionPanel().getComponent(0);
-    discardBtn.setText("Discard");   
+    discardBtn.setText("Discard");
+
     this.initDist = new InitialDistributionView(discardPanel, new SelectionCardManager());
     
 
+    // Aggiunta bottoni alla barra laterale
     for (JButton b : new JButton[]{takeDiscardBtn, putComboBtn, discardBtn}) {
         b.setAlignmentX(Component.CENTER_ALIGNMENT);
         b.setMaximumSize(new Dimension(160, 40));
@@ -99,6 +130,7 @@ public class TableViewImpl implements TableView {
     }
     frame.add(rightPanel, BorderLayout.EAST);
 
+    // AVVIO
     frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
     frame.setMinimumSize(new Dimension(900, 600));
     frame.setVisible(true);
@@ -107,7 +139,10 @@ public class TableViewImpl implements TableView {
     private JPanel createSection(String title) {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
         p.setBackground(new Color(0, 102, 51));
-        p.setBorder(BorderFactory.createTitledBorder(null, title, 0, 0, null, Color.WHITE));
+        p.setBorder(BorderFactory.createTitledBorder(
+        BorderFactory.createLineBorder(Color.WHITE), 
+        title, 0, 0, 
+        new Font("Arial", Font.BOLD, 20), Color.WHITE));
         return p;
     }
 
