@@ -5,6 +5,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import view.button.RoundedGradientButton;
+
 import java.awt.*;
 
 public class StartMenuViewImpl implements StartMenuView{
@@ -20,7 +23,7 @@ public class StartMenuViewImpl implements StartMenuView{
 
     private void setupUI() {
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setSize(600, 450); // Larghezza aumentata a 600 come l'altro
+    frame.setSize(600, 450); 
     frame.setLocationRelativeTo(null);
 
     JPanel panel = new JPanel(new GridBagLayout());
@@ -29,14 +32,22 @@ public class StartMenuViewImpl implements StartMenuView{
     gbc.insets = new Insets(25, 25, 25, 25);
 
     JLabel title = new JLabel("BURRACO GAME");
-    title.setFont(new Font("Serif", Font.BOLD, 55)); // Titolo più imponente
-    title.setForeground(Color.YELLOW);
+    title.setFont(new Font("Serif", Font.BOLD, 55)); 
+    title.setForeground(new Color(255, 182, 193));
     gbc.gridy = 0;
     panel.add(title, gbc);
 
-    JButton newBtn = new JButton("NEW MATCH");
-    newBtn.setFont(new Font("Arial", Font.BOLD, 18));
-    newBtn.setPreferredSize(new Dimension(200, 60)); // Pulsante più grande
+    
+    RoundedGradientButton newBtn = new RoundedGradientButton("NEW MATCH");
+    RoundedGradientButton rulesBtn = new RoundedGradientButton("RULES");
+    JButton[] buttons = {newBtn, rulesBtn};
+    for (JButton btn : buttons) {
+    btn.setFont(new Font("Arial", Font.BOLD, 18));
+    btn.setPreferredSize(new Dimension(200, 60));
+    btn.setBackground(new Color(255, 240, 245)); 
+    btn.setForeground(Color.BLACK);
+    btn.setFocusPainted(false);
+    }
     newBtn.addActionListener(e -> {
         close();
         listener.onStartClicked();
@@ -44,9 +55,6 @@ public class StartMenuViewImpl implements StartMenuView{
     gbc.gridy = 1;
     panel.add(newBtn, gbc);
 
-    JButton rulesBtn = new JButton("RULES");
-    rulesBtn.setFont(new Font("Arial", Font.BOLD, 18));
-    rulesBtn.setPreferredSize(new Dimension(200, 60)); // Pulsante più grande
     rulesBtn.addActionListener(e -> showRules());
     gbc.gridy = 2;
     panel.add(rulesBtn, gbc);

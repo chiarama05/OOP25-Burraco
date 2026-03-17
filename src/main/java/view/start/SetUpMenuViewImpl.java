@@ -6,6 +6,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import view.button.RoundedGradientButton;
+
 import java.awt.*;
 import java.util.ArrayList; 
 import java.util.List;
@@ -45,9 +48,9 @@ public class SetUpMenuViewImpl implements SetUpMenuView{
     gbc.gridwidth = 2; // Occupa due colonne per bilanciare il layout
     gbc.anchor = GridBagConstraints.NORTHWEST;
     gbc.fill = GridBagConstraints.NONE;
-    JButton backBtn = new JButton("← BACK");
+    RoundedGradientButton backBtn = new RoundedGradientButton("← BACK");
     backBtn.setFont(new Font("Arial", Font.BOLD, 19));
-    backBtn.setBackground(new Color(255, 255, 204)); 
+    backBtn.setBackground(new Color(255, 240, 245)); 
     backBtn.setPreferredSize(new Dimension(120, 35));
     backBtn.addActionListener(e -> {
         close();
@@ -92,11 +95,11 @@ panel.add(name2, gbc);
     // --- TASTO PLAY ---
     gbc.gridy = 7;
     gbc.insets = new Insets(40, 10, 10, 10);
-    JButton playBtn = new JButton("PLAY");
-    playBtn.setFont(new Font("Arial", Font.BOLD, 40)); // Font più grande
-    playBtn.setBackground(Color.YELLOW);
-    playBtn.setForeground(new Color(0, 102, 51));
-    playBtn.setPreferredSize(new Dimension(250, 70)); // Notevolmente più grande
+    RoundedGradientButton playBtn = new RoundedGradientButton("PLAY");
+    playBtn.setFont(new Font("Arial", Font.BOLD, 40)); 
+    playBtn.setBackground(new Color(255, 182, 193));
+    playBtn.setForeground(Color.BLACK);
+    playBtn.setPreferredSize(new Dimension(250, 70)); 
     playBtn.addActionListener(e -> {
         if (selectedScore == -1) {
             JOptionPane.showMessageDialog(frame, "Please select a victory score first!");
@@ -113,16 +116,19 @@ panel.add(name2, gbc);
 private JButton createScoreBtn(int score) {
     JButton b = new JButton(String.valueOf(score));
     b.setFocusPainted(false);
+    b.setOpaque(true);
+    b.setBorderPainted(true);
+    b.setBackground(new Color(219, 112, 147));
     b.setBackground(Color.WHITE);
-    b.setFont(new Font("Arial", Font.BOLD, 20)); // Font più leggibile
-    b.setPreferredSize(new Dimension(100, 45)); // Tasti punteggio più grandi
+    b.setFont(new Font("Arial", Font.BOLD, 20)); 
+    b.setPreferredSize(new Dimension(100, 45)); 
     
     b.addActionListener(e -> {
         this.selectedScore = score;
         for (JButton btn : scoreButtons) {
             btn.setBackground(Color.WHITE);
         }
-        b.setBackground(new Color(255, 204, 0));
+        b.setBackground(new Color(219, 112, 147));
     });
     
     scoreButtons.add(b);
@@ -131,9 +137,9 @@ private JButton createScoreBtn(int score) {
 
     private JLabel createLabel(String text) {
     JLabel l = new JLabel(text);
-    l.setForeground(Color.YELLOW);
+    l.setForeground(new Color(255, 182, 193));
     l.setFont(new Font("Arial", Font.BOLD, 23));
-    l.setHorizontalAlignment(JLabel.LEFT); // Forza l'allineamento a sinistra della label
+    l.setHorizontalAlignment(JLabel.LEFT); 
     return l;
 }
 

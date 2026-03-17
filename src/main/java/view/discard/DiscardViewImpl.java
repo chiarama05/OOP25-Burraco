@@ -50,7 +50,7 @@ public class DiscardViewImpl implements DiscardView{
 
        this.discardPanel.setBackground(new Color(220, 250, 220));
 
-        // Create discard button and add it to the action panel
+        
         discardButton = new JButton("Discard");
         this.actionPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.actionPanel.add(discardButton);

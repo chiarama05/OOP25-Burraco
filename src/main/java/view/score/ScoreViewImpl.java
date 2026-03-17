@@ -6,6 +6,7 @@ import view.sound.SoundControllerImpl;
 import view.table.TableViewImpl;
 import core.score.ScoreManager;
 import core.score.ScoreManagerImpl;
+import view.button.RoundedGradientButton;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -63,7 +64,7 @@ public class ScoreViewImpl implements ScoreView{
         // --- TITOLO ---
         JLabel titleLabel = new JLabel("SCOREBOARD", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial Black", Font.BOLD, 26));
-        titleLabel.setForeground(Color.YELLOW); 
+        titleLabel.setForeground(new Color(255, 182, 193)); 
         titleLabel.setBorder(new EmptyBorder(0, 0, 40, 0));
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
@@ -83,29 +84,27 @@ public class ScoreViewImpl implements ScoreView{
         mainPanel.add(centerPanel, BorderLayout.CENTER);
 
         // --- BOTTONE AZIONE ---
-        JButton actionBtn;
+        RoundedGradientButton actionBtn;
         if (matchOver) {
             String winnerName = totalS1 > totalS2 ? name1 : name2;
-            actionBtn = new JButton("CHAMPION: " + winnerName.toUpperCase() + " (FINISH GAME)");
+            actionBtn = new RoundedGradientButton("CHAMPION: " + winnerName.toUpperCase() + " (FINISH GAME)");
             actionBtn.addActionListener(e -> System.exit(0));
         } else {
-            
-            actionBtn = new JButton("NEXT ROUND (Target: " + targetScore + " pts)");
+            actionBtn = new RoundedGradientButton("NEXT ROUND (Target: " + targetScore + " pts)");
             actionBtn.addActionListener(e -> {
                 frame.dispose();
                 gameController.getTurnModel().resetForNewRound();
                 core.round.ResetManager resetManager = new core.round.ResetManagerImpl();
                 core.round.RoundController rc = new core.round.RoundControllerImpl(
-        tableView, 
-        resetManager, 
-        (PlayerImpl)p1, 
-        (PlayerImpl)p2, 
-        gameController 
-        );
-        rc.processNewRound();
-        tableView.refreshTurnLabel(true);
-        });
-
+                    tableView, 
+                    resetManager, 
+                    (PlayerImpl)p1, 
+                    (PlayerImpl)p2, 
+                    gameController 
+                );
+                rc.processNewRound();
+                tableView.refreshTurnLabel(true);
+            });
         }
         styleButton(actionBtn);
         JPanel buttonContainer = new JPanel(new BorderLayout());

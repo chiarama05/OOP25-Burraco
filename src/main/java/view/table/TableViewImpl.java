@@ -10,6 +10,7 @@ import view.distribution.InitialDistributionView;
 import view.hand.handImpl;
 import view.notification.GameNotifier;
 import view.notification.GameNotifierImpl;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -117,10 +118,26 @@ public class TableViewImpl implements TableView {
 
     this.initDist = new InitialDistributionView(discardPanel, new SelectionCardManager());
     
+    Color pinkUp = new Color(255, 245, 250); 
+    Color pinkDown = new Color(255, 220, 235);
     for (JButton b : new JButton[]{takeDiscardBtn, putComboBtn, discardBtn}) {
         b.setAlignmentX(Component.CENTER_ALIGNMENT);
         b.setFont(new Font("Arial", Font.BOLD, 14));
         b.setMaximumSize(new Dimension(170, 45));
+        b.setBorder(BorderFactory.createLineBorder(new Color(230, 200, 215), 1));
+        b.setContentAreaFilled(false);
+        b.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
+        @Override
+        public void paint(Graphics g, JComponent c) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            // Crea la sfumatura verticale
+            GradientPaint gp = new GradientPaint(0, 0, pinkUp, 0, c.getHeight(), pinkDown);
+            g2.setPaint(gp);
+            g2.fillRect(0, 0, c.getWidth(), c.getHeight()); // fillRect = QUADRATO
+            g2.dispose();
+            super.paint(g, c);
+        }
+    });
         rightPanel.add(b);
         rightPanel.add(Box.createVerticalStrut(10));
     }
