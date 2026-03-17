@@ -44,7 +44,7 @@ public class DiscardViewImpl implements DiscardView{
         null, 
         "Discard Pile", 
         0, 0, 
-        new Font("Arial", Font.BOLD, 18), 
+        new Font("Arial", Font.BOLD, 20), 
         Color.BLACK
         ));
 

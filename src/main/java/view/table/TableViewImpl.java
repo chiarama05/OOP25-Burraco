@@ -44,8 +44,7 @@ public class TableViewImpl implements TableView {
     // Definiamo i parametri stilistici comuni
     Font font = new Font("Arial", Font.BOLD, 20);
     Font fontTurn = new Font("Arial", Font.BOLD, 25);
-    Color lightgreen = new Color(180, 220, 180); // Il tuo colore target
-    Color darkgreen = new Color(0, 102, 51);
+    Color lightgreen = new Color(180, 220, 180); 
 
     frame.getContentPane().setBackground(lightgreen);
 
@@ -57,19 +56,19 @@ public class TableViewImpl implements TableView {
 
     // --- CENTRO: Pannelli Combinazioni ---
     JPanel combinationPanel = new JPanel(new GridLayout(1, 2, 20, 10));
-    combinationPanel.setBackground(lightgreen); // Sfondo dietro i tavoli
+    combinationPanel.setBackground(lightgreen); 
     
     combPanel1 = createSection(nameP1);
     combPanel2 = createSection(nameP2);
 
-    // Configurazione JScrollPane per renderli uniformi
+    
     JScrollPane scroll1 = new JScrollPane(combPanel1);
     JScrollPane scroll2 = new JScrollPane(combPanel2);
     
     for (JScrollPane s : new JScrollPane[]{scroll1, scroll2}) {
-        s.setBorder(BorderFactory.createEmptyBorder()); // Toglie il bordo grigio
-        s.getViewport().setBackground(lightgreen); // Colore interno se il tavolo è piccolo
-        s.setBackground(lightgreen);               // Colore esterno
+        s.setBorder(BorderFactory.createEmptyBorder()); 
+        s.getViewport().setBackground(lightgreen); 
+        s.setBackground(lightgreen);              
     }
 
     combinationPanel.add(scroll1);
@@ -107,24 +106,21 @@ public class TableViewImpl implements TableView {
     rightPanel.setPreferredSize(new Dimension(180, 400));
     rightPanel.setBackground(lightgreen); 
     
-    this.takeDiscardBtn = new JButton("Take discard");
-    this.putComboBtn = new JButton("Put combination");
+    this.takeDiscardBtn = new JButton("TAKE DISCARD");
+    this.putComboBtn = new JButton("PUT COMBINATION");
 
-
-   // Inizializziamo DiscardView (configurerà lei il discardPanel internamente)
     this.discardView = new DiscardViewImpl(discardPanel, new JPanel());
 
 
     JButton discardBtn = (JButton) discardView.getActionPanel().getComponent(0);
-    discardBtn.setText("Discard");
+    discardBtn.setText("DISCARD");
 
     this.initDist = new InitialDistributionView(discardPanel, new SelectionCardManager());
     
-
-    // Aggiunta bottoni alla barra laterale
     for (JButton b : new JButton[]{takeDiscardBtn, putComboBtn, discardBtn}) {
         b.setAlignmentX(Component.CENTER_ALIGNMENT);
-        b.setMaximumSize(new Dimension(160, 40));
+        b.setFont(new Font("Arial", Font.BOLD, 14));
+        b.setMaximumSize(new Dimension(170, 45));
         rightPanel.add(b);
         rightPanel.add(Box.createVerticalStrut(10));
     }
