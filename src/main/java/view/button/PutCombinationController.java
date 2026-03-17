@@ -23,8 +23,7 @@ public class PutCombinationController {
     private final DrawManager drawManager; 
     private final PotManager potManager;
 
-    public PutCombinationController(TableView tableView, GameController gameController,
-                                    DrawManager drawManager, PotManager potManager) {
+    public PutCombinationController(TableView tableView, GameController gameController,DrawManager drawManager, PotManager potManager) {
         this.tableView = tableView;
         this.gameController = gameController;
         this.drawManager = drawManager; 
@@ -74,10 +73,11 @@ public class PutCombinationController {
 
     if (current.hasFinishedCards() && !current.isInPot()) {
         potManager.handlePot(false); 
-    } else {
-       
-        tableView.refreshHandPanel(current);
+    } 
+    else {
+       tableView.refreshHandPanel(current);
     }
+    
     tableView.getHandViewForPlayer(current).clearSelection();
     }
 }

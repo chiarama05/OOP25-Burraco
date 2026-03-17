@@ -2,15 +2,16 @@ package view.sound;
 
 public interface SoundController {
 
-    /**
-     * Riproduce il suono del Burraco (7+ carte).
-     */
+   
+    //Plays Burraco sound 
     void playBurracoSound();
 
-    /** Suona quando un giocatore scarta l'ultima carta e chiude la mano */
+    /** Plays when a player discard the last card and close the hand */
     void playRoundEndSound();
 
-    /** Suona quando viene proclamato il vincitore definitivo della partita */
+    /*
+     * Plays when we got the definitive winner of the game 
+    */
     void playVictorySound();
 
 }

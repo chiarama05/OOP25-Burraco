@@ -28,10 +28,7 @@ public class DiscardController {
     private final ClosureManager closureCtrl;
     private final GameNotifier notifier;
 
-    public DiscardController(TableView view, model.turn.Turn turnModel, 
-                             DiscardManagerImpl discardManager, DiscardViewImpl discardView, 
-                             DiscardPile discardPileModel, DrawManager drawManager,
-                             core.turn.TurnController turnCtrl, PotManager potCtrl, ClosureManager closureCtrl, GameNotifier notifier) {
+    public DiscardController(TableView view, model.turn.Turn turnModel,DiscardManagerImpl discardManager, DiscardViewImpl discardView, DiscardPile discardPileModel, DrawManager drawManager,core.turn.TurnController turnCtrl, PotManager potCtrl, ClosureManager closureCtrl, GameNotifier notifier) {
         this.view = view;
         this.turnModel = turnModel;
         this.discardManager = discardManager;

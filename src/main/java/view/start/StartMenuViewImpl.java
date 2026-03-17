@@ -20,7 +20,7 @@ public class StartMenuViewImpl implements StartMenuView{
 
     private void setupUI() {
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setSize(600, 450); // Larghezza aumentata a 600 come l'altro
+    frame.setSize(600, 450); 
     frame.setLocationRelativeTo(null);
 
     JPanel panel = new JPanel(new GridBagLayout());
@@ -29,14 +29,14 @@ public class StartMenuViewImpl implements StartMenuView{
     gbc.insets = new Insets(25, 25, 25, 25);
 
     JLabel title = new JLabel("BURRACO GAME");
-    title.setFont(new Font("Serif", Font.BOLD, 55)); // Titolo più imponente
+    title.setFont(new Font("Serif", Font.BOLD, 55)); 
     title.setForeground(Color.YELLOW);
     gbc.gridy = 0;
     panel.add(title, gbc);
 
     JButton newBtn = new JButton("NEW MATCH");
     newBtn.setFont(new Font("Arial", Font.BOLD, 18));
-    newBtn.setPreferredSize(new Dimension(200, 60)); // Pulsante più grande
+    newBtn.setPreferredSize(new Dimension(200, 60)); 
     newBtn.addActionListener(e -> {
         close();
         listener.onStartClicked();
@@ -46,7 +46,7 @@ public class StartMenuViewImpl implements StartMenuView{
 
     JButton rulesBtn = new JButton("RULES");
     rulesBtn.setFont(new Font("Arial", Font.BOLD, 18));
-    rulesBtn.setPreferredSize(new Dimension(200, 60)); // Pulsante più grande
+    rulesBtn.setPreferredSize(new Dimension(200, 60)); 
     rulesBtn.addActionListener(e -> showRules());
     gbc.gridy = 2;
     panel.add(rulesBtn, gbc);

@@ -59,7 +59,8 @@ public class ScoreManagerImpl implements ScoreManager{
 
                 if (isCleanBurraco(combination)) {
                     bonus += CLEAN_BURRACO_BONUS;
-                } else {
+                } 
+                else {
                     bonus += DIRTY_BURRACO_BONUS;
                 }
             }
@@ -86,13 +87,11 @@ public class ScoreManagerImpl implements ScoreManager{
     }
 
     public int countCleanBurraco(Player player) {
-    return (int) player.getCombinations().stream()
-            .filter(c -> c.size() >= 7 && isCleanBurraco(c)).count();
+    return (int) player.getCombinations().stream().filter(c -> c.size() >= 7 && isCleanBurraco(c)).count();
     }
 
     public int countDirtyBurraco(Player player) {
-    return (int) player.getCombinations().stream()
-            .filter(c -> c.size() >= 7 && !isCleanBurraco(c)).count();
+    return (int) player.getCombinations().stream().filter(c -> c.size() >= 7 && !isCleanBurraco(c)).count();
     }
     
 

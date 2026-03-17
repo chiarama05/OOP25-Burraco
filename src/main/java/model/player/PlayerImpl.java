@@ -27,7 +27,7 @@ public class PlayerImpl implements Player{
         return this.matchTotalScore;
     }
     
-    // Metodo per resettare le carte ma non i punti tra un round e l'altro
+    //For reset cards from a round to another
     public void resetForNewRound() {
         this.hand.clear();
         this.combinations.clear();
@@ -116,9 +116,7 @@ public class PlayerImpl implements Player{
 
     @Override
     public int getBurracoCount() {
-        return (int) combinations.stream()
-                .filter(c -> c.size() >= 7)
-                .count();
+        return (int) combinations.stream().filter(c -> c.size() >= 7).count();
     }
 
     @Override

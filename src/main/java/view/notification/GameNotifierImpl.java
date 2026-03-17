@@ -28,17 +28,17 @@ public class GameNotifierImpl implements GameNotifier{
 
     @Override
     public void notifyVictory(String winnerName) {
-        JOptionPane.showMessageDialog(parent, "Congratulation " + winnerName + "! Hai vinto la partita!", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(parent, "Congratulation " + winnerName + "! You have won the game!", "Victory", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
     public void notifyMustDraw() {
-        JOptionPane.showMessageDialog(parent, "Devi pescare dal mazzo o raccogliere gli scarti prima di scartare!", "Azione richiesta", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(parent, "You have to draw from the deck or from the discard pile before discarding a card!", "Action needed", JOptionPane.WARNING_MESSAGE);
     }
 
     @Override
     public void notifySelectionError(String message) {
-        JOptionPane.showMessageDialog(parent, message, "Errore Selezione", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(parent, message, "Selection Error", JOptionPane.WARNING_MESSAGE);
     }
 
 }

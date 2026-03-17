@@ -27,19 +27,12 @@ private final Turn model;
             model.setGameFinished(true);
             
             if (view instanceof TableViewImpl tvImpl) {
-                ScoreViewImpl scorePanel = new ScoreViewImpl(
-                    model.getPlayer1(), 
-                    model.getPlayer2(), 
-                    model.getPlayer1().getName(), 
-                    model.getPlayer2().getName(), 
-                    targetScore, 
-                    tvImpl, 
-                    tvImpl.getGameController()
-                );
+                ScoreViewImpl scorePanel = new ScoreViewImpl(model.getPlayer1(), model.getPlayer2(), model.getPlayer1().getName(), model.getPlayer2().getName(), targetScore, tvImpl, tvImpl.getGameController());
                 scorePanel.display(); 
             }
             
-        } else {
+        } 
+        else {
             notifier.notifyInvalidClosure(); 
         }
     }

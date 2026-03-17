@@ -13,7 +13,7 @@ public class CombinationManager {
     public static List<Card> prepareForDisplay(List<Card> cards) {
         List<Card> orderedCards = new ArrayList<>(cards);
         
-        // Logica jolly estratta dalla view
+        // jolly's logic extracted from view
         int jokerIndex = -1;
         for (int i = 0; i < orderedCards.size(); i++) {
             if (orderedCards.get(i).getValue().equals("Jolly")) {

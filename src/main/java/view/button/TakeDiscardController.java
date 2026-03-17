@@ -18,9 +18,7 @@ public class TakeDiscardController implements ActionListener{
     private final DiscardPile discardPileModel;
     private final view.discard.DiscardViewImpl discardView;
 
-    public TakeDiscardController(JButton button, DrawManager drawManager, TableViewImpl tableView, 
-                                 Turn turnManager, DiscardPile discardPileModel, 
-                                 view.discard.DiscardViewImpl discardView) {
+    public TakeDiscardController(JButton button, DrawManager drawManager, TableViewImpl tableView, Turn turnManager, DiscardPile discardPileModel, view.discard.DiscardViewImpl discardView) {
         this.drawManager = drawManager;
         this.tableView = tableView;
         this.turnManager = turnManager;
@@ -37,15 +35,17 @@ public class TakeDiscardController implements ActionListener{
         DrawResult result = drawManager.drawFromDiscard(current, discardPileModel.getCards());
 
         if (result.getStatus() == DrawResult.Status.SUCCESS_MULTIPLE) {
-            // Aggiorna la mano del giocatore graficamente
+            // Updates the view of player's hand 
             tableView.refreshHandPanel(current);
             
-            // Svuota la pila degli scarti graficamente
+            // Reset the view of discard pile 
             discardView.updateDiscardPile(discardPileModel.getCards());
             
-        } else if (result.getStatus() == DrawResult.Status.ALREADY_DRAWN) {
+        } 
+        else if (result.getStatus() == DrawResult.Status.ALREADY_DRAWN) {
             JOptionPane.showMessageDialog(null, "You have already drawn in this turn!");
-        } else if (result.getStatus() == DrawResult.Status.EMPTY_DISCARD) {
+        } 
+        else if (result.getStatus() == DrawResult.Status.EMPTY_DISCARD) {
             JOptionPane.showMessageDialog(null, "The discard pile is empty!");
         }
     }

@@ -29,10 +29,7 @@ public class AttachedButton extends JButton {
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.WHITE);
-        this.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.GRAY, 1),
-                BorderFactory.createEmptyBorder(10, 5, 10, 5)
-        ));
+        this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.GRAY, 1),BorderFactory.createEmptyBorder(10, 5, 10, 5)));
 
         updateVisuals();
 
@@ -42,11 +39,10 @@ public class AttachedButton extends JButton {
     private void handleAttach() {
         
         if (!gameController.getDrawManager().hasDrawn()) {
-        JOptionPane.showMessageDialog(this, "You have to draw first!");
-        return;
+            JOptionPane.showMessageDialog(this, "You have to draw first!");
+            return;
         }
 
-        // CHIEDI AL GAMECONTROLLER
         Player currentPlayer = gameController.getCurrentPlayer();
 
         java.util.Set<Card> selectedSet = tableView.getHandViewForPlayer(currentPlayer).getSelectedCards();
@@ -76,7 +72,7 @@ public class AttachedButton extends JButton {
             int sizeBefore = this.cards.size();
             this.cards.addAll(selected);
 
-            // Sincronizzazione con il modello del player
+            // Sycrhronized with player's model 
             for (List<Card> playerComb : currentPlayer.getCombinations()) {
                 if (!this.cards.isEmpty() && playerComb.contains(this.cards.get(0))) {
                     playerComb.clear();
@@ -87,7 +83,7 @@ public class AttachedButton extends JButton {
             
             currentPlayer.removeCards(selected);
 
-            // AUDIO DAL GAMECONTROLLER
+            // Controller's audio
             if (sizeBefore < 7 && this.cards.size() >= 7) {
                gameController.getSoundController().playBurracoSound();
             }
@@ -95,7 +91,8 @@ public class AttachedButton extends JButton {
             updateVisuals(); 
             tableView.getHandViewForPlayer(currentPlayer).clearSelection();
             tableView.refreshHandPanel(currentPlayer);
-        }else {
+        }
+        else {
             JOptionPane.showMessageDialog(this, "These cards cannot be attached to this combination!");
         }
     }
@@ -108,14 +105,12 @@ public class AttachedButton extends JButton {
             Collections.reverse(ordered); 
             cards.clear();
             cards.addAll(ordered);
-        } else {
+        } 
+        else {
             cards.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
         }
 
-        this.setBorder(BorderFactory.createCompoundBorder(
-            BurracoStyleManager.getBurracoBorder(cards),
-            BorderFactory.createEmptyBorder(10, 5, 10, 5)
-        ));
+        this.setBorder(BorderFactory.createCompoundBorder(BurracoStyleManager.getBurracoBorder(cards),BorderFactory.createEmptyBorder(10, 5, 10, 5)));
         this.setBackground(BurracoStyleManager.getBurracoBackground(cards));
 
         for (Card c : cards) {

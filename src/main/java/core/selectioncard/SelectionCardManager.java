@@ -33,7 +33,8 @@ public class SelectionCardManager {
     public void toggleSelection(Card card) {
         if (selectedCards.contains(card)) {
             selectedCards.remove(card);
-        } else {
+        } 
+        else {
             selectedCards.add(card);
         }
     }
@@ -86,13 +87,13 @@ public class SelectionCardManager {
     }
 
     /**
-     * Tenta di calare le carte selezionate sul tavolo.
+     * Try to put the combinations on the table
      */
     public void processCombination(Player player, TableViewImpl view, GameController controller) {
         if (selectedCards.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Seleziona prima delle carte!");
-        return; 
-    }
+            JOptionPane.showMessageDialog(null, "Seleziona prima delle carte!");
+            return; 
+        }
 
         
         List<Card> cardsToPut = new ArrayList<>(selectedCards);
@@ -100,28 +101,22 @@ public class SelectionCardManager {
         
         if (core.combination.CombinationValidator.isValidCombination(cardsToPut)) {
         
-        // 1. Rimuovi dalla mano (Logica)
         for (Card c : cardsToPut) {
             player.removeCardHand(c);
         }
         
-        // 2. Aggiungi al giocatore (Logica)
         player.getCombinations().add(cardsToPut);
 
-        // 3. AGGIORNA IL TAVOLO (Grafica)
-        // Questo metodo deve aggiungere un AttachedButton ai pannelli verdi
         view.addCombinationToPlayerPanel(cardsToPut, controller.isPlayer1(player));
         
-        // 4. AGGIORNA LA MANO (Grafica)
-        // Fondamentale per far sparire le carte selezionate dalla vista
         view.refreshHandPanel(player);
 
-        // 5. Pulisci selezione
         clearSelection();
         
-        System.out.println("Combinazione calata con successo!");
-    } else {
-        JOptionPane.showMessageDialog(null, "Combinazione non valida ai fini del regolamento!");
+        System.out.println("Combination is been put with success!");
+    }
+    else {
+        JOptionPane.showMessageDialog(null, "Invalid combination for the game's rules!");
     }
 }
 }

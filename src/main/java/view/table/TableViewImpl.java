@@ -32,76 +32,74 @@ public class TableViewImpl implements TableView {
 
     public TableViewImpl(PlayerImpl p1, PlayerImpl p2, String n1, String n2) {
         this.player1 = p1; 
-    this.player2 = p2;
-    this.nameP1 = (n1 == null || n1.isEmpty()) ? "Player 1" : n1;
-    this.nameP2 = (n2 == null || n2.isEmpty()) ? "Player 2" : n2;
+        this.player2 = p2;
+        this.nameP1 = (n1 == null || n1.isEmpty()) ? "Player 1" : n1;
+        this.nameP2 = (n2 == null || n2.isEmpty()) ? "Player 2" : n2;
 
-    frame = new JFrame("Burraco - OOP Project");
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setLayout(new BorderLayout());
+        frame = new JFrame("Burraco - OOP Project");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
 
-    // --- NORD: Turno ---
-    this.turnLabel = new JLabel("Turn: " + nameP1); 
-    this.turnLabel.setFont(new Font("Arial", Font.BOLD, 23));
-    this.turnLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-    frame.add(turnLabel, BorderLayout.NORTH);
+        // --- NORD: Turn---
+        this.turnLabel = new JLabel("Turn: " + nameP1); 
+        this.turnLabel.setFont(new Font("Arial", Font.BOLD, 23));
+        this.turnLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        frame.add(turnLabel, BorderLayout.NORTH);
 
-    // --- CENTRO: Pannelli Combinazioni ---
-    JPanel combinationPanel = new JPanel(new GridLayout(1, 2, 20, 10));
-    combPanel1 = createSection(nameP1);
-    combPanel2 = createSection(nameP2);
-    combinationPanel.add(new JScrollPane(combPanel1));
-    combinationPanel.add(new JScrollPane(combPanel2));
-    frame.add(combinationPanel, BorderLayout.CENTER);
+        // --- CENTRO: Comb Panel's ---
+        JPanel combinationPanel = new JPanel(new GridLayout(1, 2, 20, 10));
+        combPanel1 = createSection(nameP1);
+        combPanel2 = createSection(nameP2);
+        combinationPanel.add(new JScrollPane(combPanel1));
+        combinationPanel.add(new JScrollPane(combPanel2));
+        frame.add(combinationPanel, BorderLayout.CENTER);
 
-    // --- SUD: Mazzo, Scarti e Mano ---
-    discardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
-    discardPanel.setBorder(BorderFactory.createTitledBorder("Discard Pile"));
-    discardPanel.setBackground(new Color(250, 250, 240));
+        // --- SUD: Deck,Discard Pile Hand ---
+        discardPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        discardPanel.setBorder(BorderFactory.createTitledBorder("Discard Pile"));
+        discardPanel.setBackground(new Color(250, 250, 240));
 
-    this.deckView = new DeckView();
-    // Forziamo il tasto Deck ad essere grande come una carta (es. 70x100)
-    this.deckView.getDeckButton().setPreferredSize(new Dimension(70, 100));
+        this.deckView = new DeckView();
+        this.deckView.getDeckButton().setPreferredSize(new Dimension(70, 100));
 
-    JPanel centralBottomPanel = new JPanel(new BorderLayout());
-    centralBottomPanel.add(discardPanel, BorderLayout.CENTER);
-    centralBottomPanel.add(deckView, BorderLayout.WEST);
+        JPanel centralBottomPanel = new JPanel(new BorderLayout());
+        centralBottomPanel.add(discardPanel, BorderLayout.CENTER);
+        centralBottomPanel.add(deckView, BorderLayout.WEST);
 
-    deckPanel = new JPanel(new BorderLayout());
-    deckPanel.setBorder(BorderFactory.createTitledBorder("Hand"));
+        deckPanel = new JPanel(new BorderLayout());
+        deckPanel.setBorder(BorderFactory.createTitledBorder("Hand"));
 
-    JPanel bottomPanel = new JPanel(new BorderLayout());
-    bottomPanel.add(centralBottomPanel, BorderLayout.NORTH);
-    bottomPanel.add(deckPanel, BorderLayout.CENTER);
-    frame.add(bottomPanel, BorderLayout.SOUTH);
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.add(centralBottomPanel, BorderLayout.NORTH);
+        bottomPanel.add(deckPanel, BorderLayout.CENTER);
+        frame.add(bottomPanel, BorderLayout.SOUTH);
 
-    // --- EST: Barra Laterale (Bottoni) ---
-    rightPanel = new JPanel();
-    rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-    rightPanel.setPreferredSize(new Dimension(180, 400));
-    
-    // Inizializziamo i bottoni (ma i listener li mettiamo in wireControllers)
-    this.takeDiscardBtn = new JButton("Take discard");
-    this.putComboBtn = new JButton("Put combination");
+        // --- EST: Lateral Button's ---
+        rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        rightPanel.setPreferredSize(new Dimension(180, 400));
+        
+        // Button's initializations  (but listeners are in wireControllers)
+        this.takeDiscardBtn = new JButton("Take discard");
+        this.putComboBtn = new JButton("Put combination");
 
-    // Inizializziamo le view degli scarti per poter prendere il bottone Discard
-    this.discardView = new DiscardViewImpl(discardPanel, new JPanel());
-    JButton discardBtn = (JButton) discardView.getActionPanel().getComponent(0);
-    discardBtn.setText("Discard");   
-    this.initDist = new InitialDistributionView(discardPanel, new SelectionCardManager());
-    
+        this.discardView = new DiscardViewImpl(discardPanel, new JPanel());
+        JButton discardBtn = (JButton) discardView.getActionPanel().getComponent(0);
+        discardBtn.setText("Discard");   
+        this.initDist = new InitialDistributionView(discardPanel, new SelectionCardManager());
+        
 
-    for (JButton b : new JButton[]{takeDiscardBtn, putComboBtn, discardBtn}) {
-        b.setAlignmentX(Component.CENTER_ALIGNMENT);
-        b.setMaximumSize(new Dimension(160, 40));
-        rightPanel.add(b);
-        rightPanel.add(Box.createVerticalStrut(10));
-    }
-    frame.add(rightPanel, BorderLayout.EAST);
+        for (JButton b : new JButton[]{takeDiscardBtn, putComboBtn, discardBtn}) {
+            b.setAlignmentX(Component.CENTER_ALIGNMENT);
+            b.setMaximumSize(new Dimension(160, 40));
+            rightPanel.add(b);
+            rightPanel.add(Box.createVerticalStrut(10));
+        }
+        frame.add(rightPanel, BorderLayout.EAST);
 
-    frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    frame.setMinimumSize(new Dimension(900, 600));
-    frame.setVisible(true);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setMinimumSize(new Dimension(900, 600));
+        frame.setVisible(true);
     }
 
     private JPanel createSection(String title) {
@@ -114,43 +112,24 @@ public class TableViewImpl implements TableView {
     @Override
     public void wireControllers(model.turn.Turn turnModel) {
         GameNotifier notifier = new GameNotifierImpl(frame);
-        
+            
         this.gameController = new view.controller.GameController(player1, player2, turnModel);
         this.drawManager = gameController.getDrawManager(); 
-    
+        
 
-    core.turn.TurnController turnCtrl = new core.turn.TurnController(turnModel, this, drawManager);
-    core.pot.PotManager potCtrl = new core.pot.PotManager(turnModel, this);
-    core.closure.ClosureManager closureCtrl = new core.closure.ClosureManager(turnModel, this, notifier, this.targetScore);
+        core.turn.TurnController turnCtrl = new core.turn.TurnController(turnModel, this, drawManager);
+        core.pot.PotManager potCtrl = new core.pot.PotManager(turnModel, this);
+        core.closure.ClosureManager closureCtrl = new core.closure.ClosureManager(turnModel, this, notifier, this.targetScore);
 
-    new view.button.DeckController(deckView, drawManager, this, gameController);
+        new view.button.DeckController(deckView, drawManager, this, gameController);
 
-    new view.button.TakeDiscardController(
-        takeDiscardBtn, 
-        drawManager, 
-        this, 
-        turnModel, 
-        gameController.getDiscardPile(), 
-        discardView
-    );
+        new view.button.TakeDiscardController(takeDiscardBtn, drawManager, this, turnModel, gameController.getDiscardPile(), discardView);
 
-    PutCombinationController putComboCtrl = new PutCombinationController(
-        this, 
-        gameController, 
-        drawManager,
-        potCtrl
-    );
-    putComboBtn.addActionListener(e -> putComboCtrl.handlePutCombination());
-    
-    
-    new DiscardController(
-        this, turnModel, 
-        new core.discardcard.DiscardManagerImpl(gameController.getDiscardPile()), 
-        discardView, 
-        gameController.getDiscardPile(), 
-        drawManager, 
-        turnCtrl, potCtrl, closureCtrl, notifier
-    );
+        PutCombinationController putComboCtrl = new PutCombinationController(this, gameController, drawManager,potCtrl);
+        putComboBtn.addActionListener(e -> putComboCtrl.handlePutCombination());
+            
+            
+        new DiscardController(this, turnModel, new core.discardcard.DiscardManagerImpl(gameController.getDiscardPile()), discardView, gameController.getDiscardPile(), drawManager, turnCtrl, potCtrl, closureCtrl, notifier);
     }
 
     @Override 
@@ -182,23 +161,18 @@ public class TableViewImpl implements TableView {
 
     @Override public void switchHand(boolean isP1) { 
         deckPanel.removeAll();
-    deckPanel.add(new JLabel("Shift turn in progress...", SwingConstants.CENTER));
-    deckPanel.revalidate();
-    deckPanel.repaint();
+        deckPanel.add(new JLabel("Shift turn in progress...", SwingConstants.CENTER));
+        deckPanel.revalidate();
+        deckPanel.repaint();
 
-    String activeName = isP1 ? nameP1 : nameP2;
-    String idleName = isP1 ? nameP2 : nameP1;
+        String activeName = isP1 ? nameP1 : nameP2;
+        String idleName = isP1 ? nameP2 : nameP1;
 
-    JOptionPane.showMessageDialog(frame, 
-        idleName + ", turn ended.\n\n" +
-        "Hand the turn over to " + activeName + ".\n" +
-        activeName + ", Press OK when you are ready to see your cards.", 
-        "Turn Privacy", 
-        JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(frame, idleName + ", turn ended.\n\n" +"Hand the turn over to " + activeName + ".\n" + activeName + ", Press OK when you are ready to see your cards.",  "Turn Privacy", JOptionPane.INFORMATION_MESSAGE);
 
    
-    Player current = isP1 ? player1 : player2;
-    refreshHandPanel(current);
+        Player current = isP1 ? player1 : player2;
+        refreshHandPanel(current);
     }
 
 

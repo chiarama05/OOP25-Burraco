@@ -33,19 +33,20 @@ public class DiscardManagerImpl implements DiscardManager{
 
         
         if (player.isInPot() && player.hasFinishedCards()) {
-        if (player.getBurracoCount() >= 1) {
-            return new DiscardResult(true, false, true, "Victory!");
-        } else {
-        
-            discardPile.drawLast();
-            player.addCardHand(card);
-            return new DiscardResult(false, false, false, "Need a Burraco to close!");
-        }
+            if (player.getBurracoCount() >= 1) {
+                return new DiscardResult(true, false, true, "Victory!");
+            } 
+            else {
+            
+                discardPile.drawLast();
+                player.addCardHand(card);
+                return new DiscardResult(false, false, false, "Need a Burraco to close!");
+            }
         }
 
         
         if (!player.isInPot() && player.hasFinishedCards()) {
-        return new DiscardResult(true, true, false, "Pot taken!");
+            return new DiscardResult(true, true, false, "Pot taken!");
         }
 
        

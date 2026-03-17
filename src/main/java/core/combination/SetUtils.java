@@ -29,11 +29,7 @@ public class SetUtils {
         if (CombinationValidator.isWildcard(newCard, set)){
             return wildcards < 1;
         }
-        String baseValue = set.stream()
-                .filter(c -> !CombinationValidator.isWildcard(c, set))
-                .map(Card::getValue)
-                .findFirst()
-                .orElse(newCard.getValue());
+        String baseValue = set.stream().filter(c -> !CombinationValidator.isWildcard(c, set)).map(Card::getValue).findFirst().orElse(newCard.getValue());
 
         return newCard.getValue().equals(baseValue);
     }

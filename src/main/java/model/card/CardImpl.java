@@ -37,7 +37,7 @@ public class CardImpl implements Card{
 
     @Override
     public String toString() {
-        return value + seed; // es: "A♠", "10♥"
+        return value + seed; 
     }
 
     /**

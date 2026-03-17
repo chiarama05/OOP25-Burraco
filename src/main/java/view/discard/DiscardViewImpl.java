@@ -54,7 +54,7 @@ public class DiscardViewImpl implements DiscardView{
      *
      * @param discardPile the list of cards currently in the discard pile
      */
-    @Override
+@Override
 public void updateDiscardPile(List<Card> discardPile) {
     discardPanel.removeAll();
     for (Card c : discardPile) {
@@ -68,9 +68,11 @@ public void updateDiscardPile(List<Card> discardPile) {
 
         if (cardText.contains("♥") || cardText.contains("♦")) {
             label.setForeground(Color.RED);
-        } else {
+        } 
+        else {
             label.setForeground(Color.BLACK);
         }
+        
         label.setPreferredSize(new Dimension(60, 85));
         discardPanel.add(label);
     }

@@ -20,7 +20,7 @@ public class DeckImpl implements Deck {
     }
 
     /**
-     * Svuota il mazzo e lo rigenera completamente.
+     * Deck's reset
      */
     public void reset() {
         this.cards.clear();
@@ -31,7 +31,7 @@ public class DeckImpl implements Deck {
         String[] seeds = {"♠", "♥", "♣", "♦"};
         String[] values = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
 
-        // Due mazzi da 54 carte (52 + 2 Jolly) = 108 carte
+        //Two decks with 54 cards (52 + 2 Jolly) = 108 cards
         for (int j = 0; j < 2; j++) {
             for (String seed : seeds) {
                 for (String value : values) {

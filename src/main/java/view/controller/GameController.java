@@ -75,9 +75,11 @@ public class GameController {
     public boolean hasAlreadyDrawn() { 
         return hasDrawn; 
     }
+
     public PlayerImpl getPlayer1() { 
         return player1; 
     }
+    
     public PlayerImpl getPlayer2() { 
         return player2; 
     }

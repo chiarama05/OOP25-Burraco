@@ -11,7 +11,7 @@ import javax.sound.sampled.LineEvent;
 
 public class SoundControllerImpl implements SoundController{
 
-    // Mappa per tenere i suoni già caricati in memoria
+    // Map for the sounds
     private final Map<String, byte[]> soundCache = new HashMap<>();
 
     public SoundControllerImpl() {
@@ -27,7 +27,7 @@ public class SoundControllerImpl implements SoundController{
                 soundCache.put(fileName, is.readAllBytes());
             }
         } catch (Exception e) {
-            System.err.println("Errore nel pre-caricamento di: " + fileName);
+            System.err.println("Error in the pre-upload of: " + fileName);
         }
     }
 
@@ -50,10 +50,8 @@ public class SoundControllerImpl implements SoundController{
         byte[] soundData = soundCache.get(fileName);
         if (soundData == null) return;
 
-        // Eseguiamo in un nuovo thread per non bloccare l'interfaccia grafica (UI)
         new Thread(() -> {
             try {
-                // Leggiamo dai dati già in memoria (velocissimo)
                 java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(soundData);
                 AudioInputStream stream = AudioSystem.getAudioInputStream(bais);
                 

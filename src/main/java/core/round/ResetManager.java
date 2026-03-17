@@ -7,7 +7,7 @@ import model.player.PlayerImpl;
 public interface ResetManager {
 
     /**
-     * Resetta lo stato logico del gioco per un nuovo round.
+     * Reset the logic state of the game for a new round
      */
     void resetRound(PlayerImpl p1, PlayerImpl p2, DeckImpl deck, DiscardPile discardPile);
 

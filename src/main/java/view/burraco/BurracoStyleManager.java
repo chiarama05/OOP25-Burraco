@@ -8,19 +8,21 @@ import javax.swing.BorderFactory;
 
 public class BurracoStyleManager {
     
-    // Definiamo i colori per il Burraco
-    private static final Color BURRACO_GREEN = new Color(50, 205, 50); // Verde brillante
+    //Burraco's colors
+    private static final Color BURRACO_GREEN = new Color(50, 205, 50);
     private static final Color DEFAULT_BORDER = Color.GRAY;
 
     /**
-     * Controlla se la lista di carte costituisce un Burraco (7 o più carte).
+     *
+     * Check if the card's list is a Burraco (7 or more cards)
      */
     public static boolean isBurraco(List<Card> cards) {
         return cards != null && cards.size() >= 7;
     }
 
     /**
-     * Restituisce il bordo appropriato: verde se è Burraco, grigio altrimenti.
+     * Give the correct border: green if it is a Burraco, grey otherwise
+     * 
      */
     public static Border getBurracoBorder(List<Card> cards) {
         if (isBurraco(cards)) {
@@ -31,11 +33,12 @@ public class BurracoStyleManager {
     }
 
     /**
-     * Opzionale: Restituisce un colore di sfondo speciale per il Burraco.
+     *
+     * Return a special background for the Burraco is optional
      */
     public static Color getBurracoBackground(List<Card> cards) {
         if (isBurraco(cards)) {
-            return new Color(240, 255, 240); // Un bianco-verdastro molto tenue
+            return new Color(240, 255, 240); 
         }
         return Color.WHITE;
     }

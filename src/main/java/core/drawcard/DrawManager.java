@@ -40,7 +40,7 @@ public class DrawManager {
 
         Card card = deck.draw();
 
-         if (card == null) {
+        if (card == null) {
             return DrawResult.emptyDeck();
         }
 

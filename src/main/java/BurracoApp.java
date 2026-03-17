@@ -1,5 +1,3 @@
-
-
 import javax.swing.SwingUtilities;
 import core.distributioncard.DistributionManagerImpl;
 import model.player.PlayerImpl;

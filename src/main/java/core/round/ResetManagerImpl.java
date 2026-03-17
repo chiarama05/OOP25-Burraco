@@ -8,14 +8,14 @@ public class ResetManagerImpl implements ResetManager{
 
     @Override
     public void resetRound(PlayerImpl p1, PlayerImpl p2, DeckImpl deck, DiscardPile discardPile) {
-        // 1. Reset logico dei giocatori (mani e combinazioni)
+        // 1. Logic reset of the player (hands and combinations)
         p1.resetForNewRound();
         p2.resetForNewRound();
 
-        // 2. Reset del mazzo
+        // 2. Deck's reset
         deck.reset();
 
-        // 3. Pulizia della pila degli scarti
+        // 3. Discard pile's reset
         discardPile.getCards().clear();
     }
 

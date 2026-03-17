@@ -19,8 +19,7 @@ public class ScoreViewImpl implements ScoreView{
     private final TableViewImpl tableView;
     private final view.controller.GameController gameController;
 
-    public ScoreViewImpl(Player p1, Player p2, String name1, String name2, int targetScore, 
-                         TableViewImpl tableView, view.controller.GameController gameController) {
+    public ScoreViewImpl(Player p1, Player p2, String name1, String name2, int targetScore, TableViewImpl tableView, view.controller.GameController gameController) {
         this.scoreManager = new ScoreManagerImpl();
         this.frame = new JFrame("Burraco - Final Standings");
         this.targetScore = targetScore;
@@ -43,7 +42,8 @@ public class ScoreViewImpl implements ScoreView{
 
         if (matchOver) {
             new SoundControllerImpl().playVictorySound();
-        } else {
+        } 
+        else {
             new SoundControllerImpl().playRoundEndSound();
         }
 
@@ -60,7 +60,7 @@ public class ScoreViewImpl implements ScoreView{
         mainPanel.setBackground(new Color(0, 102, 51)); 
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // --- TITOLO ---
+
         JLabel titleLabel = new JLabel("SCOREBOARD", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial Black", Font.BOLD, 26));
         titleLabel.setForeground(Color.YELLOW); 
@@ -82,26 +82,19 @@ public class ScoreViewImpl implements ScoreView{
 
         mainPanel.add(centerPanel, BorderLayout.CENTER);
 
-        // --- BOTTONE AZIONE ---
         JButton actionBtn;
         if (matchOver) {
             String winnerName = totalS1 > totalS2 ? name1 : name2;
             actionBtn = new JButton("CHAMPION: " + winnerName.toUpperCase() + " (EXIT)");
             actionBtn.addActionListener(e -> System.exit(0));
-        } else {
-            
+        } 
+        else { 
             actionBtn = new JButton("NEXT ROUND (Target: " + targetScore + " pts)");
             actionBtn.addActionListener(e -> {
                 frame.dispose();
                 gameController.getTurnModel().resetForNewRound();
                 core.round.ResetManager resetManager = new core.round.ResetManagerImpl();
-                core.round.RoundController rc = new core.round.RoundControllerImpl(
-        tableView, 
-        resetManager, 
-        (PlayerImpl)p1, 
-        (PlayerImpl)p2, 
-        gameController 
-        );
+                core.round.RoundController rc = new core.round.RoundControllerImpl(tableView, resetManager, (PlayerImpl)p1, (PlayerImpl)p2, gameController );
         rc.processNewRound();
         tableView.refreshTurnLabel(true);
         });
@@ -136,12 +129,12 @@ public class ScoreViewImpl implements ScoreView{
 
     Color brightGold = new Color(255, 215, 0);
     JLabel nameLabel = new JLabel(displayName);
-        nameLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
-        nameLabel.setForeground(isWinner ? brightGold : Color.YELLOW);
-        nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    nameLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
+    nameLabel.setForeground(isWinner ? brightGold : Color.YELLOW);
+    nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        panel.add(nameLabel);
-        panel.add(Box.createVerticalStrut(20));
+    panel.add(nameLabel);
+    panel.add(Box.createVerticalStrut(20));
 
     int aTerra = calculateOnlyCardsOnTable(p);
     int burrachiSporchi = ((ScoreManagerImpl)scoreManager).countDirtyBurraco(p);

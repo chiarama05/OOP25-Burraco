@@ -16,8 +16,7 @@ public class RoundControllerImpl implements RoundController{
     private final PlayerImpl player2;
     private final GameController gameController;
 
-    public RoundControllerImpl(TableView tableView, ResetManager resetManager, 
-                               PlayerImpl p1, PlayerImpl p2, GameController gameController) {
+    public RoundControllerImpl(TableView tableView, ResetManager resetManager, PlayerImpl p1, PlayerImpl p2, GameController gameController) {
         this.tableView = tableView;
         this.resetManager = resetManager;
         this.player1 = p1;
@@ -37,10 +36,7 @@ public class RoundControllerImpl implements RoundController{
         if (tableView instanceof view.table.TableViewImpl tvImpl) {
             InitialDistributionView currentDist = tvImpl.getInitDist();
 
-            currentDist.distribute(
-                player1, player2, new DistributionManagerImpl(), 
-                gameController.getCommonDeck(), tvImpl.getDiscardView(), gameController.getDiscardPile()
-            );
+            currentDist.distribute(player1, player2, new DistributionManagerImpl(), gameController.getCommonDeck(), tvImpl.getDiscardView(), gameController.getDiscardPile());
             
            
             gameController.getDrawManager().resetTurn();

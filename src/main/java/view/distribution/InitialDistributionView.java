@@ -26,8 +26,7 @@ public class InitialDistributionView {
         return handPlayer2; 
     }
 
-    public void distribute(PlayerImpl player1, PlayerImpl player2, DistributionManagerImpl distManager, Deck deck, 
-                           view.discard.DiscardView discardView, model.discard.DiscardPile modelDiscardPile) {
+    public void distribute(PlayerImpl player1, PlayerImpl player2, DistributionManagerImpl distManager, Deck deck, view.discard.DiscardView discardView, model.discard.DiscardPile modelDiscardPile) {
 
         distManager.distributeInitialCards(player1, player2, deck, modelDiscardPile);
 

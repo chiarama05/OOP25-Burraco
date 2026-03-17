@@ -30,9 +30,11 @@ public class handImpl extends JPanel implements hand {
         btn.setFont(new Font("Monospaced", Font.BOLD, 19));
         if (cardText.contains("♥") || cardText.contains("♦")) {
             btn.setForeground(Color.RED);
-        } else {
+        } 
+        else {
             btn.setForeground(Color.BLACK);
         }
+        
         btn.setPreferredSize(new Dimension(60, 85));
         btn.setOpaque(true);
         btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
@@ -40,6 +42,7 @@ public class handImpl extends JPanel implements hand {
         btn.addActionListener(e -> {
             selectionManager.toggleSelection(c);
             btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
+            
             if (listener != null) {
                 listener.onCardSelected(c);
             }
