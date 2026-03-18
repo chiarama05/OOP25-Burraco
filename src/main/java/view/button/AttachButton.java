@@ -42,10 +42,7 @@ public class AttachButton extends JButton {
         // Setup Estetico
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.WHITE);
-        this.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.GRAY, 1),
-                BorderFactory.createEmptyBorder(10, 5, 10, 5)
-        ));
+        this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.GRAY, 1),BorderFactory.createEmptyBorder(10, 5, 10, 5)));
 
         updateVisuals();
         this.addActionListener(e -> handleAttachAction());
@@ -70,6 +67,14 @@ public class AttachButton extends JButton {
         
         if (selected.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Select the card from your hand first!");
+            return;
+        }
+
+        //verify that the combination is globally valid (it's block errors like differents seed's attach or to much wildcards on a scale)
+        List<Card> hypotheticalResult = new ArrayList<>(this.cards);
+        hypotheticalResult.addAll(selected);
+        if (!CombinationValidator.isValidCombination(hypotheticalResult)) {
+            JOptionPane.showMessageDialog(this,"Invalid move: the resulting combination would not be valid!\n"+ "(wrong suit, too many wildcards, or broken sequence)","Move Not Allowed", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -105,17 +110,17 @@ public class AttachButton extends JButton {
         
         switch (state) {
 
-            //// Hand empty, pot NOT yet taken → pot on fly
+            // Hand empty, pot NOT yet taken → pot on fly
             case ZERO_CARDS_NO_POT:
                 potManager.handlePot(false);
                 break;
 
-            //// Hand empty, pot taken, burraco present → round ends
+            // Hand empty, pot taken, burraco present → round ends
             case CAN_CLOSE:
                 closureManager.handleStateAfterAction(currentPlayer);
                 break;
 
-            //// Safety net (should be caught by preventive check above).
+            // Safety net (should be caught by preventive check above).
             case ZERO_CARDS_NO_BURRACO:
                 closureManager.handleStateAfterAction(currentPlayer);
                 tableView.refreshHandPanel(currentPlayer);
@@ -173,92 +178,27 @@ public class AttachButton extends JButton {
     }
 
 
-    // ##
-    //conflicts with two updateVisuals --> this is the oldest version
-    /*public void updateVisuals() {
+    public void updateVisuals() {
         this.removeAll();
         
-     
+        // DEBUG: what arrives to this method
+        System.out.println("DEBUG - CARTE RICEVUTE: " + cards);
+
         if (StraightUtils.isSameSeed(cards)) {
             List<Card> ordered = StraightUtils.orderStraight(new ArrayList<>(cards));
-            Collections.reverse(ordered);
-            cards.clear(); 
+            Collections.reverse(ordered); 
+            
+            cards.clear();
             cards.addAll(ordered);
-        } 
+            
+            System.out.println("DEBUG - ORDINAMENTO SCALA: " + cards);
+        }
         else {
+            //if it enters here the program thinks that it is a set and 2 will be the last one
             cards.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
+            
+            System.out.println("DEBUG - ORDINAMENTO SET (IL 2 SCIVOLA): " + cards);
         }
-
-    if (!gameController.getDrawManager().hasDrawn()) {
-        JOptionPane.showMessageDialog(this, "Devi prima pescare!");
-        return;
-    }
-
-    Player currentPlayer = gameController.getCurrentPlayer();
-    if (gameController.isPlayer1(currentPlayer) != isPlayer1Owner) {
-        JOptionPane.showMessageDialog(this, "Puoi attaccare carte solo alle tue combinazioni!");
-        return;
-    }
-
-    List<Card> selected = new ArrayList<>(tableView.getHandViewForPlayer(currentPlayer).getSelectedCards());
-    if (selected.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Seleziona prima le carte dalla mano!");
-        return;
-    }
-
-    // --- PROTEZIONE CRITICA ---
-    // Creiamo una lista ipotetica che unisce le carte già a terra e quelle selezionate
-    List<Card> hypotheticalResult = new ArrayList<>(this.cards);
-    hypotheticalResult.addAll(selected);
-
-    // Chiediamo al Validator: "Se unissi queste carte, la combinazione sarebbe ancora valida?"
-    // Questo blocca il Jolly se il 2 è costretto a diventare matta nella nuova configurazione.
-    if (!CombinationValidator.isValidCombination(hypotheticalResult)) {
-        JOptionPane.showMessageDialog(this, "Mossa non valida: troppe matte o scala interrotta!");
-        return;
-    }
-    // ---------------------------
-
-    int sizeBefore = this.cards.size();
-    
-    // Se la simulazione è passata, eseguiamo l'attacco vero e proprio
-    boolean success = attachHandler.executeAttach(currentPlayer, selected, this.cards);
-
-    if (success) {
-        // Controllo Burraco (non cambia nulla, la logica rimane intatta)
-        if (sizeBefore < 7 && this.cards.size() >= 7) {
-            gameController.getSoundController().playBurracoSound();
-        }
-        
-        updateVisuals(); 
-        tableView.getHandViewForPlayer(currentPlayer).clearSelection();
-        tableView.refreshHandPanel(currentPlayer);
-    } else {
-        JOptionPane.showMessageDialog(this, "Queste carte non possono essere attaccate!");
-    }
-}*/
-
-    public void updateVisuals() {
-    this.removeAll();
-    
-    // DEBUG: what arrives to this method
-    System.out.println("DEBUG - CARTE RICEVUTE: " + cards);
-
-    if (StraightUtils.isSameSeed(cards)) {
-        List<Card> ordered = StraightUtils.orderStraight(new ArrayList<>(cards));
-        Collections.reverse(ordered); 
-        
-        cards.clear();
-        cards.addAll(ordered);
-        
-        System.out.println("DEBUG - ORDINAMENTO SCALA: " + cards);
-    }
-     else {
-        //if it enters here the program thinks that it is a set and 2 will be the last one
-        cards.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
-        
-        System.out.println("DEBUG - ORDINAMENTO SET (IL 2 SCIVOLA): " + cards);
-    }
 
         // 2. Eastethic Seteup (border and background)
         this.setBorder(BorderFactory.createCompoundBorder(BurracoStyleManager.getBurracoBorder(cards),BorderFactory.createEmptyBorder(10, 5, 10, 5)));
