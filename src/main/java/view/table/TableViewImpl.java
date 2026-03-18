@@ -66,12 +66,18 @@ public class TableViewImpl implements TableView {
 
     // 3. SUD
     this.discardPanel = new JPanel();
+
+    JScrollPane discardScroll = new JScrollPane(discardPanel);
+    discardScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    discardScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+    discardScroll.setPreferredSize(new Dimension(400, 110)); 
+    discardScroll.setBorder(null);
+
     this.deckView = new DeckView();
     this.deckPanel = new JPanel(new BorderLayout());
     this.deckPanel.setBackground(lightgreen);
     
-    
-    this.playerArea = new PlayerAreaView(discardPanel, deckView, deckPanel, lightgreen);
+    this.playerArea = new PlayerAreaView(discardScroll, deckView, deckPanel, lightgreen);
     frame.add(playerArea, BorderLayout.SOUTH);
 
     // 4. EST: Bottoni
@@ -152,10 +158,26 @@ public class TableViewImpl implements TableView {
     @Override 
     public void refreshHandPanel(Player p) {
         deckPanel.removeAll();
+
+        deckPanel.setBorder(BorderFactory.createTitledBorder(
+        BorderFactory.createLineBorder(Color.WHITE, 1), 
+        "Hand", 
+        0, 0, new Font("Arial", Font.BOLD, 18), Color.BLACK
+        ));
+
         handImpl hv = getHandViewForPlayer(p);
         hv.refreshHand(p.getHand());
-        deckPanel.add(hv);
-        deckPanel.revalidate(); deckPanel.repaint();
+
+        JScrollPane handScroll = new JScrollPane(hv);
+        handScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        handScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        handScroll.setBorder(null); 
+        handScroll.setOpaque(false);
+        handScroll.getViewport().setOpaque(false);
+        deckPanel.add(handScroll, BorderLayout.CENTER);
+
+        deckPanel.revalidate(); 
+        deckPanel.repaint();
     }
 
     @Override 

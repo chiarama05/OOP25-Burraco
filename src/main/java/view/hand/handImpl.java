@@ -23,6 +23,9 @@ public class handImpl extends JPanel implements hand {
     public void refreshHand(List<Card> hand) {
     this.removeAll();
 
+    int preferredWidth = (hand.size() * 70) + 20;
+    this.setPreferredSize(new Dimension(preferredWidth, 105));
+
     for (Card c : hand) {
  
     boolean isJolly = c.getValue().equalsIgnoreCase("Jolly");
@@ -48,6 +51,30 @@ public class handImpl extends JPanel implements hand {
         btn.setOpaque(true);
         btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
         btn.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+
+        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseEntered(java.awt.event.MouseEvent e) {
+            if (!selectionManager.isSelected(c)) {
+                btn.setBackground(new Color(255, 255, 225)); 
+            }
+            btn.setBorder(BorderFactory.createLineBorder(new Color(240, 230, 140), 2)); 
+            
+            btn.setLocation(btn.getX(), btn.getY() - 2);
+        }
+
+        @Override
+        public void mouseExited(java.awt.event.MouseEvent e) {
+            if (!selectionManager.isSelected(c)) {
+                btn.setBackground(Color.WHITE);
+            } else {
+                btn.setBackground(Color.YELLOW);
+            }
+            btn.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+            
+            btn.setLocation(btn.getX(), btn.getY() + 2);
+            }
+        });
         
         btn.addActionListener(e -> {
             selectionManager.toggleSelection(c);

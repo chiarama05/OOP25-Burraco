@@ -38,7 +38,7 @@ public class DiscardViewImpl implements DiscardView{
         this.discardPanel = discardPanel;
         this.actionPanel = actionPanel;
 
-        // Setup discard panel style
+        
         this.discardPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         this.discardPanel.setBorder(BorderFactory.createTitledBorder(
         BorderFactory.createLineBorder(Color.WHITE, 1), 
@@ -64,6 +64,8 @@ public class DiscardViewImpl implements DiscardView{
     @Override
     public void updateDiscardPile(List<Card> discardPile) {
     discardPanel.removeAll();
+    int width = (discardPile.size() * 70) + 20; 
+    discardPanel.setPreferredSize(new Dimension(width, 100));
     for (Card c : discardPile) {
         boolean isJolly = c.getValue().equalsIgnoreCase("Jolly");
         String textToShow = isJolly ? c.getSeed() : c.toString();
