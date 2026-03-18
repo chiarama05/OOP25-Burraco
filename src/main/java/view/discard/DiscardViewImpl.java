@@ -77,7 +77,7 @@ public class DiscardViewImpl implements DiscardView{
         if (isJolly) {
 
             label.setFont(new Font("Segoe UI Symbol", Font.BOLD, 28)); 
-            label.setForeground(new Color(153, 0, 255)); // Viola
+            label.setForeground(new Color(219, 112, 147)); // Viola
         } else {
             label.setFont(new Font("Monospaced", Font.BOLD, 19));
 

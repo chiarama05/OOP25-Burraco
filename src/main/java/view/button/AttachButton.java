@@ -112,7 +112,7 @@ public class AttachButton extends JButton {
         
         if (isJolly) {
             label.setFont(new Font("Segoe UI Symbol", Font.BOLD, 28)); 
-            label.setForeground(new Color(153, 0, 255));
+            label.setForeground(new Color(219, 112, 147));
         } else {
             label.setFont(new Font("Monospaced", Font.BOLD, 22));
             label.setForeground(c.toString().contains("♥") || c.toString().contains("♦") ? Color.RED : Color.BLACK);
