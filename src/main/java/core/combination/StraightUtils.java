@@ -26,26 +26,45 @@ public class StraightUtils {
      * @return true if all non-wildcards have the same seed, false otherwise
      */
     public static boolean isSameSeed(List<Card> cards) {
-        if (cards == null || cards.isEmpty()) return false;
-        List<Card> pureReal = cards.stream()
-            .filter(c -> !c.getValue().equalsIgnoreCase("Jolly") && !c.getValue().equals("2"))
-            .collect(Collectors.toList());
-        if (pureReal.isEmpty()) return true;
+        if (cards == null || cards.isEmpty()) {
+            return false;
+        }
+
+        List<Card> pureReal = cards.stream().filter(c -> !c.getValue().equalsIgnoreCase("Jolly") && !c.getValue().equals("2")).collect(Collectors.toList());
+        
+        if (pureReal.isEmpty()){
+            return true;
+        } 
+
         String suit = pureReal.get(0).getSeed();
+
         return pureReal.stream().allMatch(c -> c.getSeed().equals(suit));
     }
 
 
     public static boolean isValidStraight(List<Card> cards) {
-    if (cards == null || cards.size() < 3) return false;
+
+    if (cards == null || cards.size() < 3){
+        return false;
+    }
+
+    
+    // ##
+    /*if(!isSameSeed(cards)){
+        return false;
+    }*/
 
     // --- TENTATIVO 1: Considera i 2 come potenziali carte naturali ---
     // (Un 2 è naturale solo se è dello stesso seme delle altre e c'è un A o un 3)
-    if (checkLogic(cards, false)) return true;
+    if (checkLogic(cards, false)){
+        return true;
+    } 
 
     // --- TENTATIVO 2: Considera i 2 (anche dello stesso seme) come MATTE ---
     // Questo risolve il caso 3-2-5 dove il 2 deve "fare il 4"
-    if (checkLogic(cards, true)) return true;
+    if (checkLogic(cards, true)){
+        return true;
+    } 
 
     return false;
 }
@@ -57,23 +76,30 @@ private static boolean checkLogic(List<Card> cards, boolean forceTwosAsWildcards
     for (Card c : cards) {
         if (c.getValue().equals("Jolly")) {
             wildcards++;
-        } else if (c.getValue().equals("2")) {
+        } 
+        else if (c.getValue().equals("2")) {
             // Se forziamo i 2 come matte O se il 2 è di seme diverso, è una matta
             if (forceTwosAsWildcards || !isSameSeedAsRest(c, cards)) {
                 wildcards++;
-            } else {
+            } 
+            else {
                 // Altrimenti lo trattiamo come naturale (valore 2)
                 real.add(c);
             }
-        } else {
+        } 
+        else {
             real.add(c);
         }
     }
 
     // Regola del Burraco/Scala: massimo 1 matta (Jolly o un 2 usato come matta)
-    if (wildcards > 1) return false;
+    if (wildcards > 1) {
+        return false;
+    }
 
-    if (real.isEmpty()) return false;
+    if (real.isEmpty()) {
+        return false;
+    }
 
     // Test con Asso basso (1) e Asso alto (14)
     List<Integer> aceLow = real.stream().map(c -> mapValue(c, true)).sorted().collect(Collectors.toList());
@@ -152,7 +178,9 @@ private static boolean isSameSeedAsRest(Card two, List<Card> cards) {
     }
 
     public static List<Card> orderStraight(List<Card> sequence) {
-        if (sequence == null || sequence.isEmpty()) return new ArrayList<>();
+        if (sequence == null || sequence.isEmpty()) {
+            return new ArrayList<>();
+        }
 
         // 1. IDENTIFICAZIONE DEL SEME DELLA SCALA
         String suit = sequence.stream()
@@ -171,7 +199,9 @@ private static boolean isSameSeedAsRest(Card two, List<Card> cards) {
             }
         }
 
-        if (realCards.isEmpty()) return new ArrayList<>(sequence);
+        if (realCards.isEmpty()){
+            return new ArrayList<>(sequence);
+        } 
 
         // 3. ORDINAMENTO CARTE REALI (per trovare i buchi)
         boolean useAceLow = decideIfAceIsLow(realCards, availableWilds.size());
