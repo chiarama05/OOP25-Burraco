@@ -1,12 +1,11 @@
 plugins {
     java
     application
-    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21)) 
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
@@ -16,6 +15,7 @@ application {
 
 tasks.processResources {
     from("src/main/resources")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 tasks.withType<Jar> {

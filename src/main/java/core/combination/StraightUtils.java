@@ -101,6 +101,14 @@ private static boolean checkLogic(List<Card> cards, boolean forceTwosAsWildcards
         return false;
     }
 
+    // ##
+    String referenceSuit = real.get(0).getSeed();
+    for (Card c : real) {
+        if (!c.getSeed().equals(referenceSuit)) {
+            return false;
+        }
+    }
+
     // Test con Asso basso (1) e Asso alto (14)
     List<Integer> aceLow = real.stream().map(c -> mapValue(c, true)).sorted().collect(Collectors.toList());
     List<Integer> aceHigh = real.stream().map(c -> mapValue(c, false)).sorted().collect(Collectors.toList());
