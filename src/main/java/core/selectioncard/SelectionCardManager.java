@@ -7,9 +7,9 @@ import java.util.Set;
 
 import javax.swing.JOptionPane;
 
+import core.controller.GameController;
 import model.card.*;
 import model.player.Player;
-import view.controller.GameController;
 import view.table.TableViewImpl;
 
 /**

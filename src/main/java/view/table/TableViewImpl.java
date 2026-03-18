@@ -1,22 +1,25 @@
 package view.table;
 
+import core.SoundController;
 import core.drawcard.DrawManager;
 import core.selectioncard.SelectionCardManager;
 import model.card.Card;
 import model.player.*;
 import view.button.*;
+import view.deck.DeckView;
 import view.discard.DiscardViewImpl;
 import view.distribution.InitialDistributionView;
 import view.hand.handImpl;
 import view.notification.GameNotifier;
 import view.notification.GameNotifierImpl;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
 public class TableViewImpl implements TableView {
-    private final JFrame frame;
+   private final JFrame frame;
     private final JLabel turnLabel;
     private final JPanel combPanel1, combPanel2, discardPanel, deckPanel;
     private final PlayerImpl player1, player2;
@@ -24,16 +27,20 @@ public class TableViewImpl implements TableView {
     private final InitialDistributionView initDist;
     private final DiscardViewImpl discardView;
     private DrawManager drawManager;
-    private view.controller.GameController gameController;
+    private core.controller.GameController gameController;
     private final DeckView deckView; 
     private final JButton takeDiscardBtn; 
     private final JButton putComboBtn; 
-    private final JPanel rightPanel;
+    private final ControlPanelView sideControlPanel; 
     private int targetScore;
+    private final SoundController soundController;
 
-    public TableViewImpl(PlayerImpl p1, PlayerImpl p2, String n1, String n2) {
+    public TableViewImpl(PlayerImpl p1, PlayerImpl p2, String n1, String n2, SoundController sc) {
         this.player1 = p1; 
-    this.player2 = p2;
+        this.player2 = p2;
+
+       this.soundController = sc;
+
     this.nameP1 = (n1 == null || n1.isEmpty()) ? "Player 1" : n1;
     this.nameP2 = (n2 == null || n2.isEmpty()) ? "Player 2" : n2;
 
@@ -102,71 +109,21 @@ public class TableViewImpl implements TableView {
     frame.add(bottomPanel, BorderLayout.SOUTH);
 
     // --- EST: Barra Laterale (Bottoni) ---
-    rightPanel = new JPanel();
-    rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-    rightPanel.setPreferredSize(new Dimension(180, 400));
-    rightPanel.setBackground(lightgreen); 
-    
     this.takeDiscardBtn = new JButton("TAKE DISCARD");
-    this.putComboBtn = new JButton("PUT COMBINATION");
+        this.putComboBtn = new JButton("PUT COMBINATION");
+        this.discardView = new DiscardViewImpl(discardPanel, new JPanel());
+        JButton discardBtn = (JButton) discardView.getActionPanel().getComponent(0);
+        discardBtn.setText("DISCARD");
 
-    this.discardView = new DiscardViewImpl(discardPanel, new JPanel());
+     
+        this.initDist = new InitialDistributionView(discardPanel, new SelectionCardManager());
 
-
-    JButton discardBtn = (JButton) discardView.getActionPanel().getComponent(0);
-    discardBtn.setText("DISCARD");
-
-    this.initDist = new InitialDistributionView(discardPanel, new SelectionCardManager());
-    
-    Color pinkUp = new Color(255, 245, 250); 
-    Color pinkDown = new Color(255, 220, 235);
-    for (JButton b : new JButton[]{takeDiscardBtn, putComboBtn, discardBtn}) {
-        b.setAlignmentX(Component.CENTER_ALIGNMENT);
-        b.setFont(new Font("Arial", Font.BOLD, 14));
-        b.setMaximumSize(new Dimension(170, 45));
-        b.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        b.setBorder(BorderFactory.createLineBorder(new Color(230, 200, 215), 1));
-        b.setContentAreaFilled(false);
-
-        final boolean[] isHovered = {false};
-        b.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
-            
-        @Override
-        public void paint(Graphics g, JComponent c) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            
-            // Se il mouse è sopra, invertiamo o scuriamo i colori
-            Color c1 = isHovered[0] ? pinkDown : pinkUp; 
-            Color c2 = isHovered[0] ? new Color(255, 180, 200) : pinkDown;
-            
-            GradientPaint gp = new GradientPaint(0, 0, c1, 0, c.getHeight(), c2);
-            g2.setPaint(gp);
-            g2.fillRect(0, 0, c.getWidth(), c.getHeight()); 
-            g2.dispose();
-            super.paint(g, c);
-            }
-        });
-        b.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mouseEntered(java.awt.event.MouseEvent e) {
-            isHovered[0] = true;
-            b.repaint();
-        }
-        public void mouseExited(java.awt.event.MouseEvent e) {
-            isHovered[0] = false;
-            b.repaint();
-        }
-        });
-
-        rightPanel.add(b);
-        rightPanel.add(Box.createVerticalStrut(10));
-    }
-    frame.add(rightPanel, BorderLayout.EAST);
+        this.sideControlPanel = new ControlPanelView(takeDiscardBtn, putComboBtn, discardBtn, lightgreen);
+        frame.add(sideControlPanel, BorderLayout.EAST);
 
     // AVVIO
-    frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    frame.setMinimumSize(new Dimension(900, 600));
-    frame.setVisible(true);
+   frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setVisible(true);
     }
 
     private JPanel createSection(String title) {
@@ -182,18 +139,50 @@ public class TableViewImpl implements TableView {
     @Override
     public void wireControllers(model.turn.Turn turnModel) {
         GameNotifier notifier = new GameNotifierImpl(frame);
-        
-        this.gameController = new view.controller.GameController(player1, player2, turnModel);
-        this.drawManager = gameController.getDrawManager(); 
     
+ 
+    this.gameController = new core.controller.GameController(player1, player2, turnModel, this.soundController);
+    this.drawManager = gameController.getDrawManager(); 
 
-    core.turn.TurnController turnCtrl = new core.turn.TurnController(turnModel, this, drawManager);
+ 
+    core.turn.TurnController turnCtrl = new core.turn.TurnController(turnModel, drawManager);
     core.pot.PotManager potCtrl = new core.pot.PotManager(turnModel, this);
     core.closure.ClosureManager closureCtrl = new core.closure.ClosureManager(turnModel, this, notifier, this.targetScore);
 
-    new view.button.DeckController(deckView, drawManager, this, gameController);
+    core.buttonLogic.DiscardController discardCoreLogic = new core.buttonLogic.DiscardController(
+        new core.discardcard.DiscardManagerImpl(gameController.getDiscardPile()), 
+        turnCtrl, 
+        potCtrl, 
+        closureCtrl
+    );
+    
+    turnCtrl.setOnTurnChangedListener(() -> {
+        refreshTurnLabel(turnModel.isPlayer1Turn());
+        switchHand(turnModel.isPlayer1Turn());
+    });
 
-    new view.button.TakeDiscardController(
+   
+    new view.button.DiscardButton(
+        this, 
+        turnModel, 
+        drawManager, 
+        discardView, 
+        notifier, 
+        discardCoreLogic 
+    );
+
+    view.button.PutCombinationButton putComboLogic = new view.button.PutCombinationButton(
+        this, 
+        gameController, 
+        drawManager, 
+        potCtrl
+    );
+    putComboBtn.addActionListener(e -> putComboLogic.handlePutCombination());
+    
+    new view.button.DeckButton(deckView, drawManager, this, gameController);
+
+    
+    new view.button.TakeDiscardButton(
         takeDiscardBtn, 
         drawManager, 
         this, 
@@ -201,25 +190,9 @@ public class TableViewImpl implements TableView {
         gameController.getDiscardPile(), 
         discardView
     );
-
-    PutCombinationController putComboCtrl = new PutCombinationController(
-        this, 
-        gameController, 
-        drawManager,
-        potCtrl
-    );
-    putComboBtn.addActionListener(e -> putComboCtrl.handlePutCombination());
-    
-    
-    new DiscardController(
-        this, turnModel, 
-        new core.discardcard.DiscardManagerImpl(gameController.getDiscardPile()), 
-        discardView, 
-        gameController.getDiscardPile(), 
-        drawManager, 
-        turnCtrl, potCtrl, closureCtrl, notifier
-    );
     }
+
+
 
     @Override 
     public void refreshHandPanel(Player p) {
@@ -243,7 +216,7 @@ public class TableViewImpl implements TableView {
 
     @Override 
     public void addCombinationToPlayerPanel(List<Card> cards, boolean isP1) {
-        (isP1 ? combPanel1 : combPanel2).add(new AttachedButton(cards, this, gameController, isP1));
+        (isP1 ? combPanel1 : combPanel2).add(new AttachButton(cards, this, gameController, isP1));
         frame.revalidate();
         frame.repaint();
     }
@@ -294,7 +267,7 @@ public class TableViewImpl implements TableView {
         return this.initDist;
     }
 
-    public view.controller.GameController getGameController() {
+    public core.controller.GameController getGameController() {
         return this.gameController;
     }
 

@@ -48,6 +48,7 @@ public class handImpl extends JPanel implements hand {
         btn.setOpaque(true);
         btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
         btn.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        
         btn.addActionListener(e -> {
             selectionManager.toggleSelection(c);
             btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);

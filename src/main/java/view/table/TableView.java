@@ -8,6 +8,7 @@ import view.hand.handImpl;
 import java.util.List;
 
 public interface TableView {
+    core.controller.GameController getGameController();
 
     void refreshHandPanel(Player player);
     void refreshTurnLabel(boolean isPlayer1);

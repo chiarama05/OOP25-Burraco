@@ -1,10 +1,10 @@
 package view.hand;
 
-import model.card.*;
+import model.card.Card;
 import java.util.List;
 import java.util.Set;
 
-public interface hand {
+public interface hand { 
 
     void refreshHand(List<Card> hand);
 

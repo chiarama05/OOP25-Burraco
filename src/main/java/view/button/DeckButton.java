@@ -1,10 +1,11 @@
 package view.button;
 
+import core.controller.GameController;
 import core.drawcard.DrawManager;
 import core.drawcard.DrawResult;
 import model.deck.Deck;
 import model.player.Player;
-import view.controller.GameController; 
+import view.deck.DeckView;
 import view.table.TableView; 
 
 import javax.swing.*;
@@ -12,14 +13,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-    public class DeckController implements ActionListener {
+    public class DeckButton implements ActionListener {
 
     private final DeckView deckView;
     private final DrawManager drawManager;
     private final TableView tableView;
     private final GameController gameController; 
 
-    public DeckController(DeckView deckView, DrawManager drawManager, TableView tableView, GameController gameController) {
+    public DeckButton(DeckView deckView, DrawManager drawManager, TableView tableView, GameController gameController) {
         this.deckView = deckView;
         this.drawManager = drawManager;
         this.tableView = tableView;

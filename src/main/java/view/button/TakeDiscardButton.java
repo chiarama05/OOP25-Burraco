@@ -10,7 +10,7 @@ import view.table.TableViewImpl;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class TakeDiscardController implements ActionListener{
+public class TakeDiscardButton implements ActionListener{
 
     private final DrawManager drawManager;
     private final TableViewImpl tableView;
@@ -18,7 +18,7 @@ public class TakeDiscardController implements ActionListener{
     private final DiscardPile discardPileModel;
     private final view.discard.DiscardViewImpl discardView;
 
-    public TakeDiscardController(JButton button, DrawManager drawManager, TableViewImpl tableView, 
+    public TakeDiscardButton(JButton button, DrawManager drawManager, TableViewImpl tableView, 
                                  Turn turnManager, DiscardPile discardPileModel, 
                                  view.discard.DiscardViewImpl discardView) {
         this.drawManager = drawManager;
@@ -37,10 +37,10 @@ public class TakeDiscardController implements ActionListener{
         DrawResult result = drawManager.drawFromDiscard(current, discardPileModel.getCards());
 
         if (result.getStatus() == DrawResult.Status.SUCCESS_MULTIPLE) {
-            // Aggiorna la mano del giocatore graficamente
+           
             tableView.refreshHandPanel(current);
             
-            // Svuota la pila degli scarti graficamente
+           
             discardView.updateDiscardPile(discardPileModel.getCards());
             
         } else if (result.getStatus() == DrawResult.Status.ALREADY_DRAWN) {

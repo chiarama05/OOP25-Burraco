@@ -3,6 +3,7 @@ package view.sound;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import core.SoundController;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -27,7 +28,7 @@ public class SoundControllerImpl implements SoundController{
                 soundCache.put(fileName, is.readAllBytes());
             }
         } catch (Exception e) {
-            System.err.println("Errore nel pre-caricamento di: " + fileName);
+            System.err.println("Error: " + fileName);
         }
     }
 

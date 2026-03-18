@@ -1,4 +1,4 @@
-package view.sound;
+package core;
 
 public interface SoundController {
 

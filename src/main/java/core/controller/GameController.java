@@ -1,14 +1,15 @@
-package view.controller;
+package core.controller;
 
 import model.player.Player;
 import model.player.PlayerImpl;
+import core.SoundController;
+import core.buttonLogic.AttachController;
+import core.buttonLogic.PutCombinationController;
 import core.selectioncard.SelectionCardManager;
 import model.deck.DeckImpl;
 import model.discard.DiscardPile;
 import model.discard.DiscardPileImpl;
 import model.turn.Turn;
-import view.sound.SoundController;
-import view.sound.SoundControllerImpl;
 
 
 public class GameController {
@@ -21,14 +22,20 @@ public class GameController {
     private boolean hasDrawn = false;
     private final SelectionCardManager selectionManager = new SelectionCardManager();
     private final core.drawcard.DrawManager drawManager = new core.drawcard.DrawManager();
+    private final AttachController attachController;
+    private final PutCombinationController combinationController;
 
-    public GameController(PlayerImpl p1, PlayerImpl p2, Turn turnModel) {
+
+    public GameController(PlayerImpl p1, PlayerImpl p2, Turn turnModel, SoundController sc) {
         this.player1 = p1;
         this.player2 = p2;
         this.turnModel = turnModel;
         this.discardPile = new DiscardPileImpl();
         this.commonDeck = new DeckImpl();
-        this.soundController = new SoundControllerImpl();
+        this.attachController = new AttachController();
+        this.soundController = sc;
+        this.combinationController = new PutCombinationController();
+
     }
 
 
@@ -38,6 +45,10 @@ public class GameController {
 
     public Player getCurrentPlayer() {
         return turnModel.getCurrentPlayer();
+    }
+
+    public AttachController getAttachController() {
+    return attachController;
     }
 
     public DeckImpl getCommonDeck() {
@@ -51,6 +62,10 @@ public class GameController {
     public SelectionCardManager getSelectionManager() {
         return selectionManager;
     }
+
+    public PutCombinationController getCombinationController() {
+    return combinationController;
+}
 
     public core.drawcard.DrawManager getDrawManager() {
         return drawManager;

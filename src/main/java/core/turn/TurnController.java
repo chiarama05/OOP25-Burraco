@@ -1,33 +1,34 @@
 package core.turn;
 
 import model.turn.Turn;
-import view.table.TableView;
-
 import core.drawcard.DrawManager;
 
 public class TurnController {
 
     private final Turn turnModel;
-    private final TableView view;
     private final DrawManager drawManager;
+    private Runnable onTurnChanged;
 
-    public TurnController(Turn turnModel, TableView v, DrawManager dm) {
+    public TurnController(Turn turnModel, DrawManager dm) {
         this.turnModel = turnModel;
-        this.view = v;
         this.drawManager = dm;
     }
 
+    
+    public void setOnTurnChangedListener(Runnable listener) {
+        this.onTurnChanged = listener;
+    }
+
     public void executeNextTurn() {
-        
+       
         turnModel.nextTurn();
         
-       
         if (drawManager != null) {
             drawManager.resetTurn();
         }
 
-       
-        view.refreshTurnLabel(turnModel.isPlayer1Turn());
-        view.switchHand(turnModel.isPlayer1Turn());
+        if (onTurnChanged != null) {
+            onTurnChanged.run();
+        }
     }
 }

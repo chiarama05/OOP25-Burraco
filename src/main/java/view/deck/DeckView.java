@@ -1,4 +1,4 @@
-package view.button;
+package view.deck;
 
 import javax.swing.*;
 import java.awt.*;

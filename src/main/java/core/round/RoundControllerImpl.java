@@ -1,9 +1,10 @@
 package core.round;
 
 import javax.swing.SwingUtilities;
+
+import core.controller.GameController;
 import core.distributioncard.DistributionManagerImpl;
 import model.player.PlayerImpl;
-import view.controller.GameController; 
 import view.distribution.InitialDistributionView;
 import view.table.TableView;
 import java.awt.Window;

@@ -1,6 +1,8 @@
 
 
 import javax.swing.SwingUtilities;
+
+import core.controller.GameController;
 import core.distributioncard.DistributionManagerImpl;
 import model.player.PlayerImpl;
 import model.turn.TurnImpl;
@@ -9,7 +11,6 @@ import view.start.SetUpMenuViewImpl;
 import view.start.StartMenuView;
 import view.start.StartMenuViewImpl;
 import view.table.TableViewImpl;
-import view.controller.GameController;
 
 public class BurracoApp {
     public static void main(final String[] args) {
@@ -29,12 +30,11 @@ public class BurracoApp {
                 
                 PlayerImpl p1 = new PlayerImpl(nameP1);
                 PlayerImpl p2 = new PlayerImpl(nameP2);
-                
-                
-                TableViewImpl view = new TableViewImpl(p1, p2, nameP1, nameP2);
-
-                
                 TurnImpl turnManager = new TurnImpl(p1, p2);
+
+                core.SoundController sound = new view.sound.SoundControllerImpl();
+                
+                TableViewImpl view = new TableViewImpl(p1, p2, nameP1, nameP2, sound);
 
                 view.setTargetScore(scoreThreshold);
                 view.wireControllers(turnManager);
