@@ -13,13 +13,12 @@ import view.hand.handImpl;
 import view.notification.GameNotifier;
 import view.notification.GameNotifierImpl;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
 public class TableViewImpl implements TableView {
-   private final JFrame frame;
+    private final JFrame frame;
     private final JLabel turnLabel;
     private final JPanel combPanel1, combPanel2, discardPanel, deckPanel;
     private final PlayerImpl player1, player2;
@@ -32,6 +31,8 @@ public class TableViewImpl implements TableView {
     private final JButton takeDiscardBtn; 
     private final JButton putComboBtn; 
     private final ControlPanelView sideControlPanel; 
+    private final BoardView boardView;
+    private final PlayerAreaView playerArea;
     private int targetScore;
     private final SoundController soundController;
 
@@ -49,91 +50,51 @@ public class TableViewImpl implements TableView {
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setLayout(new BorderLayout());
 
-
-    Font font = new Font("Arial", Font.BOLD, 20);
-    Font fontTurn = new Font("Arial", Font.BOLD, 25);
     Color lightgreen = new Color(180, 220, 180); 
-
     frame.getContentPane().setBackground(lightgreen);
 
-    // --- NORD: Turno ---
+    // 1. NORD
     this.turnLabel = new JLabel("Turn: " + nameP1); 
-    this.turnLabel.setFont(fontTurn);
-    this.turnLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+    this.turnLabel.setFont(new Font("Arial", Font.BOLD, 25));
     frame.add(turnLabel, BorderLayout.NORTH);
 
-    // --- CENTRO: Pannelli Combinazioni ---
-    JPanel combinationPanel = new JPanel(new GridLayout(1, 2, 20, 10));
-    combinationPanel.setBackground(lightgreen); 
-    
-    combPanel1 = createSection(nameP1);
-    combPanel2 = createSection(nameP2);
+    // 2. CENTRO
+    this.boardView = new BoardView(nameP1, nameP2, lightgreen);
+    this.combPanel1 = boardView.getCombPanel1();
+    this.combPanel2 = boardView.getCombPanel2();
+    frame.add(boardView, BorderLayout.CENTER);
 
-    
-    JScrollPane scroll1 = new JScrollPane(combPanel1);
-    JScrollPane scroll2 = new JScrollPane(combPanel2);
-    
-    for (JScrollPane s : new JScrollPane[]{scroll1, scroll2}) {
-        s.setBorder(BorderFactory.createEmptyBorder()); 
-        s.getViewport().setBackground(lightgreen); 
-        s.setBackground(lightgreen);              
-    }
-
-    combinationPanel.add(scroll1);
-    combinationPanel.add(scroll2);
-    frame.add(combinationPanel, BorderLayout.CENTER);
-
+    // 3. SUD
     this.discardPanel = new JPanel();
 
-    // --- SUD: Mazzo, Scarti e Mano ---
+    JScrollPane discardScroll = new JScrollPane(discardPanel);
+    discardScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    discardScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+    discardScroll.setPreferredSize(new Dimension(400, 110)); 
+    discardScroll.setBorder(null);
+
     this.deckView = new DeckView();
-    this.deckView.getDeckButton().setPreferredSize(new Dimension(70, 100));
-    this.deckView.setBackground(lightgreen);
-
-
-    JPanel centralBottomPanel = new JPanel(new BorderLayout());
-    centralBottomPanel.setBackground(lightgreen);
-    centralBottomPanel.add(discardPanel, BorderLayout.CENTER);
-    centralBottomPanel.add(deckView, BorderLayout.WEST);
-
-    deckPanel = new JPanel(new BorderLayout());
-    deckPanel.setBackground(lightgreen);
-    deckPanel.setBorder(BorderFactory.createTitledBorder(
-        BorderFactory.createLineBorder(Color.WHITE, 1), "Hand", 0, 0, font, Color.BLACK));
-
-    JPanel bottomPanel = new JPanel(new BorderLayout());
-    bottomPanel.setBackground(lightgreen);
-    bottomPanel.add(centralBottomPanel, BorderLayout.NORTH);
-    bottomPanel.add(deckPanel, BorderLayout.CENTER);
+    this.deckPanel = new JPanel(new BorderLayout());
+    this.deckPanel.setBackground(lightgreen);
     
-    frame.add(bottomPanel, BorderLayout.SOUTH);
+    this.playerArea = new PlayerAreaView(discardScroll, deckView, deckPanel, lightgreen);
+    frame.add(playerArea, BorderLayout.SOUTH);
 
-    // --- EST: Barra Laterale (Bottoni) ---
+    // 4. EST: Bottoni
     this.takeDiscardBtn = new JButton("TAKE DISCARD");
-        this.putComboBtn = new JButton("PUT COMBINATION");
-        this.discardView = new DiscardViewImpl(discardPanel, new JPanel());
-        JButton discardBtn = (JButton) discardView.getActionPanel().getComponent(0);
-        discardBtn.setText("DISCARD");
+    this.putComboBtn = new JButton("PUT COMBINATION");
+    this.discardView = new DiscardViewImpl(discardPanel, new JPanel());
+    JButton discardBtn = (JButton) discardView.getActionPanel().getComponent(0);
+    discardBtn.setText("DISCARD");
 
-     
-        this.initDist = new InitialDistributionView(discardPanel, new SelectionCardManager());
+    this.sideControlPanel = new ControlPanelView(takeDiscardBtn, putComboBtn, discardBtn, lightgreen);
+    frame.add(sideControlPanel, BorderLayout.EAST);
 
-        this.sideControlPanel = new ControlPanelView(takeDiscardBtn, putComboBtn, discardBtn, lightgreen);
-        frame.add(sideControlPanel, BorderLayout.EAST);
 
-    // AVVIO
-   frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setVisible(true);
-    }
-
-    private JPanel createSection(String title) {
-        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        p.setBackground(new Color(0, 102, 51));
-        p.setBorder(BorderFactory.createTitledBorder(
-        BorderFactory.createLineBorder(Color.WHITE), 
-        title, 0, 0, 
-        new Font("Arial", Font.BOLD, 20), Color.WHITE));
-        return p;
+    this.initDist = new InitialDistributionView(discardPanel, new SelectionCardManager());
+    
+    frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    frame.setVisible(true);
     }
 
     @Override
@@ -197,10 +158,26 @@ public class TableViewImpl implements TableView {
     @Override 
     public void refreshHandPanel(Player p) {
         deckPanel.removeAll();
+
+        deckPanel.setBorder(BorderFactory.createTitledBorder(
+        BorderFactory.createLineBorder(Color.WHITE, 1), 
+        "Hand", 
+        0, 0, new Font("Arial", Font.BOLD, 18), Color.BLACK
+        ));
+
         handImpl hv = getHandViewForPlayer(p);
         hv.refreshHand(p.getHand());
-        deckPanel.add(hv);
-        deckPanel.revalidate(); deckPanel.repaint();
+
+        JScrollPane handScroll = new JScrollPane(hv);
+        handScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        handScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        handScroll.setBorder(null); 
+        handScroll.setOpaque(false);
+        handScroll.getViewport().setOpaque(false);
+        deckPanel.add(handScroll, BorderLayout.CENTER);
+
+        deckPanel.revalidate(); 
+        deckPanel.repaint();
     }
 
     @Override 
