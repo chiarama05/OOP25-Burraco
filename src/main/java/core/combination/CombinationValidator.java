@@ -11,6 +11,12 @@ public class CombinationValidator {
             return false;
         }
 
+        // --- 2. LOGICA SET (TRIS) ---
+        if (SetUtils.isValidSet(cards)) {
+            long wildcardsInSet = cards.stream().filter(c -> c.getValue().equalsIgnoreCase("Jolly") || (c.getValue().equals("2") && !SetUtils.isNaturalTwoInSet(c, cards))).count();
+            return wildcardsInSet <= 1;
+        }
+
         // --- 1. LOGICA SCALA (STRAIGHT) ---
         if (StraightUtils.isSameSeed(cards)) {
             // Usiamo l'ordinamento reale della scala per vedere dove finisce il 2
@@ -37,12 +43,6 @@ public class CombinationValidator {
 
             // Se il conteggio matte è OK, verifichiamo che la sequenza sia valida (no buchi non coperti)
             return StraightUtils.isValidStraight(cards);
-        }
-
-        // --- 2. LOGICA SET (TRIS) ---
-        if (SetUtils.isValidSet(cards)) {
-            long wildcardsInSet = cards.stream().filter(c -> c.getValue().equalsIgnoreCase("Jolly") || (c.getValue().equals("2") && !SetUtils.isNaturalTwoInSet(c, cards))).count();
-            return wildcardsInSet <= 1;
         }
 
         return false;
