@@ -23,13 +23,16 @@ public class SoundControllerImpl implements SoundController{
     }
 
     private void preLoadSound(String fileName) {
-        try (InputStream is = getClass().getResourceAsStream("/" + fileName)) {
-            if (is != null) {
-                soundCache.put(fileName, is.readAllBytes());
-            }
-        } catch (Exception e) {
-            System.err.println("Error: " + fileName);
+        String path = fileName.startsWith("/") ? fileName : "/" + fileName;
+        try (InputStream is = getClass().getResourceAsStream(path)) {
+        if (is != null) {
+            soundCache.put(fileName, is.readAllBytes());
+        } else {
+            System.err.println("Resource not found: " + path);
         }
+    } catch (Exception e) {
+        System.err.println("Error loading sound: " + fileName);
+    }
     }
 
     @Override
