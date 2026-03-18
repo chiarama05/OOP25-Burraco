@@ -26,23 +26,13 @@ public class StraightUtils {
      * @return true if all non-wildcards have the same seed, false otherwise
      */
     public static boolean isSameSeed(List<Card> cards) {
-        if (cards == null || cards.isEmpty()) {
-            return false;
-        }
-
-        // Filter out wildcards (Jolly or usable 2s)
-        List<Card> real = cards.stream()
-            .filter(c -> !CombinationValidator.isWildcard(c, cards))
+        if (cards == null || cards.isEmpty()) return false;
+        List<Card> pureReal = cards.stream()
+            .filter(c -> !c.getValue().equalsIgnoreCase("Jolly") && !c.getValue().equals("2"))
             .collect(Collectors.toList());
-
-        if (real.isEmpty()) {
-            return false;
-        }
-
-        // Get seed of first real card
-        String suit = real.get(0).getSeed();
-        // Check that all real cards have the same seed
-        return real.stream().allMatch(c -> c.getSeed().equals(suit));
+        if (pureReal.isEmpty()) return true;
+        String suit = pureReal.get(0).getSeed();
+        return pureReal.stream().allMatch(c -> c.getSeed().equals(suit));
     }
 
 
@@ -162,64 +152,74 @@ private static boolean isSameSeedAsRest(Card two, List<Card> cards) {
     }
 
     public static List<Card> orderStraight(List<Card> sequence) {
-    if (sequence == null || sequence.isEmpty()) return new ArrayList<>();
+        if (sequence == null || sequence.isEmpty()) return new ArrayList<>();
 
-    // 1. Separiamo le carte reali dalle matte
-    List<Card> realCards = sequence.stream()
-            .filter(c -> !CombinationValidator.isWildcard(c, sequence))
-            .collect(Collectors.toList());
-    
-    List<Card> wildcards = sequence.stream()
-            .filter(c -> CombinationValidator.isWildcard(c, sequence))
-            .collect(Collectors.toList());
+        // 1. IDENTIFICAZIONE DEL SEME DELLA SCALA
+        String suit = sequence.stream()
+                .filter(c -> !c.getValue().equalsIgnoreCase("Jolly") && !c.getValue().equals("2"))
+                .map(Card::getSeed).findFirst().orElse("");
 
-    if (realCards.isEmpty()) return new ArrayList<>(sequence);
+        // 2. SEPARAZIONE: Carte Reali vs Potenziali Matte (2 e Jolly)
+        List<Card> realCards = new ArrayList<>();
+        List<Card> availableWilds = new ArrayList<>(); // Qui mettiamo sia i Jolly che i 2
 
-    // 2. Determiniamo se l'asso è basso o alto per l'ordinamento
-    boolean useAceLow = decideIfAceIsLow(realCards, wildcards.size());
-    realCards.sort(Comparator.comparingInt(c -> mapValue(c, useAceLow)));
-
-    List<Card> result = new ArrayList<>();
-    int wildUsed = 0;
-
-    // 3. COSTRUZIONE DELLA SCALA E RIEMPIMENTO BUCHI
-    for (int i = 0; i < realCards.size(); i++) {
-        result.add(realCards.get(i));
-        
-        if (i < realCards.size() - 1) {
-            int v1 = mapValue(realCards.get(i), useAceLow);
-            int v2 = mapValue(realCards.get(i + 1), useAceLow);
-            int gap = v2 - v1 - 1;
-
-            // Se c'è un buco (es. tra 3 e 5) e abbiamo una matta, la mettiamo in mezzo
-            while (gap > 0 && wildUsed < wildcards.size()) {
-                result.add(wildcards.get(wildUsed++));
-                gap--;
+        for (Card c : sequence) {
+            if (c.getValue().equalsIgnoreCase("Jolly") || c.getValue().equals("2")) {
+                availableWilds.add(c);
+            } else {
+                realCards.add(c);
             }
         }
-    }
 
-    // 4. GESTIONE MATTE RIMANENTI (se non servono nei buchi, vanno ai bordi)
-    while (wildUsed < wildcards.size()) {
-        Card w = wildcards.get(wildUsed++);
-        // Se c'è spazio "sotto" (es. scala inizia dal 3, mettiamo la matta per fare il 2)
-        int firstVal = mapValue(result.get(0), useAceLow);
-        if (firstVal > 1) {
-            result.add(0, w);
-        } else {
-            // Altrimenti la mettiamo in coda (sopra il Re o l'Asso alto)
-            result.add(w);
+        if (realCards.isEmpty()) return new ArrayList<>(sequence);
+
+        // 3. ORDINAMENTO CARTE REALI (per trovare i buchi)
+        boolean useAceLow = decideIfAceIsLow(realCards, availableWilds.size());
+        realCards.sort(Comparator.comparingInt(c -> mapValue(c, useAceLow)));
+
+        List<Card> result = new ArrayList<>();
+        
+        // 4. COSTRUZIONE E RIEMPIMENTO BUCHI (GAP FILLING)
+        // Questo passaggio "obbliga" il 2 a stare in mezzo se manca una carta
+        for (int i = 0; i < realCards.size(); i++) {
+            result.add(realCards.get(i));
+            
+            if (i < realCards.size() - 1) {
+                int v1 = mapValue(realCards.get(i), useAceLow);
+                int v2 = mapValue(realCards.get(i + 1), useAceLow);
+                int gap = v2 - v1 - 1;
+
+                while (gap > 0 && !availableWilds.isEmpty()) {
+                    // Usiamo una matta (o un 2) per tappare il buco
+                    result.add(availableWilds.remove(0));
+                    gap--;
+                }
+            }
         }
-    }
 
-    return result;
-}
+        // 5. GESTIONE MATTE RIMANENTI (AI BORDI)
+        // Se avanzano dei 2 o Jolly, ora possono andare ai bordi
+        while (!availableWilds.isEmpty()) {
+            Card w = availableWilds.remove(0);
+            int firstVal = mapValue(result.get(0), useAceLow);
+            
+            // Se c'è spazio "sotto" (es. la scala parte dal 3), mettiamolo lì
+            if (firstVal > 1) {
+                result.add(0, w);
+            } else {
+                // Altrimenti in coda (sopra il Re o l'Asso alto)
+                result.add(w);
+            }
+        }
+
+        return result;
+    }
 
 // Metodo di supporto per decidere l'Asso
 private static boolean decideIfAceIsLow(List<Card> real, int wildCount) {
     List<Integer> lowVals = real.stream().map(c -> mapValue(c, true)).sorted().collect(Collectors.toList());
     if (canBeSequential(lowVals, wildCount)) {
-        // Se ho un Re, l'asso è quasi certamente alto (tranne scale lunghissime)
+       
         if (real.stream().anyMatch(c -> c.getValue().equals("K"))) return false;
         return true;
     }
