@@ -23,22 +23,35 @@ public class GameNotifierImpl implements GameNotifier{
 
     @Override
     public void notifyInvalidClosure() {
-        JOptionPane.showMessageDialog(parent, "You can't discard your last card without even done a Burraco!", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(parent, "You can't close without a Burraco!\nKeep playing to form one!", "Cannot close", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override
     public void notifyVictory(String winnerName) {
-        JOptionPane.showMessageDialog(parent, "Congratulation " + winnerName + "! Hai vinto la partita!", "Vittoria", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(parent, "Congratulation " + winnerName + "! You won the match!", "Victory!", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
     public void notifyMustDraw() {
-        JOptionPane.showMessageDialog(parent, "Devi pescare dal mazzo o raccogliere gli scarti prima di scartare!", "Azione richiesta", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(parent, "You must draw a card (from the deck or the discard pile) before discarding!", "Action Required", JOptionPane.WARNING_MESSAGE);
     }
 
     @Override
     public void notifySelectionError(String message) {
         JOptionPane.showMessageDialog(parent, message, "Error Selection", JOptionPane.WARNING_MESSAGE);
+    }
+
+
+
+    // ##
+    @Override
+    public void notifyMustTakePotBeforeDiscard(){
+        JOptionPane.showMessageDialog(parent,"You have no more cards but you haven't taken your pot yet!\n"+ "The pot has been given to you automatically – keep playing.","Pot Taken Automatically", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    @Override
+    public void notifyMustFormBurracoBeforeClose() {
+        JOptionPane.showMessageDialog(parent,"Your hand is empty but you don't have a Burraco yet!\n"+ "You must reach 7 cards in one of your combinations\n"+ "(by attaching) before you can close the round.","Burraco Required", JOptionPane.WARNING_MESSAGE);
     }
 
 }

@@ -2,11 +2,15 @@ package view.button;
 
 import model.card.Card;
 import model.player.Player;
-import core.buttonLogic.*;
+import core.buttonLogic.AttachController;
 import core.combination.StraightUtils;
 import core.controller.GameController;
 import view.burraco.BurracoStyleManager;
 import view.table.TableView;
+import core.closure.ClosureManager;
+import core.closure.ClosureState;
+import core.closure.ClosureValidator;
+import core.pot.PotManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,13 +25,17 @@ public class AttachButton extends JButton {
     private final GameController gameController; 
     private final boolean isPlayer1Owner;
     private final AttachController attachHandler; 
+    private final ClosureManager closureManager;
+    private final PotManager potManager;
 
-    public AttachButton(List<Card> initialCards, TableView tableView, GameController gameController, boolean isPlayer1Owner) {
+    public AttachButton(List<Card> initialCards, TableView tableView, GameController gameController, boolean isPlayer1Owner, ClosureManager closureManager, PotManager potManager) {
         this.cards = initialCards;
         this.tableView = tableView;
         this.gameController = gameController; 
         this.isPlayer1Owner = isPlayer1Owner;
         this.attachHandler = gameController.getAttachController();
+        this.closureManager=closureManager;
+        this.potManager=potManager;
 
         // Setup Estetico
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -56,16 +64,91 @@ public class AttachButton extends JButton {
         }
 
         List<Card> selected = new ArrayList<>(tableView.getHandViewForPlayer(currentPlayer).getSelectedCards());
+        
         if (selected.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Select the card from your hand first!");
             return;
         }
 
-        
+
+        //Simulate the attach outcome before touching the model.
+        if (ClosureValidator.wouldGetStuckAfterAttach(currentPlayer, selected, this.cards.size())) {
+            JOptionPane.showMessageDialog(this,"You cannot attach this card!\n\n"+ "After attaching you would have only 1 card left,\n"+ "but you don't have a Burraco yet and you cannot close.\n\n"+ "You need at least one Burraco before you can reduce\n"+ "your hand to 1 card.","Move Not Allowed", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+
+
         int sizeBefore = this.cards.size();
         boolean success = attachHandler.executeAttach(currentPlayer, selected, this.cards);
 
-        if (success) {
+
+        if (!success) {
+            JOptionPane.showMessageDialog(this, "These cards cannot be attached!");
+            return;
+        }
+
+        // Play burraco sound if this attach completed a burraco
+        if (sizeBefore < 7 && this.cards.size() >= 7) {
+            gameController.getSoundController().playBurracoSound();
+        }
+
+        updateVisuals();
+        tableView.getHandViewForPlayer(currentPlayer).clearSelection();
+
+        
+        ClosureState state = ClosureValidator.evaluate(currentPlayer);
+
+        
+        switch (state) {
+
+            //// Hand empty, pot NOT yet taken → pot on fly
+            case ZERO_CARDS_NO_POT:
+                potManager.handlePot(false);
+                break;
+
+            //// Hand empty, pot taken, burraco present → round ends
+            case CAN_CLOSE:
+                closureManager.handleStateAfterAction(currentPlayer);
+                break;
+
+            //// Safety net (should be caught by preventive check above).
+            case ZERO_CARDS_NO_BURRACO:
+                closureManager.handleStateAfterAction(currentPlayer);
+                tableView.refreshHandPanel(currentPlayer);
+                break;
+
+            // Normal case: player still has cards
+            default:
+                tableView.refreshHandPanel(currentPlayer);
+                break;
+        }
+        
+
+
+
+        // ## version 3 
+        /*// Hand empty + pot taken + burraco → round ends immediately
+        if (state == ClosureState.CAN_CLOSE) {
+            closureManager.handleStateAfterAction(currentPlayer);
+            return;
+        }
+
+
+        // Hand empty + pot taken + NO burraco yet.
+        if (state == ClosureState.ZERO_CARDS_NO_BURRACO) {
+            closureManager.handleStateAfterAction(currentPlayer);
+            tableView.refreshHandPanel(currentPlayer);
+            return;
+        }
+
+        // Normal case (OK) or any other state: just refresh.
+        tableView.refreshHandPanel(currentPlayer);*/
+        
+        
+    
+        // ##
+        /*if (success) {
             
             if (sizeBefore < 7 && this.cards.size() >= 7) {
                 gameController.getSoundController().playBurracoSound();
@@ -73,11 +156,19 @@ public class AttachButton extends JButton {
             
             updateVisuals(); 
             tableView.getHandViewForPlayer(currentPlayer).clearSelection();
-            tableView.refreshHandPanel(currentPlayer);
-        } else {
+
+            //normale case: when player still has cards 
+            boolean blocking = closureManager.handleStateAfterAction(currentPlayer);
+
+            if(!blocking){
+                tableView.refreshHandPanel(currentPlayer);
+            } 
+        } 
+        else {
             JOptionPane.showMessageDialog(this, "These cards cannot be attached!");
-        }
+        }*/
     }
+
 
     public void updateVisuals() {
         this.removeAll();
@@ -86,17 +177,19 @@ public class AttachButton extends JButton {
         if (StraightUtils.isSameSeed(cards)) {
             List<Card> ordered = StraightUtils.orderStraight(new ArrayList<>(cards));
             Collections.reverse(ordered);
-            cards.clear(); cards.addAll(ordered);
-        } else {
+            cards.clear(); 
+            cards.addAll(ordered);
+        } 
+        else {
             cards.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
         }
 
       
         this.setBorder(BorderFactory.createCompoundBorder(
             BurracoStyleManager.getBurracoBorder(cards),
-            BorderFactory.createEmptyBorder(10, 5, 10, 5)
-        ));
+            BorderFactory.createEmptyBorder(10, 5, 10, 5)));
         this.setBackground(BurracoStyleManager.getBurracoBackground(cards));
+
 
         for (Card c : cards) {
             renderCardLabel(c);
@@ -113,10 +206,12 @@ public class AttachButton extends JButton {
         if (isJolly) {
             label.setFont(new Font("Segoe UI Symbol", Font.BOLD, 28)); 
             label.setForeground(new Color(219, 112, 147));
-        } else {
+        } 
+        else {
             label.setFont(new Font("Monospaced", Font.BOLD, 22));
             label.setForeground(c.toString().contains("♥") || c.toString().contains("♦") ? Color.RED : Color.BLACK);
         }
+
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(label);
         this.add(Box.createVerticalStrut(8));

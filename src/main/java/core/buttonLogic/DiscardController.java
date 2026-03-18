@@ -5,7 +5,8 @@ import model.player.Player;
 import core.pot.PotManager;
 import core.turn.TurnController;
 import core.closure.ClosureManager;
-import core.discardcard.*;
+import core.discardcard.DiscardManagerImpl;
+import core.discardcard.DiscardResult;
 
 public class DiscardController {
     private final DiscardManagerImpl discardManager;
@@ -13,8 +14,7 @@ public class DiscardController {
     private final PotManager potCtrl;
     private final ClosureManager closureCtrl;
 
-    public DiscardController(DiscardManagerImpl discardManager, TurnController turnCtrl, 
-                             PotManager potCtrl, ClosureManager closureCtrl) {
+    public DiscardController(DiscardManagerImpl discardManager, TurnController turnCtrl, PotManager potCtrl, ClosureManager closureCtrl) {
         this.discardManager = discardManager;
         this.turnCtrl = turnCtrl;
         this.potCtrl = potCtrl;
@@ -28,7 +28,33 @@ public class DiscardController {
         
         DiscardResult result = discardManager.discard(current, card);
 
-        if (result.isValid()) {
+
+
+        // DiscardManagerImpl already undid the discard
+        if (!result.isValid()) {
+            return result;
+        }
+
+
+         // The model says the round is over (pot taken + burraco + last card discarded).
+        // ClosureManager shows ScoreView and does NOT advance the turn.
+        if (result.isGameWon()) {
+            closureCtrl.handleStateAfterDiscard(current);
+            return result;
+        }
+
+        // Normal discard path
+        if (willTakePot) {
+            potCtrl.handlePot(true);
+        }
+        turnCtrl.executeNextTurn();
+
+        return result;
+
+
+
+        // ##
+        /*if (result.isValid()) {
             if (result.isGameWon()) {
                 closureCtrl.attemptClosure();
             } else {
@@ -38,6 +64,6 @@ public class DiscardController {
                 turnCtrl.executeNextTurn();
             }
         }
-        return result;
+        return result;*/
     }
 }
