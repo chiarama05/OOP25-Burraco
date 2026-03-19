@@ -1,22 +1,11 @@
 package it.unibo.burraco.core.closure;
 
-<<<<<<< HEAD:src/main/java/core/closure/ClosureManager.java
-import model.player.Player;
-import model.turn.Turn;
-import view.notification.GameNotifier;
-import view.table.TableView;
-import view.table.TableViewImpl;
-import view.score.ScoreViewImpl;
-=======
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.turn.Turn;
 import it.unibo.burraco.view.notification.GameNotifier;
 import it.unibo.burraco.view.table.TableView;
 import it.unibo.burraco.view.table.TableViewImpl;
-import it.unibo.burraco.view.score.ScoreView;
 import it.unibo.burraco.view.score.ScoreViewImpl;
->>>>>>> origin/main:src/main/java/it/unibo/burraco/core/closure/ClosureManager.java
 
 public class ClosureManager {
 
