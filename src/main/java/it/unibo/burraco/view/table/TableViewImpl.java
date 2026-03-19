@@ -100,7 +100,8 @@ public class TableViewImpl implements TableView {
 
 
     this.initDist = new InitialDistributionView(discardPanel, new SelectionCardManager());
-    
+
+    frame.setMinimumSize(new Dimension(1024, 768)); // Dimensione minima ragionevole per un gioco di carte
     frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
     frame.setVisible(true);
     }
@@ -177,10 +178,33 @@ public class TableViewImpl implements TableView {
 
     @Override 
     public void addCombinationToPlayerPanel(List<Card> cards, boolean isP1) {
-        (isP1 ? combPanel1 : combPanel2).add(new AttachButton(cards, this, gameController, isP1, this.closureManager,this.potManager));
-        frame.revalidate();
-        frame.repaint();
+    JPanel target = (isP1 ? combPanel1 : combPanel2);
+    
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.gridy = 0; 
+    gbc.anchor = GridBagConstraints.NORTHWEST; 
+    gbc.insets = new Insets(5, 4, 5, 4); 
+    gbc.weighty = 1.0; 
+    gbc.weightx = 0.0; 
+
+    AttachButton scale = new AttachButton(cards, this, gameController, isP1, this.closureManager, this.potManager);
+
+    Component[] components = target.getComponents();
+    for (Component c : components) {
+        if (c instanceof Box.Filler) target.remove(c);
     }
+
+    target.add(scale, gbc);
+
+    GridBagConstraints glueGbc = new GridBagConstraints();
+    glueGbc.gridy = 0;
+    glueGbc.weightx = 1.0; 
+    glueGbc.fill = GridBagConstraints.HORIZONTAL;
+    target.add(Box.createHorizontalGlue(), glueGbc);
+    
+    frame.revalidate();
+    frame.repaint();
+}
 
     @Override public void switchHand(boolean isP1) { 
         deckPanel.removeAll();
