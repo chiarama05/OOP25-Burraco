@@ -1,14 +1,21 @@
 package core.combination;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 import model.card.*;
+
+import java.util.*;
 
 public class CombinationValidator {
 
     public static boolean isValidCombination(List<Card> cards) {
-        if (cards == null || cards.size() < 3) return false;
+        if (cards == null || cards.size() < 3) {
+            return false;
+        }
+
+        // --- 2. LOGICA SET (TRIS) ---
+        if (SetUtils.isValidSet(cards)) {
+            long wildcardsInSet = cards.stream().filter(c -> c.getValue().equalsIgnoreCase("Jolly") || (c.getValue().equals("2") && !SetUtils.isNaturalTwoInSet(c, cards))).count();
+            return wildcardsInSet <= 1;
+        }
 
         // --- 1. LOGICA SCALA (STRAIGHT) ---
         if (StraightUtils.isSameSeed(cards)) {
@@ -30,19 +37,12 @@ public class CombinationValidator {
             }
 
             // REGOLA BURRACO: Massimo 1 matta (Jolly o 2-matta)
-            if (effectiveWildcards > 1) return false;
+            if (effectiveWildcards > 1) {
+                return false;
+            }
 
             // Se il conteggio matte è OK, verifichiamo che la sequenza sia valida (no buchi non coperti)
             return StraightUtils.isValidStraight(cards);
-        }
-
-        // --- 2. LOGICA SET (TRIS) ---
-        if (SetUtils.isValidSet(cards)) {
-            long wildcardsInSet = cards.stream()
-                    .filter(c -> c.getValue().equalsIgnoreCase("Jolly") || 
-                                (c.getValue().equals("2") && !SetUtils.isNaturalTwoInSet(c, cards)))
-                    .count();
-            return wildcardsInSet <= 1;
         }
 
         return false;
@@ -50,7 +50,11 @@ public class CombinationValidator {
 
     // Fondamentale: controlla se il 2 si trova nel posto riservato al 2 naturale
     private static boolean isPositionallyNatural(int index, List<Card> ordered) {
-        if (index < 0 || index >= ordered.size()) return false;
+        
+        if (index < 0 || index >= ordered.size()){
+            return false;
+        } 
+        
         Card c = ordered.get(index);
         if (!c.getValue().equals("2")) return false;
 
