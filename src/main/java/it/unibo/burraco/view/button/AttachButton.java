@@ -72,6 +72,8 @@ public class AttachButton extends JButton {
         //verify that the combination is globally valid (it's block errors like differents seed's attach or to much wildcards on a scale)
         List<Card> hypotheticalResult = new ArrayList<>(this.cards);
         hypotheticalResult.addAll(selected);
+        hypotheticalResult = StraightUtils.orderStraight(hypotheticalResult);
+        
         if (!CombinationValidator.isValidCombination(hypotheticalResult)) {
             JOptionPane.showMessageDialog(this,"Invalid move: the resulting combination would not be valid!\n"+ "(wrong suit, too many wildcards, or broken sequence)","Move Not Allowed", JOptionPane.WARNING_MESSAGE);
             return;
