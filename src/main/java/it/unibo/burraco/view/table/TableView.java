@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.view.discard.DiscardViewImpl;
-import it.unibo.burraco.view.hand.handImpl;
+import it.unibo.burraco.view.hand.HandImpl;
 import java.util.List;
 
 public interface TableView {
@@ -13,7 +13,7 @@ public interface TableView {
     void refreshHandPanel(Player player);
     void refreshTurnLabel(boolean isPlayer1);
     void switchHand(boolean isPlayer1Turn);
-    handImpl getHandViewForPlayer(Player player);
+    HandImpl getHandViewForPlayer(Player player);
     
     
     void markPotTaken(boolean isPlayer1);

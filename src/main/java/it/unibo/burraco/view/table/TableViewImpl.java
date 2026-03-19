@@ -9,7 +9,7 @@ import it.unibo.burraco.view.button.*;
 import it.unibo.burraco.view.deck.DeckView;
 import it.unibo.burraco.view.discard.DiscardViewImpl;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
-import it.unibo.burraco.view.hand.handImpl;
+import it.unibo.burraco.view.hand.HandImpl;
 import it.unibo.burraco.view.notification.GameNotifier;
 import it.unibo.burraco.view.notification.GameNotifierImpl;
 import it.unibo.burraco.core.controller.GameController;
@@ -149,7 +149,7 @@ public class TableViewImpl implements TableView {
 
         deckPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE, 1), "Hand", 0, 0, new Font("Arial", Font.BOLD, 18), Color.BLACK));
 
-        handImpl hv = getHandViewForPlayer(p);
+        HandImpl hv = getHandViewForPlayer(p);
         hv.refreshHand(p.getHand());
 
         JScrollPane handScroll = new JScrollPane(hv);
@@ -204,7 +204,7 @@ public class TableViewImpl implements TableView {
     }
 
 
-    @Override public handImpl getHandViewForPlayer(Player p) { 
+    @Override public HandImpl getHandViewForPlayer(Player p) { 
         return (p == player1) ? initDist.getPlayer1HandView() : initDist.getPlayer2HandView(); 
     }
 

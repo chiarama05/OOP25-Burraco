@@ -8,12 +8,12 @@ import java.util.Set;
 import it.unibo.burraco.core.selectioncard.SelectionCardManager;
 
 
-public class handImpl extends JPanel implements hand {
+public class HandImpl extends JPanel implements Hand {
 
     private final SelectionCardManager selectionManager;
     private CardSelectionListener listener;
 
-    public handImpl(SelectionCardManager selectionManager) {
+    public HandImpl(SelectionCardManager selectionManager) {
     super(new FlowLayout(FlowLayout.LEFT, 5, 5));
     this.selectionManager = selectionManager;
     setBackground(new Color(180, 220, 180));

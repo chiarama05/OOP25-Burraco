@@ -6,7 +6,7 @@ import it.unibo.burraco.core.drawcard.DrawManager;
 import it.unibo.burraco.core.buttonLogic.DiscardController;
 import it.unibo.burraco.core.discardcard.DiscardResult;
 import it.unibo.burraco.view.discard.DiscardViewImpl;
-import it.unibo.burraco.view.hand.handImpl;
+import it.unibo.burraco.view.hand.HandImpl;
 import it.unibo.burraco.view.notification.GameNotifier;
 import it.unibo.burraco.view.table.TableView;
 import java.util.Set;
@@ -43,7 +43,7 @@ public class DiscardButton {
         }
 
         Player current = turnModel.getCurrentPlayer();
-        handImpl handView = view.getHandViewForPlayer(current);
+        HandImpl handView = view.getHandViewForPlayer(current);
         Set<Card> selected = handView.getSelectedCards();
 
         if (selected.size() != 1) {

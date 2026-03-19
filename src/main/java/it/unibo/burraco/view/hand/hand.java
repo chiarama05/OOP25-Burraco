@@ -4,7 +4,7 @@ import it.unibo.burraco.model.card.Card;
 import java.util.List;
 import java.util.Set;
 
-public interface hand { 
+public interface Hand { 
 
     void refreshHand(List<Card> hand);
 
