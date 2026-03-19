@@ -38,15 +38,5 @@ public class SetUtils {
         return newCard.getValue().equals(baseValue);
     }
 
-    public static boolean isNaturalTwoInSet(Card two, List<Card> cards) {
-    if (!two.getValue().equals("2")) return false;
 
-    // In un Tris, il 2 è naturale se ha lo stesso seme delle altre carte del tris
-    // (che per definizione devono avere tutte lo stesso valore, es. tutti 7)
-    return cards.stream()
-            .filter(c -> !c.getValue().equals("2") && !c.getValue().equalsIgnoreCase("Jolly"))
-            .findFirst()
-            .map(firstReal -> firstReal.getSeed().equals(two.getSeed()))
-            .orElse(false);
-}
 }
