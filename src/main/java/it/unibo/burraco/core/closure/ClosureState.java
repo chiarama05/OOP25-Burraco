@@ -33,5 +33,7 @@ public enum ClosureState {
     ZERO_CARDS_NO_BURRACO,
 
     //The player discarded their last card after taking the pot and completing at least one Burraco. The round is over.
-    ROUND_WON
+    ROUND_WON,
+
+    MUST_DISCARD_TO_CLOSE
 }

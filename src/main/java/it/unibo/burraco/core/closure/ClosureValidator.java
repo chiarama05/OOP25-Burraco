@@ -73,6 +73,12 @@ public class ClosureValidator {
         boolean hasBurraco= player.getBurracoCount()>= 1;
         boolean newIsBurraco = comboSize>= 7;
 
+
+        //the player must have at leat 1 card in his hand (to discard for the closure)
+        if(potTaken && handAfter == 0){
+            return true;
+        }
+
         // If the combination itself IS a burraco, the player will have a burraco
         // after this action — no stuck state possible.
         if (newIsBurraco || hasBurraco){
@@ -87,11 +93,6 @@ public class ClosureValidator {
         // No burraco, pot NOT taken yet, hand would be empty → will take pot, not stuck
         if (!potTaken && handAfter == 0){
             return false;
-        } 
-
-        // No burraco, pot already taken, hand would be empty → stuck (same as ZERO_CARDS_NO_BURRACO
-        if (potTaken && handAfter == 0){
-            return true;
         } 
 
         return false;
@@ -111,6 +112,13 @@ public class ClosureValidator {
         int comboSizeAfter= currentComboSize+cardsToAttach.size();
         boolean attachMakesBurraco= (currentComboSize< 7 && comboSizeAfter>= 7);
 
+
+        
+        // No burraco after attach, pot taken, 0 cards left → stuck.
+        if (potTaken && handAfter == 0){
+            return true;
+        }
+
         // If the player already has a burraco, or this attach creates one → it's safe.
         if (hasBurraco || attachMakesBurraco){
             return false;
@@ -120,11 +128,6 @@ public class ClosureValidator {
         if (potTaken && handAfter == 1){
             return true;
         } 
-
-        // No burraco after attach, pot taken, 0 cards left → stuck.
-        if (potTaken && handAfter == 0){
-             return true;
-        }
 
         return false;
     }

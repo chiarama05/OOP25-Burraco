@@ -18,4 +18,6 @@ public interface GameNotifier {
     
     void notifyMustFormBurracoBeforeClose();
 
+    void notifyMustDiscardToClose();
+
 }

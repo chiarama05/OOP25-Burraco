@@ -1,12 +1,10 @@
 package it.unibo.burraco.core.closure;
 
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.turn.Turn;
 import it.unibo.burraco.view.notification.GameNotifier;
 import it.unibo.burraco.view.table.TableView;
 import it.unibo.burraco.view.table.TableViewImpl;
-import it.unibo.burraco.view.score.ScoreView;
 import it.unibo.burraco.view.score.ScoreViewImpl;
 
 public class ClosureManager {
@@ -47,7 +45,9 @@ public class ClosureManager {
             // pot taken, hand empty, burraco present. The round ends immediately (player 
             // already discarded everything – the "close on play" scenario.
             case CAN_CLOSE:
-                triggerRoundEnd();
+                notifier.notifyMustDiscardToClose();
+                // ##
+                //triggerRoundEnd();
                 return true;
 
             default:
