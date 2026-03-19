@@ -54,4 +54,9 @@ public class GameNotifierImpl implements GameNotifier{
         JOptionPane.showMessageDialog(parent,"Your hand is empty but you don't have a Burraco yet!\n"+ "You must reach 7 cards in one of your combinations\n"+ "(by attaching) before you can close the round.","Burraco Required", JOptionPane.WARNING_MESSAGE);
     }
 
+    @Override
+    public void notifyMustDiscardToClose() {
+        JOptionPane.showMessageDialog(parent,"You have a Burraco and your hand is empty!\n"+ "Now discard your last card to close the round.","Discard to Close", JOptionPane.INFORMATION_MESSAGE);
+    }
+
 }

@@ -1,12 +1,10 @@
 package core.closure;
 
 import model.player.Player;
-import model.player.PlayerImpl;
 import model.turn.Turn;
 import view.notification.GameNotifier;
 import view.table.TableView;
 import view.table.TableViewImpl;
-import view.score.ScoreView;
 import view.score.ScoreViewImpl;
 
 public class ClosureManager {
@@ -47,7 +45,9 @@ public class ClosureManager {
             // pot taken, hand empty, burraco present. The round ends immediately (player 
             // already discarded everything – the "close on play" scenario.
             case CAN_CLOSE:
-                triggerRoundEnd();
+                notifier.notifyMustDiscardToClose();
+                // ##
+                //triggerRoundEnd();
                 return true;
 
             default:

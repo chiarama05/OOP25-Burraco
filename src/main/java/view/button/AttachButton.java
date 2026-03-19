@@ -117,6 +117,7 @@ public class AttachButton extends JButton {
             // Hand empty, pot taken, burraco present → round ends
             case CAN_CLOSE:
                 closureManager.handleStateAfterAction(currentPlayer);
+                tableView.refreshHandPanel(currentPlayer);
                 break;
 
             // Safety net (should be caught by preventive check above).

@@ -25,9 +25,7 @@ public class PotManager {
         p.drawPot(); 
         
         
-        String msg = isDiscard ? 
-            p.getName() + " You took the pot! You'll see the new cards next turn." : 
-            p.getName() + " You took the pot on fly! Keep playing.";
+        String msg = isDiscard ? p.getName() + " You took the pot! You'll see the new cards next turn." : p.getName() + " You took the pot on fly! Keep playing.";
         
         JOptionPane.showMessageDialog(null, msg, "Pot", JOptionPane.INFORMATION_MESSAGE);
         

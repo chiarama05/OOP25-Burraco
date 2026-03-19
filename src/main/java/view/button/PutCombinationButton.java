@@ -89,6 +89,7 @@ public class PutCombinationButton {
         // Hand is empty, pot already taken, burraco present → round ends.
         if (state == ClosureState.CAN_CLOSE) {
             closureManager.handleStateAfterAction(current);
+            tableView.refreshHandPanel(current);
             return;
         }
 
