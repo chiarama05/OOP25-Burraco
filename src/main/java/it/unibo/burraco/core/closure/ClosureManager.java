@@ -28,6 +28,7 @@ public class ClosureManager {
         ClosureState state = ClosureValidator.evaluate(player);
 
         switch (state) {
+            //everything is good
             case OK:
                 return false;
 
