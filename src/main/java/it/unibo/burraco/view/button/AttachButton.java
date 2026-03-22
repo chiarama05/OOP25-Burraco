@@ -140,58 +140,11 @@ public class AttachButton extends JButton {
                 tableView.refreshHandPanel(currentPlayer);
                 break;
         }
-        
-
-
-
-        // ## version 3 
-        /*// Hand empty + pot taken + burraco → round ends immediately
-        if (state == ClosureState.CAN_CLOSE) {
-            closureManager.handleStateAfterAction(currentPlayer);
-            return;
-        }
-
-
-        // Hand empty + pot taken + NO burraco yet.
-        if (state == ClosureState.ZERO_CARDS_NO_BURRACO) {
-            closureManager.handleStateAfterAction(currentPlayer);
-            tableView.refreshHandPanel(currentPlayer);
-            return;
-        }
-
-        // Normal case (OK) or any other state: just refresh.
-        tableView.refreshHandPanel(currentPlayer);*/
-        
-        
-    
-        // ##
-        /*if (success) {
-            
-            if (sizeBefore < 7 && this.cards.size() >= 7) {
-                gameController.getSoundController().playBurracoSound();
-            }
-            
-            updateVisuals(); 
-            tableView.getHandViewForPlayer(currentPlayer).clearSelection();
-
-            //normale case: when player still has cards 
-            boolean blocking = closureManager.handleStateAfterAction(currentPlayer);
-
-            if(!blocking){
-                tableView.refreshHandPanel(currentPlayer);
-            } 
-        } 
-        else {
-            JOptionPane.showMessageDialog(this, "These cards cannot be attached!");
-        }*/
     }
 
 
     public void updateVisuals() {
         this.removeAll();
-        
-        // DEBUG: what arrives to this method
-        System.out.println("DEBUG - CARTE RICEVUTE: " + cards);
 
         if (StraightUtils.isSameSeed(cards)) {
             List<Card> ordered = StraightUtils.orderStraight(new ArrayList<>(cards));
@@ -199,14 +152,12 @@ public class AttachButton extends JButton {
             
             cards.clear();
             cards.addAll(ordered);
-            
-            System.out.println("DEBUG - ORDINAMENTO SCALA: " + cards);
+
         }
         else {
             //if it enters here the program thinks that it is a set and 2 will be the last one
             cards.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
-            
-            System.out.println("DEBUG - ORDINAMENTO SET (IL 2 SCIVOLA): " + cards);
+
         }
 
         // 2. Eastethic Seteup (border and background)
@@ -220,18 +171,6 @@ public class AttachButton extends JButton {
 
         this.revalidate();
         this.repaint();
-
-        // ## 
-        /*BorderFactory.createEmptyBorder(10, 5, 10, 5);
-        this.setBackground(BurracoStyleManager.getBurracoBackground(cards));
-
-        // 3. Creation of graphic labels
-        for (Card c : cards) {
-            renderCardLabel(c);
-        }
-
-        this.revalidate();
-        this.repaint(); */
     }
 
     private void renderCardLabel(Card c) {
