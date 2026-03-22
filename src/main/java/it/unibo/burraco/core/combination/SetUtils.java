@@ -7,20 +7,19 @@ import java.util.stream.Collectors;
 public class SetUtils {
 
     public static boolean isValidSet(List<Card> cards) {
+    List<Card> naturalCards = cards.stream()
+            .filter(c -> !c.getValue().equalsIgnoreCase("Jolly") && !c.getValue().equals("2"))
+            .collect(Collectors.toList());
 
-        List<Card> real = cards.stream().filter(c -> !CombinationValidator.isWildcard(c, cards)).collect(Collectors.toList());
-
-        if (real.isEmpty()){
-            return false;
-        } 
-        String value = real.get(0).getValue();
-        for (Card c : real) {
-            if (!c.getValue().equals(value)){
-                return false;
-            } 
-        }
-        return true;
+    if (naturalCards.isEmpty()) {
+        return false; 
     }
+
+    String baseValue = naturalCards.get(0).getValue();
+
+    return naturalCards.stream().allMatch(c -> c.getValue().equals(baseValue));
+    }
+
 
     public static boolean canAttachCard(List<Card> set, Card newCard) {
 
