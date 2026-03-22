@@ -233,13 +233,14 @@ private static boolean isSameSeedAsRest(Card two, List<Card> cards) {
 
 
     private static boolean decideIfAceIsLow(List<Card> real, int wildCount) {
-    boolean hasLow = real.stream().anyMatch(c -> c.getNumericalValue() >= 2 && c.getNumericalValue() <= 5);
-    boolean hasHigh = real.stream().anyMatch(c -> c.getNumericalValue() >= 11 && c.getNumericalValue() <= 13);
-    
-    if (hasLow) return true;  
-    if (hasHigh) return false; 
-    return true;
+        List<Integer> lowVals = real.stream().map(c -> mapValue(c, true)).sorted().collect(Collectors.toList());
+        if (canBeSequential(lowVals, wildCount)) {
+            if (real.stream().anyMatch(c -> c.getValue().equals("K"))) return false;
+            return true;
+        }
+        return false;
     }
+
 
     public static boolean isPositionallyNatural(int index, List<Card> ordered) {
     if (index < 0 || index >= ordered.size()) {
