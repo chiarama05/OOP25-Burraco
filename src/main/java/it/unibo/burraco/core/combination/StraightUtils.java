@@ -159,108 +159,122 @@ private static boolean isSameSeedAsRest(Card two, List<Card> cards) {
      * @return true if the values can form a sequence, false otherwise
      */
     private static boolean canBeSequential(List<Integer> values, long wildcards) {
-        if (values.size() < 2) {
-            return true;
-        }
-        
-        // Check for duplicates
-        Set<Integer> set = new HashSet<>(values);
-        if (set.size() != values.size()) {
-            return false; // duplicates make a sequence invalid
-        }
+        if (values.size() < 2) return true;
+    
 
-        int usedWildcards = 0;
+    Set<Integer> set = new HashSet<>(values);
+    if (set.size() != values.size()) return false;
 
-        for (int i = 0; i < values.size() - 1; i++) {
-            int gap = values.get(i + 1) - values.get(i) - 1;
-            if (gap < 0) {
-                return false;
-            }
-            usedWildcards += gap;
-            if (usedWildcards > wildcards) {
-                return false;
-            }
-        }
-        
-        return true;
+    int totalGap = 0;
+    for (int i = 0; i < values.size() - 1; i++) {
+        int gap = values.get(i + 1) - values.get(i) - 1;
+        if (gap < 0) return false;
+        totalGap += gap;
+    }
+    return totalGap <= wildcards;
     }
 
     public static List<Card> orderStraight(List<Card> sequence) {
-        if (sequence == null || sequence.isEmpty()) {
-            return new ArrayList<>();
-        }
+        if (sequence == null || sequence.isEmpty()) return new ArrayList<>();
 
-        // 1. IDENTIFICAZIONE DEL SEME DELLA SCALA
-        String suit = sequence.stream()
-                .filter(c -> !c.getValue().equalsIgnoreCase("Jolly") && !c.getValue().equals("2"))
-                .map(Card::getSeed).findFirst().orElse("");
 
-        // 2. SEPARAZIONE: Carte Reali vs Potenziali Matte (2 e Jolly)
-        List<Card> realCards = new ArrayList<>();
-        List<Card> availableWilds = new ArrayList<>(); // Qui mettiamo sia i Jolly che i 2
+        List<Card> wilds = new ArrayList<>();
+        List<Card> real = new ArrayList<>();
 
         for (Card c : sequence) {
-            if (c.getValue().equalsIgnoreCase("Jolly") || c.getValue().equals("2")) {
-                availableWilds.add(c);
-            } else {
-                realCards.add(c);
+            if (c.getValue().equalsIgnoreCase("Jolly")) {
+                wilds.add(c);
+                } else if (c.getValue().equals("2")) {
+                    if (isNaturalTwo(c, sequence)) {
+                        real.add(c);
+                    } else {
+                    wilds.add(c);
+                    }
+                } else {
+                real.add(c);
             }
         }
 
-        if (realCards.isEmpty()){
-            return new ArrayList<>(sequence);
-        } 
+            if (real.isEmpty()) return new ArrayList<>(sequence);
 
-        // 3. ORDINAMENTO CARTE REALI (per trovare i buchi)
-        boolean useAceLow = decideIfAceIsLow(realCards, availableWilds.size());
-        realCards.sort(Comparator.comparingInt(c -> mapValue(c, useAceLow)));
 
-        List<Card> result = new ArrayList<>();
-        
-        // 4. COSTRUZIONE E RIEMPIMENTO BUCHI (GAP FILLING)
-        // Questo passaggio "obbliga" il 2 a stare in mezzo se manca una carta
-        for (int i = 0; i < realCards.size(); i++) {
-            result.add(realCards.get(i));
-            
-            if (i < realCards.size() - 1) {
-                int v1 = mapValue(realCards.get(i), useAceLow);
-                int v2 = mapValue(realCards.get(i + 1), useAceLow);
-                int gap = v2 - v1 - 1;
+            boolean aceLow = decideIfAceIsLow(real, wilds.size());
+            real.sort(Comparator.comparingInt(c -> mapValue(c, aceLow)));
 
-                while (gap > 0 && !availableWilds.isEmpty()) {
-                    // Usiamo una matta (o un 2) per tappare il buco
-                    result.add(availableWilds.remove(0));
-                    gap--;
+            List<Card> result = new ArrayList<>();
+    
+    
+            for (int i = 0; i < real.size(); i++) {
+                result.add(real.get(i));
+                if (i < real.size() - 1) {
+                    int gap = mapValue(real.get(i + 1), aceLow) - mapValue(real.get(i), aceLow) - 1;
+                    while (gap > 0 && !wilds.isEmpty()) {
+                        result.add(wilds.remove(0));
+                        gap--;
+                    }
                 }
             }
-        }
 
-        // 5. GESTIONE MATTE RIMANENTI (AI BORDI)
-        // Se avanzano dei 2 o Jolly, ora possono andare ai bordi
-        while (!availableWilds.isEmpty()) {
-            Card w = availableWilds.remove(0);
-            int firstVal = mapValue(result.get(0), useAceLow);
-            
-            // Se c'è spazio "sotto" (es. la scala parte dal 3), mettiamolo lì
-            if (firstVal > 1) {
-                result.add(0, w);
-            } else {
-                // Altrimenti in coda (sopra il Re o l'Asso alto)
-                result.add(w);
+             while (!wilds.isEmpty()) {
+                 Card w = wilds.remove(0);
+                int lastVal = mapValue(result.get(result.size() - 1), aceLow);
+                int firstVal = mapValue(result.get(0), aceLow);
+
+                if (lastVal < 14) { 
+                    result.add(w); 
+                     } else if (firstVal > 1) {
+                    result.add(0, w); 
+                    } else {
+                    result.add(w);
+                }
             }
+             return result;
         }
 
-        return result;
+
+    private static boolean decideIfAceIsLow(List<Card> real, int wildCount) {
+    boolean hasLow = real.stream().anyMatch(c -> c.getNumericalValue() >= 2 && c.getNumericalValue() <= 5);
+    boolean hasHigh = real.stream().anyMatch(c -> c.getNumericalValue() >= 11 && c.getNumericalValue() <= 13);
+    
+    if (hasLow) return true;  
+    if (hasHigh) return false; 
+    return true;
     }
 
-// Metodo di supporto per decidere l'Asso
-private static boolean decideIfAceIsLow(List<Card> real, int wildCount) {
-    List<Integer> lowVals = real.stream().map(c -> mapValue(c, true)).sorted().collect(Collectors.toList());
-    if (canBeSequential(lowVals, wildCount)) {
-       
-        if (real.stream().anyMatch(c -> c.getValue().equals("K"))) return false;
-        return true;
+    public static boolean isPositionallyNatural(int index, List<Card> ordered) {
+    if (index < 0 || index >= ordered.size()) {
+        return false;
     }
+
+    Card c = ordered.get(index);
+    if (!c.getValue().equals("2")) return false;
+
+    // Un 2 è naturale se:
+    // 1. È seguito da un 3 dello stesso seme: [2, 3, ...]
+    if (index < ordered.size() - 1) {
+        Card next = ordered.get(index + 1);
+        if (next.getValue().equals("3") && next.getSeed().equals(c.getSeed())) {
+            return true;
+        }
+    }
+
+    // 2. È preceduto da un Asso e seguito da un 3: [A, 2, 3]
+    if (index > 0 && index < ordered.size() - 1) {
+        Card prev = ordered.get(index - 1);
+        Card next = ordered.get(index + 1);
+        if (prev.getValue().equals("A") && next.getValue().equals("3") && prev.getSeed().equals(c.getSeed())) {
+            return true;
+        }
+    }
+    
+    // 3. È preceduto da un Asso (Asso basso): [A, 2, ...]
+    if (index > 0) {
+        Card prev = ordered.get(index - 1);
+        if (prev.getValue().equals("A") && prev.getSeed().equals(c.getSeed())) {
+            return true;
+        }
+    }
+
     return false;
 }
 }
