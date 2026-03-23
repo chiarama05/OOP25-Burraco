@@ -21,7 +21,7 @@ public class DeckView extends JPanel {
 
         deckButton.setFocusPainted(false);
         
-        // Bordo per dare profondità (effetto pila)
+       
         deckButton.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(Color.GRAY, 1),
             BorderFactory.createMatteBorder(0, 0, 4, 4, Color.BLACK)

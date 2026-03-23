@@ -21,7 +21,7 @@ public class ControlPanelView extends JPanel {
         Color pinkUp = new Color(255, 245, 250); 
         Color pinkDown = new Color(255, 220, 235);
 
-        // Il tuo ciclo for identico
+    
         for (JButton b : new JButton[]{takeDiscardBtn, putComboBtn, discardBtn}) {
             b.setAlignmentX(Component.CENTER_ALIGNMENT);
             b.setFont(new Font("Arial", Font.BOLD, 14));

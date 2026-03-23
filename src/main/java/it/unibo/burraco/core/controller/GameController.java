@@ -5,6 +5,8 @@ import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.core.SoundController;
 import it.unibo.burraco.core.buttonLogic.AttachController;
 import it.unibo.burraco.core.buttonLogic.PutCombinationController;
+import it.unibo.burraco.core.distributioncard.DistributionManagerImpl;
+import it.unibo.burraco.core.distributioncard.InitialDistributionController;
 import it.unibo.burraco.core.selectioncard.SelectionCardManager;
 import it.unibo.burraco.model.deck.DeckImpl;
 import it.unibo.burraco.model.discard.DiscardPile;
@@ -24,6 +26,7 @@ public class GameController {
     private final it.unibo.burraco.core.drawcard.DrawManager drawManager = new it.unibo.burraco.core.drawcard.DrawManager();
     private final AttachController attachController;
     private final PutCombinationController combinationController;
+    private final InitialDistributionController distributionController;
 
 
     public GameController(PlayerImpl p1, PlayerImpl p2, Turn turnModel, SoundController sc) {
@@ -35,10 +38,12 @@ public class GameController {
         this.attachController = new AttachController();
         this.soundController = sc;
         this.combinationController = new PutCombinationController();
+        this.distributionController = new InitialDistributionController(new DistributionManagerImpl());
+}
 
-    }
-
-
+public InitialDistributionController getDistributionController() {
+    return distributionController;
+}
     public boolean isPlayer1(Player p) {
         return p == player1;
     }

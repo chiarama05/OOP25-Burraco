@@ -4,10 +4,12 @@ import javax.swing.SwingUtilities;
 
 import it.unibo.burraco.core.controller.GameController;
 import it.unibo.burraco.core.distributioncard.DistributionManagerImpl;
+import it.unibo.burraco.core.distributioncard.InitialDistributionController;
 import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
 import it.unibo.burraco.view.table.TableView;
 import java.awt.Window;
+
 
 public class RoundControllerImpl implements RoundController{
 
@@ -16,6 +18,8 @@ public class RoundControllerImpl implements RoundController{
     private final PlayerImpl player1;
     private final PlayerImpl player2;
     private final GameController gameController;
+    private final InitialDistributionController distributionController;
+
 
     public RoundControllerImpl(TableView tableView, ResetManager resetManager, 
                                PlayerImpl p1, PlayerImpl p2, GameController gameController) {
@@ -24,6 +28,7 @@ public class RoundControllerImpl implements RoundController{
         this.player1 = p1;
         this.player2 = p2;
         this.gameController = gameController;
+        this.distributionController = new InitialDistributionController(new DistributionManagerImpl());
     }
 
     @Override
@@ -38,10 +43,18 @@ public class RoundControllerImpl implements RoundController{
         if (tableView instanceof it.unibo.burraco.view.table.TableViewImpl tvImpl) {
             InitialDistributionView currentDist = tvImpl.getInitDist();
 
-            currentDist.distribute(
-                player1, player2, new DistributionManagerImpl(), 
-                gameController.getCommonDeck(), tvImpl.getDiscardView(), gameController.getDiscardPile()
-            );
+            distributionController.distribute(
+    player1, player2,
+    gameController.getCommonDeck(),
+    gameController.getDiscardPile()
+);
+
+// 2. View si aggiorna
+currentDist.refresh(
+    player1, player2,
+    tvImpl.getDiscardView(),
+    gameController.getDiscardPile()
+);
             
            
             gameController.getDrawManager().resetTurn();

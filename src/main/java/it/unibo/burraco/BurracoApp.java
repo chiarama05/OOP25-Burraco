@@ -10,6 +10,8 @@ import it.unibo.burraco.view.start.SetUpMenuViewImpl;
 import it.unibo.burraco.view.start.StartMenuView;
 import it.unibo.burraco.view.start.StartMenuViewImpl;
 import it.unibo.burraco.view.table.TableViewImpl;
+import it.unibo.burraco.core.distributioncard.InitialDistributionController;
+
 
 public class BurracoApp {
     public static void main(final String[] args) {
@@ -34,21 +36,19 @@ public class BurracoApp {
                 it.unibo.burraco.core.SoundController sound = new it.unibo.burraco.view.sound.SoundControllerImpl();
                 
                 TableViewImpl view = new TableViewImpl(p1, p2, nameP1, nameP2, sound);
-
                 view.setTargetScore(scoreThreshold);
                 view.wireControllers(turnManager);
                 
                 
-                GameController gc = view.getGameController(); 
-                view.getInitDist().distribute(
-                    p1, p2, 
-                    new DistributionManagerImpl(), 
-                    gc.getCommonDeck(), 
-                    view.getDiscardView(), 
-                    gc.getDiscardPile()
-                );
+            GameController gc = view.getGameController(); 
 
-                view.refreshHandPanel(p1);
+            InitialDistributionController distController = new InitialDistributionController(new DistributionManagerImpl());
+            distController.distribute(p1, p2, gc.getCommonDeck(), gc.getDiscardPile());
+
+            view.getInitDist().refresh(p1, p2, view.getDiscardView(), gc.getDiscardPile());
+
+            view.refreshHandPanel(p1);
+               
             }
 
             @Override
