@@ -48,8 +48,6 @@ public class AttachButton extends JButton {
     }
 
     private void handleAttachAction() {
-
-       
         if (!gameController.getDrawManager().hasDrawn()) {
             JOptionPane.showMessageDialog(this, "You have to draw first!");
             return;
@@ -74,19 +72,15 @@ public class AttachButton extends JButton {
         hypotheticalResult.addAll(selected);
 
         if (StraightUtils.isSameSeed(this.cards)) {
-   
-        hypotheticalResult = StraightUtils.orderStraight(hypotheticalResult);
+            hypotheticalResult = StraightUtils.orderStraight(hypotheticalResult);
         } else {
-        hypotheticalResult.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
+            hypotheticalResult.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
         }
-
-        System.out.println("DEBUG - Validating Hypothetical: " + hypotheticalResult);
         
         if (!CombinationValidator.isValidCombination(hypotheticalResult)) {
             JOptionPane.showMessageDialog(this,"Invalid move: the resulting combination would not be valid!\n"+ "(wrong suit, too many wildcards, or broken sequence)","Move Not Allowed", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
 
         //Simulate the attach outcome before touching the model.
         if (ClosureValidator.wouldGetStuckAfterAttach(currentPlayer, selected, this.cards.size())) {
@@ -94,11 +88,8 @@ public class AttachButton extends JButton {
             return;
         }
 
-
-
         int sizeBefore = this.cards.size();
         boolean success = attachHandler.executeAttach(currentPlayer, selected, this.cards);
-
 
         if (!success) {
             JOptionPane.showMessageDialog(this, "These cards cannot be attached!");
