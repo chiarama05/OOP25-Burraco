@@ -26,12 +26,6 @@ public interface Player {
 
     boolean hasCard(Card card);
 
-    /**
-     * Checks if the player has no cards left in hand.
-    
-    boolean emptyHand();
-    */
-
      /**
      * Returns whether the player is currently playing from the "pot".
      */

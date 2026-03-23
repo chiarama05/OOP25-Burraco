@@ -6,9 +6,6 @@ import it.unibo.burraco.model.card.Card;
 
 public class PlayerImpl implements Player{
 
-    //public static final String DEFAULT1="Player 1";
-    //public static final String DEFAULT2="Player 2";
-
     /** The cards currently in the player's hand */
     private List<Card> hand = new ArrayList<>();
     private List<Card> pot = new ArrayList<>();
@@ -79,14 +76,6 @@ public class PlayerImpl implements Player{
         removeCardHand(c); // usa il metodo già presente
     }
 }
-
-    /**
-     * Checks if the player's hand is empty.
-     */
-   /* @Override
-    public boolean emptyHand() {
-        return hand.isEmpty();
-    }*/
 
     /**
      * Checks if the player is currently in the pot.
