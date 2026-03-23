@@ -6,58 +6,77 @@ import java.util.*;
 
 public class CombinationValidator {
 
-    public static boolean isValidCombination(List<Card> cards) {
-        if (cards == null || cards.size() < 3) {
-            return false;
-        }
+public static boolean isValidCombination(List<Card> cards) {
+    if (cards == null || cards.size() < 3) return false;
 
+
+    List<Card> realCards = cards.stream()
+        .filter(c -> !c.getValue().equalsIgnoreCase("Jolly") && !c.getValue().equals("2"))
+        .collect(java.util.stream.Collectors.toList());
+
+    boolean hasDuplicateValues = realCards.stream()
+        .map(Card::getValue)
+        .collect(java.util.stream.Collectors.toSet()).size() < realCards.size();
+
+    if (hasDuplicateValues) {
         if (SetUtils.isValidSet(cards)) {
-        long wildcardsInSet = cards.stream()
+            long wildcardsInSet = cards.stream()
                 .filter(c -> c.getValue().equalsIgnoreCase("Jolly") || c.getValue().equals("2"))
                 .count();
-        
-        return wildcardsInSet <= 1;
+            return wildcardsInSet <= 1;
         }
+        return false;
+    }
 
 
-        if (StraightUtils.isSameSeed(cards)) {
+    if (StraightUtils.isSameSeed(cards)) {
         List<Card> ordered = StraightUtils.orderStraight(new ArrayList<>(cards));
-        
         int effectiveWildcards = 0;
         for (int i = 0; i < ordered.size(); i++) {
             Card c = ordered.get(i);
             if (c.getValue().equalsIgnoreCase("Jolly")) {
                 effectiveWildcards++;
             } else if (c.getValue().equals("2")) {
-                
                 if (!StraightUtils.isPositionallyNatural(i, ordered)) {
-                    effectiveWildcards++;}
+                    effectiveWildcards++;
                 }
             }
-            if (effectiveWildcards > 1) {
-             return false;
-            }
-
-          
-            return StraightUtils.isValidStraight(cards);
         }
-
-        return false;
+        if (effectiveWildcards > 1) return false;
+        return StraightUtils.isValidStraight(cards);
     }
 
-    public static boolean isWildcard(Card c, List<Card> context) {
-        if (c.getValue().equalsIgnoreCase("Jolly")) return true;
-        if (!c.getValue().equals("2")) return false;
+ 
+    if (SetUtils.isValidSet(cards)) {
+        long wildcardsInSet = cards.stream()
+            .filter(c -> c.getValue().equalsIgnoreCase("Jolly") || c.getValue().equals("2"))
+            .count();
+        return wildcardsInSet <= 1;
+    }
 
-        if (c instanceof CardImpl && ((CardImpl) c).isUsedAsWildcard()) return true;
+    return false;
+}
 
-        if (StraightUtils.isSameSeed(context)) {
-        List<Card> ordered = StraightUtils.orderStraight(new ArrayList<>(context));
-        int index = ordered.indexOf(c);
-        return !StraightUtils.isPositionallyNatural(index, ordered);
-    } 
+public static boolean isWildcard(Card c, List<Card> context) {
+    if (c.getValue().equalsIgnoreCase("Jolly")) return true;
+    if (!c.getValue().equals("2")) return false;
+    if (c instanceof CardImpl && ((CardImpl) c).isUsedAsWildcard()) return true;
+
     
-    return true;
-    }
+    List<Card> realCards = context.stream()
+        .filter(r -> !r.getValue().equalsIgnoreCase("Jolly") && !r.getValue().equals("2"))
+        .collect(java.util.stream.Collectors.toList());
+
+    boolean hasDuplicateValues = realCards.stream()
+        .map(Card::getValue)
+        .collect(java.util.stream.Collectors.toSet()).size() < realCards.size();
+
+   
+    if (hasDuplicateValues || !StraightUtils.isSameSeed(context)) return true;
+
+    List<Card> ordered = StraightUtils.orderStraight(new ArrayList<>(context));
+    int index = ordered.indexOf(c);
+    return !StraightUtils.isPositionallyNatural(index, ordered);
+}
 
 }

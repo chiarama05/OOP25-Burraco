@@ -15,12 +15,24 @@ public class AttachUtils {
     public static boolean canAttach(List<Card> combination, Card newCard) {
     if (combination == null || combination.isEmpty()) return false;
 
-    if (SetUtils.isValidSet(combination)) {
+    List<Card> realCards = combination.stream()
+        .filter(c -> !c.getValue().equalsIgnoreCase("Jolly") && !c.getValue().equals("2"))
+        .collect(java.util.stream.Collectors.toList());
+
+    boolean hasDuplicateValues = realCards.stream()
+        .map(Card::getValue)
+        .collect(java.util.stream.Collectors.toSet()).size() < realCards.size();
+
+    if (hasDuplicateValues) {
         return SetAttachUtils.canAttachToSet(combination, newCard);
     }
 
     if (StraightUtils.isSameSeed(combination)) {
         return StraightAttachUtils.canAttachToStraight(combination, newCard);
+    }
+
+    if (SetUtils.isValidSet(combination)) {
+        return SetAttachUtils.canAttachToSet(combination, newCard);
     }
 
     return false;

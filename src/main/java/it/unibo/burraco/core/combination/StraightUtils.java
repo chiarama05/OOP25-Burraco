@@ -48,20 +48,12 @@ public class StraightUtils {
         return false;
     }
 
-    
-    // ##
-    /*if(!isSameSeed(cards)){
-        return false;
-    }*/
 
-    // --- TENTATIVO 1: Considera i 2 come potenziali carte naturali ---
-    // (Un 2 è naturale solo se è dello stesso seme delle altre e c'è un A o un 3)
     if (checkLogic(cards, false)){
         return true;
     } 
 
-    // --- TENTATIVO 2: Considera i 2 (anche dello stesso seme) come MATTE ---
-    // Questo risolve il caso 3-2-5 dove il 2 deve "fare il 4"
+
     if (checkLogic(cards, true)){
         return true;
     } 
@@ -73,26 +65,21 @@ private static boolean checkLogic(List<Card> cards, boolean forceTwosAsWildcards
     List<Card> real = new ArrayList<>();
     int wildcards = 0;
 
-    for (Card c : cards) {
-        if (c.getValue().equals("Jolly")) {
-            wildcards++;
-        } 
-        else if (c.getValue().equals("2")) {
-            // Se forziamo i 2 come matte O se il 2 è di seme diverso, è una matta
-            if (forceTwosAsWildcards || !isSameSeedAsRest(c, cards)) {
-                wildcards++;
-            } 
-            else {
-                // Altrimenti lo trattiamo come naturale (valore 2)
-                real.add(c);
-            }
-        } 
-        else {
+boolean naturalTwoUsed = false;
+for (Card c : cards) {
+    if (c.getValue().equals("Jolly")) {
+        wildcards++;
+    } else if (c.getValue().equals("2")) {
+        if (!forceTwosAsWildcards && !naturalTwoUsed && isSameSeedAsRest(c, cards)) {
             real.add(c);
+            naturalTwoUsed = true;
+        } else {
+            wildcards++;
         }
+    } else {
+        real.add(c);
     }
-
-    // Regola del Burraco/Scala: massimo 1 matta (Jolly o un 2 usato come matta)
+}
     if (wildcards > 1) {
         return false;
     }
@@ -101,7 +88,7 @@ private static boolean checkLogic(List<Card> cards, boolean forceTwosAsWildcards
         return false;
     }
 
-    // ##
+
     String referenceSuit = real.get(0).getSeed();
     for (Card c : real) {
         if (!c.getSeed().equals(referenceSuit)) {
@@ -109,7 +96,7 @@ private static boolean checkLogic(List<Card> cards, boolean forceTwosAsWildcards
         }
     }
 
-    // Test con Asso basso (1) e Asso alto (14)
+    
     List<Integer> aceLow = real.stream().map(c -> mapValue(c, true)).sorted().collect(Collectors.toList());
     List<Integer> aceHigh = real.stream().map(c -> mapValue(c, false)).sorted().collect(Collectors.toList());
 
@@ -191,20 +178,21 @@ private static List<Card> buildOrdering(List<Card> sequence, boolean forceTwosAs
     List<Card> wilds = new ArrayList<>();
     List<Card> real  = new ArrayList<>();
 
-    for (Card c : sequence) {
-        if (c.getValue().equalsIgnoreCase("Jolly")) {
-            wilds.add(c);
-        } else if (c.getValue().equals("2")) {
-            if (forceTwosAsWild || !isSameSeedAsRest(c, sequence)) {
-                wilds.add(c);
-            } else {
-                real.add(c);
-            }
-        } else {
+boolean naturalTwoUsed = false;
+for (Card c : sequence) {
+    if (c.getValue().equalsIgnoreCase("Jolly")) {
+        wilds.add(c);
+    } else if (c.getValue().equals("2")) {
+        if (!forceTwosAsWild && !naturalTwoUsed && isSameSeedAsRest(c, sequence)) {
             real.add(c);
+            naturalTwoUsed = true;
+        } else {
+            wilds.add(c);
         }
+    } else {
+        real.add(c);
     }
-
+}
     if (wilds.size() > 1 || real.isEmpty()) return null;
 
     String suit = real.get(0).getSeed();
