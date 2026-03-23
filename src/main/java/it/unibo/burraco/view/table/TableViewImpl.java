@@ -217,7 +217,13 @@ public class TableViewImpl implements TableView {
     }
 
     @Override public void startNewRound() { 
-        combPanel1.removeAll(); combPanel2.removeAll(); discardPanel.removeAll(); frame.repaint(); 
+        combPanel1.removeAll(); 
+        combPanel2.removeAll(); 
+        discardPanel.removeAll(); 
+        ((javax.swing.border.TitledBorder) combPanel1.getBorder()).setTitle(nameP1);
+        ((javax.swing.border.TitledBorder) combPanel2.getBorder()).setTitle(nameP2);
+        frame.revalidate();
+        frame.repaint(); 
     }
 
     public DrawManager getDrawManager() {
