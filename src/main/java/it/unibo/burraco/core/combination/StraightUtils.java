@@ -174,62 +174,77 @@ private static boolean isSameSeedAsRest(Card two, List<Card> cards) {
     return totalGap <= wildcards;
     }
 
-    public static List<Card> orderStraight(List<Card> sequence) {
-        if (sequence == null || sequence.isEmpty()) return new ArrayList<>();
+ public static List<Card> orderStraight(List<Card> sequence) {
+    if (sequence == null || sequence.isEmpty()) return new ArrayList<>();
+
+    List<Card> attempt = buildOrdering(sequence, false);
+    if (attempt != null) return attempt;
+
+    attempt = buildOrdering(sequence, true);
+    if (attempt != null) return attempt;
+
+    return new ArrayList<>(sequence);
+}
 
 
-        List<Card> wilds = new ArrayList<>();
-        List<Card> real = new ArrayList<>();
+private static List<Card> buildOrdering(List<Card> sequence, boolean forceTwosAsWild) {
+    List<Card> wilds = new ArrayList<>();
+    List<Card> real  = new ArrayList<>();
 
-        for (Card c : sequence) {
-            if (c.getValue().equalsIgnoreCase("Jolly")) {
+    for (Card c : sequence) {
+        if (c.getValue().equalsIgnoreCase("Jolly")) {
+            wilds.add(c);
+        } else if (c.getValue().equals("2")) {
+            if (forceTwosAsWild || !isSameSeedAsRest(c, sequence)) {
                 wilds.add(c);
-                } else if (c.getValue().equals("2")) {
-                    if (isNaturalTwo(c, sequence)) {
-                        real.add(c);
-                    } else {
-                    wilds.add(c);
-                    }
-                } else {
+            } else {
                 real.add(c);
             }
+        } else {
+            real.add(c);
         }
+    }
 
-            if (real.isEmpty()) return new ArrayList<>(sequence);
+    if (wilds.size() > 1 || real.isEmpty()) return null;
+
+    String suit = real.get(0).getSeed();
+    if (!real.stream().allMatch(c -> c.getSeed().equals(suit))) return null;
+
+    boolean aceLow = decideIfAceIsLow(real, wilds.size());
+    real.sort(Comparator.comparingInt(c -> mapValue(c, aceLow)));
 
 
-            boolean aceLow = decideIfAceIsLow(real, wilds.size());
-            real.sort(Comparator.comparingInt(c -> mapValue(c, aceLow)));
+    int totalGap = 0;
+    for (int i = 0; i < real.size() - 1; i++) {
+        int gap = mapValue(real.get(i + 1), aceLow) - mapValue(real.get(i), aceLow) - 1;
+        if (gap < 0) return null;
+        totalGap += gap;
+    }
+    if (totalGap > wilds.size()) return null;
 
-            List<Card> result = new ArrayList<>();
-    
-    
-            for (int i = 0; i < real.size(); i++) {
-                result.add(real.get(i));
-                if (i < real.size() - 1) {
-                    int gap = mapValue(real.get(i + 1), aceLow) - mapValue(real.get(i), aceLow) - 1;
-                    while (gap > 0 && !wilds.isEmpty()) {
-                        result.add(wilds.remove(0));
-                        gap--;
-                    }
-                }
+  
+    List<Card> wildsCopy = new ArrayList<>(wilds);
+    List<Card> result = new ArrayList<>();
+    for (int i = 0; i < real.size(); i++) {
+        result.add(real.get(i));
+        if (i < real.size() - 1) {
+            int gap = mapValue(real.get(i + 1), aceLow) - mapValue(real.get(i), aceLow) - 1;
+            while (gap > 0 && !wildsCopy.isEmpty()) {
+                result.add(wildsCopy.remove(0));
+                gap--;
             }
-
-             while (!wilds.isEmpty()) {
-                 Card w = wilds.remove(0);
-                int lastVal = mapValue(result.get(result.size() - 1), aceLow);
-                int firstVal = mapValue(result.get(0), aceLow);
-
-                if (lastVal < 14) { 
-                    result.add(w); 
-                     } else if (firstVal > 1) {
-                    result.add(0, w); 
-                    } else {
-                    result.add(w);
-                }
-            }
-             return result;
         }
+    }
+    while (!wildsCopy.isEmpty()) {
+        Card w = wildsCopy.remove(0);
+        int lastVal  = mapValue(result.get(result.size() - 1), aceLow);
+        int firstVal = mapValue(result.get(0), aceLow);
+        if      (lastVal < 14)  result.add(w);
+        else if (firstVal > 1)  result.add(0, w);
+        else                    result.add(w);
+    }
+    return result;
+}
 
 
     private static boolean decideIfAceIsLow(List<Card> real, int wildCount) {
@@ -250,8 +265,7 @@ private static boolean isSameSeedAsRest(Card two, List<Card> cards) {
     Card c = ordered.get(index);
     if (!c.getValue().equals("2")) return false;
 
-    // Un 2 è naturale se:
-    // 1. È seguito da un 3 dello stesso seme: [2, 3, ...]
+    
     if (index < ordered.size() - 1) {
         Card next = ordered.get(index + 1);
         if (next.getValue().equals("3") && next.getSeed().equals(c.getSeed())) {
@@ -259,7 +273,6 @@ private static boolean isSameSeedAsRest(Card two, List<Card> cards) {
         }
     }
 
-    // 2. È preceduto da un Asso e seguito da un 3: [A, 2, 3]
     if (index > 0 && index < ordered.size() - 1) {
         Card prev = ordered.get(index - 1);
         Card next = ordered.get(index + 1);
@@ -268,7 +281,6 @@ private static boolean isSameSeedAsRest(Card two, List<Card> cards) {
         }
     }
     
-    // 3. È preceduto da un Asso (Asso basso): [A, 2, ...]
     if (index > 0) {
         Card prev = ordered.get(index - 1);
         if (prev.getValue().equals("A") && prev.getSeed().equals(c.getSeed())) {

@@ -11,7 +11,6 @@ public class CombinationValidator {
             return false;
         }
 
-        // --- 2. LOGICA SET (TRIS) ---
         if (SetUtils.isValidSet(cards)) {
         long wildcardsInSet = cards.stream()
                 .filter(c -> c.getValue().equalsIgnoreCase("Jolly") || c.getValue().equals("2"))
@@ -21,7 +20,6 @@ public class CombinationValidator {
         }
 
 
-        // --- 1. LOGICA SCALA (STRAIGHT) ---
         if (StraightUtils.isSameSeed(cards)) {
         List<Card> ordered = StraightUtils.orderStraight(new ArrayList<>(cards));
         
@@ -32,7 +30,7 @@ public class CombinationValidator {
                 effectiveWildcards++;
             } else if (c.getValue().equals("2")) {
                 
-                if (!isPositionallyNatural(i, ordered)) {
+                if (!StraightUtils.isPositionallyNatural(i, ordered)) {
                     effectiveWildcards++;}
                 }
             }
@@ -40,34 +38,8 @@ public class CombinationValidator {
              return false;
             }
 
-            // Se il conteggio matte è OK, verifichiamo che la sequenza sia valida (no buchi non coperti)
+          
             return StraightUtils.isValidStraight(cards);
-        }
-
-        return false;
-    }
-
-    // Fondamentale: controlla se il 2 si trova nel posto riservato al 2 naturale
-    private static boolean isPositionallyNatural(int index, List<Card> ordered) {
-        
-        if (index < 0 || index >= ordered.size()){
-            return false;
-        } 
-        
-        Card c = ordered.get(index);
-        if (!c.getValue().equals("2")) return false;
-
-        // 1. Caso Classico: [2, 3, 4...] -> Il 2 è all'inizio e dopo c'è il 3
-        if (index < ordered.size() - 1) {
-            Card next = ordered.get(index + 1);
-            if (next.getValue().equals("3") && next.getSeed().equals(c.getSeed())) return true;
-        }
-        
-        // 2. Caso Asso: [A, 2, 3...] -> Il 2 è in seconda posizione tra A e 3
-        if (index > 0 && index < ordered.size() - 1) {
-             Card prev = ordered.get(index - 1);
-             Card next = ordered.get(index + 1);
-             if (prev.getValue().equals("A") && next.getValue().equals("3") && prev.getSeed().equals(c.getSeed())) return true;
         }
 
         return false;
@@ -82,10 +54,9 @@ public class CombinationValidator {
         if (StraightUtils.isSameSeed(context)) {
         List<Card> ordered = StraightUtils.orderStraight(new ArrayList<>(context));
         int index = ordered.indexOf(c);
-        return !isPositionallyNatural(index, ordered);
+        return !StraightUtils.isPositionallyNatural(index, ordered);
     } 
     
-    // Se siamo in un set (Tris), il 2 è SEMPRE una matta.
     return true;
     }
 
