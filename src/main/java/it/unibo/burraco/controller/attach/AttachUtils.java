@@ -1,8 +1,9 @@
-package it.unibo.burraco.controller.combination;
+package it.unibo.burraco.controller.attach;
 
 import java.util.List;
 
 import it.unibo.burraco.model.card.Card;
+import it.unibo.burraco.controller.combination.*;;
 /**
  * Utility class responsible for determining whether a card can be attached to an existing combination.
  *

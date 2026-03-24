@@ -1,11 +1,11 @@
-package it.unibo.burraco.controller.score;
+package it.unibo.burraco.model.score;
 
 import it.unibo.burraco.model.player.Player;
 
 /**
  * Interface for Burraco score calculation.
  */
-public interface ScoreManager {
+public interface Score {
 
     /**
      * Calculates the final score of a player.

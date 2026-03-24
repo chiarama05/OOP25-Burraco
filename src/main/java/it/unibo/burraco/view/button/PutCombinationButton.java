@@ -1,7 +1,7 @@
 package it.unibo.burraco.view.button;
 
-import it.unibo.burraco.controller.buttonLogic.PutCombinationController;
-import it.unibo.burraco.controller.buttonLogic.PutCombinationResult;
+import it.unibo.burraco.controller.combination.PutCombinationController;
+import it.unibo.burraco.controller.combination.PutCombinationResult;
 import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;

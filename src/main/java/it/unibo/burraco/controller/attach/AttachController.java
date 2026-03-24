@@ -1,8 +1,7 @@
-package it.unibo.burraco.controller.buttonLogic;
+package it.unibo.burraco.controller.attach;
 
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.controller.combination.AttachUtils;
 import it.unibo.burraco.controller.combination.CombinationValidator;
 import it.unibo.burraco.controller.combination.StraightUtils;
 import it.unibo.burraco.controller.closure.ClosureState;

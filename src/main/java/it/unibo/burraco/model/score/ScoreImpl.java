@@ -1,4 +1,4 @@
-package it.unibo.burraco.controller.score;
+package it.unibo.burraco.model.score;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import it.unibo.burraco.model.card.*;
 /**
  * Implementation of Burraco score calculation logic.
  */
-public class ScoreManagerImpl implements ScoreManager{
+public class ScoreImpl implements Score{
 
     private static final int CLOSURE_BONUS = 100;
     private static final int CLEAN_BURRACO_BONUS = 200;
@@ -22,7 +22,7 @@ public class ScoreManagerImpl implements ScoreManager{
 
         for (List<Card> combination : player.getCombinations()) {
         for (Card card : combination) {
-            totalScore += CardPointCalculator.getCardPoints(card);
+            totalScore += CardPoint.getCardPoints(card);
         }
         }
 
@@ -105,7 +105,7 @@ public class ScoreManagerImpl implements ScoreManager{
         int total = 0;
 
         for (Card card : player.getHand()) {
-            total += CardPointCalculator.getCardPoints(card);
+            total += CardPoint.getCardPoints(card);
         }
 
         return total;

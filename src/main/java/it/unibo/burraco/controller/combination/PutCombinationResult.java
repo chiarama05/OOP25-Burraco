@@ -1,4 +1,4 @@
-package it.unibo.burraco.controller.buttonLogic;
+package it.unibo.burraco.controller.combination;
 
 import it.unibo.burraco.model.card.Card;
 import java.util.List;

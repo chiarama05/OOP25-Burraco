@@ -1,14 +1,15 @@
 package it.unibo.burraco.view.table;
 
 import it.unibo.burraco.controller.SoundController;
-import it.unibo.burraco.controller.buttonLogic.DiscardController;
-import it.unibo.burraco.controller.buttonLogic.PutCombinationController;
-import it.unibo.burraco.controller.buttonLogic.TakeDiscardController;
 import it.unibo.burraco.controller.closure.ClosureManager;
+import it.unibo.burraco.controller.combination.PutCombinationController;
+import it.unibo.burraco.controller.discardcard.DiscardController;
 import it.unibo.burraco.controller.discardcard.DiscardManagerImpl;
+import it.unibo.burraco.controller.discardcard.TakeDiscardController;
 import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.controller.pot.PotManager;
+import it.unibo.burraco.controller.score.ScoreController;
 import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
 import it.unibo.burraco.controller.turn.TurnController;
 import it.unibo.burraco.model.card.Card;
@@ -20,6 +21,10 @@ import it.unibo.burraco.view.distribution.InitialDistributionView;
 import it.unibo.burraco.view.hand.HandImpl;
 import it.unibo.burraco.view.notification.GameNotifier;
 import it.unibo.burraco.view.notification.GameNotifierImpl;
+import it.unibo.burraco.model.score.ScoreImpl;
+import it.unibo.burraco.model.score.Score;
+
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,13 +50,14 @@ public class TableViewImpl implements TableView {
     private ClosureManager closureManager;
     private PotManager potManager;
     private final SoundController soundController;
+    private ScoreController scoreController;
 
     public TableViewImpl(PlayerImpl p1, PlayerImpl p2, String n1, String n2, SoundController sc) {
         this.player1 = p1; 
         this.player2 = p2;
 
        this.soundController = sc;
-
+       
     this.nameP1 = (n1 == null || n1.isEmpty()) ? "Player 1" : n1;
     this.nameP2 = (n2 == null || n2.isEmpty()) ? "Player 2" : n2;
 
@@ -116,7 +122,20 @@ public class TableViewImpl implements TableView {
 
     TurnController turnCtrl = new TurnController(turnModel, drawManager);
     this.potManager = new PotManager(turnModel, this);
-    this.closureManager = new ClosureManager(turnModel, this, notifier, this.targetScore);
+
+    Score score = new ScoreImpl();
+    this.scoreController = new ScoreController(
+        score,
+        player1,
+        player2,
+        nameP1,
+        nameP2,
+        this,
+        this.gameController,
+        this.targetScore
+    );
+
+    this.closureManager = new ClosureManager(turnModel, notifier, this.targetScore, this.scoreController);
 
     DiscardController discardCoreLogic = new DiscardController(
         new DiscardManagerImpl(gameController.getDiscardPile()),
@@ -149,7 +168,6 @@ public class TableViewImpl implements TableView {
 
     new DeckButton(deckView, drawManager, this, gameController);
 
-    // ✅ nuovo: prima crei il controller, poi lo passi al bottone
     TakeDiscardController takeDiscardCtrl = new TakeDiscardController(
         drawManager,
         turnModel,
@@ -247,6 +265,16 @@ public class TableViewImpl implements TableView {
         ((javax.swing.border.TitledBorder) combPanel2.getBorder()).setTitle(nameP2);
         frame.revalidate();
         frame.repaint(); 
+    }
+
+    @Override
+    public void showScoreModal(String title, String message) {
+        JOptionPane.showMessageDialog(
+            frame,         
+            message, 
+            title, 
+            JOptionPane.INFORMATION_MESSAGE
+        );
     }
 
     public DrawManager getDrawManager() {

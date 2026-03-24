@@ -2,12 +2,12 @@ package it.unibo.burraco.view.button;
 
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.controller.buttonLogic.AttachController;
-import it.unibo.burraco.controller.buttonLogic.AttachResult;
 import it.unibo.burraco.controller.combination.StraightUtils;
 import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.view.burraco.BurracoStyleManager;
 import it.unibo.burraco.view.table.TableView;
+import it.unibo.burraco.controller.attach.AttachController;
+import it.unibo.burraco.controller.attach.AttachResult;
 import it.unibo.burraco.controller.closure.ClosureManager;
 import it.unibo.burraco.controller.pot.PotManager;
 

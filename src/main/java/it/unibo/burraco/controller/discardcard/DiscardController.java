@@ -1,9 +1,7 @@
 
-package it.unibo.burraco.controller.buttonLogic;
+package it.unibo.burraco.controller.discardcard;
 
 import it.unibo.burraco.controller.closure.ClosureManager;
-import it.unibo.burraco.controller.discardcard.DiscardManagerImpl;
-import it.unibo.burraco.controller.discardcard.DiscardResult;
 import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.controller.pot.PotManager;
 import it.unibo.burraco.controller.turn.TurnController;

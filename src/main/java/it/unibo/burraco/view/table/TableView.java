@@ -24,4 +24,5 @@ public interface TableView {
     DiscardViewImpl getDiscardView();
     JPanel getDiscardPanel();
     void wireControllers(it.unibo.burraco.model.turn.Turn turnModel);
+    void showScoreModal(String title, String message);
 }

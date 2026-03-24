@@ -69,6 +69,4 @@ public class CardImpl implements Card{
         }
         return -1;
     }
-
-
 }

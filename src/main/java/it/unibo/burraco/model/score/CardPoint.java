@@ -1,13 +1,13 @@
-package it.unibo.burraco.controller.score;
+package it.unibo.burraco.model.score;
 import it.unibo.burraco.model.card.*;
 
 /**
  * Utility class that calculates the point value of a single card
  * according to Burraco rules.
  */
-public class CardPointCalculator {
+public class CardPoint {
 
-    private CardPointCalculator() {}
+    private CardPoint() {}
 
     /**
      * Returns the Burraco point value of a card.

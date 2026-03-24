@@ -1,27 +1,23 @@
 package it.unibo.burraco.controller.closure;
 
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.turn.Turn;
 import it.unibo.burraco.view.notification.GameNotifier;
-import it.unibo.burraco.view.table.TableView;
-import it.unibo.burraco.view.table.TableViewImpl;
-import it.unibo.burraco.view.score.ScoreView;
-import it.unibo.burraco.view.score.ScoreViewImpl;
+import it.unibo.burraco.controller.score.ScoreController;
 
 public class ClosureManager {
 
     private final Turn turnModel;
-    private final TableView view;
     private final GameNotifier notifier;
     private final int targetScore;
+    private final ScoreController scoreController;
     
 
-    public ClosureManager(Turn turnModel, TableView view, GameNotifier notifier,int targetScore) {
-        this.turnModel = turnModel;
-        this.view = view;
-        this.notifier = notifier;
-        this.targetScore = targetScore;
+    public ClosureManager(Turn turnModel, GameNotifier notifier, int targetScore, ScoreController scoreController) { 
+        this.turnModel        = turnModel;
+        this.notifier         = notifier;
+        this.targetScore      = targetScore;
+        this.scoreController  = scoreController; 
     }
 
 
@@ -74,49 +70,16 @@ public class ClosureManager {
         }
     }
 
-
-
-
-
-
-
-
-
     public void attemptClosure() {
 
         Player current = turnModel.getCurrentPlayer();
         handleStateAfterDiscard(current);
-
-        // ##
-        /*if (model.canClose() && current.getHand().isEmpty()) {
-            model.setGameFinished(true);
-            
-            if (view instanceof TableViewImpl tvImpl) {
-                ScoreViewImpl scorePanel = new ScoreViewImpl(
-                    model.getPlayer1(), 
-                    model.getPlayer2(), 
-                    model.getPlayer1().getName(), 
-                    model.getPlayer2().getName(), 
-                    targetScore, 
-                    tvImpl, 
-                    tvImpl.getGameController()
-                );
-                scorePanel.display(); 
-            }
-            
-        } else {
-            notifier.notifyInvalidClosure(); 
-        }*/
     }
 
 
     private void triggerRoundEnd() {
         turnModel.setGameFinished(true);
-
-        if (view instanceof TableViewImpl tvImpl) {
-            ScoreViewImpl scorePanel = new ScoreViewImpl(turnModel.getPlayer1(),turnModel.getPlayer2(),turnModel.getPlayer1().getName(),turnModel.getPlayer2().getName(),targetScore,tvImpl,tvImpl.getGameController());
-            scorePanel.display();
-        }
+        scoreController.onRoundEnd();
     }
 }
 

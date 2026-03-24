@@ -1,9 +1,9 @@
 package it.unibo.burraco.view.score;
 
-import it.unibo.burraco.controller.score.ScoreManager;
-import it.unibo.burraco.controller.score.ScoreManagerImpl;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.player.PlayerImpl;
+import it.unibo.burraco.model.score.Score;
+import it.unibo.burraco.model.score.ScoreImpl;
 import it.unibo.burraco.view.sound.SoundControllerImpl;
 import it.unibo.burraco.view.table.TableViewImpl;
 import it.unibo.burraco.view.button.RoundedGradientButton;
@@ -15,25 +15,18 @@ import java.awt.*;
 public class ScoreViewImpl implements ScoreView{
 
     private final JFrame frame;
-    private final ScoreManager scoreManager;
+    private final Score scoreManager;
     private final int targetScore;
     private final TableViewImpl tableView;
     private final it.unibo.burraco.controller.game.GameController gameController;
 
     public ScoreViewImpl(Player p1, Player p2, String name1, String name2, int targetScore, 
                          TableViewImpl tableView, it.unibo.burraco.controller.game.GameController gameController) {
-        this.scoreManager = new ScoreManagerImpl();
+        this.scoreManager = new ScoreImpl();
         this.frame = new JFrame("Burraco - Final Standings");
         this.targetScore = targetScore;
         this.tableView = tableView;
         this.gameController = gameController;
-
-
-        int roundS1 = scoreManager.calculateFinalScore(p1);
-        int roundS2 = scoreManager.calculateFinalScore(p2);
-
-        ((PlayerImpl) p1).addPointsToMatch(roundS1);
-        ((PlayerImpl) p2).addPointsToMatch(roundS2);
 
         int totalS1 = ((PlayerImpl) p1).getMatchTotalScore();
         int totalS2 = ((PlayerImpl) p2).getMatchTotalScore();
@@ -124,7 +117,7 @@ public class ScoreViewImpl implements ScoreView{
     int total = 0;
     for (java.util.List<it.unibo.burraco.model.card.Card> combination : p.getCombinations()) {
         for (it.unibo.burraco.model.card.Card card : combination) {
-            total += it.unibo.burraco.controller.score.CardPointCalculator.getCardPoints(card);
+            total += it.unibo.burraco.model.score.CardPoint.getCardPoints(card);
         }
     }
     return total;
@@ -146,8 +139,8 @@ public class ScoreViewImpl implements ScoreView{
         panel.add(Box.createVerticalStrut(20));
 
     int aTerra = calculateOnlyCardsOnTable(p);
-    int burrachiSporchi = ((ScoreManagerImpl)scoreManager).countDirtyBurraco(p);
-    int burrachiPuliti = ((ScoreManagerImpl)scoreManager).countCleanBurraco(p);
+    int burrachiSporchi = ((ScoreImpl)scoreManager).countDirtyBurraco(p);
+    int burrachiPuliti = ((ScoreImpl)scoreManager).countCleanBurraco(p);
     
     int chiusura = p.hasFinishedCards() ? 100 : 0;
     int mazzetto = p.isInPot() ? 0 : -100;

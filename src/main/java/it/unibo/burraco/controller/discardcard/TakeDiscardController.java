@@ -1,4 +1,4 @@
-package it.unibo.burraco.controller.buttonLogic;
+package it.unibo.burraco.controller.discardcard;
 
 import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.controller.drawcard.DrawResult;

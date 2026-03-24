@@ -1,6 +1,6 @@
 package it.unibo.burraco.view.button;
 
-import it.unibo.burraco.controller.buttonLogic.TakeDiscardController;
+import it.unibo.burraco.controller.discardcard.TakeDiscardController;
 import it.unibo.burraco.controller.drawcard.DrawResult;
 import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.player.Player;

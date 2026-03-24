@@ -1,12 +1,8 @@
-package it.unibo.burraco.controller.buttonLogic;
+package it.unibo.burraco.controller.combination;
 
 import it.unibo.burraco.controller.closure.ClosureManager;
 import it.unibo.burraco.controller.closure.ClosureState;
 import it.unibo.burraco.controller.closure.ClosureValidator;
-import it.unibo.burraco.controller.combination.CombinationValidator;
-import it.unibo.burraco.controller.buttonLogic.PutCombinationResult;
-import it.unibo.burraco.controller.combination.SetUtils;
-import it.unibo.burraco.controller.combination.StraightUtils;
 import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.controller.pot.PotManager;

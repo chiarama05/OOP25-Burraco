@@ -1,4 +1,4 @@
-package it.unibo.burraco.controller.buttonLogic;
+package it.unibo.burraco.controller.attach;
 
 public enum AttachResult {
     SUCCESS,
