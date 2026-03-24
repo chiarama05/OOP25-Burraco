@@ -8,7 +8,7 @@ import it.unibo.burraco.view.hand.HandImpl;
 import java.util.List;
 
 public interface TableView {
-    it.unibo.burraco.controller.controller.GameController getGameController();
+    it.unibo.burraco.controller.game.GameController getGameController();
 
     void refreshHandPanel(Player player);
     void refreshTurnLabel(boolean isPlayer1);

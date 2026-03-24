@@ -2,9 +2,9 @@ package it.unibo.burraco.controller.round;
 
 import javax.swing.SwingUtilities;
 
-import it.unibo.burraco.controller.controller.GameController;
 import it.unibo.burraco.controller.distributioncard.DistributionManagerImpl;
 import it.unibo.burraco.controller.distributioncard.InitialDistributionController;
+import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
 import it.unibo.burraco.view.table.TableView;

@@ -5,7 +5,7 @@ import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.controller.buttonLogic.AttachController;
 import it.unibo.burraco.controller.buttonLogic.AttachResult;
 import it.unibo.burraco.controller.combination.StraightUtils;
-import it.unibo.burraco.controller.controller.GameController;
+import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.view.burraco.BurracoStyleManager;
 import it.unibo.burraco.view.table.TableView;
 import it.unibo.burraco.controller.closure.ClosureManager;
@@ -60,8 +60,8 @@ public class AttachButton extends JButton {
             currentPlayer,
             selected,
             this.cards,
-            hasDrawn,        // ← parametro esplicito
-            isCurrentPlayer  // ← parametro esplicito
+            hasDrawn,        
+            isCurrentPlayer 
     );
 
 
@@ -168,7 +168,3 @@ public class AttachButton extends JButton {
         this.add(Box.createVerticalStrut(8));
     }
 }  
-
-
-
-

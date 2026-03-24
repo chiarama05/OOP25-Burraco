@@ -7,7 +7,7 @@ import java.util.Set;
 
 import javax.swing.JOptionPane;
 
-import it.unibo.burraco.controller.controller.GameController;
+import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.model.card.*;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.table.TableViewImpl;
