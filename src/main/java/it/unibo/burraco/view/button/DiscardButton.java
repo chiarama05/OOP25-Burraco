@@ -63,5 +63,4 @@ public class DiscardButton {
             notifier.notifySelectionError(result.getMessage());
         }
     }
-
 }

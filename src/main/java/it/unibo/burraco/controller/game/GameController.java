@@ -1,4 +1,4 @@
-package it.unibo.burraco.controller.controller;
+package it.unibo.burraco.controller.game;
 
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.player.PlayerImpl;

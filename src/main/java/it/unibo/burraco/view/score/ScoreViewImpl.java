@@ -18,10 +18,10 @@ public class ScoreViewImpl implements ScoreView{
     private final ScoreManager scoreManager;
     private final int targetScore;
     private final TableViewImpl tableView;
-    private final it.unibo.burraco.controller.controller.GameController gameController;
+    private final it.unibo.burraco.controller.game.GameController gameController;
 
     public ScoreViewImpl(Player p1, Player p2, String name1, String name2, int targetScore, 
-                         TableViewImpl tableView, it.unibo.burraco.controller.controller.GameController gameController) {
+                         TableViewImpl tableView, it.unibo.burraco.controller.game.GameController gameController) {
         this.scoreManager = new ScoreManagerImpl();
         this.frame = new JFrame("Burraco - Final Standings");
         this.targetScore = targetScore;

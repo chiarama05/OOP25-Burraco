@@ -1,8 +1,8 @@
 package it.unibo.burraco.view.button;
 
-import it.unibo.burraco.controller.controller.GameController;
 import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.controller.drawcard.DrawResult;
+import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.model.deck.Deck;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.deck.DeckView;

@@ -5,8 +5,8 @@ import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.controller.closure.ClosureManager;
 import it.unibo.burraco.controller.closure.ClosureState;
 import it.unibo.burraco.controller.closure.ClosureValidator;
-import it.unibo.burraco.controller.controller.GameController;
 import it.unibo.burraco.controller.drawcard.DrawManager;
+import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.controller.pot.PotManager;
 import it.unibo.burraco.model.card.Card;
 
