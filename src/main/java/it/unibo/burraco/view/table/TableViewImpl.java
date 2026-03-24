@@ -107,43 +107,37 @@ public class TableViewImpl implements TableView {
 
     @Override
     public void wireControllers(it.unibo.burraco.model.turn.Turn turnModel) {
-        GameNotifier notifier = new GameNotifierImpl(frame);
-    
- 
-        this.gameController = new GameController(player1, player2, turnModel, this.soundController);
-        this.drawManager = gameController.getDrawManager(); 
+    GameNotifier notifier = new GameNotifierImpl(frame);
 
- 
-        TurnController turnCtrl = new TurnController(turnModel, drawManager);
-        this.potManager = new PotManager(turnModel, this);
-        PotManager potCtrl = this.potManager;
-        this.closureManager= new ClosureManager(turnModel, this, notifier, this.targetScore);
+    this.gameController = new GameController(player1, player2, turnModel, this.soundController);
+    this.drawManager = gameController.getDrawManager();
 
-        ClosureManager closureCtrl=this.closureManager;
+    TurnController turnCtrl = new TurnController(turnModel, drawManager);
+    this.potManager = new PotManager(turnModel, this);
+    this.closureManager = new ClosureManager(turnModel, this, notifier, this.targetScore);
 
-        DiscardController discardCoreLogic = new DiscardController(
-    new DiscardManagerImpl(gameController.getDiscardPile()),
-    turnCtrl,
-    potCtrl,
-    closureCtrl,
-    drawManager,    
-    turnModel);         
-    
-        turnCtrl.setOnTurnChangedListener(() -> {
+    DiscardController discardCoreLogic = new DiscardController(
+        new DiscardManagerImpl(gameController.getDiscardPile()),
+        turnCtrl,
+        this.potManager,
+        this.closureManager,
+        drawManager,   
+        turnModel);     
+
+    turnCtrl.setOnTurnChangedListener(() -> {
         refreshTurnLabel(turnModel.isPlayer1Turn());
         switchHand(turnModel.isPlayer1Turn());
-        });
+    });
 
-   
-        new DiscardButton(this, discardView, notifier, discardCoreLogic);
+    new DiscardButton(this, discardView, notifier, discardCoreLogic);
 
-        PutCombinationButton putComboLogic = new PutCombinationButton(this, gameController, drawManager, potCtrl, closureCtrl);
+    PutCombinationButton putComboLogic = new PutCombinationButton(
+        this, gameController, drawManager, this.potManager, this.closureManager);
         putComboBtn.addActionListener(e -> putComboLogic.handlePutCombination());
-        
-        new DeckButton(deckView, drawManager, this, gameController);
 
-        
-        new TakeDiscardButton(takeDiscardBtn, drawManager, this, turnModel, gameController.getDiscardPile(), discardView);
+    new DeckButton(deckView, drawManager, this, gameController);
+    new TakeDiscardButton(takeDiscardBtn, drawManager, this, turnModel,
+        gameController.getDiscardPile(), discardView);
     }
 
 

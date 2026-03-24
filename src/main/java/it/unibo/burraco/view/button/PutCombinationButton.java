@@ -98,38 +98,9 @@ public class PutCombinationButton {
             return;
         }
 
-        // Normal case: player still has cards → just refresh.
+        
         tableView.refreshHandPanel(current);
 
 
-
-
-        // ## 2 version
-        // If the hand is empty and pot not taken → PotManager handles the draw (pot fly)
-        // ClosureManager then decides whether the player can continue or the round ends.
-        /*if(current.getHand().isEmpty() && !current.isInPot()){
-            potManager.handlePot(false);
-            closureManager.handleStateAfterAction(current);
-        }
-        else{
-            boolean blocking=closureManager.handleStateAfterAction(current);
-            if(!blocking){
-                tableView.refreshHandPanel(current);
-            }
-        }
-        tableView.getHandViewForPlayer(current).clearSelection();
-        tableView.refreshHandPanel(current);    
-        */
-
-
-        // ## default version
-        /*if (current.hasFinishedCards() && !current.isInPot()) {
-            potManager.handlePot(false);
-        } else {
-            tableView.refreshHandPanel(current);
-        }
-        tableView.getHandViewForPlayer(current).clearSelection();
-        tableView.refreshHandPanel(current);    
-        */
     }
 }
