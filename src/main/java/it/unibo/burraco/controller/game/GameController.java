@@ -8,7 +8,6 @@ import java.util.List;
 import it.unibo.burraco.controller.SoundController;
 import it.unibo.burraco.controller.buttonLogic.AttachController;
 import it.unibo.burraco.controller.buttonLogic.AttachResult;
-import it.unibo.burraco.controller.buttonLogic.PutCombinationController;
 import it.unibo.burraco.controller.distributioncard.DistributionManagerImpl;
 import it.unibo.burraco.controller.distributioncard.InitialDistributionController;
 import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
@@ -30,7 +29,6 @@ public class GameController {
     private final SelectionCardManager selectionManager = new SelectionCardManager();
     private final it.unibo.burraco.controller.drawcard.DrawManager drawManager = new it.unibo.burraco.controller.drawcard.DrawManager();
     private final AttachController attachController;
-    private final PutCombinationController combinationController;
     private final InitialDistributionController distributionController;
 
 
@@ -42,7 +40,6 @@ public class GameController {
         this.commonDeck = new DeckImpl();
         this.attachController = new AttachController();
         this.soundController = sc;
-        this.combinationController = new PutCombinationController();
         this.distributionController = new InitialDistributionController(new DistributionManagerImpl());
 }
 
@@ -96,10 +93,6 @@ public InitialDistributionController getDistributionController() {
     public SelectionCardManager getSelectionManager() {
         return selectionManager;
     }
-
-    public PutCombinationController getCombinationController() {
-    return combinationController;
-}
 
     public it.unibo.burraco.controller.drawcard.DrawManager getDrawManager() {
         return drawManager;

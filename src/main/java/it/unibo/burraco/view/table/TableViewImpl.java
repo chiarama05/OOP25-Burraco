@@ -2,6 +2,8 @@ package it.unibo.burraco.view.table;
 
 import it.unibo.burraco.controller.SoundController;
 import it.unibo.burraco.controller.buttonLogic.DiscardController;
+import it.unibo.burraco.controller.buttonLogic.PutCombinationController;
+import it.unibo.burraco.controller.buttonLogic.TakeDiscardController;
 import it.unibo.burraco.controller.closure.ClosureManager;
 import it.unibo.burraco.controller.discardcard.DiscardManagerImpl;
 import it.unibo.burraco.controller.drawcard.DrawManager;
@@ -105,41 +107,62 @@ public class TableViewImpl implements TableView {
     frame.setVisible(true);
     }
 
-    @Override
+   @Override
     public void wireControllers(it.unibo.burraco.model.turn.Turn turnModel) {
-        GameNotifier notifier = new GameNotifierImpl(frame);
-    
- 
-        this.gameController = new GameController(player1, player2, turnModel, this.soundController);
-        this.drawManager = gameController.getDrawManager(); 
+    GameNotifier notifier = new GameNotifierImpl(frame);
 
- 
-        TurnController turnCtrl = new TurnController(turnModel, drawManager);
-        this.potManager = new PotManager(turnModel, this);
-        PotManager potCtrl = this.potManager;
-        this.closureManager= new ClosureManager(turnModel, this, notifier, this.targetScore);
+    this.gameController = new GameController(player1, player2, turnModel, this.soundController);
+    this.drawManager = gameController.getDrawManager();
 
-        ClosureManager closureCtrl=this.closureManager;
+    TurnController turnCtrl = new TurnController(turnModel, drawManager);
+    this.potManager = new PotManager(turnModel, this);
+    this.closureManager = new ClosureManager(turnModel, this, notifier, this.targetScore);
 
-        DiscardController discardCoreLogic = new DiscardController(
-        new DiscardManagerImpl(gameController.getDiscardPile()), turnCtrl, potCtrl, closureCtrl);
-    
-        turnCtrl.setOnTurnChangedListener(() -> {
+    DiscardController discardCoreLogic = new DiscardController(
+        new DiscardManagerImpl(gameController.getDiscardPile()),
+        turnCtrl,
+        this.potManager,
+        this.closureManager,
+        drawManager,
+        turnModel);
+
+    turnCtrl.setOnTurnChangedListener(() -> {
         refreshTurnLabel(turnModel.isPlayer1Turn());
         switchHand(turnModel.isPlayer1Turn());
-        });
+    });
 
-   
-        new it.unibo.burraco.view.button.DiscardButton(this, turnModel, drawManager, discardView, notifier, discardCoreLogic );
+    new DiscardButton(this, discardView, notifier, discardCoreLogic);
 
-        PutCombinationButton putComboLogic = new PutCombinationButton(this, gameController, drawManager, potCtrl, closureCtrl);
-        putComboBtn.addActionListener(e -> putComboLogic.handlePutCombination());
-        
-        new DeckButton(deckView, drawManager, this, gameController);
+    PutCombinationController putCombinationCtrl = new PutCombinationController(
+        gameController,
+        drawManager,
+        this.potManager,
+        this.closureManager,
+        turnModel);
 
-        
-        new TakeDiscardButton(takeDiscardBtn, drawManager, this, turnModel, gameController.getDiscardPile(), discardView);
-    }
+    PutCombinationButton putCombinationLogic = new PutCombinationButton(
+        this,
+        gameController,
+        putCombinationCtrl);
+
+    putComboBtn.addActionListener(e -> putCombinationLogic.handlePutCombination());
+
+    new DeckButton(deckView, drawManager, this, gameController);
+
+    // ✅ nuovo: prima crei il controller, poi lo passi al bottone
+    TakeDiscardController takeDiscardCtrl = new TakeDiscardController(
+        drawManager,
+        turnModel,
+        gameController.getDiscardPile());
+
+    new TakeDiscardButton(
+        takeDiscardBtn,
+        takeDiscardCtrl,
+        this,
+        turnModel,
+        gameController.getDiscardPile(),
+        discardView);
+}
 
 
 
