@@ -2,6 +2,7 @@ package it.unibo.burraco.view.table;
 
 import it.unibo.burraco.controller.SoundController;
 import it.unibo.burraco.controller.buttonLogic.DiscardController;
+import it.unibo.burraco.controller.buttonLogic.PutCombinationController;
 import it.unibo.burraco.controller.closure.ClosureManager;
 import it.unibo.burraco.controller.discardcard.DiscardManagerImpl;
 import it.unibo.burraco.controller.drawcard.DrawManager;
@@ -131,9 +132,19 @@ public class TableViewImpl implements TableView {
 
     new DiscardButton(this, discardView, notifier, discardCoreLogic);
 
-    PutCombinationButton putComboLogic = new PutCombinationButton(
-        this, gameController, drawManager, this.potManager, this.closureManager);
-        putComboBtn.addActionListener(e -> putComboLogic.handlePutCombination());
+    PutCombinationController putCombinationCtrl = new PutCombinationController(
+        gameController,
+        drawManager,
+        this.potManager,
+        this.closureManager,
+        turnModel);        
+
+    PutCombinationButton putCombinationLogic = new PutCombinationButton(
+        this,
+        gameController,
+        putCombinationCtrl);      
+
+    putComboBtn.addActionListener(e -> putCombinationLogic.handlePutCombination());
 
     new DeckButton(deckView, drawManager, this, gameController);
     new TakeDiscardButton(takeDiscardBtn, drawManager, this, turnModel,

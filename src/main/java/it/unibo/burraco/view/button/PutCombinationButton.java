@@ -1,106 +1,86 @@
 package it.unibo.burraco.view.button;
 
-import it.unibo.burraco.view.table.TableView;
-import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.controller.closure.ClosureManager;
-import it.unibo.burraco.controller.closure.ClosureState;
-import it.unibo.burraco.controller.closure.ClosureValidator;
-import it.unibo.burraco.controller.drawcard.DrawManager;
+import it.unibo.burraco.controller.buttonLogic.PutCombinationController;
+import it.unibo.burraco.controller.buttonLogic.PutCombinationResult;
 import it.unibo.burraco.controller.game.GameController;
-import it.unibo.burraco.controller.pot.PotManager;
 import it.unibo.burraco.model.card.Card;
+import it.unibo.burraco.model.player.Player;
+import it.unibo.burraco.view.table.TableView;
 
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PutCombinationButton {
+
     private final TableView tableView;
     private final GameController gameController;
-    private final DrawManager drawManager;
-    private final PotManager potManager;
-    private final ClosureManager closureManager;
+    private final PutCombinationController putComboController;
 
-    public PutCombinationButton(TableView tableView, GameController gameController,DrawManager drawManager, PotManager potManager, ClosureManager closureManager) {
-        
+    public PutCombinationButton(TableView tableView,
+                                 GameController gameController,
+                                 PutCombinationController putComboController) {
         this.tableView = tableView;
         this.gameController = gameController;
-        this.drawManager = drawManager;
-        this.potManager = potManager;
-        this.closureManager=closureManager;
+        this.putComboController = putComboController;
     }
 
     public void handlePutCombination() {
-        
-        if (!drawManager.hasDrawn()) {
-            JOptionPane.showMessageDialog(null, "Draw a card first!");
-            return;
-        }
 
         Player current = gameController.getCurrentPlayer();
-        List<Card> selected = new ArrayList<>(tableView.getHandViewForPlayer(current).getSelectedCards());
+        List<Card> selected = new ArrayList<>(
+                tableView.getHandViewForPlayer(current).getSelectedCards());
 
+   
+        PutCombinationResult result = putComboController.tryPutCombination(selected);
 
-        if (selected.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Select cards from your hand first!");
-            return;
+      
+        switch (result.getStatus()) {
+
+            case NOT_DRAWN:
+                JOptionPane.showMessageDialog(null, "Draw a card first!");
+                break;
+
+            case NO_CARDS_SELECTED:
+                JOptionPane.showMessageDialog(null, "Select cards from your hand first!");
+                break;
+
+            case WOULD_GET_STUCK:
+                JOptionPane.showMessageDialog(null,
+                        "You cannot play this combination!\n\n"
+                        + "After placing it you would have only 1 card left,\n"
+                        + "but you don't have a Burraco yet and you cannot close.\n\n"
+                        + "You need at least one Burraco before you can reduce\n"
+                        + "your hand to 1 card.",
+                        "Move Not Allowed", JOptionPane.WARNING_MESSAGE);
+                break;
+
+            case INVALID_COMBINATION:
+                JOptionPane.showMessageDialog(null, "Invalid combination or not enough cards!");
+                break;
+
+            case SUCCESS:
+            case SUCCESS_BURRACO:
+                tableView.addCombinationToPlayerPanel(result.getProcessedCombo(), result.isPlayer1());
+                tableView.getHandViewForPlayer(current).clearSelection();
+                tableView.refreshHandPanel(current);
+                break;
+
+            case SUCCESS_TAKE_POT:
+                tableView.addCombinationToPlayerPanel(result.getProcessedCombo(), result.isPlayer1());
+                tableView.getHandViewForPlayer(current).clearSelection();
+                break;
+
+            case SUCCESS_CLOSE:
+                tableView.addCombinationToPlayerPanel(result.getProcessedCombo(), result.isPlayer1());
+                tableView.getHandViewForPlayer(current).clearSelection();
+                break;
+
+            case SUCCESS_STUCK:
+                tableView.addCombinationToPlayerPanel(result.getProcessedCombo(), result.isPlayer1());
+                tableView.getHandViewForPlayer(current).clearSelection();
+                tableView.refreshHandPanel(current);
+                break;
         }
-
-
-        //simulate the outcome before touching the model, it blocks the action if putting down 
-        //this cards would leave the player with 1 card and no burraco
-        if (ClosureValidator.wouldGetStuckAfterPutCombo(current, selected, selected.size())) {
-            JOptionPane.showMessageDialog(null,"You cannot play this combination!\n\n"+ "After placing it you would have only 1 card left,\n"+ "but you don't have a Burraco yet and you cannot close.\n\n"+ "You need at least one Burraco before you can reduce\n"+ "your hand to 1 card.","Move Not Allowed", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-
-
-        List<Card> processedCombo = gameController.getCombinationController().tryPutCombination(current, selected);
-
-        if (processedCombo == null) {
-            JOptionPane.showMessageDialog(null, "Invalid combination or not enough cards!");
-            return;
-        }
-
-       
-        tableView.addCombinationToPlayerPanel(processedCombo, gameController.isPlayer1(current));
-
-        if (processedCombo.size() >= 7) {
-            gameController.getSoundController().playBurracoSound();
-        }
-
-
-        tableView.getHandViewForPlayer(current).clearSelection();
-
-        
-        ClosureState state = ClosureValidator.evaluate(current);
-
-
-        // Hand is empty and pot not yet taken → take pot on-the-fly.
-        if (state == ClosureState.ZERO_CARDS_NO_POT) {
-            potManager.handlePot(false);
-            return;
-        }
-
-
-        // Hand is empty, pot already taken, burraco present → round ends.
-        if (state == ClosureState.CAN_CLOSE) {
-            closureManager.handleStateAfterAction(current);
-            return;
-        }
-
-
-        // Hand is empty, pot already taken, but NO burraco yet.
-        if (state == ClosureState.ZERO_CARDS_NO_BURRACO) {
-            closureManager.handleStateAfterAction(current);
-            tableView.refreshHandPanel(current);
-            return;
-        }
-
-        
-        tableView.refreshHandPanel(current);
-
-
     }
 }
