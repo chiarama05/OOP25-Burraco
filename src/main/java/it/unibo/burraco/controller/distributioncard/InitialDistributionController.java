@@ -2,7 +2,7 @@ package it.unibo.burraco.controller.distributioncard;
 
 import it.unibo.burraco.model.deck.Deck;
 import it.unibo.burraco.model.discard.DiscardPile;
-import it.unibo.burraco.model.player.PlayerImpl;
+import it.unibo.burraco.model.player.Player;
 
 public class InitialDistributionController {
 
@@ -12,7 +12,7 @@ public class InitialDistributionController {
         this.distManager = distManager;
     }
 
-    public void distribute(PlayerImpl player1, PlayerImpl player2, Deck deck, DiscardPile discardPile) {
-        distManager.distributeInitialCards(player1, player2, deck, discardPile);
+    public void distribute(Player p1, Player p2, Deck deck, DiscardPile discardPile) {
+        distManager.distributeInitialCards(p1, p2, deck, discardPile);
     }
 }

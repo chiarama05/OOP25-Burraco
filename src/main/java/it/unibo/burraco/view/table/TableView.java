@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.view.discard.DiscardViewImpl;
+import it.unibo.burraco.view.distribution.InitialDistributionView;
 import it.unibo.burraco.view.hand.HandImpl;
 import java.util.List;
 
@@ -25,4 +26,7 @@ public interface TableView {
     JPanel getDiscardPanel();
     void wireControllers(it.unibo.burraco.model.turn.Turn turnModel);
     void showScoreModal(String title, String message);
+    void repaintTable();
+
+    InitialDistributionView getInitDist();
 }

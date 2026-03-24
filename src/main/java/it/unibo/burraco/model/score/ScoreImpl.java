@@ -18,18 +18,11 @@ public class ScoreImpl implements Score{
     @Override
     public int calculateFinalScore(Player player) {
 
-        int totalScore = 0;
+        int totalScore = calculateOnlyCardsOnTable(player);
 
-        for (List<Card> combination : player.getCombinations()) {
-        for (Card card : combination) {
-            totalScore += CardPoint.getCardPoints(card);
-        }
-        }
-
-        // Closure bonus
-        if (player.hasFinishedCards()) {
-            totalScore += CLOSURE_BONUS;
-        }
+    if (player.hasFinishedCards()) {
+        totalScore += CLOSURE_BONUS;
+    }
 
         // Burraco bonuses
         totalScore += calculateBurracoBonus(player);
@@ -109,5 +102,36 @@ public class ScoreImpl implements Score{
         }
 
         return total;
+    }
+
+    @Override
+    public int calculateOnlyCardsOnTable(Player player) {
+        int total = 0;
+        for (List<Card> combination : player.getCombinations()) {
+            for (Card card : combination) {
+                total += CardPoint.getCardPoints(card);
+            }
+        }
+        return total;
+    }
+
+    @Override
+    public int getCleanBurracoBonusValue() {
+        return CLEAN_BURRACO_BONUS;
+    }
+
+    @Override
+    public int getDirtyBurracoBonusValue() {
+        return DIRTY_BURRACO_BONUS;
+    }
+
+    @Override
+    public int getClosureBonusValue() {
+        return CLOSURE_BONUS;
+    }
+
+    @Override
+    public int getNoPotPenalty() {
+        return NO_POT_PENALTY;
     }
 }

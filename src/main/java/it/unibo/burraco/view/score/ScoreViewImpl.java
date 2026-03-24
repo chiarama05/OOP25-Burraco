@@ -1,11 +1,11 @@
 package it.unibo.burraco.view.score;
 
+import it.unibo.burraco.controller.SoundController;
+import it.unibo.burraco.controller.game.GameController;
+import it.unibo.burraco.controller.round.RoundController;
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.score.Score;
-import it.unibo.burraco.model.score.ScoreImpl;
-import it.unibo.burraco.view.sound.SoundControllerImpl;
-import it.unibo.burraco.view.table.TableViewImpl;
+import it.unibo.burraco.view.table.TableView;
 import it.unibo.burraco.view.button.RoundedGradientButton;
 
 import javax.swing.*;
@@ -15,30 +15,40 @@ import java.awt.*;
 public class ScoreViewImpl implements ScoreView{
 
     private final JFrame frame;
-    private final Score scoreManager;
+    private final Score scoreManager;  
     private final int targetScore;
-    private final TableViewImpl tableView;
-    private final it.unibo.burraco.controller.game.GameController gameController;
+    private final TableView tableView;  
+    private final GameController gameController;
+    private final RoundController roundController;
+    private final SoundController soundController;
 
-    public ScoreViewImpl(Player p1, Player p2, String name1, String name2, int targetScore, 
-                         TableViewImpl tableView, it.unibo.burraco.controller.game.GameController gameController) {
-        this.scoreManager = new ScoreImpl();
-        this.frame = new JFrame("Burraco - Final Standings");
-        this.targetScore = targetScore;
-        this.tableView = tableView;
+    public ScoreViewImpl(
+            Player p1, Player p2,
+            String name1, String name2,
+            int targetScore,
+            Score scoreManager,
+            TableView tableView,
+            GameController gameController,
+            RoundController roundController,   
+            SoundController soundController) {
+
+        this.scoreManager   = scoreManager;
+        this.frame          = new JFrame("Burraco - Final Standings");
+        this.targetScore    = targetScore;
+        this.tableView      = tableView;
         this.gameController = gameController;
+        this.roundController = roundController;
+        this.soundController = soundController;
 
-        int totalS1 = ((PlayerImpl) p1).getMatchTotalScore();
-        int totalS2 = ((PlayerImpl) p2).getMatchTotalScore();
-
+        int totalS1 = p1.getMatchTotalScore(); 
+        int totalS2 = p2.getMatchTotalScore(); 
 
         boolean matchOver = totalS1 >= targetScore || totalS2 >= targetScore;
 
-
         if (matchOver) {
-            new SoundControllerImpl().playVictorySound();
+            soundController.playVictorySound(); 
         } else {
-            new SoundControllerImpl().playRoundEndSound();
+            soundController.playRoundEndSound(); 
         }
 
         setupUI(p1, p2, name1, name2, matchOver);
@@ -64,8 +74,8 @@ public class ScoreViewImpl implements ScoreView{
         JPanel centerPanel = new JPanel(new GridLayout(1, 2, 30, 0));
         centerPanel.setOpaque(false);
 
-        int totalS1 = ((PlayerImpl)p1).getMatchTotalScore();
-        int totalS2 = ((PlayerImpl)p2).getMatchTotalScore();
+        int totalS1 = p1.getMatchTotalScore();
+        int totalS2 = p2.getMatchTotalScore();
 
 
         boolean p1Winner = matchOver && (totalS1 > totalS2);
@@ -79,7 +89,7 @@ public class ScoreViewImpl implements ScoreView{
         // --- BOTTONE AZIONE ---
         RoundedGradientButton actionBtn;
         if (matchOver) {
-            String winnerName = totalS1 > totalS2 ? name1 : name2;
+            String winnerName = (p1.getMatchTotalScore() > p2.getMatchTotalScore()) ? name1 : name2;
             actionBtn = new RoundedGradientButton("CHAMPION: " + winnerName.toUpperCase() + " (FINISH GAME)");
             actionBtn.addActionListener(e -> System.exit(0));
         } else {
@@ -87,15 +97,7 @@ public class ScoreViewImpl implements ScoreView{
             actionBtn.addActionListener(e -> {
                 frame.dispose();
                 gameController.getTurnModel().resetForNewRound();
-                it.unibo.burraco.controller.round.ResetManager resetManager = new it.unibo.burraco.controller.round.ResetManagerImpl();
-                it.unibo.burraco.controller.round.RoundController rc = new it.unibo.burraco.controller.round.RoundControllerImpl(
-                    tableView, 
-                    resetManager, 
-                    (PlayerImpl)p1, 
-                    (PlayerImpl)p2, 
-                    gameController 
-                );
-                rc.processNewRound();
+                roundController.processNewRound(); // ← solo questa riga
                 tableView.refreshTurnLabel(true);
             });
         }
@@ -113,16 +115,6 @@ public class ScoreViewImpl implements ScoreView{
         frame.add(mainPanel);
     }
 
-    private int calculateOnlyCardsOnTable(Player p) {
-    int total = 0;
-    for (java.util.List<it.unibo.burraco.model.card.Card> combination : p.getCombinations()) {
-        for (it.unibo.burraco.model.card.Card card : combination) {
-            total += it.unibo.burraco.model.score.CardPoint.getCardPoints(card);
-        }
-    }
-    return total;
-    }
-
     private JPanel createPlayerStatsPanel(Player p, String name, boolean isWinner) {
     JPanel panel = new JPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -138,21 +130,21 @@ public class ScoreViewImpl implements ScoreView{
         panel.add(nameLabel);
         panel.add(Box.createVerticalStrut(20));
 
-    int aTerra = calculateOnlyCardsOnTable(p);
-    int burrachiSporchi = ((ScoreImpl)scoreManager).countDirtyBurraco(p);
-    int burrachiPuliti = ((ScoreImpl)scoreManager).countCleanBurraco(p);
-    
-    int chiusura = p.hasFinishedCards() ? 100 : 0;
-    int mazzetto = p.isInPot() ? 0 : -100;
-    int carteInMano = scoreManager.calculateRemainingHandValue(p);
-    int totaleMano = scoreManager.calculateFinalScore(p);
+        int aTerra           = scoreManager.calculateOnlyCardsOnTable(p);
+        int puntiBurrachiP   = scoreManager.countCleanBurraco(p) * scoreManager.getCleanBurracoBonusValue(); 
+        int puntiBurrachiS   = scoreManager.countDirtyBurraco(p) * scoreManager.getDirtyBurracoBonusValue(); 
+        int chiusura         = p.hasFinishedCards() ? scoreManager.getClosureBonusValue() : 0;
+        int mazzetto         = p.isInPot() ? 0 : scoreManager.getNoPotPenalty();
+        int carteInMano      = scoreManager.calculateRemainingHandValue(p);
+        int totaleMano       = scoreManager.calculateFinalScore(p);
+        int totalePartita    = p.getMatchTotalScore();
 
-    panel.add(createRow("Board Score", String.valueOf(aTerra), false));
-    panel.add(createRow("Clean Burraco", String.valueOf(burrachiPuliti*200), false));
-    panel.add(createRow("Dirty Burraco", String.valueOf(burrachiSporchi * 100), false));
-    panel.add(createRow("Closure", String.valueOf(chiusura), false));
-    panel.add(createRow("Pot not taken", String.valueOf(mazzetto), false));
-    panel.add(createRow("Paid cards", "-" + carteInMano, false));
+    panel.add(createRow("Cards on Table", String.valueOf(aTerra), false));
+    panel.add(createRow("Clean Burraco",  String.valueOf(puntiBurrachiP), false));
+    panel.add(createRow("Dirty Burraco",  String.valueOf(puntiBurrachiS), false));
+    panel.add(createRow("Closure Bonus",  String.valueOf(chiusura), false));
+    panel.add(createRow("Pot Penalty",    String.valueOf(mazzetto), false));
+    panel.add(createRow("Cards in Hand",  "-" + carteInMano, false));
 
     panel.add(Box.createVerticalStrut(10));
     JSeparator sep = new JSeparator();
@@ -161,10 +153,8 @@ public class ScoreViewImpl implements ScoreView{
     panel.add(Box.createVerticalStrut(10));
     
     panel.add(Box.createVerticalStrut(10));
-    panel.add(createRow("Round Score", String.valueOf(totaleMano), true));
-    
-    int totalePartita = ((PlayerImpl)p).getMatchTotalScore();
-    panel.add(createRow("TOTAL MATCH", String.valueOf(totalePartita), true));
+    panel.add(createRow("ROUND TOTAL",    String.valueOf(totaleMano), true));
+    panel.add(createRow("MATCH TOTAL",    String.valueOf(totalePartita), true));
     panel.add(Box.createVerticalGlue());
 
     return panel;

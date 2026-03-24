@@ -132,6 +132,7 @@ public class TableViewImpl implements TableView {
         nameP2,
         this,
         this.gameController,
+        this.soundController,
         this.targetScore
     );
 
@@ -275,6 +276,17 @@ public class TableViewImpl implements TableView {
             title, 
             JOptionPane.INFORMATION_MESSAGE
         );
+    }
+
+    @Override
+    public void repaintTable() {
+        discardPanel.revalidate();
+        discardPanel.repaint();
+        Window w = SwingUtilities.getWindowAncestor(discardPanel);
+        if (w != null) {
+            w.revalidate();
+            w.repaint();
+        }
     }
 
     public DrawManager getDrawManager() {

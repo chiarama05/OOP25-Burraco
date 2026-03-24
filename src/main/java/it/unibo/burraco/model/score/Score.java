@@ -19,4 +19,14 @@ public interface Score {
     int countCleanBurraco(Player player); 
 
     int countDirtyBurraco(Player player);
+
+    int calculateOnlyCardsOnTable(Player player);
+
+    int getCleanBurracoBonusValue();
+
+    int getDirtyBurracoBonusValue();
+
+    int getClosureBonusValue();
+    
+    int getNoPotPenalty();
 }

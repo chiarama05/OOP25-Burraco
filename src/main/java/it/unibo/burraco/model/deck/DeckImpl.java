@@ -22,6 +22,7 @@ public class DeckImpl implements Deck {
     /**
      * Svuota il mazzo e lo rigenera completamente.
      */
+    @Override
     public void reset() {
         this.cards.clear();
         initializeDeck();

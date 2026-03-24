@@ -42,4 +42,6 @@ public interface Deck {
      * @return a list of cards in the deck.
      */
     List<Card> getCards();
+
+    void reset();
 }

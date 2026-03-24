@@ -43,4 +43,6 @@ public interface DiscardPile {
      * Clears all cards from the discard pile.
      */
     void clear();
+
+    void reset();
 }

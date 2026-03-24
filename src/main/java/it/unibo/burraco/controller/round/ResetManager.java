@@ -1,14 +1,10 @@
 package it.unibo.burraco.controller.round;
 
-import it.unibo.burraco.model.deck.DeckImpl;
+import it.unibo.burraco.model.deck.Deck;
 import it.unibo.burraco.model.discard.DiscardPile;
-import it.unibo.burraco.model.player.PlayerImpl;
+import it.unibo.burraco.model.player.Player;
 
 public interface ResetManager {
 
-    /**
-     * Resetta lo stato logico del gioco per un nuovo round.
-     */
-    void resetRound(PlayerImpl p1, PlayerImpl p2, DeckImpl deck, DiscardPile discardPile);
-
+    void resetRound(Player p1, Player p2, Deck deck, DiscardPile discardPile);
 }

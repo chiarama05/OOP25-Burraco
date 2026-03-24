@@ -66,4 +66,9 @@ public class DiscardPileImpl implements DiscardPile{
         cards.clear();
     }
 
+    @Override
+    public void reset() {
+        this.cards.clear();
+    }
+
 }

@@ -24,7 +24,7 @@ public class PlayerImpl implements Player{
         return this.matchTotalScore;
     }
     
-    // Metodo per resettare le carte ma non i punti tra un round e l'altro
+    @Override
     public void resetForNewRound() {
         this.hand.clear();
         this.combinations.clear();

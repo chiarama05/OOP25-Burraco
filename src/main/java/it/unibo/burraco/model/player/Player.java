@@ -66,4 +66,10 @@ public interface Player {
      */
     void addToPot(List<Card> cards);
 
+    int getMatchTotalScore();
+
+    void addPointsToMatch(int points);
+
+    void resetForNewRound();
+
 }
