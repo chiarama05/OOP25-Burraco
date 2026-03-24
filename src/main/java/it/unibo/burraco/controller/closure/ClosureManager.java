@@ -1,12 +1,10 @@
 package it.unibo.burraco.controller.closure;
 
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.turn.Turn;
 import it.unibo.burraco.view.notification.GameNotifier;
 import it.unibo.burraco.view.table.TableView;
 import it.unibo.burraco.view.table.TableViewImpl;
-import it.unibo.burraco.view.score.ScoreView;
 import it.unibo.burraco.view.score.ScoreViewImpl;
 
 public class ClosureManager {
