@@ -122,7 +122,12 @@ public class TableViewImpl implements TableView {
         ClosureManager closureCtrl=this.closureManager;
 
         DiscardController discardCoreLogic = new DiscardController(
-        new DiscardManagerImpl(gameController.getDiscardPile()), turnCtrl, potCtrl, closureCtrl);
+    new DiscardManagerImpl(gameController.getDiscardPile()),
+    turnCtrl,
+    potCtrl,
+    closureCtrl,
+    drawManager,    
+    turnModel);         
     
         turnCtrl.setOnTurnChangedListener(() -> {
         refreshTurnLabel(turnModel.isPlayer1Turn());
@@ -130,7 +135,7 @@ public class TableViewImpl implements TableView {
         });
 
    
-        new it.unibo.burraco.view.button.DiscardButton(this, turnModel, drawManager, discardView, notifier, discardCoreLogic );
+        new DiscardButton(this, discardView, notifier, discardCoreLogic);
 
         PutCombinationButton putComboLogic = new PutCombinationButton(this, gameController, drawManager, potCtrl, closureCtrl);
         putComboBtn.addActionListener(e -> putComboLogic.handlePutCombination());
