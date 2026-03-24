@@ -3,6 +3,7 @@ package it.unibo.burraco.view.table;
 import it.unibo.burraco.controller.SoundController;
 import it.unibo.burraco.controller.buttonLogic.DiscardController;
 import it.unibo.burraco.controller.buttonLogic.PutCombinationController;
+import it.unibo.burraco.controller.buttonLogic.TakeDiscardController;
 import it.unibo.burraco.controller.closure.ClosureManager;
 import it.unibo.burraco.controller.discardcard.DiscardManagerImpl;
 import it.unibo.burraco.controller.drawcard.DrawManager;
@@ -106,7 +107,7 @@ public class TableViewImpl implements TableView {
     frame.setVisible(true);
     }
 
-    @Override
+   @Override
     public void wireControllers(it.unibo.burraco.model.turn.Turn turnModel) {
     GameNotifier notifier = new GameNotifierImpl(frame);
 
@@ -122,8 +123,8 @@ public class TableViewImpl implements TableView {
         turnCtrl,
         this.potManager,
         this.closureManager,
-        drawManager,   
-        turnModel);     
+        drawManager,
+        turnModel);
 
     turnCtrl.setOnTurnChangedListener(() -> {
         refreshTurnLabel(turnModel.isPlayer1Turn());
@@ -137,19 +138,31 @@ public class TableViewImpl implements TableView {
         drawManager,
         this.potManager,
         this.closureManager,
-        turnModel);        
+        turnModel);
 
     PutCombinationButton putCombinationLogic = new PutCombinationButton(
         this,
         gameController,
-        putCombinationCtrl);      
+        putCombinationCtrl);
 
     putComboBtn.addActionListener(e -> putCombinationLogic.handlePutCombination());
 
     new DeckButton(deckView, drawManager, this, gameController);
-    new TakeDiscardButton(takeDiscardBtn, drawManager, this, turnModel,
-        gameController.getDiscardPile(), discardView);
-    }
+
+    // ✅ nuovo: prima crei il controller, poi lo passi al bottone
+    TakeDiscardController takeDiscardCtrl = new TakeDiscardController(
+        drawManager,
+        turnModel,
+        gameController.getDiscardPile());
+
+    new TakeDiscardButton(
+        takeDiscardBtn,
+        takeDiscardCtrl,
+        this,
+        turnModel,
+        gameController.getDiscardPile(),
+        discardView);
+}
 
 
 
