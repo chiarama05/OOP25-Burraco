@@ -1,10 +1,10 @@
 package it.unibo.burraco.view.button;
 
+import it.unibo.burraco.controller.buttonLogic.DiscardController;
+import it.unibo.burraco.controller.discardcard.DiscardResult;
+import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.core.drawcard.DrawManager;
-import it.unibo.burraco.core.buttonLogic.DiscardController;
-import it.unibo.burraco.core.discardcard.DiscardResult;
 import it.unibo.burraco.view.discard.DiscardViewImpl;
 import it.unibo.burraco.view.hand.HandImpl;
 import it.unibo.burraco.view.notification.GameNotifier;
@@ -21,7 +21,7 @@ public class DiscardButton {
 
     public DiscardButton(TableView view, 
                          it.unibo.burraco.model.turn.Turn turnModel, 
-                         it.unibo.burraco.core.drawcard.DrawManager drawManager, 
+                         it.unibo.burraco.controller.drawcard.DrawManager drawManager, 
                          it.unibo.burraco.view.discard.DiscardViewImpl discardView, 
                          it.unibo.burraco.view.notification.GameNotifier notifier, 
                          DiscardController coreController) {

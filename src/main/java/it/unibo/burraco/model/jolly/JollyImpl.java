@@ -2,7 +2,7 @@ package it.unibo.burraco.model.jolly;
 
 import java.util.List;
 
-import it.unibo.burraco.core.combination.StraightUtils;
+import it.unibo.burraco.controller.combination.StraightUtils;
 import it.unibo.burraco.model.card.Card;
 
 /**

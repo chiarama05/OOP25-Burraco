@@ -1,17 +1,17 @@
 package it.unibo.burraco.view.button;
 
+import it.unibo.burraco.controller.buttonLogic.AttachController;
+import it.unibo.burraco.controller.closure.ClosureManager;
+import it.unibo.burraco.controller.closure.ClosureState;
+import it.unibo.burraco.controller.closure.ClosureValidator;
+import it.unibo.burraco.controller.combination.CombinationValidator;
+import it.unibo.burraco.controller.combination.StraightUtils;
+import it.unibo.burraco.controller.controller.GameController;
+import it.unibo.burraco.controller.pot.PotManager;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.core.buttonLogic.AttachController;
-import it.unibo.burraco.core.combination.CombinationValidator;
-import it.unibo.burraco.core.combination.StraightUtils;
-import it.unibo.burraco.core.controller.GameController;
 import it.unibo.burraco.view.burraco.BurracoStyleManager;
 import it.unibo.burraco.view.table.TableView;
-import it.unibo.burraco.core.closure.ClosureManager;
-import it.unibo.burraco.core.closure.ClosureState;
-import it.unibo.burraco.core.closure.ClosureValidator;
-import it.unibo.burraco.core.pot.PotManager;
 
 import javax.swing.*;
 import java.awt.*;

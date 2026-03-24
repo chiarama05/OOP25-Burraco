@@ -1,8 +1,14 @@
 package it.unibo.burraco.view.table;
 
-import it.unibo.burraco.core.SoundController;
-import it.unibo.burraco.core.drawcard.DrawManager;
-import it.unibo.burraco.core.selectioncard.SelectionCardManager;
+import it.unibo.burraco.controller.SoundController;
+import it.unibo.burraco.controller.buttonLogic.DiscardController;
+import it.unibo.burraco.controller.closure.ClosureManager;
+import it.unibo.burraco.controller.controller.GameController;
+import it.unibo.burraco.controller.discardcard.DiscardManagerImpl;
+import it.unibo.burraco.controller.drawcard.DrawManager;
+import it.unibo.burraco.controller.pot.PotManager;
+import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
+import it.unibo.burraco.controller.turn.TurnController;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.*;
 import it.unibo.burraco.view.button.*;
@@ -12,12 +18,6 @@ import it.unibo.burraco.view.distribution.InitialDistributionView;
 import it.unibo.burraco.view.hand.HandImpl;
 import it.unibo.burraco.view.notification.GameNotifier;
 import it.unibo.burraco.view.notification.GameNotifierImpl;
-import it.unibo.burraco.core.controller.GameController;
-import it.unibo.burraco.core.turn.TurnController;
-import it.unibo.burraco.core.pot.PotManager;
-import it.unibo.burraco.core.closure.ClosureManager;
-import it.unibo.burraco.core.buttonLogic.DiscardController;
-import it.unibo.burraco.core.discardcard.DiscardManagerImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,7 +32,7 @@ public class TableViewImpl implements TableView {
     private final InitialDistributionView initDist;
     private final DiscardViewImpl discardView;
     private DrawManager drawManager;
-    private it.unibo.burraco.core.controller.GameController gameController;
+    private it.unibo.burraco.controller.controller.GameController gameController;
     private final DeckView deckView; 
     private final JButton takeDiscardBtn; 
     private final JButton putComboBtn; 

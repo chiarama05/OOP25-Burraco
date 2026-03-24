@@ -1,11 +1,11 @@
 package it.unibo.burraco.view.hand;
 
+import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
 import it.unibo.burraco.model.card.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.Set;
-import it.unibo.burraco.core.selectioncard.SelectionCardManager;
 
 
 public class HandImpl extends JPanel implements Hand {

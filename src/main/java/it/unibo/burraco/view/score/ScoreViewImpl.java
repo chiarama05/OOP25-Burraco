@@ -1,11 +1,11 @@
 package it.unibo.burraco.view.score;
 
+import it.unibo.burraco.controller.score.ScoreManager;
+import it.unibo.burraco.controller.score.ScoreManagerImpl;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.view.sound.SoundControllerImpl;
 import it.unibo.burraco.view.table.TableViewImpl;
-import it.unibo.burraco.core.score.ScoreManager;
-import it.unibo.burraco.core.score.ScoreManagerImpl;
 import it.unibo.burraco.view.button.RoundedGradientButton;
 
 import javax.swing.*;
@@ -18,10 +18,10 @@ public class ScoreViewImpl implements ScoreView{
     private final ScoreManager scoreManager;
     private final int targetScore;
     private final TableViewImpl tableView;
-    private final it.unibo.burraco.core.controller.GameController gameController;
+    private final it.unibo.burraco.controller.controller.GameController gameController;
 
     public ScoreViewImpl(Player p1, Player p2, String name1, String name2, int targetScore, 
-                         TableViewImpl tableView, it.unibo.burraco.core.controller.GameController gameController) {
+                         TableViewImpl tableView, it.unibo.burraco.controller.controller.GameController gameController) {
         this.scoreManager = new ScoreManagerImpl();
         this.frame = new JFrame("Burraco - Final Standings");
         this.targetScore = targetScore;
@@ -94,8 +94,8 @@ public class ScoreViewImpl implements ScoreView{
             actionBtn.addActionListener(e -> {
                 frame.dispose();
                 gameController.getTurnModel().resetForNewRound();
-                it.unibo.burraco.core.round.ResetManager resetManager = new it.unibo.burraco.core.round.ResetManagerImpl();
-                it.unibo.burraco.core.round.RoundController rc = new it.unibo.burraco.core.round.RoundControllerImpl(
+                it.unibo.burraco.controller.round.ResetManager resetManager = new it.unibo.burraco.controller.round.ResetManagerImpl();
+                it.unibo.burraco.controller.round.RoundController rc = new it.unibo.burraco.controller.round.RoundControllerImpl(
                     tableView, 
                     resetManager, 
                     (PlayerImpl)p1, 
@@ -124,7 +124,7 @@ public class ScoreViewImpl implements ScoreView{
     int total = 0;
     for (java.util.List<it.unibo.burraco.model.card.Card> combination : p.getCombinations()) {
         for (it.unibo.burraco.model.card.Card card : combination) {
-            total += it.unibo.burraco.core.score.CardPointCalculator.getCardPoints(card);
+            total += it.unibo.burraco.controller.score.CardPointCalculator.getCardPoints(card);
         }
     }
     return total;

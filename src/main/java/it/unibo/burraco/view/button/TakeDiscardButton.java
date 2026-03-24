@@ -1,8 +1,9 @@
 package it.unibo.burraco.view.button;
 
 import java.awt.event.ActionListener;
-import it.unibo.burraco.core.drawcard.DrawManager;
-import it.unibo.burraco.core.drawcard.DrawResult;
+
+import it.unibo.burraco.controller.drawcard.DrawManager;
+import it.unibo.burraco.controller.drawcard.DrawResult;
 import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.turn.Turn;

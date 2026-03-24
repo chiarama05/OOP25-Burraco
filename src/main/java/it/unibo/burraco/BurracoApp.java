@@ -1,8 +1,9 @@
 package it.unibo.burraco;
 import javax.swing.SwingUtilities;
 
-import it.unibo.burraco.core.controller.GameController;
-import it.unibo.burraco.core.distributioncard.DistributionManagerImpl;
+import it.unibo.burraco.controller.controller.GameController;
+import it.unibo.burraco.controller.distributioncard.DistributionManagerImpl;
+import it.unibo.burraco.controller.distributioncard.InitialDistributionController;
 import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.turn.TurnImpl;
 import it.unibo.burraco.view.start.SetUpMenuView;
@@ -10,7 +11,6 @@ import it.unibo.burraco.view.start.SetUpMenuViewImpl;
 import it.unibo.burraco.view.start.StartMenuView;
 import it.unibo.burraco.view.start.StartMenuViewImpl;
 import it.unibo.burraco.view.table.TableViewImpl;
-import it.unibo.burraco.core.distributioncard.InitialDistributionController;
 
 
 public class BurracoApp {
@@ -33,7 +33,7 @@ public class BurracoApp {
                 PlayerImpl p2 = new PlayerImpl(nameP2);
                 TurnImpl turnManager = new TurnImpl(p1, p2);
 
-                it.unibo.burraco.core.SoundController sound = new it.unibo.burraco.view.sound.SoundControllerImpl();
+                it.unibo.burraco.controller.SoundController sound = new it.unibo.burraco.view.sound.SoundControllerImpl();
                 
                 TableViewImpl view = new TableViewImpl(p1, p2, nameP1, nameP2, sound);
                 view.setTargetScore(scoreThreshold);
