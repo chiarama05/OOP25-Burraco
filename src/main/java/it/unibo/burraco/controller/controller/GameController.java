@@ -2,8 +2,12 @@ package it.unibo.burraco.controller.controller;
 
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.player.PlayerImpl;
+
+import java.util.List;
+
 import it.unibo.burraco.controller.SoundController;
 import it.unibo.burraco.controller.buttonLogic.AttachController;
+import it.unibo.burraco.controller.buttonLogic.AttachResult;
 import it.unibo.burraco.controller.buttonLogic.PutCombinationController;
 import it.unibo.burraco.controller.distributioncard.DistributionManagerImpl;
 import it.unibo.burraco.controller.distributioncard.InitialDistributionController;
@@ -12,6 +16,7 @@ import it.unibo.burraco.model.deck.DeckImpl;
 import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.discard.DiscardPileImpl;
 import it.unibo.burraco.model.turn.Turn;
+import it.unibo.burraco.model.card.*;
 
 
 public class GameController {
@@ -41,6 +46,30 @@ public class GameController {
         this.distributionController = new InitialDistributionController(new DistributionManagerImpl());
 }
 
+
+public AttachResult tryAttach(List<Card> selectedCards,
+                               List<Card> combinationCards,
+                               boolean isPlayer1Owner) {
+
+    Player currentPlayer = turnModel.getCurrentPlayer();
+    boolean hasDrawn = drawManager.hasDrawn();
+    boolean isCurrentPlayer = (isPlayer1(currentPlayer) == isPlayer1Owner);
+
+    AttachResult result = attachController.tryAttach(
+            currentPlayer,
+            selectedCards,
+            combinationCards,
+            hasDrawn,
+            isCurrentPlayer
+    );
+
+    // Il suono appartiene al controller, non alla View
+    if (result == AttachResult.SUCCESS_BURRACO) {
+        soundController.playBurracoSound();
+    }
+
+    return result;
+}
 public InitialDistributionController getDistributionController() {
     return distributionController;
 }
