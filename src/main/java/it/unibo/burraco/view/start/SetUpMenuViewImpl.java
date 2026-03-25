@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import it.unibo.burraco.view.button.RoundedGradientButton;
+import it.unibo.burraco.view.colorbutton.RoundedGradientButton;
 
 import java.awt.*;
 import java.util.ArrayList; 

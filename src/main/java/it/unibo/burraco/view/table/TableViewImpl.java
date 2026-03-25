@@ -15,11 +15,14 @@ import it.unibo.burraco.controller.turn.TurnController;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.*;
 import it.unibo.burraco.view.attach.AttachButton;
-import it.unibo.burraco.view.button.*;
+import it.unibo.burraco.view.colorbutton.*;
+import it.unibo.burraco.view.combination.PutCombinationButton;
 import it.unibo.burraco.view.deck.DeckButton;
 import it.unibo.burraco.view.deck.DeckView;
 import it.unibo.burraco.view.discard.DiscardButton;
 import it.unibo.burraco.view.discard.DiscardViewImpl;
+import it.unibo.burraco.view.discard.TakeDiscardButton;
+import it.unibo.burraco.view.discard.TakeDiscardView;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
 import it.unibo.burraco.view.hand.HandImpl;
 import it.unibo.burraco.view.notification.GameNotifier;
@@ -35,7 +38,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class TableViewImpl implements TableView, PotView, SelectionView {
+public class TableViewImpl implements TableView, PotView, SelectionView, TakeDiscardView {
     private final JFrame frame;
     private final JLabel turnLabel;
     private final JPanel combPanel1, combPanel2, discardPanel, deckPanel;
@@ -180,13 +183,13 @@ public class TableViewImpl implements TableView, PotView, SelectionView {
         gameController.getDiscardPile());
 
     new TakeDiscardButton(
-        takeDiscardBtn,
-        takeDiscardCtrl,
-        this,
-        turnModel,
-        gameController.getDiscardPile(),
-        discardView);
-}
+    takeDiscardBtn,
+    takeDiscardCtrl,
+    this,          
+    turnModel,
+    gameController.getDiscardPile()
+    );
+    }
 
 
 
@@ -306,6 +309,11 @@ public class TableViewImpl implements TableView, PotView, SelectionView {
     @Override
     public void showSelectionError(String message) {
         JOptionPane.showMessageDialog(frame, message, "Selezione", JOptionPane.WARNING_MESSAGE);
+    }
+
+    @Override
+    public void updateDiscardPile(List<Card> cards) {
+        discardView.updateDiscardPile(cards);
     }
 
     public DrawManager getDrawManager() {
