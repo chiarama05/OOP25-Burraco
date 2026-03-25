@@ -1,4 +1,4 @@
-package it.unibo.burraco.view.notification;
+package it.unibo.burraco.view.notification.game;
 
 public interface GameNotifier {
 

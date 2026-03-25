@@ -2,7 +2,7 @@ package it.unibo.burraco.controller.closure;
 
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.turn.Turn;
-import it.unibo.burraco.view.notification.GameNotifier;
+import it.unibo.burraco.view.notification.game.GameNotifier;
 import it.unibo.burraco.controller.score.ScoreController;
 
 public class ClosureManager {

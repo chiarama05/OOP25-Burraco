@@ -1,4 +1,4 @@
-package it.unibo.burraco.view.notification;
+package it.unibo.burraco.view.notification.game;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
