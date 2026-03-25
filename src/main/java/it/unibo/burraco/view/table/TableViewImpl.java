@@ -1,6 +1,5 @@
 package it.unibo.burraco.view.table;
 
-import it.unibo.burraco.controller.SoundController;
 import it.unibo.burraco.controller.closure.ClosureManager;
 import it.unibo.burraco.controller.combination.PutCombinationController;
 import it.unibo.burraco.controller.discardcard.DiscardController;
@@ -11,6 +10,7 @@ import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.controller.pot.PotManager;
 import it.unibo.burraco.controller.score.ScoreController;
 import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
+import it.unibo.burraco.controller.sound.SoundController;
 import it.unibo.burraco.controller.turn.TurnController;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.*;

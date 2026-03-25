@@ -1,12 +1,12 @@
 package it.unibo.burraco.controller.score;
 
-import it.unibo.burraco.controller.SoundController;
 import it.unibo.burraco.controller.distributioncard.DistributionManagerImpl;
 import it.unibo.burraco.controller.distributioncard.InitialDistributionController;
 import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.controller.round.ResetManagerImpl;
 import it.unibo.burraco.controller.round.RoundController;
 import it.unibo.burraco.controller.round.RoundControllerImpl;
+import it.unibo.burraco.controller.sound.SoundController;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.score.Score;
 import it.unibo.burraco.view.score.ScoreViewImpl;

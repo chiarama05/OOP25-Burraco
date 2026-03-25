@@ -9,7 +9,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
 
-import it.unibo.burraco.controller.SoundController;
+import it.unibo.burraco.controller.sound.SoundController;
 
 public class SoundControllerImpl implements SoundController{
 

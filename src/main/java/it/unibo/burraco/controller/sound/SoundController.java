@@ -1,4 +1,4 @@
-package it.unibo.burraco.controller;
+package it.unibo.burraco.controller.sound;
 
 public interface SoundController {
 
