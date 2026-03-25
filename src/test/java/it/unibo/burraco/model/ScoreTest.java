@@ -190,16 +190,15 @@ public class ScoreTest {
 
     @Test
     void testFinalScoreNoPotPenaltyOnly() {
-        // Nessuna carta in mano, nessuna combinazione, pot non preso
-        // 0 (tavolo) + 0 (burraco) - 100 (no pot) - 0 (mano) = -100
-        assertEquals(NO_POT_PENALTY, score.calculateFinalScore(player));
+        player.addCardHand(new CardImpl(HEARTS, "3")); 
+        assertEquals(-105, score.calculateFinalScore(player));
     }
 
     @Test
     void testFinalScoreWithPotNoCombinations() {
-        // Pot preso, ma mano vuota e nessuna combinazione
         player.setInPot(true);
-        assertEquals(0, score.calculateFinalScore(player));
+        player.addCardHand(new CardImpl(HEARTS, "3")); 
+        assertEquals(-5, score.calculateFinalScore(player));
     }
 
     @Test
