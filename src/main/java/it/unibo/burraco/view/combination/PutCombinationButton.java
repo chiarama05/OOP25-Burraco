@@ -5,6 +5,7 @@ import it.unibo.burraco.controller.combination.PutCombinationController;
 import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
+import it.unibo.burraco.view.notification.putcombination.PutCombinationNotifier;
 import it.unibo.burraco.view.table.TableView;
 
 import javax.swing.JOptionPane;
@@ -19,10 +20,11 @@ public class PutCombinationButton implements PutCombinationView {
 
     public PutCombinationButton(TableView tableView,
                                  GameController gameController,
-                                 PutCombinationController putComboController) {
+                                 PutCombinationController putComboController,
+                                 PutCombinationNotifier notifier) {
         this.tableView = tableView;
         this.gameController = gameController;
-        this.actionController = new PutCombinationActionController(gameController, putComboController);
+        this.actionController = new PutCombinationActionController(gameController, putComboController, notifier);
     }
 
     public void handlePutCombination() {
@@ -49,11 +51,13 @@ public class PutCombinationButton implements PutCombinationView {
     public void onCombinationTakePot(List<Card> combo, boolean isP1, Player current) {
         tableView.addCombinationToPlayerPanel(combo, isP1);
         tableView.getHandViewForPlayer(current).clearSelection();
+        tableView.refreshHandPanel(current);
     }
 
     @Override
     public void onCombinationClose(List<Card> combo, boolean isP1, Player current) {
         tableView.addCombinationToPlayerPanel(combo, isP1);
         tableView.getHandViewForPlayer(current).clearSelection();
+        tableView.refreshHandPanel(current);
     }
 }
