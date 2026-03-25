@@ -23,7 +23,6 @@ public class DiscardResult {
         this.currentPlayer = currentPlayer;
     }
 
-    // ✅ Factory methods statici per non riscrivere il costruttore ovunque
     public static DiscardResult error(String message) {
         return new DiscardResult(false, false, false, message, null, null);
     }

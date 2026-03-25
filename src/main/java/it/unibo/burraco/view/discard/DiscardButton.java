@@ -3,7 +3,6 @@ package it.unibo.burraco.view.discard;
 import it.unibo.burraco.controller.discardcard.DiscardController;
 import it.unibo.burraco.controller.discardcard.DiscardResult;
 import it.unibo.burraco.model.card.Card;
-import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.hand.HandViewImpl;
 import it.unibo.burraco.view.notification.GameNotifier;
 import it.unibo.burraco.view.table.TableView;
@@ -30,31 +29,21 @@ public class DiscardButton {
     }
 
     private void handleDiscardClick() {
-        
-        Player current = view.getGameController().getCurrentPlayer();
-        HandViewImpl handView = view.getHandViewForPlayer(current);
+        HandViewImpl handView = view.getCurrentHandView(); // niente più GameController
         Set<Card> selected = handView.getSelectedCards();
 
         DiscardResult result = discardController.tryDiscard(selected);
 
         if (result.isValid()) {
-            
             handView.refreshHand(result.getCurrentPlayer().getHand());
             handView.clearSelection();
             discardView.updateDiscardPile(result.getUpdatedDiscardPile());
         } else {
             switch (result.getMessage()) {
-                case "must_draw":
-                    notifier.notifyMustDraw();
-                    break;
-                case "select_one":
-                    notifier.notifySelectionError("Select only one card!");
-                    break;
-                default:
-                    notifier.notifySelectionError(result.getMessage());
-                    break;
+                case "must_draw" -> notifier.notifyMustDraw();
+                case "select_one" -> notifier.notifySelectionError("Select only one card!");
+                default -> notifier.notifySelectionError(result.getMessage());
             }
         }
     }
 }
-

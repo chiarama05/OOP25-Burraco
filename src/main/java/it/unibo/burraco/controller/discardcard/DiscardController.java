@@ -69,7 +69,6 @@ public class DiscardController {
 
         turnCtrl.executeNextTurn();
 
-        // ✅ Ritorna dati già pronti per la UI
         return DiscardResult.success(
             discardManager.getDiscardPile(), current, false);
     }

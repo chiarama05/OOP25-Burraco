@@ -315,6 +315,12 @@ public class TableViewImpl implements TableView, PotView, SelectionView, TakeDis
         discardView.updateDiscardPile(cards);
     }
 
+    @Override
+    public HandViewImpl getCurrentHandView() {
+        Player current = gameController.getCurrentPlayer();
+        return getHandViewForPlayer(current);
+    }
+
     public DrawManager getDrawManager() {
         return this.drawManager;
     }
