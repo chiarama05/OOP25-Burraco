@@ -1,4 +1,4 @@
-package it.unibo.burraco.view.button;
+package it.unibo.burraco.view.colorbutton;
 
 import javax.swing.JButton;
 import java.awt.*;

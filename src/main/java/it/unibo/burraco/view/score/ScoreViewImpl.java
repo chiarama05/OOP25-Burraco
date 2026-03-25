@@ -5,8 +5,8 @@ import it.unibo.burraco.controller.round.RoundController;
 import it.unibo.burraco.controller.sound.SoundController;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.score.Score;
+import it.unibo.burraco.view.colorbutton.RoundedGradientButton;
 import it.unibo.burraco.view.table.TableView;
-import it.unibo.burraco.view.button.RoundedGradientButton;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

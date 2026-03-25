@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import it.unibo.burraco.view.button.RoundedGradientButton;
+import it.unibo.burraco.view.colorbutton.RoundedGradientButton;
 
 import java.awt.*;
 
