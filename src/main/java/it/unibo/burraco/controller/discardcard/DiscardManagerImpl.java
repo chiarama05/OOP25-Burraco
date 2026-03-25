@@ -42,7 +42,7 @@ public class DiscardManagerImpl implements DiscardManager {
                 return DiscardResult.success(discardPile.getCards(), player, true);
 
             case CANNOT_CLOSE_NO_BURRACO:
-                // Undo — modello rimane consistente
+                
                 discardPile.drawLast();
                 player.addCardHand(card);
                 return DiscardResult.error("You need at least one Burraco to close the round!");
