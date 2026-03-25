@@ -184,16 +184,19 @@ public class TableViewImpl implements TableView, PotView, SelectionView, TakeDis
     new DeckButton(deckView, drawManager, this, gameController, deckNotifier);
 
     TakeDiscardController takeDiscardCtrl = new TakeDiscardController(
-        drawManager,
-        turnModel,
-        gameController.getDiscardPile());
+        drawManager, turnModel, gameController.getDiscardPile());
+
+
+    it.unibo.burraco.view.notification.takediscard.TakeDiscardNotifier takeDiscardNotifier = 
+        new it.unibo.burraco.view.notification.takediscard.TakeDiscardNotifierImpl(this.frame);
 
     new TakeDiscardButton(
-    takeDiscardBtn,
-    takeDiscardCtrl,
-    this,          
-    turnModel,
-    gameController.getDiscardPile()
+        takeDiscardBtn,
+        takeDiscardCtrl,
+        this,           
+        turnModel,
+        gameController.getDiscardPile(),
+        takeDiscardNotifier // Ora il bottone lo riceve e l'errore "cannot be resolved" scompare
     );
     }
 

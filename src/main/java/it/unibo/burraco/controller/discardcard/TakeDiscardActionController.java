@@ -23,14 +23,13 @@ public class TakeDiscardActionController {
     public void handle(TakeDiscardActionView view) {
         DrawResult result = takeDiscardController.tryTakeDiscard();
 
-        switch (result.getStatus()) {
-            case SUCCESS_MULTIPLE -> {
-                Player current = turnModel.getCurrentPlayer();
-                view.onTakeDiscardSuccess(current, discardPile.getCards());
-            }
-            case ALREADY_DRAWN -> view.onTakeDiscardError("already_drawn");
-            case EMPTY_DISCARD -> view.onTakeDiscardError("empty_discard");
-            default -> {}
+        if (result.getStatus() == DrawResult.Status.SUCCESS_MULTIPLE) {
+            Player current = turnModel.getCurrentPlayer();
+
+            view.onTakeDiscardSuccess(current, discardPile.getCards());
+        } else {
+ 
+            view.onTakeDiscardError(result); 
         }
     }
 }
