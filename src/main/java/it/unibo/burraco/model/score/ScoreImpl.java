@@ -64,7 +64,7 @@ public class ScoreImpl implements Score{
 
     private boolean isCleanBurraco(List<Card> combination) {
 
-    // Jolly → sempre sporco
+
     if (combination.stream().anyMatch(c -> c.getValue().equals("Jolly"))) {
         return false;
     }
@@ -73,39 +73,29 @@ public class ScoreImpl implements Score{
             .filter(c -> c.getValue().equals("2"))
             .collect(Collectors.toList());
 
-    // Nessun 2 → pulito per definizione
     if (twos.isEmpty()) return true;
 
-    // Più di un 2 → sempre sporco
     if (twos.size() > 1) return false;
 
-    // Esattamente un 2: verifica posizione naturale e seme
     Card two = twos.get(0);
     return isTwoInNaturalPosition(two, combination);
 }
 
-/**
- * Verifica che il 2 sia in posizione naturale:
- * stesso seme di tutte le altre carte E la sequenza
- * è consecutiva trattando il 2 come valore 2 reale.
- */
+
 private boolean isTwoInNaturalPosition(Card two, List<Card> combination) {
 
     String suit = two.getSeed();
 
-    // Tutte le carte devono avere lo stesso seme
     boolean sameSuit = combination.stream()
             .allMatch(c -> c.getSeed().equals(suit));
 
     if (!sameSuit) return false;
 
-    // Ottieni i rank numerici di tutte le carte
     List<Integer> ranks = combination.stream()
-            .map(CardPoint::toInt)   // es. A=1, 2=2, ..., K=13
+            .map(CardPoint::toInt)   
             .sorted()
             .collect(Collectors.toList());
 
-    // Verifica che la sequenza sia consecutiva senza buchi
     for (int i = 1; i < ranks.size(); i++) {
         if (ranks.get(i) != ranks.get(i - 1) + 1) {
             return false;

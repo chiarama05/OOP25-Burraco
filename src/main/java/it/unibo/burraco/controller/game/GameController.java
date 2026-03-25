@@ -5,12 +5,12 @@ import it.unibo.burraco.model.player.PlayerImpl;
 
 import java.util.List;
 
-import it.unibo.burraco.controller.SoundController;
 import it.unibo.burraco.controller.attach.AttachController;
 import it.unibo.burraco.controller.attach.AttachResult;
 import it.unibo.burraco.controller.distributioncard.DistributionManagerImpl;
 import it.unibo.burraco.controller.distributioncard.InitialDistributionController;
 import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
+import it.unibo.burraco.controller.sound.SoundController;
 import it.unibo.burraco.model.deck.DeckImpl;
 import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.discard.DiscardPileImpl;

@@ -33,7 +33,7 @@ public class BurracoApp {
                 PlayerImpl p2 = new PlayerImpl(nameP2);
                 TurnImpl turnManager = new TurnImpl(p1, p2);
 
-                it.unibo.burraco.controller.SoundController sound = new it.unibo.burraco.view.sound.SoundControllerImpl();
+                it.unibo.burraco.controller.sound.SoundController sound = new it.unibo.burraco.view.sound.SoundControllerImpl();
                 
                 TableViewImpl view = new TableViewImpl(p1, p2, nameP1, nameP2, sound);
                 view.setTargetScore(scoreThreshold);
