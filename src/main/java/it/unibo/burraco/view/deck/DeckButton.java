@@ -5,6 +5,7 @@ import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.table.TableView;
+import it.unibo.burraco.view.notification.deck.DeckNotifier;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -17,10 +18,11 @@ public class DeckButton implements ActionListener, DeckDrawView {
     private final DeckActionController actionController;
 
     public DeckButton(DeckView deckView, DrawManager drawManager,
-                      TableView tableView, GameController gameController) {
+                      TableView tableView, GameController gameController, 
+                      DeckNotifier notifier) {
         this.deckView = deckView;
         this.tableView = tableView;
-        this.actionController = new DeckActionController(gameController, drawManager);
+        this.actionController = new DeckActionController(gameController, drawManager, notifier);
         this.deckView.getDeckButton().addActionListener(this);
     }
 

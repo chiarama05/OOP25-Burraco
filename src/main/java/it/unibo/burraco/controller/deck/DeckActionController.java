@@ -4,31 +4,30 @@ import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.controller.drawcard.DrawResult;
 import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.view.deck.DeckDrawView;
+import it.unibo.burraco.view.notification.deck.DeckNotifier;
 
 public class DeckActionController {
 
     private final GameController gameController;
     private final DrawManager drawManager;
+    private final DeckNotifier notifier;
 
-    public DeckActionController(GameController gameController, DrawManager drawManager) {
+    public DeckActionController(GameController gameController, DrawManager drawManager, DeckNotifier notifier) {
         this.gameController = gameController;
         this.drawManager = drawManager;
+        this.notifier = notifier;
     }
 
     public void handle(DeckDrawView view) {
-        var currentPlayer = gameController.getCurrentPlayer();
-        var deck = gameController.getCommonDeck();
+    var currentPlayer = gameController.getCurrentPlayer();
+    var deck = gameController.getCommonDeck();
 
-        DrawResult result = drawManager.drawFromDeck(currentPlayer, deck);
+    DrawResult result = drawManager.drawFromDeck(currentPlayer, deck);
 
-        switch (result.getStatus()) {
-            case SUCCESS ->
-                view.onDrawSuccess(currentPlayer);
-            case ALREADY_DRAWN ->
-                view.showDrawError("You have already drawn a card this turn!");
-            case EMPTY_DECK ->
-                view.showDrawError("The deck is empty!");
-            default -> {}
-        }
+    if (result.getStatus() == DrawResult.Status.SUCCESS) {
+        view.onDrawSuccess(currentPlayer);
+    } else {
+        notifier.notifyDrawError(result);
     }
+}
 }

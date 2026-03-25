@@ -178,7 +178,10 @@ public class TableViewImpl implements TableView, PotView, SelectionView, TakeDis
 
     putComboBtn.addActionListener(e -> putCombinationLogic.handlePutCombination());
 
-    new DeckButton(deckView, drawManager, this, gameController);
+    it.unibo.burraco.view.notification.deck.DeckNotifier deckNotifier = 
+        new it.unibo.burraco.view.notification.deck.DeckNotifierImpl(this.frame);
+
+    new DeckButton(deckView, drawManager, this, gameController, deckNotifier);
 
     TakeDiscardController takeDiscardCtrl = new TakeDiscardController(
         drawManager,
