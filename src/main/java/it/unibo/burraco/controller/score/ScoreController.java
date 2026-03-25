@@ -9,6 +9,7 @@ import it.unibo.burraco.controller.round.RoundControllerImpl;
 import it.unibo.burraco.controller.sound.SoundController;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.score.Score;
+import it.unibo.burraco.view.score.ScoreView;
 import it.unibo.burraco.view.score.ScoreViewImpl;
 import it.unibo.burraco.view.table.TableView;
 
@@ -49,29 +50,41 @@ public class ScoreController {
     public void onRoundEnd() {
 
         int roundS1 = score.calculateFinalScore(player1);
-        int roundS2 = score.calculateFinalScore(player2);
+    int roundS2 = score.calculateFinalScore(player2);
+    player1.addPointsToMatch(roundS1);
+    player2.addPointsToMatch(roundS2);
 
-        player1.addPointsToMatch(roundS1);
-        player2.addPointsToMatch(roundS2);
+    // 1. Calcola matchOver qui nel Controller
+    boolean matchOver = player1.getMatchTotalScore() >= targetScore || 
+                        player2.getMatchTotalScore() >= targetScore;
 
+    // 2. Gestisci il suono qui nel Controller
+    if (matchOver) {
+        soundController.playVictorySound();
+    } else {
+        soundController.playRoundEndSound();
+    }
+
+    // 3. Crea la View passandole matchOver
+    ScoreView view = new ScoreViewImpl(
+        player1, player2, nameP1, nameP2, 
+        targetScore, score, tableView, matchOver
+    );
+
+    // 4. Definisci l'azione del bottone qui nel Controller
+    view.setOnNextAction(() -> {
+        view.close();
+        gameController.getTurnModel().resetForNewRound();
+        
         RoundController roundController = new RoundControllerImpl(
-            tableView,
-            new ResetManagerImpl(),
-            player1,
-            player2,
-            gameController,
-            new InitialDistributionController(new DistributionManagerImpl())
+            tableView, new ResetManagerImpl(), player1, player2, 
+            gameController, new InitialDistributionController(new DistributionManagerImpl())
         );
+        
+        roundController.processNewRound();
+        tableView.refreshTurnLabel(true);
+    });
 
-        new ScoreViewImpl(
-            player1, player2,
-            nameP1, nameP2,
-            targetScore,
-            score,
-            tableView,
-            gameController,
-            roundController,
-            soundController
-        ).display();
+    view.display();
     }
 }

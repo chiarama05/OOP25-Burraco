@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 
-public class HandImpl extends JPanel implements Hand {
+public class HandImpl extends JPanel implements HandView {
 
     private final SelectionCardManager selectionManager;
     private CardSelectionListener listener;

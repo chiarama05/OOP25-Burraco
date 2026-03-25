@@ -6,4 +6,6 @@ public interface ScoreView {
     
     void close();
 
+    void setOnNextAction(Runnable action);
+
 }

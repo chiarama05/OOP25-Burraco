@@ -161,4 +161,5 @@ private boolean isTwoInNaturalPosition(Card two, List<Card> combination) {
     public int getNoPotPenalty() {
         return NO_POT_PENALTY;
     }
+    
 }

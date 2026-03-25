@@ -1,8 +1,5 @@
 package it.unibo.burraco.view.score;
 
-import it.unibo.burraco.controller.game.GameController;
-import it.unibo.burraco.controller.round.RoundController;
-import it.unibo.burraco.controller.sound.SoundController;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.score.Score;
 import it.unibo.burraco.view.colorbutton.RoundedGradientButton;
@@ -18,9 +15,7 @@ public class ScoreViewImpl implements ScoreView{
     private final Score scoreManager;  
     private final int targetScore;
     private final TableView tableView;  
-    private final GameController gameController;
-    private final RoundController roundController;
-    private final SoundController soundController;
+    private Runnable nextAction;
 
     public ScoreViewImpl(
             Player p1, Player p2,
@@ -28,30 +23,19 @@ public class ScoreViewImpl implements ScoreView{
             int targetScore,
             Score scoreManager,
             TableView tableView,
-            GameController gameController,
-            RoundController roundController,   
-            SoundController soundController) {
+            boolean matchOver) {
 
         this.scoreManager   = scoreManager;
         this.frame          = new JFrame("Burraco - Final Standings");
         this.targetScore    = targetScore;
         this.tableView      = tableView;
-        this.gameController = gameController;
-        this.roundController = roundController;
-        this.soundController = soundController;
-
-        int totalS1 = p1.getMatchTotalScore(); 
-        int totalS2 = p2.getMatchTotalScore(); 
-
-        boolean matchOver = totalS1 >= targetScore || totalS2 >= targetScore;
-
-        if (matchOver) {
-            soundController.playVictorySound(); 
-        } else {
-            soundController.playRoundEndSound(); 
-        }
 
         setupUI(p1, p2, name1, name2, matchOver);
+    }
+
+    @Override
+    public void setOnNextAction(Runnable action) {
+        this.nextAction = action;
     }
 
     private void setupUI(Player p1, Player p2, String name1, String name2, boolean matchOver) {
@@ -95,10 +79,9 @@ public class ScoreViewImpl implements ScoreView{
         } else {
             actionBtn = new RoundedGradientButton("NEXT ROUND (Target: " + targetScore + " pts)");
             actionBtn.addActionListener(e -> {
-                frame.dispose();
-                gameController.getTurnModel().resetForNewRound();
-                roundController.processNewRound(); // ← solo questa riga
-                tableView.refreshTurnLabel(true);
+                if (nextAction != null) {
+                    nextAction.run();
+                }
             });
         }
         actionBtn.setFont(new Font("Arial Black", Font.BOLD, 18));
