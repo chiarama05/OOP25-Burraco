@@ -1,10 +1,9 @@
-package it.unibo.burraco.view.button;
+package it.unibo.burraco.view.discard;
 
 import it.unibo.burraco.controller.discardcard.DiscardController;
 import it.unibo.burraco.controller.discardcard.DiscardResult;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.view.discard.DiscardViewImpl;
 import it.unibo.burraco.view.hand.HandImpl;
 import it.unibo.burraco.view.notification.GameNotifier;
 import it.unibo.burraco.view.table.TableView;

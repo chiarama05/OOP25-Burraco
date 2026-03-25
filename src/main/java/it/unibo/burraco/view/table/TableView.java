@@ -29,4 +29,5 @@ public interface TableView {
     void repaintTable();
 
     InitialDistributionView getInitDist();
+    void showPotMessage(String playerName, boolean isDiscard);
 }

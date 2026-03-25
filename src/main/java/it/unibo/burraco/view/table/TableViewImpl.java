@@ -14,13 +14,18 @@ import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
 import it.unibo.burraco.controller.turn.TurnController;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.*;
+import it.unibo.burraco.view.attach.AttachButton;
 import it.unibo.burraco.view.button.*;
+import it.unibo.burraco.view.deck.DeckButton;
 import it.unibo.burraco.view.deck.DeckView;
+import it.unibo.burraco.view.discard.DiscardButton;
 import it.unibo.burraco.view.discard.DiscardViewImpl;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
 import it.unibo.burraco.view.hand.HandImpl;
 import it.unibo.burraco.view.notification.GameNotifier;
 import it.unibo.burraco.view.notification.GameNotifierImpl;
+import it.unibo.burraco.view.pot.PotView;
+import it.unibo.burraco.view.selection.SelectionView;
 import it.unibo.burraco.model.score.ScoreImpl;
 import it.unibo.burraco.model.score.Score;
 
@@ -30,7 +35,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class TableViewImpl implements TableView {
+public class TableViewImpl implements TableView, PotView, SelectionView {
     private final JFrame frame;
     private final JLabel turnLabel;
     private final JPanel combPanel1, combPanel2, discardPanel, deckPanel;
@@ -287,6 +292,20 @@ public class TableViewImpl implements TableView {
             w.revalidate();
             w.repaint();
         }
+    }
+
+    @Override
+    public void showPotMessage(String playerName, boolean isDiscard) {
+    String msg = isDiscard ?
+        playerName + " You took the pot! You'll see the new cards next turn." :
+        playerName + " You took the pot on fly! Keep playing.";
+    JOptionPane.showMessageDialog(frame, msg, "Pot", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+
+    @Override
+    public void showSelectionError(String message) {
+        JOptionPane.showMessageDialog(frame, message, "Selezione", JOptionPane.WARNING_MESSAGE);
     }
 
     public DrawManager getDrawManager() {
