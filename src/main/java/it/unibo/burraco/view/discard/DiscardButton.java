@@ -5,7 +5,7 @@ import it.unibo.burraco.controller.discardcard.DiscardResult;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.hand.HandViewImpl;
-import it.unibo.burraco.view.notification.GameNotifier;
+import it.unibo.burraco.view.notification.game.GameNotifier;
 import it.unibo.burraco.view.table.TableView;
 
 import java.util.Set;

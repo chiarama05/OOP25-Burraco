@@ -24,8 +24,8 @@ import it.unibo.burraco.view.discard.TakeDiscardButton;
 import it.unibo.burraco.view.discard.TakeDiscardView;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
 import it.unibo.burraco.view.hand.HandViewImpl;
-import it.unibo.burraco.view.notification.GameNotifier;
-import it.unibo.burraco.view.notification.GameNotifierImpl;
+import it.unibo.burraco.view.notification.game.GameNotifier;
+import it.unibo.burraco.view.notification.game.GameNotifierImpl;
 import it.unibo.burraco.view.pot.PotView;
 import it.unibo.burraco.view.selection.SelectionView;
 import it.unibo.burraco.model.score.ScoreImpl;
@@ -226,7 +226,7 @@ public class TableViewImpl implements TableView, PotView, SelectionView, TakeDis
 
     @Override 
     public void addCombinationToPlayerPanel(List<Card> cards, boolean isP1) {
-        (isP1 ? combPanel1 : combPanel2).add(new AttachButton(cards, this, gameController, isP1, this.closureManager,this.potManager));
+        (isP1 ? combPanel1 : combPanel2).add(new AttachButton(cards, this, gameController, isP1, this.closureManager,this.potManager,this.frame));
         frame.revalidate();
         frame.repaint();
     }

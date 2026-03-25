@@ -7,6 +7,8 @@ import it.unibo.burraco.controller.pot.PotManager;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.burraco.BurracoStyleManager;
+import it.unibo.burraco.view.notification.attach.AttachNotifier;
+import it.unibo.burraco.view.notification.attach.AttachNotifierImpl;
 import it.unibo.burraco.view.table.TableView;
 import it.unibo.burraco.controller.combination.StraightUtils;
 
@@ -25,12 +27,16 @@ public class AttachButton extends JButton implements AttachView {
 
     public AttachButton(List<Card> initialCards, TableView tableView,
                         GameController gameController, boolean isPlayer1Owner,
-                        ClosureManager closureManager, PotManager potManager) {
+                        ClosureManager closureManager, PotManager potManager, JFrame parentFrame) {
         this.cards = initialCards;
         this.tableView = tableView;
         this.gameController = gameController;
+
+        AttachNotifier attachNotifier = new AttachNotifierImpl(
+            SwingUtilities.getWindowAncestor(this) instanceof JFrame f ? f : null);
+
         this.actionController = new AttachActionController(
-                gameController, potManager, closureManager, isPlayer1Owner);
+            gameController, potManager, closureManager, attachNotifier, isPlayer1Owner);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.WHITE);
