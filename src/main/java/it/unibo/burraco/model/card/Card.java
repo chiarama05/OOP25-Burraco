@@ -25,4 +25,6 @@ public interface Card {
      * @return the numerical value of the card
      */
     int getNumericalValue();
+
+    boolean isUsedAsWildcard();
 }

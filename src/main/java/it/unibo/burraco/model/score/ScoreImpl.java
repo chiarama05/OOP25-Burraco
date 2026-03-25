@@ -1,6 +1,7 @@
 package it.unibo.burraco.model.score;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.card.*;
@@ -61,22 +62,58 @@ public class ScoreImpl implements Score{
         return bonus;
     }
 
-    /**
-     * Checks if a burraco is clean (no Jolly or 2).
-     */
     private boolean isCleanBurraco(List<Card> combination) {
 
-        for (Card card : combination) {
-
-            String value = card.getValue();
-
-            if (value.equals("Jolly") || value.equals("2")) {
-                return false;
-            }
-        }
-
-        return true;
+    // Jolly → sempre sporco
+    if (combination.stream().anyMatch(c -> c.getValue().equals("Jolly"))) {
+        return false;
     }
+
+    List<Card> twos = combination.stream()
+            .filter(c -> c.getValue().equals("2"))
+            .collect(Collectors.toList());
+
+    // Nessun 2 → pulito per definizione
+    if (twos.isEmpty()) return true;
+
+    // Più di un 2 → sempre sporco
+    if (twos.size() > 1) return false;
+
+    // Esattamente un 2: verifica posizione naturale e seme
+    Card two = twos.get(0);
+    return isTwoInNaturalPosition(two, combination);
+}
+
+/**
+ * Verifica che il 2 sia in posizione naturale:
+ * stesso seme di tutte le altre carte E la sequenza
+ * è consecutiva trattando il 2 come valore 2 reale.
+ */
+private boolean isTwoInNaturalPosition(Card two, List<Card> combination) {
+
+    String suit = two.getSeed();
+
+    // Tutte le carte devono avere lo stesso seme
+    boolean sameSuit = combination.stream()
+            .allMatch(c -> c.getSeed().equals(suit));
+
+    if (!sameSuit) return false;
+
+    // Ottieni i rank numerici di tutte le carte
+    List<Integer> ranks = combination.stream()
+            .map(CardPoint::toInt)   // es. A=1, 2=2, ..., K=13
+            .sorted()
+            .collect(Collectors.toList());
+
+    // Verifica che la sequenza sia consecutiva senza buchi
+    for (int i = 1; i < ranks.size(); i++) {
+        if (ranks.get(i) != ranks.get(i - 1) + 1) {
+            return false;
+        }
+    }
+
+    return true;
+}
 
     public int countCleanBurraco(Player player) {
     return (int) player.getCombinations().stream()

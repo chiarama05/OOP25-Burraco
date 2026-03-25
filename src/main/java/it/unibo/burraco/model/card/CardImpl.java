@@ -21,6 +21,7 @@ public class CardImpl implements Card{
         this.wildcard = status;
     }
 
+    @Override
     public boolean isUsedAsWildcard() {
         return this.wildcard;
     }
