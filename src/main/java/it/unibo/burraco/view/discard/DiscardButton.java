@@ -1,20 +1,21 @@
 package it.unibo.burraco.view.discard;
 
+import it.unibo.burraco.controller.discardcard.DiscardActionController;
 import it.unibo.burraco.controller.discardcard.DiscardController;
-import it.unibo.burraco.controller.discardcard.DiscardResult;
 import it.unibo.burraco.model.card.Card;
-import it.unibo.burraco.view.hand.HandViewImpl;
+import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.notification.game.GameNotifier;
 import it.unibo.burraco.view.table.TableView;
 
+import java.util.List;
 import java.util.Set;
 
-public class DiscardButton {
+public class DiscardButton implements DiscardActionView {
 
     private final TableView view;
     private final DiscardViewImpl discardView;
     private final GameNotifier notifier;
-    private final DiscardController discardController;
+    private final DiscardActionController actionController;
 
     public DiscardButton(TableView view,
                          DiscardViewImpl discardView,
@@ -23,27 +24,29 @@ public class DiscardButton {
         this.view = view;
         this.discardView = discardView;
         this.notifier = notifier;
-        this.discardController = discardController;
+        this.actionController = new DiscardActionController(discardController);
 
-        this.discardView.setDiscardListener(e -> handleDiscardClick());
+        this.discardView.setDiscardListener(e -> actionController.handle(this));
     }
 
-    private void handleDiscardClick() {
-        HandViewImpl handView = view.getCurrentHandView(); // niente più GameController
-        Set<Card> selected = handView.getSelectedCards();
 
-        DiscardResult result = discardController.tryDiscard(selected);
+    @Override
+    public Set<Card> getSelectedCards() {
+        return view.getCurrentHandView().getSelectedCards();
+    }
 
-        if (result.isValid()) {
-            handView.refreshHand(result.getCurrentPlayer().getHand());
-            handView.clearSelection();
-            discardView.updateDiscardPile(result.getUpdatedDiscardPile());
-        } else {
-            switch (result.getMessage()) {
-                case "must_draw" -> notifier.notifyMustDraw();
-                case "select_one" -> notifier.notifySelectionError("Select only one card!");
-                default -> notifier.notifySelectionError(result.getMessage());
-            }
+    @Override
+public void onDiscardSuccess(Player player, List<Card> updatedPile) {
+    view.getCurrentHandView().clearSelection();
+    discardView.updateDiscardPile(updatedPile); 
+}
+
+    @Override
+    public void onDiscardError(String errorCode) {
+        switch (errorCode) {
+            case "must_draw" -> notifier.notifyMustDraw();
+            case "select_one" -> notifier.notifySelectionError("Select only one card!");
+            default -> notifier.notifySelectionError(errorCode);
         }
     }
 }
