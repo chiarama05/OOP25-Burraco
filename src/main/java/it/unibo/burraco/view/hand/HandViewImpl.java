@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Set;
 
 
-public class HandImpl extends JPanel implements HandView {
+public class HandViewImpl extends JPanel implements HandView {
 
     private final SelectionCardManager selectionManager;
     private CardSelectionListener listener;
 
-    public HandImpl(SelectionCardManager selectionManager) {
+    public HandViewImpl(SelectionCardManager selectionManager) {
     super(new FlowLayout(FlowLayout.LEFT, 5, 5));
     this.selectionManager = selectionManager;
     setBackground(new Color(180, 220, 180));

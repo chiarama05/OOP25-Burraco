@@ -5,7 +5,7 @@ import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.view.discard.DiscardViewImpl;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
-import it.unibo.burraco.view.hand.HandImpl;
+import it.unibo.burraco.view.hand.HandViewImpl;
 import java.util.List;
 
 public interface TableView {
@@ -14,7 +14,7 @@ public interface TableView {
     void refreshHandPanel(Player player);
     void refreshTurnLabel(boolean isPlayer1);
     void switchHand(boolean isPlayer1Turn);
-    HandImpl getHandViewForPlayer(Player player);
+    HandViewImpl getHandViewForPlayer(Player player);
     
     
     void markPotTaken(boolean isPlayer1);

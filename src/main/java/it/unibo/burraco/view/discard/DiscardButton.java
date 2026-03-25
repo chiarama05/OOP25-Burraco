@@ -4,7 +4,7 @@ import it.unibo.burraco.controller.discardcard.DiscardController;
 import it.unibo.burraco.controller.discardcard.DiscardResult;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.view.hand.HandImpl;
+import it.unibo.burraco.view.hand.HandViewImpl;
 import it.unibo.burraco.view.notification.GameNotifier;
 import it.unibo.burraco.view.table.TableView;
 
@@ -32,7 +32,7 @@ public class DiscardButton {
     private void handleDiscardClick() {
         
         Player current = view.getGameController().getCurrentPlayer();
-        HandImpl handView = view.getHandViewForPlayer(current);
+        HandViewImpl handView = view.getHandViewForPlayer(current);
         Set<Card> selected = handView.getSelectedCards();
 
         DiscardResult result = discardController.tryDiscard(selected);

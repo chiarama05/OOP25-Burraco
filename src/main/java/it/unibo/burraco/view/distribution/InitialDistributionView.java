@@ -4,25 +4,25 @@ import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
 import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.discard.DiscardView;
-import it.unibo.burraco.view.hand.HandImpl;
+import it.unibo.burraco.view.hand.HandViewImpl;
 
 import javax.swing.*;
 
 public class InitialDistributionView {
 
-    private final HandImpl handPlayer1;
-    private final HandImpl handPlayer2;
+    private final HandViewImpl handPlayer1;
+    private final HandViewImpl handPlayer2;
 
     public InitialDistributionView(JPanel discardPanel, SelectionCardManager selectionManager) {
-        this.handPlayer1 = new HandImpl(selectionManager);
-        this.handPlayer2 = new HandImpl(selectionManager);
+        this.handPlayer1 = new HandViewImpl(selectionManager);
+        this.handPlayer2 = new HandViewImpl(selectionManager);
     }
 
-    public HandImpl getPlayer1HandView() {
+    public HandViewImpl getPlayer1HandView() {
         return handPlayer1;
     }
 
-    public HandImpl getPlayer2HandView() {
+    public HandViewImpl getPlayer2HandView() {
         return handPlayer2;
     }
 

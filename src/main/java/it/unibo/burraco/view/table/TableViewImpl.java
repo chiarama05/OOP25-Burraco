@@ -23,7 +23,7 @@ import it.unibo.burraco.view.discard.DiscardViewImpl;
 import it.unibo.burraco.view.discard.TakeDiscardButton;
 import it.unibo.burraco.view.discard.TakeDiscardView;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
-import it.unibo.burraco.view.hand.HandImpl;
+import it.unibo.burraco.view.hand.HandViewImpl;
 import it.unibo.burraco.view.notification.GameNotifier;
 import it.unibo.burraco.view.notification.GameNotifierImpl;
 import it.unibo.burraco.view.pot.PotView;
@@ -198,7 +198,7 @@ public class TableViewImpl implements TableView, PotView, SelectionView, TakeDis
 
         deckPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE, 1), "Hand", 0, 0, new Font("Arial", Font.BOLD, 18), Color.BLACK));
 
-        HandImpl hv = getHandViewForPlayer(p);
+        HandViewImpl hv = getHandViewForPlayer(p);
         hv.refreshHand(p.getHand());
 
         JScrollPane handScroll = new JScrollPane(hv);
@@ -253,7 +253,7 @@ public class TableViewImpl implements TableView, PotView, SelectionView, TakeDis
     }
 
 
-    @Override public HandImpl getHandViewForPlayer(Player p) { 
+    @Override public HandViewImpl getHandViewForPlayer(Player p) { 
         return (p == player1) ? initDist.getPlayer1HandView() : initDist.getPlayer2HandView(); 
     }
 
