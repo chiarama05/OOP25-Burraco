@@ -24,32 +24,34 @@ public class DiscardManagerImpl implements DiscardManager {
     public DiscardResult discard(Player player, Card card) {
 
         if (card == null) {
-            return DiscardResult.error("You must select a card to discard.");
-        }
+        return DiscardResult.error("NOT_SELECTED");
+    }
 
-        if (!player.getHand().contains(card)) {
-            return DiscardResult.error("The selected card is not in the player's hand.");
-        }
+    if (!player.getHand().contains(card)) {
+        return DiscardResult.error("NOT_IN_HAND");
+    }
 
-        player.removeCardHand(card);
-        discardPile.add(card);
+    // 2. Logica di scarto
+    player.removeCardHand(card);
+    discardPile.add(card);
 
-        ClosureState state = ClosureValidator.evaluateAfterDiscard(player);
+    // 3. Controllo chiusura
+    ClosureState state = ClosureValidator.evaluateAfterDiscard(player);
 
-        switch (state) {
+    switch (state) {
+        case ROUND_WON:
+            return DiscardResult.success(discardPile.getCards(), player, true);
 
-            case ROUND_WON:
-                return DiscardResult.success(discardPile.getCards(), player, true);
+        case CANNOT_CLOSE_NO_BURRACO:
+            // Rollback: riporto lo stato a prima dello scarto
+            discardPile.drawLast();
+            player.addCardHand(card);
+            // Restituiamo solo l'identificativo dell'errore
+            return DiscardResult.error("NO_BURRACO_ERROR");
 
-            case CANNOT_CLOSE_NO_BURRACO:
-                
-                discardPile.drawLast();
-                player.addCardHand(card);
-                return DiscardResult.error("You need at least one Burraco to close the round!");
-
-            case OK:
-            default:
-                return DiscardResult.success(discardPile.getCards(), player, false);
+        case OK:
+        default:
+            return DiscardResult.success(discardPile.getCards(), player, false);
         }
     }
 }

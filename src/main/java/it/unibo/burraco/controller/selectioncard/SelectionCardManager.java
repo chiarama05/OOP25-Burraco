@@ -9,6 +9,7 @@ import it.unibo.burraco.controller.combination.CombinationValidator;
 import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
+import it.unibo.burraco.view.notification.selection.SelectionNotifier;
 import it.unibo.burraco.view.selection.SelectionView;
 
 public class SelectionCardManager {
@@ -43,24 +44,24 @@ public class SelectionCardManager {
         return selectedCards.isEmpty();
     }
 
-    public void processCombination(Player player, SelectionView view, GameController controller) {
-        if (selectedCards.isEmpty()) {
-            view.showSelectionError("Seleziona prima delle carte!");
-            return;
-        }
-
-        List<Card> cardsToPut = new ArrayList<>(selectedCards);
-
-        if (CombinationValidator.isValidCombination(cardsToPut)) {
-            player.removeCards(cardsToPut);
-            player.addCombination(cardsToPut);
-
-            view.addCombinationToPlayerPanel(cardsToPut, controller.isPlayer1(player));
-            view.refreshHandPanel(player);
-
-            clearSelection();
-        } else {
-            view.showSelectionError("Combinazione non valida ai fini del regolamento!");
-        }
+    public void processCombination(Player player, SelectionView view, GameController controller, SelectionNotifier notifier) {
+    if (selectedCards.isEmpty()) {
+        notifier.notifySelectionError("EMPTY_SELECTION");
+        return;
     }
+
+    List<Card> cardsToPut = new ArrayList<>(selectedCards);
+
+    if (CombinationValidator.isValidCombination(cardsToPut)) {
+        player.removeCards(cardsToPut);
+        player.addCombination(cardsToPut);
+
+        view.addCombinationToPlayerPanel(cardsToPut, controller.isPlayer1(player));
+        view.refreshHandPanel(player);
+
+        clearSelection();
+    } else {
+        notifier.notifySelectionError("INVALID_COMBINATION"); 
+    }
+}
 }
