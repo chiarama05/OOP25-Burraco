@@ -167,10 +167,14 @@ public class TableViewImpl implements TableView, PotView, SelectionView, TakeDis
         this.closureManager,
         turnModel);
 
+    it.unibo.burraco.view.notification.putcombination.PutCombinationNotifier putNotifier = 
+        new it.unibo.burraco.view.notification.putcombination.PutCombinationNotifierImpl(this.frame);
+
     PutCombinationButton putCombinationLogic = new PutCombinationButton(
         this,
         gameController,
-        putCombinationCtrl);
+        putCombinationCtrl,
+        putNotifier);
 
     putComboBtn.addActionListener(e -> putCombinationLogic.handlePutCombination());
 
