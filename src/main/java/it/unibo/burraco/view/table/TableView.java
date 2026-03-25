@@ -16,7 +16,7 @@ public interface TableView {
     void switchHand(boolean isPlayer1Turn);
     HandViewImpl getHandViewForPlayer(Player player);
     
-    
+    HandViewImpl getCurrentHandView();
     void markPotTaken(boolean isPlayer1);
     void addCombinationToPlayerPanel(List<Card> cards, boolean player1Turn);
     void startNewRound();

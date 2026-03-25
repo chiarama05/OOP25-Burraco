@@ -13,14 +13,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import it.unibo.burraco.model.card.Card;
-import it.unibo.burraco.model.card.CardImpl;
 import it.unibo.burraco.model.deck.DeckImpl;
 
 public class DeckTest {
     private static final int FULL_DECK_SIZE = 108;
-    private static final int SEEDS_COUNT = 4;
-    private static final int VALUES_COUNT = 13;
     private static final int JOLLY_COUNT = 4;
+    private static final String JOLLY_VALUE = "Jolly";
+    private static final String[] SEEDS = {"♠", "♥", "♣", "♦"};
+    private static final String[] VALUES = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
 
     private DeckImpl deck;
 
@@ -35,28 +35,37 @@ public class DeckTest {
     }
 
     @Test
-    void testInitialStateNotEmpty() {
+    void testInitialNotEmpty() {
         assertFalse(deck.isEmpty());
     }
 
     @Test
-    void testDeckContainsCorrectCards() {
-        List<Card> cards = deck.getCards();
+    void testDeckComposition() {
+        final List<Card> cards = deck.getCards();
 
-        long jollyCount = cards.stream()
-            .filter(c -> c.getValue().equals("Jolly"))
-            .count();
+        // Verifica che ci siano esattamente 4 Jolly
+        final long jollyCount = cards.stream()
+                .filter(c -> JOLLY_VALUE.equals(c.getValue()))
+                .count();
         assertEquals(JOLLY_COUNT, jollyCount);
 
-        long normalCount = cards.stream()
-            .filter(c -> !c.getValue().equals("Jolly"))
-            .count();
-        assertEquals(SEEDS_COUNT * VALUES_COUNT * 2, normalCount);
+        // Verifica che ogni combinazione seme+valore appaia esattamente 2 volte
+        for (final String seed : SEEDS) {
+            for (final String value : VALUES) {
+                final String s = seed;
+                final String v = value;
+                final long count = cards.stream()
+                        .filter(c -> s.equals(c.getSeed()) && v.equals(c.getValue()))
+                        .count();
+                assertEquals(2, count, "Expected 2 copies of " + value + seed);
+            }
+        }
     }
 
     @Test
     void testDrawReducesSize() {
-        Card drawn = deck.draw();
+        final Card drawn = deck.draw();
+
         assertNotNull(drawn);
         assertEquals(FULL_DECK_SIZE - 1, deck.getCards().size());
     }
@@ -79,17 +88,18 @@ public class DeckTest {
 
     @Test
     void testGetCardsIsUnmodifiable() {
-        assertThrows(UnsupportedOperationException.class, () -> {
-            deck.getCards().add(new CardImpl("♠", "A"));
-        });
+        final List<Card> cards = deck.getCards();
+        assertThrows(UnsupportedOperationException.class, () -> cards.remove(0));
     }
 
     @Test
     void testResetRestoresFullDeck() {
-        for (int i = 0; i < 10; i++) {
-            deck.draw();
-        }
+        deck.draw();
+        deck.draw();
+        deck.draw();
+
         deck.reset();
+
         assertEquals(FULL_DECK_SIZE, deck.getCards().size());
         assertFalse(deck.isEmpty());
     }
@@ -99,8 +109,17 @@ public class DeckTest {
         for (int i = 0; i < FULL_DECK_SIZE; i++) {
             deck.draw();
         }
+        assertTrue(deck.isEmpty());
+
         deck.reset();
+
         assertEquals(FULL_DECK_SIZE, deck.getCards().size());
         assertFalse(deck.isEmpty());
+    }
+
+    @Test
+    void testDrawnCardIsRemovedFromDeck() {
+        final Card drawn = deck.draw();
+        assertFalse(deck.getCards().contains(drawn));
     }
 }
