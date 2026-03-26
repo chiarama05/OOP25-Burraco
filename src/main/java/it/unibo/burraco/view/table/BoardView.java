@@ -19,13 +19,15 @@ public class BoardView extends JPanel {
     }
 
     private JPanel createSection(String title) {
-        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        p.setBackground(new Color(0, 102, 51)); 
-        p.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(Color.WHITE), 
-            title, 0, 0, new Font("Arial", Font.BOLD, 20), Color.WHITE));
-        return p;
-    }
+    JPanel p = new JPanel();
+    p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS)); 
+    p.setAlignmentY(Component.TOP_ALIGNMENT);
+    p.setBackground(new Color(0, 102, 51));
+    p.setBorder(BorderFactory.createTitledBorder(
+        BorderFactory.createLineBorder(Color.WHITE),
+        title, 0, 0, new Font("Arial", Font.BOLD, 20), Color.WHITE));
+    return p;
+}
 
     private JScrollPane createScrollWrapper(JPanel panel, Color bg) {
         JScrollPane s = new JScrollPane(panel);

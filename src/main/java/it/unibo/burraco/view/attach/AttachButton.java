@@ -1,14 +1,8 @@
 package it.unibo.burraco.view.attach;
 
-import it.unibo.burraco.controller.attach.AttachActionController;
-import it.unibo.burraco.controller.closure.ClosureManager;
-import it.unibo.burraco.controller.game.GameController;
-import it.unibo.burraco.controller.pot.PotManager;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.burraco.BurracoStyleManager;
-import it.unibo.burraco.view.notification.attach.AttachNotifier;
-import it.unibo.burraco.view.notification.attach.AttachNotifierImpl;
 import it.unibo.burraco.view.table.TableView;
 import it.unibo.burraco.controller.combination.StraightUtils;
 
@@ -17,25 +11,21 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 public class AttachButton extends JButton implements AttachView {
 
     private final List<Card> cards;
     private final TableView tableView;
-    private final AttachActionController actionController;
     private final boolean isPlayer1Owner;
+    private static final int FIXED_WIDTH = 56;
 
-    public AttachButton(List<Card> initialCards, TableView tableView,
-                        GameController gameController, boolean isPlayer1Owner,
-                        ClosureManager closureManager, PotManager potManager, JFrame parentFrame) {
+    private BiConsumer<List<Card>, AttachButton> onAttachAction;
+
+    public AttachButton(List<Card> initialCards, TableView tableView, boolean isPlayer1Owner) {
         this.cards = initialCards;
         this.tableView = tableView;
         this.isPlayer1Owner = isPlayer1Owner;
-
-        AttachNotifier attachNotifier = new AttachNotifierImpl(parentFrame);
-
-        this.actionController = new AttachActionController(
-            gameController, potManager, closureManager, attachNotifier, isPlayer1Owner);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.WHITE);
@@ -47,13 +37,16 @@ public class AttachButton extends JButton implements AttachView {
         this.addActionListener(e -> handleAttachAction());
     }
 
-    private void handleAttachAction() {
-        List<Card> selected = new ArrayList<>(
-                tableView.getHandViewForCurrentPlayer(isPlayer1Owner).getSelectedCards());
-        actionController.handle(selected, this.cards, this);
+    public void setOnAttachAction(BiConsumer<List<Card>, AttachButton> handler) {
+        this.onAttachAction = handler;
     }
 
-    // --- AttachView ---
+    private void handleAttachAction() {
+        if (onAttachAction == null) return;
+        List<Card> selected = new ArrayList<>(
+                tableView.getHandViewForCurrentPlayer(isPlayer1Owner).getSelectedCards());
+        onAttachAction.accept(selected, this);
+    }
 
     @Override
     public void showAttachError(String message, String title) {
@@ -82,7 +75,20 @@ public class AttachButton extends JButton implements AttachView {
         tableView.refreshHandPanel(isPlayer1, p.getHand());
     }
 
-    // --- Rendering ---
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(FIXED_WIDTH, super.getPreferredSize().height);
+    }
+
+    @Override
+    public Dimension getMaximumSize() {
+        return new Dimension(FIXED_WIDTH, super.getPreferredSize().height);
+    }
+
+    @Override
+    public Dimension getMinimumSize() {
+        return new Dimension(FIXED_WIDTH, super.getMinimumSize().height);
+    }
 
     public void updateVisuals() {
         this.removeAll();
@@ -121,11 +127,14 @@ public class AttachButton extends JButton implements AttachView {
             label.setFont(new Font("Monospaced", Font.BOLD, 22));
             label.setForeground(
                     c.toString().contains("♥") || c.toString().contains("♦")
-                    ? Color.RED : Color.BLACK);
+                            ? Color.RED : Color.BLACK);
         }
 
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(label);
         this.add(Box.createVerticalStrut(8));
     }
+
+    public List<Card> getCards() { return cards; }
+    public boolean isPlayer1Owner() { return isPlayer1Owner; }
 }

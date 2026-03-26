@@ -5,6 +5,8 @@ import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.controller.pot.PotManager;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.view.attach.AttachButton;
+import it.unibo.burraco.view.notification.attach.AttachNotifier;
+import it.unibo.burraco.view.notification.attach.AttachNotifierImpl;
 import it.unibo.burraco.view.table.TableView;
 
 import javax.swing.JFrame;
@@ -28,7 +30,14 @@ public class AttachButtonFactory {
         this.frame = frame;
     }
 
-    public AttachButton create(List<Card> cards, boolean isP1) {
-        return new AttachButton(cards, tableView, gameController, isP1, closureManager, potManager, frame);
+    public AttachButton create(List<Card> cards, boolean isPlayer1) {
+        AttachButton btn = new AttachButton(cards, tableView, isPlayer1); 
+
+        AttachNotifier notifier = new AttachNotifierImpl(frame);
+        AttachActionController ctrl = new AttachActionController(
+                gameController, potManager, closureManager, notifier, isPlayer1);
+
+        btn.setOnAttachAction((selected, self) -> ctrl.handle(selected, self.getCards(), self));
+        return btn;
     }
 }

@@ -94,12 +94,18 @@ public class TableViewImpl implements TableView {
     this.attachButtonFactory = factory;
     }
 
-   @Override
-    public void addCombinationToPlayerPanel(List<Card> cards, boolean isP1) {
-    (isP1 ? combPanel1 : combPanel2).add(attachButtonFactory.create(cards, isP1));
+  @Override
+public void addCombinationToPlayerPanel(List<Card> cards, boolean isP1) {
+    JPanel panel = isP1 ? combPanel1 : combPanel2;
+    
+    JComponent btn = attachButtonFactory.create(cards, isP1);
+    btn.setAlignmentY(Component.TOP_ALIGNMENT);
+    panel.add(btn);
+    panel.add(Box.createRigidArea(new Dimension(5, 0))); // ← stacco orizzontale
+    
     frame.revalidate();
     frame.repaint();
-    }
+}
 
     @Override
     public void switchHand(boolean isP1) {
@@ -201,12 +207,30 @@ public void refreshHandPanel(boolean isPlayer1, List<Card> hand) {
     deckPanel.repaint();
 }
 
-    @Override public DiscardViewImpl getDiscardView() { return discardView; }
-    @Override public JPanel getDiscardPanel()          { return discardPanel; }
-    @Override public JFrame getFrame()                 { return frame; }
-    @Override public JButton getPutComboBtn()          { return putComboBtn; }
-    @Override public JButton getTakeDiscardBtn()       { return takeDiscardBtn; }
-    @Override public DeckView getDeckView()            { return deckView; }
+    @Override public DiscardViewImpl getDiscardView() { 
+        return discardView; 
+    }
 
-    public InitialDistributionView getInitDist()       { return initDist; }
+    @Override public JPanel getDiscardPanel() { 
+        return discardPanel; 
+    }
+
+    @Override public JFrame getFrame() { 
+        return frame; 
+    }
+
+    @Override public JButton getPutComboBtn() { 
+        return putComboBtn; 
+    }
+
+    @Override public JButton getTakeDiscardBtn() { 
+        return takeDiscardBtn;
+    }
+    @Override public DeckView getDeckView() { 
+        return deckView; 
+    }
+
+    public InitialDistributionView getInitDist() { 
+        return initDist; 
+    }
 }
