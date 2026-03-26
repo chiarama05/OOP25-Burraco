@@ -1,4 +1,4 @@
-package it.unibo.burraco.controller;
+package it.unibo.burraco.controller.attach;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -9,7 +9,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import it.unibo.burraco.model.card.Card;
-import it.unibo.burraco.controller.attach.AttachUtils;
 import it.unibo.burraco.model.card.CardImpl;
 
 public class AttachUtilsTest {
@@ -18,8 +17,6 @@ public class AttachUtilsTest {
     private static final String CLUBS   = "♣";
     private static final String DIAMONDS = "♦";
     private static final String JOLLY_SEED = "♕";
-
-    // ── Casi limite ──────────────────────────────────────────────────────────
 
     @Test
     void testNullCombinationReturnsFalse() {
@@ -32,8 +29,6 @@ public class AttachUtilsTest {
         final Card card = new CardImpl(HEARTS, "5");
         assertFalse(AttachUtils.canAttach(new ArrayList<>(), card));
     }
-
-    // ── Attacco su Tris (Set) ────────────────────────────────────────────────
 
     @Test
     void testCanAttachSameValueToSet() {
@@ -71,7 +66,6 @@ public class AttachUtilsTest {
 
     @Test
     void testCannotAttachSecondWildcardToSet() {
-        // Il tris ha già un Jolly → non si può aggiungere un altro wildcard
         final List<Card> set = List.of(
                 new CardImpl(HEARTS,    "7"),
                 new CardImpl(SPADES,    "7"),
@@ -83,7 +77,6 @@ public class AttachUtilsTest {
 
     @Test
     void testCanAttachNaturalCardToSetWithWildcard() {
-        // Tris con Jolly: aggiunta del 7 reale è ancora valida
         final List<Card> set = List.of(
                 new CardImpl(HEARTS,     "7"),
                 new CardImpl(SPADES,     "7"),
@@ -93,11 +86,9 @@ public class AttachUtilsTest {
         assertTrue(AttachUtils.canAttach(set, newCard));
     }
 
-    // ── Attacco su Scala (Straight) ──────────────────────────────────────────
-
     @Test
     void testCanAttachConsecutiveCardToStraight() {
-        // Scala 3-4-5 di cuori → aggiunta 6♥
+        // Scala 3-4-5 di cuori → aggiunta 6
         final List<Card> straight = new ArrayList<>(List.of(
                 new CardImpl(HEARTS, "3"),
                 new CardImpl(HEARTS, "4"),
@@ -109,7 +100,7 @@ public class AttachUtilsTest {
 
     @Test
     void testCanAttachAtBeginningOfStraight() {
-        // Scala 4-5-6 di cuori → aggiunta 3♥ in testa
+        // Scala 4-5-6 di cuori → aggiunta 3
         final List<Card> straight = new ArrayList<>(List.of(
                 new CardImpl(HEARTS, "4"),
                 new CardImpl(HEARTS, "5"),
@@ -154,7 +145,6 @@ public class AttachUtilsTest {
 
     @Test
     void testCannotAttachSecondWildcardToStraight() {
-        // Scala con Jolly già presente → secondo wildcard non ammesso
         final List<Card> straight = new ArrayList<>(List.of(
                 new CardImpl(HEARTS,     "3"),
                 new CardImpl(JOLLY_SEED, "Jolly"),
