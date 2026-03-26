@@ -1,5 +1,7 @@
 package it.unibo.burraco.controller.game;
 
+import javax.swing.SwingUtilities;
+
 import it.unibo.burraco.controller.attach.AttachButtonFactory;
 import it.unibo.burraco.controller.closure.ClosureManager;
 import it.unibo.burraco.controller.combination.PutCombinationController;
@@ -9,7 +11,6 @@ import it.unibo.burraco.controller.discardcard.TakeDiscardController;
 import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.controller.pot.PotManager;
 import it.unibo.burraco.controller.score.ScoreController;
-import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
 import it.unibo.burraco.controller.sound.SoundController;
 import it.unibo.burraco.controller.turn.TurnController;
 import it.unibo.burraco.model.player.Player;
@@ -32,7 +33,6 @@ import it.unibo.burraco.view.notification.takediscard.TakeDiscardNotifierImpl;
 import it.unibo.burraco.view.discard.TakeDiscardView;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
 import it.unibo.burraco.view.table.TableView;
-import it.unibo.burraco.view.distribution.InitialDistributionView;
 
 
 public class GameWiring {
@@ -56,7 +56,7 @@ public class GameWiring {
         ScoreController scoreController = new ScoreController(
         score, p1, p2, nameP1, nameP2,
         view, gameController, soundController, targetScore,
-        distributionView); // usa il parametro
+        distributionView, SwingUtilities::invokeLater); 
 
         ClosureManager closureManager = new ClosureManager(
             turnModel, notifier, targetScore, scoreController);

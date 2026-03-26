@@ -1,5 +1,7 @@
 package it.unibo.burraco.controller.score;
 
+import java.util.function.Consumer;
+
 import it.unibo.burraco.controller.distributioncard.DistributionManagerImpl;
 import it.unibo.burraco.controller.distributioncard.InitialDistributionController;
 import it.unibo.burraco.controller.game.GameController;
@@ -25,7 +27,8 @@ public class ScoreController {
     private final GameController gameController;
     private final int targetScore;
     private final SoundController soundController;
-    private final InitialDistributionView distributionView; // aggiunto
+    private final InitialDistributionView distributionView; 
+    private final Consumer<Runnable> uiThreadRunner;
 
     public ScoreController(
             Score score,
@@ -37,7 +40,8 @@ public class ScoreController {
             GameController gameController,
             SoundController soundController,
             int targetScore,
-            InitialDistributionView distributionView) { 
+            InitialDistributionView distributionView,
+            Consumer<Runnable> uiThreadRunner) { 
 
         this.score           = score;
         this.player1         = player1;
@@ -49,44 +53,55 @@ public class ScoreController {
         this.soundController = soundController;
         this.targetScore     = targetScore;
         this.distributionView = distributionView;
+        this.uiThreadRunner = uiThreadRunner;
     }
 
     public void onRoundEnd() {
-        int roundS1 = score.calculateFinalScore(player1);
-        int roundS2 = score.calculateFinalScore(player2);
-        player1.addPointsToMatch(roundS1);
-        player2.addPointsToMatch(roundS2);
+    int roundS1 = score.calculateFinalScore(player1);
+    int roundS2 = score.calculateFinalScore(player2);
+    player1.addPointsToMatch(roundS1);
+    player2.addPointsToMatch(roundS2);
 
-        boolean matchOver = player1.getMatchTotalScore() >= targetScore ||
-                            player2.getMatchTotalScore() >= targetScore;
+    boolean matchOver = player1.getMatchTotalScore() >= targetScore ||
+                        player2.getMatchTotalScore() >= targetScore;
 
-        if (matchOver) {
-            soundController.playVictorySound();
-        } else {
-            soundController.playRoundEndSound();
-        }
-
-        ScoreView view = new ScoreViewImpl(
-            player1, player2, nameP1, nameP2,
-            targetScore, score, tableView, matchOver);
-
-        view.setOnNextAction(() -> {
-            view.close();
-            gameController.getTurnModel().resetForNewRound();
-
-            RoundController roundController = new RoundControllerImpl(
-                tableView,
-                new ResetManagerImpl(),
-                player1, player2,
-                gameController,
-                new InitialDistributionController(new DistributionManagerImpl()),
-                distributionView 
-            );
-
-            roundController.processNewRound();
-            tableView.refreshTurnLabel(true);
+    if (matchOver) {
+        
+        Thread t = new Thread(() -> {
+            
+            soundController.playVictorySound(); 
+            showScoreView(matchOver);
         });
-
-        view.display();
+        t.setDaemon(false);
+        t.start();
+    } else {
+        soundController.playRoundEndSound(); 
+        showScoreView(matchOver);
     }
+}
+
+private void showScoreView(boolean matchOver) {
+    ScoreView view = new ScoreViewImpl(
+        player1, player2, nameP1, nameP2,
+        targetScore, score, tableView, matchOver);
+
+    view.setOnNextAction(() -> {
+        view.close();
+        gameController.getTurnModel().resetForNewRound();
+
+        RoundController roundController = new RoundControllerImpl(
+            tableView,
+            new ResetManagerImpl(),
+            player1, player2,
+            gameController,
+            new InitialDistributionController(new DistributionManagerImpl()),
+            distributionView
+        );
+
+        roundController.processNewRound();
+        tableView.refreshTurnLabel(true);
+    });
+
+    view.display();
+}
 }
