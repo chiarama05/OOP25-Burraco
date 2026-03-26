@@ -1,4 +1,4 @@
-package it.unibo.burraco.controller;
+package it.unibo.burraco.controller.attach;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -10,8 +10,6 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import it.unibo.burraco.controller.attach.AttachController;
-import it.unibo.burraco.controller.attach.AttachResult;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 import it.unibo.burraco.model.player.PlayerImpl;
@@ -74,7 +72,6 @@ public class AttachControllerTest {
 
     @Test
     void testInvalidCombination() {
-        // Scala di cuori + carta di picche non consecutiva: combinazione non valida
         final List<Card> combo = setupCombination(new ArrayList<>(List.of(
                 new CardImpl(HEARTS, "3"),
                 new CardImpl(HEARTS, "4"),
@@ -90,7 +87,7 @@ public class AttachControllerTest {
     @Test
     void testWouldGetStuckAfterAttach() {
         // Giocatore ha il pozzetto, ha in mano SOLO la carta che vuole attaccare
-        // → resterebbe a 0 carte → WOULD_GET_STUCK
+        // resterebbe a 0 carte 
         player.setInPot(true);
 
         final CardImpl six = new CardImpl(HEARTS, "6");
@@ -109,7 +106,7 @@ public class AttachControllerTest {
 
     @Test
     void testSuccess() {
-        // Giocatore ha pozzetto, ha 2 carte in mano, ne attacca 1 → resta con 1 ma ha burraco
+        // Giocatore ha pozzetto, ha 2 carte in mano, ne attacca 1 → resta con 1 e ha burraco
         player.setInPot(true);
 
         player.addCombination(List.of(
@@ -189,7 +186,7 @@ public class AttachControllerTest {
 
     @Test
     void testSuccessTakePot() {
-        // Giocatore NON ha ancora il pozzetto, rimane a 0 carte dopo l'attacco
+        // Giocatore non ha ancora il pozzetto, rimane a 0 carte dopo l'attacco
         // deve prendere il pozzetto
         player.setInPot(false);
 
