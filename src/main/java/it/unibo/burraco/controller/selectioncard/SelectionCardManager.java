@@ -56,12 +56,13 @@ public class SelectionCardManager {
         player.removeCards(cardsToPut);
         player.addCombination(cardsToPut);
 
-        view.addCombinationToPlayerPanel(cardsToPut, controller.isPlayer1(player));
-        view.refreshHandPanel(player);
+        boolean isP1 = controller.isPlayer1(player);
+        view.addCombinationToPlayerPanel(cardsToPut, isP1);
+        view.refreshHandPanel(isP1, player.getHand()); // aggiornata
 
         clearSelection();
     } else {
-        notifier.notifySelectionError("INVALID_COMBINATION"); 
+        notifier.notifySelectionError("INVALID_COMBINATION");
     }
 }
 }

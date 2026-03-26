@@ -12,11 +12,12 @@ import it.unibo.burraco.model.score.Score;
 import it.unibo.burraco.view.score.ScoreView;
 import it.unibo.burraco.view.score.ScoreViewImpl;
 import it.unibo.burraco.view.table.TableView;
+import it.unibo.burraco.view.distribution.InitialDistributionView;
 
 public class ScoreController {
 
     private final Score score;
-    private final Player player1;        
+    private final Player player1;
     private final Player player2;
     private final String nameP1;
     private final String nameP2;
@@ -24,6 +25,7 @@ public class ScoreController {
     private final GameController gameController;
     private final int targetScore;
     private final SoundController soundController;
+    private final InitialDistributionView distributionView; // aggiunto
 
     public ScoreController(
             Score score,
@@ -34,57 +36,57 @@ public class ScoreController {
             TableView tableView,
             GameController gameController,
             SoundController soundController,
-            int targetScore) {
+            int targetScore,
+            InitialDistributionView distributionView) { 
 
-        this.score          = score;
-        this.player1        = player1;
-        this.player2        = player2;
-        this.nameP1         = nameP1;
-        this.nameP2         = nameP2;
-        this.tableView      = tableView;
-        this.gameController = gameController;
+        this.score           = score;
+        this.player1         = player1;
+        this.player2         = player2;
+        this.nameP1          = nameP1;
+        this.nameP2          = nameP2;
+        this.tableView       = tableView;
+        this.gameController  = gameController;
         this.soundController = soundController;
-        this.targetScore    = targetScore;
+        this.targetScore     = targetScore;
+        this.distributionView = distributionView;
     }
 
     public void onRoundEnd() {
-
         int roundS1 = score.calculateFinalScore(player1);
-    int roundS2 = score.calculateFinalScore(player2);
-    player1.addPointsToMatch(roundS1);
-    player2.addPointsToMatch(roundS2);
+        int roundS2 = score.calculateFinalScore(player2);
+        player1.addPointsToMatch(roundS1);
+        player2.addPointsToMatch(roundS2);
 
-    // 1. Calcola matchOver qui nel Controller
-    boolean matchOver = player1.getMatchTotalScore() >= targetScore || 
-                        player2.getMatchTotalScore() >= targetScore;
+        boolean matchOver = player1.getMatchTotalScore() >= targetScore ||
+                            player2.getMatchTotalScore() >= targetScore;
 
-    // 2. Gestisci il suono qui nel Controller
-    if (matchOver) {
-        soundController.playVictorySound();
-    } else {
-        soundController.playRoundEndSound();
-    }
+        if (matchOver) {
+            soundController.playVictorySound();
+        } else {
+            soundController.playRoundEndSound();
+        }
 
-    // 3. Crea la View passandole matchOver
-    ScoreView view = new ScoreViewImpl(
-        player1, player2, nameP1, nameP2, 
-        targetScore, score, tableView, matchOver
-    );
+        ScoreView view = new ScoreViewImpl(
+            player1, player2, nameP1, nameP2,
+            targetScore, score, tableView, matchOver);
 
-    // 4. Definisci l'azione del bottone qui nel Controller
-    view.setOnNextAction(() -> {
-        view.close();
-        gameController.getTurnModel().resetForNewRound();
-        
-        RoundController roundController = new RoundControllerImpl(
-            tableView, new ResetManagerImpl(), player1, player2, 
-            gameController, new InitialDistributionController(new DistributionManagerImpl())
-        );
-        
-        roundController.processNewRound();
-        tableView.refreshTurnLabel(true);
-    });
+        view.setOnNextAction(() -> {
+            view.close();
+            gameController.getTurnModel().resetForNewRound();
 
-    view.display();
+            RoundController roundController = new RoundControllerImpl(
+                tableView,
+                new ResetManagerImpl(),
+                player1, player2,
+                gameController,
+                new InitialDistributionController(new DistributionManagerImpl()),
+                distributionView 
+            );
+
+            roundController.processNewRound();
+            tableView.refreshTurnLabel(true);
+        });
+
+        view.display();
     }
 }

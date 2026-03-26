@@ -40,9 +40,9 @@ public class TakeDiscardButton implements ActionListener, TakeDiscardActionView 
 
 
     @Override
-    public void onTakeDiscardSuccess(Player current, List<Card> updatedPile) {
-        view.refreshHandPanel(current);
-        view.updateDiscardPile(updatedPile);
+    public void onTakeDiscardSuccess(Player current, List<Card> updatedPile, boolean isPlayer1) {
+    view.refreshHandPanel(isPlayer1, current.getHand());
+    view.updateDiscardPile(updatedPile);
     }
 
     @Override

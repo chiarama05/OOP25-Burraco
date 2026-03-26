@@ -25,7 +25,7 @@ public class DeckActionController {
     DrawResult result = drawManager.drawFromDeck(currentPlayer, deck);
 
     if (result.getStatus() == DrawResult.Status.SUCCESS) {
-        view.onDrawSuccess(currentPlayer);
+        view.onDrawSuccess(currentPlayer, currentPlayer.getHand());
     } else {
         notifier.notifyDrawError(result);
     }

@@ -25,7 +25,7 @@ public class PotManager {
             view.markPotTaken(model.isPlayer1Turn());
 
             if (!isDiscard) {
-                view.refreshHandPanel(p);
+                view.refreshHandPanel(model.isPlayer1Turn(), p.getHand());
             }
 
             return true;

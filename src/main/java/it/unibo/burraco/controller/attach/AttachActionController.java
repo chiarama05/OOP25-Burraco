@@ -33,42 +33,43 @@ public class AttachActionController {
     }
 
     public void handle(List<Card> selectedCards, List<Card> combinationCards, AttachView view) {
-        Player currentPlayer = gameController.getCurrentPlayer();
-        boolean hasDrawn = gameController.getDrawManager().hasDrawn();
-        boolean isCurrentPlayer = gameController.isPlayer1(currentPlayer) == isPlayer1Owner;
+    Player currentPlayer = gameController.getCurrentPlayer();
+    boolean hasDrawn = gameController.getDrawManager().hasDrawn();
+    boolean isPlayer1Current = gameController.isPlayer1(currentPlayer); // aggiunto
+    boolean isCurrentPlayer = isPlayer1Current == isPlayer1Owner;
 
-        AttachResult result = attachController.tryAttach(
-                currentPlayer, selectedCards, combinationCards, hasDrawn, isCurrentPlayer);
+    AttachResult result = attachController.tryAttach(
+            currentPlayer, selectedCards, combinationCards, hasDrawn, isCurrentPlayer);
 
-        if (result == AttachResult.SUCCESS_BURRACO) {
-            gameController.getSoundController().playBurracoSound();
+    if (result == AttachResult.SUCCESS_BURRACO) {
+        gameController.getSoundController().playBurracoSound();
+    }
+
+    switch (result) {
+        case NOT_DRAWN,
+             WRONG_PLAYER,
+             NO_CARDS_SELECTED,
+             INVALID_COMBINATION,
+             WOULD_GET_STUCK,
+             ATTACH_FAILED ->
+            attachNotifier.notifyAttachError(result);
+
+        case SUCCESS, SUCCESS_BURRACO -> {
+            view.updateCombinationVisuals();
+            view.onAttachSuccess(currentPlayer, isPlayer1Current); // aggiornato
         }
 
-        switch (result) {
-            case NOT_DRAWN,
-                 WRONG_PLAYER,
-                 NO_CARDS_SELECTED,
-                 INVALID_COMBINATION,
-                 WOULD_GET_STUCK,
-                 ATTACH_FAILED ->
-                attachNotifier.notifyAttachError(result);
+        case SUCCESS_TAKE_POT -> {
+            view.updateCombinationVisuals();
+            potManager.handlePot(false);
+            view.onAttachTakePot(currentPlayer, isPlayer1Current); // aggiornato
+        }
 
-            case SUCCESS, SUCCESS_BURRACO -> {
-                view.updateCombinationVisuals();
-                view.onAttachSuccess(currentPlayer);
-            }
-
-            case SUCCESS_TAKE_POT -> {
-                view.updateCombinationVisuals();
-                potManager.handlePot(false);
-                view.onAttachTakePot(currentPlayer);
-            }
-
-            case SUCCESS_CLOSE, SUCCESS_STUCK -> {
-                view.updateCombinationVisuals();
-                closureManager.handleStateAfterAction(currentPlayer);
-                view.onAttachClose(currentPlayer);
-            }
+        case SUCCESS_CLOSE, SUCCESS_STUCK -> {
+            view.updateCombinationVisuals();
+            closureManager.handleStateAfterAction(currentPlayer);
+            view.onAttachClose(currentPlayer, isPlayer1Current); // aggiornato
         }
     }
+}
 }

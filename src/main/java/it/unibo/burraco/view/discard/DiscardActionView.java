@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface DiscardActionView {
-    Set<Card> getSelectedCards();
-    void onDiscardSuccess(Player player, List<Card> updatedPile);
+    Set<Card> getSelectedCards(boolean isPlayer1);
+    void onDiscardSuccess(Player player, List<Card> updatedPile, boolean isPlayer1);
     void onDiscardError(String errorCode);
 }

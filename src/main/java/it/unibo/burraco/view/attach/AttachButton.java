@@ -22,18 +22,17 @@ public class AttachButton extends JButton implements AttachView {
 
     private final List<Card> cards;
     private final TableView tableView;
-    private final GameController gameController;
     private final AttachActionController actionController;
+    private final boolean isPlayer1Owner;
 
     public AttachButton(List<Card> initialCards, TableView tableView,
                         GameController gameController, boolean isPlayer1Owner,
                         ClosureManager closureManager, PotManager potManager, JFrame parentFrame) {
         this.cards = initialCards;
         this.tableView = tableView;
-        this.gameController = gameController;
+        this.isPlayer1Owner = isPlayer1Owner;
 
-        AttachNotifier attachNotifier = new AttachNotifierImpl(
-            SwingUtilities.getWindowAncestor(this) instanceof JFrame f ? f : null);
+        AttachNotifier attachNotifier = new AttachNotifierImpl(parentFrame);
 
         this.actionController = new AttachActionController(
             gameController, potManager, closureManager, attachNotifier, isPlayer1Owner);
@@ -49,9 +48,8 @@ public class AttachButton extends JButton implements AttachView {
     }
 
     private void handleAttachAction() {
-        Player currentPlayer = gameController.getCurrentPlayer();
         List<Card> selected = new ArrayList<>(
-                tableView.getHandViewForPlayer(currentPlayer).getSelectedCards());
+                tableView.getHandViewForCurrentPlayer(isPlayer1Owner).getSelectedCards());
         actionController.handle(selected, this.cards, this);
     }
 
@@ -68,20 +66,20 @@ public class AttachButton extends JButton implements AttachView {
     }
 
     @Override
-    public void onAttachSuccess(Player p) {
-        tableView.getHandViewForPlayer(p).clearSelection();
-        tableView.refreshHandPanel(p);
+    public void onAttachSuccess(Player p, boolean isPlayer1) {
+        tableView.getHandViewForCurrentPlayer(isPlayer1).clearSelection();
+        tableView.refreshHandPanel(isPlayer1, p.getHand());
     }
 
     @Override
-    public void onAttachTakePot(Player p) {
-        tableView.getHandViewForPlayer(p).clearSelection();
+    public void onAttachTakePot(Player p, boolean isPlayer1) {
+        tableView.getHandViewForCurrentPlayer(isPlayer1).clearSelection();
     }
 
     @Override
-    public void onAttachClose(Player p) {
-        tableView.getHandViewForPlayer(p).clearSelection();
-        tableView.refreshHandPanel(p);
+    public void onAttachClose(Player p, boolean isPlayer1) {
+        tableView.getHandViewForCurrentPlayer(isPlayer1).clearSelection();
+        tableView.refreshHandPanel(isPlayer1, p.getHand());
     }
 
     // --- Rendering ---

@@ -4,6 +4,8 @@ import javax.swing.SwingUtilities;
 import it.unibo.burraco.controller.distributioncard.DistributionManagerImpl;
 import it.unibo.burraco.controller.distributioncard.InitialDistributionController;
 import it.unibo.burraco.controller.game.GameController;
+import it.unibo.burraco.controller.game.GameWiring;
+import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
 import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.turn.TurnImpl;
 import it.unibo.burraco.view.start.SetUpMenuView;
@@ -35,20 +37,24 @@ public class BurracoApp {
 
                 it.unibo.burraco.controller.sound.SoundController sound = new it.unibo.burraco.view.sound.SoundControllerImpl();
                 
-                TableViewImpl view = new TableViewImpl(p1, p2, nameP1, nameP2, sound);
-                view.setTargetScore(scoreThreshold);
-                view.wireControllers(turnManager);
+                SelectionCardManager selectionManager = new SelectionCardManager();
+                TableViewImpl view = new TableViewImpl(nameP1, nameP2, selectionManager);
+
+                GameWiring wiring = new GameWiring(p1, p2, nameP1, nameP2, turnManager, view, sound, scoreThreshold,view.getInitDist());
+                GameController gc = wiring.getGameController();
+
+                InitialDistributionController distController =
+                new InitialDistributionController(new DistributionManagerImpl());
+                distController.distribute(p1, p2, gc.getCommonDeck(), gc.getDiscardPile());
+
+                view.getInitDist().refresh(
+                p1.getHand(),
+                p2.getHand(),
+                view.getDiscardView(),
+                gc.getDiscardPile().getCards()
+                );
                 
-                
-            GameController gc = view.getGameController(); 
-
-            InitialDistributionController distController = new InitialDistributionController(new DistributionManagerImpl());
-            distController.distribute(p1, p2, gc.getCommonDeck(), gc.getDiscardPile());
-
-            view.getInitDist().refresh(p1, p2, view.getDiscardView(), gc.getDiscardPile());
-
-            view.refreshHandPanel(p1);
-               
+                view.refreshHandPanel(true, p1.getHand());
             }
 
             @Override

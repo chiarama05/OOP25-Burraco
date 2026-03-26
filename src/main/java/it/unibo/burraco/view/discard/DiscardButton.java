@@ -16,6 +16,7 @@ public class DiscardButton implements DiscardActionView {
     private final DiscardViewImpl discardView;
     private final GameNotifier notifier;
     private final DiscardActionController actionController;
+    private boolean isPlayer1;
 
     public DiscardButton(TableView view,
                          DiscardViewImpl discardView,
@@ -26,20 +27,23 @@ public class DiscardButton implements DiscardActionView {
         this.notifier = notifier;
         this.actionController = new DiscardActionController(discardController);
 
-        this.discardView.setDiscardListener(e -> actionController.handle(this));
+        this.discardView.setDiscardListener(e -> actionController.handle(this, isPlayer1));
     }
 
-
-    @Override
-    public Set<Card> getSelectedCards() {
-        return view.getCurrentHandView().getSelectedCards();
+    public void setIsPlayer1(boolean isPlayer1) {
+        this.isPlayer1 = isPlayer1;
     }
 
     @Override
-public void onDiscardSuccess(Player player, List<Card> updatedPile) {
-    view.getCurrentHandView().clearSelection();
-    discardView.updateDiscardPile(updatedPile); 
-}
+    public Set<Card> getSelectedCards(boolean isPlayer1) {
+        return view.getHandViewForCurrentPlayer(isPlayer1).getSelectedCards();
+    }
+
+    @Override
+    public void onDiscardSuccess(Player player, List<Card> updatedPile, boolean isPlayer1) {
+        view.getHandViewForCurrentPlayer(isPlayer1).clearSelection();
+        discardView.updateDiscardPile(updatedPile);
+    }
 
     @Override
     public void onDiscardError(String errorCode) {

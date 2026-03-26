@@ -10,13 +10,13 @@ public class DiscardActionController {
         this.discardController = discardController;
     }
 
-    public void handle(DiscardActionView view) {
-        DiscardResult result = discardController.tryDiscard(view.getSelectedCards());
+    public void handle(DiscardActionView view, boolean isPlayer1) {
+    DiscardResult result = discardController.tryDiscard(view.getSelectedCards(isPlayer1));
 
-        if (result.isValid()) {
-            view.onDiscardSuccess(result.getCurrentPlayer(), result.getUpdatedDiscardPile());
-        } else {
-            view.onDiscardError(result.getMessage());
-        }
+    if (result.isValid()) {
+        view.onDiscardSuccess(result.getCurrentPlayer(), result.getUpdatedDiscardPile(), isPlayer1);
+    } else {
+        view.onDiscardError(result.getMessage());
     }
+}
 }

@@ -1,12 +1,12 @@
 package it.unibo.burraco.view.distribution;
 
 import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
-import it.unibo.burraco.model.discard.DiscardPile;
-import it.unibo.burraco.model.player.Player;
+import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.view.discard.DiscardView;
 import it.unibo.burraco.view.hand.HandViewImpl;
 
 import javax.swing.*;
+import java.util.List;
 
 public class InitialDistributionView {
 
@@ -26,9 +26,10 @@ public class InitialDistributionView {
         return handPlayer2;
     }
 
-    public void refresh(Player p1, Player p2, DiscardView discardView, DiscardPile discardPile) {
-        handPlayer1.refreshHand(p1.getHand());
-        handPlayer2.refreshHand(p2.getHand());
-        discardView.updateDiscardPile(discardPile.getCards());
+    public void refresh(List<Card> hand1, List<Card> hand2,
+                        DiscardView discardView, List<Card> discardPile) {
+        handPlayer1.refreshHand(hand1);
+        handPlayer2.refreshHand(hand2);
+        discardView.updateDiscardPile(discardPile);
     }
 }

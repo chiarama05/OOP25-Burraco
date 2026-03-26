@@ -1,33 +1,36 @@
 package it.unibo.burraco.view.table;
 
-import javax.swing.JPanel;
-import it.unibo.burraco.model.player.Player;
+import it.unibo.burraco.controller.attach.AttachButtonFactory;
+import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
 import it.unibo.burraco.model.card.Card;
+import it.unibo.burraco.view.deck.DeckView;
 import it.unibo.burraco.view.discard.DiscardViewImpl;
-import it.unibo.burraco.view.distribution.InitialDistributionView;
 import it.unibo.burraco.view.hand.HandViewImpl;
+import it.unibo.burraco.view.discard.TakeDiscardView;
+import it.unibo.burraco.view.pot.PotView;
+import it.unibo.burraco.view.selection.SelectionView;
+
+import javax.swing.*;
 import java.util.List;
 
-public interface TableView {
-    it.unibo.burraco.controller.game.GameController getGameController();
-
-    void refreshHandPanel(Player player);
-    void refreshTurnLabel(boolean isPlayer1);
-    void switchHand(boolean isPlayer1Turn);
-    HandViewImpl getHandViewForPlayer(Player player);
-    
-    HandViewImpl getCurrentHandView();
-    void markPotTaken(boolean isPlayer1);
-    void addCombinationToPlayerPanel(List<Card> cards, boolean player1Turn);
+public interface TableView extends TakeDiscardView, PotView, SelectionView {
+    void refreshTurnLabel(boolean isP1);
+    void markPotTaken(boolean isP1);
+    void addCombinationToPlayerPanel(List<Card> cards, boolean isP1);
+    void switchHand(boolean isP1);
     void startNewRound();
-    
-    
-    DiscardViewImpl getDiscardView();
-    JPanel getDiscardPanel();
-    void wireControllers(it.unibo.burraco.model.turn.Turn turnModel);
     void showScoreModal(String title, String message);
     void repaintTable();
-
-    InitialDistributionView getInitDist();
-    void showPotMessage(String playerName, boolean isDiscard);
+    HandViewImpl getPlayer1HandView();
+    HandViewImpl getPlayer2HandView();
+    HandViewImpl getHandViewForCurrentPlayer(boolean isPlayer1);
+    void refreshHandPanel(boolean isPlayer1, List<Card> hand);
+    DiscardViewImpl getDiscardView();
+    JPanel getDiscardPanel();
+    JFrame getFrame();                       
+    JButton getPutComboBtn();               
+    JButton getTakeDiscardBtn();              
+    DeckView getDeckView();         
+    void setAttachButtonFactory(AttachButtonFactory factory);
+    void setSelectionCardManager(SelectionCardManager manager);
 }

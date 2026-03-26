@@ -21,15 +21,15 @@ public class TakeDiscardActionController {
     }
 
     public void handle(TakeDiscardActionView view) {
-        DrawResult result = takeDiscardController.tryTakeDiscard();
+    DrawResult result = takeDiscardController.tryTakeDiscard();
 
-        if (result.getStatus() == DrawResult.Status.SUCCESS_MULTIPLE) {
-            Player current = turnModel.getCurrentPlayer();
+    if (result.getStatus() == DrawResult.Status.SUCCESS_MULTIPLE) {
+        Player current = turnModel.getCurrentPlayer();
+        boolean isP1 = turnModel.isPlayer1Turn(); 
 
-            view.onTakeDiscardSuccess(current, discardPile.getCards());
-        } else {
- 
-            view.onTakeDiscardError(result); 
-        }
+        view.onTakeDiscardSuccess(current, discardPile.getCards(), isP1);
+    } else {
+        view.onTakeDiscardError(result);
     }
+}
 }

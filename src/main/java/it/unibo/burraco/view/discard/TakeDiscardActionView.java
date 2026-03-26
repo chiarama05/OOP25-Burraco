@@ -6,6 +6,6 @@ import it.unibo.burraco.model.player.Player;
 import java.util.List;
 
 public interface TakeDiscardActionView {
-    void onTakeDiscardSuccess(Player current, List<Card> updatedPile);
+    void onTakeDiscardSuccess(Player current, List<Card> updatedPile, boolean isPlayer1);
     void onTakeDiscardError(DrawResult result);
 }
