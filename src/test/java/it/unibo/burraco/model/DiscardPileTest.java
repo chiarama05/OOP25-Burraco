@@ -82,14 +82,13 @@ public class DiscardPileTest {
     }
 
     @Test
-    void testClear() {
+    void testReset() {
         discardPile.add(makeCard("♠", "J"));
         discardPile.add(makeCard("♥", "10"));
         
         assertFalse(discardPile.isEmpty());
-        discardPile.clear();
+        discardPile.reset();
         assertTrue(discardPile.isEmpty());
         assertEquals(0, discardPile.getCards().size());
     }
-
 }

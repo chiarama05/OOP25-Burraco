@@ -1,48 +1,52 @@
 package it.unibo.burraco.model.discard;
 
 import java.util.List;
-
 import it.unibo.burraco.model.card.Card;
 
 /**
- * Interface for a discard pile in a card game.
- * Defines the operations that can be performed on the discard pile.
+ * Interface representing the discard pile in the Burraco game.
+ * It defines the operations for managing discarded cards.
  */
-
 public interface DiscardPile {
 
     /**
-     * Adds a single card to the discard pile.
+     * Adds a single card to the top of the discard pile.
+     * @param card the card to be discarded.
      */
     void add(Card card);
 
+    
     /**
-     * Adds multiple cards to the discard pile.
+     * Adds a collection of cards to the discard pile.
+     * @param cards the list of cards to add.
      */
     void addAll(List<Card> cards);
 
 
-     /**
-     * Draws (removes and returns) the last card added to the discard pile.
+    /**
+     * Removes and returns the last card added to the pile (the top card).
+     * @return the removed {@link Card}, or null if the pile is empty.
      */
     Card drawLast();
 
 
     /**
-     * Returns the list of cards currently in the discard pile.
+     * Provides the list of cards currently in the discard pile.
+     * @return a list containing the cards in discard order.
      */
     List<Card> getCards();
 
 
-     /**
-     * Checks if the discard pile is empty.
+    /**
+     * Checks whether the discard pile contains any cards.
+     * @return true if the pile is empty, false otherwise.
      */
     boolean isEmpty();
 
-     /**
-     * Clears all cards from the discard pile.
+    
+    /**
+     * Resets the discard pile by removing all cards, 
+     * restoring it to its initial empty state.
      */
-    void clear();
-
     void reset();
 }

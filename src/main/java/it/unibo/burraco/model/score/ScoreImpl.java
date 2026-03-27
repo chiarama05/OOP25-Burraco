@@ -7,7 +7,8 @@ import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.card.*;
 
 /**
- * Implementation of Burraco score calculation logic.
+ * Standard implementation of the Burraco scoring system.
+ * Handles bonuses for clean/dirty burracos, closures, and penalties for uncollected pots.
  */
 public class ScoreImpl implements Score{
 
@@ -18,39 +19,32 @@ public class ScoreImpl implements Score{
 
     @Override
     public int calculateFinalScore(Player player) {
-
         int totalScore = calculateOnlyCardsOnTable(player);
 
-    if (player.hasFinishedCards()) {
-        totalScore += CLOSURE_BONUS;
-    }
+        // Add closure bonus if player triggered the end of the round
+        if (player.hasFinishedCards()) {
+            totalScore += CLOSURE_BONUS;
+        }
 
-        // Burraco bonuses
         totalScore += calculateBurracoBonus(player);
 
-        // Penalty if pot not taken
+        // Apply penalty if the player never collected their "pot"
         if (!player.isInPot()) {
             totalScore += NO_POT_PENALTY;
         }
 
-        // Negative value of remaining hand
+        // Subtract the value of cards left in hand
         totalScore -= calculateRemainingHandValue(player);
 
         return totalScore;
     }
 
-    /**
-     * Calculates burraco bonuses (clean or dirty).
-     */
+
     @Override
     public int calculateBurracoBonus(Player player) {
-
         int bonus = 0;
-
         for (List<Card> combination : player.getCombinations()) {
-
             if (combination.size() >= 7) {
-
                 if (isCleanBurraco(combination)) {
                     bonus += CLEAN_BURRACO_BONUS;
                 } else {
@@ -58,76 +52,75 @@ public class ScoreImpl implements Score{
                 }
             }
         }
-
         return bonus;
     }
 
+    /**
+     * Determines if a burraco is clean (no wildcards, or 2 in natural position).
+     */
     private boolean isCleanBurraco(List<Card> combination) {
-
-
-    if (combination.stream().anyMatch(c -> c.getValue().equals("Jolly"))) {
-        return false;
-    }
-
-    List<Card> twos = combination.stream()
-            .filter(c -> c.getValue().equals("2"))
-            .collect(Collectors.toList());
-
-    if (twos.isEmpty()) return true;
-
-    if (twos.size() > 1) return false;
-
-    Card two = twos.get(0);
-    return isTwoInNaturalPosition(two, combination);
-}
-
-
-private boolean isTwoInNaturalPosition(Card two, List<Card> combination) {
-
-    String suit = two.getSeed();
-
-    boolean sameSuit = combination.stream()
-            .allMatch(c -> c.getSeed().equals(suit));
-
-    if (!sameSuit) return false;
-
-    List<Integer> ranks = combination.stream()
-            .map(CardPoint::toInt)   
-            .sorted()
-            .collect(Collectors.toList());
-
-    for (int i = 1; i < ranks.size(); i++) {
-        if (ranks.get(i) != ranks.get(i - 1) + 1) {
+        // A clean burraco cannot contain a Jolly
+        if (combination.stream().anyMatch(c -> c.getValue().equals("Jolly"))) {
             return false;
         }
-    }
 
-    return true;
-}
+        List<Card> twos = combination.stream()
+                .filter(c -> c.getValue().equals("2"))
+                .collect(Collectors.toList());
 
-    public int countCleanBurraco(Player player) {
-    return (int) player.getCombinations().stream()
-            .filter(c -> c.size() >= 7 && isCleanBurraco(c)).count();
-    }
+        // If no '2' is present, it's clean
+        if (twos.isEmpty()) return true;
+        // More than one '2' in a sequence (unless natural) makes it dirty
+        if (twos.size() > 1) return false;
 
-    public int countDirtyBurraco(Player player) {
-    return (int) player.getCombinations().stream()
-            .filter(c -> c.size() >= 7 && !isCleanBurraco(c)).count();
+        Card two = twos.get(0);
+        // Check if the single '2' is in its natural position within the sequence
+        return isTwoInNaturalPosition(two, combination);
     }
-    
 
     /**
-     * Calculates total value of remaining cards in hand.
+     * Verifies if a '2' acts as a natural card in a sequence of the same suit.
      */
+    private boolean isTwoInNaturalPosition(Card two, List<Card> combination) {
+        String suit = two.getSeed();
+
+        // Natural positions only exist in sequences of the same suit
+        boolean sameSuit = combination.stream()
+                .allMatch(c -> c.getSeed().equals(suit));
+        if (!sameSuit) return false;
+
+        List<Integer> ranks = combination.stream()
+                .map(CardPoint::toInt)   
+                .sorted()
+                .collect(Collectors.toList());
+
+        // Check if the sequence is mathematically continuous (e.g., 1, 2, 3...)
+        for (int i = 1; i < ranks.size(); i++) {
+            if (ranks.get(i) != ranks.get(i - 1) + 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public int countCleanBurraco(Player player) {
+        return (int) player.getCombinations().stream()
+                .filter(c -> c.size() >= 7 && isCleanBurraco(c)).count();
+    }
+    
+    @Override
+    public int countDirtyBurraco(Player player) {
+        return (int) player.getCombinations().stream()
+                .filter(c -> c.size() >= 7 && !isCleanBurraco(c)).count();
+    }
+    
     @Override
     public int calculateRemainingHandValue(Player player) {
-
         int total = 0;
-
         for (Card card : player.getHand()) {
             total += CardPoint.getCardPoints(card);
         }
-
         return total;
     }
 
@@ -142,24 +135,8 @@ private boolean isTwoInNaturalPosition(Card two, List<Card> combination) {
         return total;
     }
 
-    @Override
-    public int getCleanBurracoBonusValue() {
-        return CLEAN_BURRACO_BONUS;
-    }
-
-    @Override
-    public int getDirtyBurracoBonusValue() {
-        return DIRTY_BURRACO_BONUS;
-    }
-
-    @Override
-    public int getClosureBonusValue() {
-        return CLOSURE_BONUS;
-    }
-
-    @Override
-    public int getNoPotPenalty() {
-        return NO_POT_PENALTY;
-    }
-    
+    @Override public int getCleanBurracoBonusValue() { return CLEAN_BURRACO_BONUS; }
+    @Override public int getDirtyBurracoBonusValue() { return DIRTY_BURRACO_BONUS; }
+    @Override public int getClosureBonusValue() { return CLOSURE_BONUS; }
+    @Override public int getNoPotPenalty() { return NO_POT_PENALTY; }
 }

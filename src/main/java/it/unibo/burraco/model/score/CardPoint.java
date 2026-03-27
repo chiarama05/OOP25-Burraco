@@ -2,15 +2,20 @@ package it.unibo.burraco.model.score;
 import it.unibo.burraco.model.card.*;
 
 /**
- * Utility class that calculates the point value of a single card
- * according to Burraco rules.
+ * Utility class to manage point values and numerical conversions 
+ * for cards based on Burraco rules.
  */
 public class CardPoint {
 
+    /** 
+     * Private constructor to prevent instantiation of a utility class. 
+     */
     private CardPoint() {}
 
     /**
-     * Returns the Burraco point value of a card.
+     * Calculates the score value of a specific card.
+     * @param card the card to evaluate.
+     * @return the points assigned to the card.
      */
     public static int getCardPoints(Card card) {
 
@@ -47,6 +52,12 @@ public class CardPoint {
         }
     }
 
+    /**
+     * Converts a card's string value to its numerical rank for sorting/sequence logic.
+     * @param card the card to convert.
+     * @return an integer from 1 (Ace) to 13 (King).
+     * @throws IllegalArgumentException if the card value is not a standard rank.
+     */
     public static int toInt(Card card) {
         return switch (card.getValue()) {
             case "A"  -> 1;

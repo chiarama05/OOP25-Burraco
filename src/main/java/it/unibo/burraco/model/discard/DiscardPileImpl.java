@@ -2,73 +2,52 @@ package it.unibo.burraco.model.discard;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import it.unibo.burraco.model.card.Card;
 
 /**
- * Implementation of the DiscardPile interface using an ArrayList.
- * Represents a pile of discarded cards in a card game.
+ * Concrete implementation of the {@link DiscardPile} interface using an {@link ArrayList}.
+ * Cards are managed in a LIFO (Last-In-First-Out) manner for draw operations.
  */
-
 public class DiscardPileImpl implements DiscardPile{
 
-    // List to store the cards in the discard pile
+    /** 
+     * Internal list used to store the discarded cards. 
+     */
     private List<Card> cards = new ArrayList<>();
 
-    /**
-     * Adds a single card to the discard pile.
-     */
     @Override
     public void add(Card card){
         this.cards.add(card);
     }
 
-    /**
-     * Adds multiple cards to the discard pile.
-     */
     @Override
     public void addAll(List<Card> cards){
         this.cards.addAll(cards);
     }
 
-    /**
-     * Draws (removes and returns) the last card added to the discard pile.
-     */
     @Override
     public Card drawLast(){
         if(!cards.isEmpty()){
+            // Removes the element at the last available index
             return cards.remove(cards.size()-1);
         }
         return null;
     }
 
-    /**
-     * Returns the list of cards currently in the discard pile.
-     */
     @Override
     public List<Card> getCards(){
+        // Returns the reference to the internal list of cards
         return cards;
     }
 
-    /**
-     * Checks if the discard pile is empty.
-     */
     @Override
     public boolean isEmpty(){
         return cards.isEmpty();
     }
 
-    /**
-     * Clears all cards from the discard pile.
-     */
-    @Override
-    public void clear() {
-        cards.clear();
-    }
-
+    
     @Override
     public void reset() {
         this.cards.clear();
     }
-
 }
