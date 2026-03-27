@@ -24,8 +24,9 @@ import it.unibo.burraco.model.score.ScoreImpl;
 import it.unibo.burraco.model.turn.Turn;
 import it.unibo.burraco.view.combination.PutCombinationButton;
 import it.unibo.burraco.view.deck.DeckButton;
-import it.unibo.burraco.view.discard.DiscardButton;
-import it.unibo.burraco.view.discard.TakeDiscardButton;
+import it.unibo.burraco.view.discardcard.discard.DiscardButton;
+import it.unibo.burraco.view.discardcard.takediscard.TakeDiscardButton;
+import it.unibo.burraco.view.discardcard.takediscard.TakeDiscardView;
 import it.unibo.burraco.view.notification.deck.DeckNotifier;
 import it.unibo.burraco.view.notification.deck.DeckNotifierImpl;
 import it.unibo.burraco.view.notification.game.GameNotifier;
@@ -35,7 +36,6 @@ import it.unibo.burraco.view.notification.putcombination.PutCombinationNotifierI
 import it.unibo.burraco.view.notification.takediscard.TakeDiscardNotifier;
 import it.unibo.burraco.view.notification.takediscard.TakeDiscardNotifierImpl;
 import it.unibo.burraco.view.score.ScoreViewImpl;
-import it.unibo.burraco.view.discard.TakeDiscardView;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
 import it.unibo.burraco.view.table.TableView;
 

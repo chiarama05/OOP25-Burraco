@@ -1,6 +1,6 @@
 package it.unibo.burraco.controller.discardcard.discard;
 
-import it.unibo.burraco.view.discard.DiscardActionView;
+import it.unibo.burraco.view.discardcard.discard.DiscardActionView;
 
 /**
  * Orchestrates the interaction between the Discard View and the Discard Logic.

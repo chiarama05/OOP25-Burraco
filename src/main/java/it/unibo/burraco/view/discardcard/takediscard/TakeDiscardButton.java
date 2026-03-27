@@ -1,4 +1,4 @@
-package it.unibo.burraco.view.discard;
+package it.unibo.burraco.view.discardcard.takediscard;
 
 import it.unibo.burraco.controller.drawcard.DrawResult;
 import it.unibo.burraco.model.card.Card;
