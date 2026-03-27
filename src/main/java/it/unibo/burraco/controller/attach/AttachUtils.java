@@ -1,5 +1,6 @@
 package it.unibo.burraco.controller.attach;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unibo.burraco.model.card.Card;
@@ -13,7 +14,8 @@ import it.unibo.burraco.controller.combination.*;;
  */
 public class AttachUtils {
 
-    public static boolean canAttach(List<Card> combination, Card newCard) {
+    
+public static boolean canAttach(List<Card> combination, List<Card> newCards) {
     if (combination == null || combination.isEmpty()) return false;
 
     List<Card> realCards = combination.stream()
@@ -24,18 +26,21 @@ public class AttachUtils {
         .map(Card::getValue)
         .collect(java.util.stream.Collectors.toSet()).size() < realCards.size();
 
-    if (hasDuplicateValues) {
-        return SetAttachUtils.canAttachToSet(combination, newCard);
+    List<Card> hypothetical = new ArrayList<>(combination);
+    hypothetical.addAll(newCards);
+
+    if (hasDuplicateValues || SetUtils.isValidSet(combination)) {
+        return CombinationValidator.isValidCombination(hypothetical);
     }
 
     if (StraightUtils.isSameSeed(combination)) {
-        return StraightAttachUtils.canAttachToStraight(combination, newCard);
-    }
-
-    if (SetUtils.isValidSet(combination)) {
-        return SetAttachUtils.canAttachToSet(combination, newCard);
+        return CombinationValidator.isValidCombination(hypothetical);
     }
 
     return false;
+}
+
+public static boolean canAttach(List<Card> combination, Card newCard) {
+    return canAttach(combination, List.of(newCard));
 }
 }

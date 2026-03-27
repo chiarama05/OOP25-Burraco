@@ -7,18 +7,25 @@ import it.unibo.burraco.model.card.Card;
 
 public class StraightAttachUtils {
 
-   public static boolean canAttachToStraight(List<Card> straight, Card newCard) {
-       
-        List<Card> potentialStraight = new ArrayList<>(straight);
-    potentialStraight.add(newCard);
+   public static boolean canAttachToStraight(List<Card> straight, List<Card> newCards) {
+    // Prova ad aggiungere tutte le carte insieme
+    List<Card> potentialStraight = new ArrayList<>(straight);
+    potentialStraight.addAll(newCards); 
 
     if (CombinationValidator.isValidCombination(potentialStraight)) {
         return true;
     }
 
-    return canSubstituteInternalWildcard(straight, newCard);
+    if (newCards.size() == 1) {
+        return canSubstituteInternalWildcard(straight, newCards.get(0));
     }
 
+    return false;
+}
+
+public static boolean canAttachToStraight(List<Card> straight, Card newCard) {
+    return canAttachToStraight(straight, List.of(newCard));
+}
     private static boolean canSubstituteInternalWildcard(List<Card> straight, Card newCard) {
         List<Card> ord = StraightUtils.orderStraight(straight);
         

@@ -79,10 +79,9 @@ public class AttachController {
 
     
     private boolean executeAttach(Player player, List<Card> selectedCards, List<Card> combinationCards) {
-        for (Card c : selectedCards) {
-            if (!AttachUtils.canAttach(combinationCards, c)) {
-                return false;
-            }
+        
+        if (!AttachUtils.canAttach(combinationCards, selectedCards)) {
+            return false;
         }
 
         combinationCards.addAll(selectedCards);
