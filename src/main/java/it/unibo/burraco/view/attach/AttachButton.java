@@ -18,7 +18,7 @@ public class AttachButton extends JButton implements AttachView {
     private final List<Card> cards;
     private final TableView tableView;
     private final boolean isPlayer1Owner;
-    private static final int FIXED_WIDTH = 56;
+    private static final int FIXED_WIDTH = 60;
 
     private BiConsumer<List<Card>, AttachButton> onAttachAction;
 

@@ -246,36 +246,24 @@ for (Card c : sequence) {
 
 
     public static boolean isPositionallyNatural(int index, List<Card> ordered) {
-    if (index < 0 || index >= ordered.size()) {
-        return false;
-    }
-
+    if (index < 0 || index >= ordered.size()) return false;
     Card c = ordered.get(index);
     if (!c.getValue().equals("2")) return false;
 
-    
-    if (index < ordered.size() - 1) {
-        Card next = ordered.get(index + 1);
-        if (next.getValue().equals("3") && next.getSeed().equals(c.getSeed())) {
-            return true;
-        }
-    }
+    // Trova una carta ancora (non jolly, non 2) per calcolare il valore atteso in posizione `index`
+    for (int i = 0; i < ordered.size(); i++) {
+        Card anchor = ordered.get(i);
+        if (anchor.getValue().equalsIgnoreCase("Jolly") || anchor.getValue().equals("2")) continue;
 
-    if (index > 0 && index < ordered.size() - 1) {
-        Card prev = ordered.get(index - 1);
-        Card next = ordered.get(index + 1);
-        if (prev.getValue().equals("A") && next.getValue().equals("3") && prev.getSeed().equals(c.getSeed())) {
-            return true;
+        if (anchor.getValue().equals("A")) {
+            // L'asso può essere 1 o 14
+            if (1  + (index - i) == 2) return true;
+            if (14 + (index - i) == 2) return true;
+            continue;
         }
+        // Per qualsiasi altra carta, il valore atteso alla posizione `index` è:
+        return anchor.getNumericalValue() + (index - i) == 2;
     }
-    
-    if (index > 0) {
-        Card prev = ordered.get(index - 1);
-        if (prev.getValue().equals("A") && prev.getSeed().equals(c.getSeed())) {
-            return true;
-        }
-    }
-
     return false;
 }
 }
