@@ -14,29 +14,18 @@ import it.unibo.burraco.model.score.ScoreImpl;
 import java.util.List;
 
 /**
- * Gestione vittoria: calcolo punteggio finale, bonus burraco,
- * penalità pozzetto, punteggio cumulato partita.
+ * Victory managements: final score, burraco bonus, pot penalty
  */
 public class VictoryTest {
 
     private Player player;
     private Score score;
 
-    private static final List<Card> CLEAN_BURRACO = List.of(
-            new CardImpl("♥", "3"), new CardImpl("♥", "4"),
-            new CardImpl("♥", "5"), new CardImpl("♥", "6"),
-            new CardImpl("♥", "7"), new CardImpl("♥", "8"),
-            new CardImpl("♥", "9"));  // 5*5 + 2*10 = 45 pt
+    private static final List<Card> CLEAN_BURRACO = List.of(new CardImpl("♥", "3"), new CardImpl("♥", "4"),new CardImpl("♥", "5"), new CardImpl("♥", "6"),new CardImpl("♥", "7"), new CardImpl("♥", "8"),new CardImpl("♥", "9"));  // 5*5 + 2*10 = 45 pt
 
-    private static final List<Card> DIRTY_BURRACO = List.of(
-            new CardImpl("♥", "3"), new CardImpl("♥", "4"),
-            new CardImpl("♥", "5"), new CardImpl("♥", "6"),
-            new CardImpl("♥", "7"), new CardImpl("♥", "8"),
-            new CardImpl("♕", "Jolly")); // Jolly = 30 pt
+    private static final List<Card> DIRTY_BURRACO = List.of(new CardImpl("♥", "3"), new CardImpl("♥", "4"),new CardImpl("♥", "5"), new CardImpl("♥", "6"),new CardImpl("♥", "7"), new CardImpl("♥", "8"),new CardImpl("♕", "Jolly")); // Jolly = 30 pt
 
-    private static final List<Card> SHORT_COMBO = List.of(
-            new CardImpl("♠", "5"), new CardImpl("♠", "6"),
-            new CardImpl("♠", "7")); // non è burraco
+    private static final List<Card> SHORT_COMBO = List.of(new CardImpl("♠", "5"), new CardImpl("♠", "6"),new CardImpl("♠", "7")); // not a burraco
 
     @BeforeEach
     void setUp() {
@@ -44,7 +33,7 @@ public class VictoryTest {
         score  = new ScoreImpl();
     }
 
-    // ── Valori bonus/penalità ─────────────────────────────────────────────────
+    //bonus
 
     @Test
     void testCleanBurracoBonusIs200() {
@@ -66,7 +55,7 @@ public class VictoryTest {
         assertTrue(score.getNoPotPenalty() < 0);
     }
 
-    // ── Conteggio burraco ─────────────────────────────────────────────────────
+    //burraco 
 
     @Test
     void testCountCleanBurracoZero() {
@@ -101,7 +90,7 @@ public class VictoryTest {
         assertEquals(1, score.countDirtyBurraco(player));
     }
 
-    // ── calculateBurracoBonus() ───────────────────────────────────────────────
+    //calculateBurracoBonus()
 
     @Test
     void testBurracoBonusZeroNoCombinations() {
@@ -127,7 +116,7 @@ public class VictoryTest {
         assertEquals(300, score.calculateBurracoBonus(player));
     }
 
-    // ── calculateRemainingHandValue() ─────────────────────────────────────────
+    //calculateRemainingHandValue()
 
     @Test
     void testRemainingHandZeroWhenEmpty() {
@@ -148,13 +137,12 @@ public class VictoryTest {
         assertEquals(10, score.calculateRemainingHandValue(player));
     }
 
-    // ── calculateFinalScore() ─────────────────────────────────────────────────
-
+    //calculateFinalScore() 
     @Test
     void testFinalScoreNoPotPenalty() {
-        // Nessun pozzetto, nessun burraco, 1 carta K=10 in mano
+        // no pot, no burraco 1 card K=10 in hand
         player.addCardHand(new CardImpl("♥", "K"));
-        // 0 (tavolo) - 100 (no pot) - 10 (mano) = -110
+        // 0 (table) - 100 (no pot) - 10 (hand) = -110
         assertEquals(-110, score.calculateFinalScore(player));
     }
 
@@ -162,7 +150,7 @@ public class VictoryTest {
     void testFinalScoreCleanBurracoWithClosure() {
         player.setInPot(true);
         player.addCombination(CLEAN_BURRACO);
-        // hand empty → chiusura +100, burraco clean +200, carte tavolo = 45
+        // hand empty → closure +100, burraco clean +200, table's cards = 45
         int cardsOnTable = score.calculateOnlyCardsOnTable(player);
         int expected = cardsOnTable + 100 + 200;
         assertEquals(expected, score.calculateFinalScore(player));
@@ -181,14 +169,13 @@ public class VictoryTest {
     void testFinalScoreDeductsHandCards() {
         player.setInPot(true);
         player.addCombination(CLEAN_BURRACO);
-        player.addCardHand(new CardImpl("♥", "K")); // 10 pt rimasta in mano
-        // Nessun bonus chiusura (mano non vuota), burraco +200, tavolo, -10 mano
+        player.addCardHand(new CardImpl("♥", "K")); 
         int cardsOnTable = score.calculateOnlyCardsOnTable(player);
         int expected = cardsOnTable + 200 - 10;
         assertEquals(expected, score.calculateFinalScore(player));
     }
 
-    // ── Match total score ─────────────────────────────────────────────────────
+    //Match total score 
 
     @Test
     void testMatchScoreStartsAtZero() {

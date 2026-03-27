@@ -145,8 +145,7 @@ public class ClosureTest {
         player.addCardHand(new CardImpl("♠", "5"));
         player.addCardHand(new CardImpl("♠", "6"));
         // gioca 1 carta → rimane 1 con burraco già fatto
-        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(
-                player, List.of(player.getHand().get(0)), 3));
+        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(player, List.of(player.getHand().get(0)), 3));
     }
 
     @Test

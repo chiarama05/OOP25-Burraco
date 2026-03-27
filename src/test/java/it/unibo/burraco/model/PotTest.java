@@ -12,8 +12,8 @@ import it.unibo.burraco.model.player.PlayerImpl;
 import java.util.List;
 
 /**
- * Gestione pozzetti: addToPot, drawPot, flag isInPot,
- * interazione con la mano e reset.
+ * pots management: addToPot, drawPot, flag isInPot,
+ * hand's interaction and reset.
  */
 public class PotTest {
 
@@ -32,7 +32,7 @@ public class PotTest {
         player = new PlayerImpl("Tester");
     }
 
-    // ── Stato iniziale ────────────────────────────────────────────────────────
+    //initial state
 
     @Test
     void testNotInPotAtCreation() {
@@ -46,7 +46,7 @@ public class PotTest {
         assertFalse(player.isInPot());
     }
 
-    // ── addToPot() ────────────────────────────────────────────────────────────
+    //addToPot()
 
     @Test
     void testAddToPotThenDrawMovesAllCards() {
@@ -58,13 +58,12 @@ public class PotTest {
     @Test
     void testAddToPotReplacesPreviousPot() {
         player.addToPot(List.of(new CardImpl("♥", "3"), new CardImpl("♥", "4")));
-        player.addToPot(List.of(new CardImpl("♦", "K"))); // sostituisce
+        player.addToPot(List.of(new CardImpl("♦", "K")));
         player.drawPot();
         assertEquals(1, player.getHand().size());
     }
 
-    // ── drawPot() ─────────────────────────────────────────────────────────────
-
+    //drawPot()
     @Test
     void testDrawPotSetsInPotTrue() {
         player.addToPot(POT_11);
@@ -77,7 +76,7 @@ public class PotTest {
         player.addToPot(POT_11);
         player.drawPot();
         int afterFirst = player.getHand().size();
-        player.drawPot(); // seconda chiamata: pot vuoto
+        player.drawPot(); 
         assertEquals(afterFirst, player.getHand().size());
     }
 
@@ -98,7 +97,7 @@ public class PotTest {
         assertEquals(11, player.getHand().size());
     }
 
-    // ── isInPot flag ──────────────────────────────────────────────────────────
+    // isInPot flag
 
     @Test
     void testSetInPotManually() {
@@ -114,12 +113,11 @@ public class PotTest {
         assertFalse(player.isInPot());
     }
 
-    // ── hasFinishedCards() interazione ────────────────────────────────────────
-
+    // hasFinishedCards() interaction
     @Test
     void testHasFinishedCardsTrueBeforeDrawingPot() {
         player.addToPot(POT_11);
-        assertTrue(player.hasFinishedCards()); // mano ancora vuota
+        assertTrue(player.hasFinishedCards());
     }
 
     @Test
@@ -129,8 +127,7 @@ public class PotTest {
         assertFalse(player.hasFinishedCards());
     }
 
-    // ── Reset ─────────────────────────────────────────────────────────────────
-
+    //reset
     @Test
     void testResetClearsPotAndFlag() {
         player.addToPot(POT_11);
@@ -145,7 +142,7 @@ public class PotTest {
         player.addToPot(POT_11);
         player.drawPot();
         player.resetForNewRound();
-        player.drawPot(); // pot svuotato dal reset
+        player.drawPot();
         assertTrue(player.getHand().isEmpty());
     }
 }
