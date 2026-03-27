@@ -9,6 +9,11 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+/**
+ * Swing implementation of the ScoreView.
+ * This class creates a detailed scoreboard window featuring gradients, 
+ * player statistics, and dynamic buttons for match progression.
+ */
 public class ScoreViewImpl implements ScoreView{
 
     private final JFrame frame;
@@ -38,30 +43,35 @@ public class ScoreViewImpl implements ScoreView{
         this.nextAction = action;
     }
 
+    /**
+     * Initializes the UI layout, colors, and components.
+     */
     private void setupUI(Player p1, Player p2, String name1, String name2, boolean matchOver) {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(650, 750);
         frame.setLocationRelativeTo(null);
         
+        // Custom panel with a background gradient
         BackgroundPanel mainPanel = new BackgroundPanel();
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setBackground(new Color(0, 102, 51)); 
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        // --- TITOLO ---
+        // --- TITLE ---
         JLabel titleLabel = new JLabel("SCOREBOARD", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial Black", Font.BOLD, 28));
         titleLabel.setForeground(new Color(255, 182, 193)); 
         titleLabel.setBorder(new EmptyBorder(0, 0, 40, 0));
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
+        // Center panel for side-by-side player stats
         JPanel centerPanel = new JPanel(new GridLayout(1, 2, 30, 0));
         centerPanel.setOpaque(false);
 
         int totalS1 = p1.getMatchTotalScore();
         int totalS2 = p2.getMatchTotalScore();
 
-
+        // Determine winners for visual highlighting (trophies)
         boolean p1Winner = matchOver && (totalS1 > totalS2);
         boolean p2Winner = matchOver && (totalS2 > totalS1);
 
@@ -70,17 +80,17 @@ public class ScoreViewImpl implements ScoreView{
 
         mainPanel.add(centerPanel, BorderLayout.CENTER);
 
-        // --- BOTTONE AZIONE ---
+        // --- ACTION BUTTON ---
         RoundedGradientButton actionBtn;
         if (matchOver) {
             String winnerName = (p1.getMatchTotalScore() > p2.getMatchTotalScore()) ? name1 : name2;
             actionBtn = new RoundedGradientButton("CHAMPION: " + winnerName.toUpperCase() + " (FINISH GAME)");
-            actionBtn.addActionListener(e -> System.exit(0));
+            actionBtn.addActionListener(e -> System.exit(0)); // Terminate game on finish
         } else {
             actionBtn = new RoundedGradientButton("NEXT ROUND (Target: " + targetScore + " pts)");
             actionBtn.addActionListener(e -> {
                 if (nextAction != null) {
-                    nextAction.run();
+                    nextAction.run(); // Trigger round reset logic
                 }
             });
         }
@@ -98,14 +108,18 @@ public class ScoreViewImpl implements ScoreView{
         frame.add(mainPanel);
     }
 
+    /**
+     * Creates a column panel displaying detailed scores for a single player.
+     */
     private JPanel createPlayerStatsPanel(Player p, String name, boolean isWinner) {
-    JPanel panel = new JPanel();
-    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-    panel.setOpaque(false);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setOpaque(false);
 
-    String displayName = isWinner ? "🏆 " + name.toUpperCase() + " 🏆" : name.toUpperCase();
+        // Trophy icon for the winner
+        String displayName = isWinner ? "🏆 " + name.toUpperCase() + " 🏆" : name.toUpperCase();
 
-    JLabel nameLabel = new JLabel(displayName);
+        JLabel nameLabel = new JLabel(displayName);
         nameLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
         nameLabel.setForeground(isWinner ? new Color(219, 112, 147) : Color.WHITE);
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -113,68 +127,75 @@ public class ScoreViewImpl implements ScoreView{
         panel.add(nameLabel);
         panel.add(Box.createVerticalStrut(20));
 
-        int aTerra           = scoreManager.calculateOnlyCardsOnTable(p);
-        int puntiBurrachiP   = scoreManager.countCleanBurraco(p) * scoreManager.getCleanBurracoBonusValue(); 
-        int puntiBurrachiS   = scoreManager.countDirtyBurraco(p) * scoreManager.getDirtyBurracoBonusValue(); 
-        int chiusura         = p.hasFinishedCards() ? scoreManager.getClosureBonusValue() : 0;
-        int mazzetto         = p.isInPot() ? 0 : scoreManager.getNoPotPenalty();
-        int carteInMano      = scoreManager.calculateRemainingHandValue(p);
-        int totaleMano       = scoreManager.calculateFinalScore(p);
-        int totalePartita    = p.getMatchTotalScore();
+        // Data retrieval from the scoring manager
+        int onTable           = scoreManager.calculateOnlyCardsOnTable(p);
+        int pointBurracoC   = scoreManager.countCleanBurraco(p) * scoreManager.getCleanBurracoBonusValue(); 
+        int pointBurracoD   = scoreManager.countDirtyBurraco(p) * scoreManager.getDirtyBurracoBonusValue(); 
+        int closure         = p.hasFinishedCards() ? scoreManager.getClosureBonusValue() : 0;
+        int pot         = p.isInPot() ? 0 : scoreManager.getNoPotPenalty();
+        int cardInHand      = scoreManager.calculateRemainingHandValue(p);
+        int totalHand       = scoreManager.calculateFinalScore(p);
+        int totalMatch    = p.getMatchTotalScore();
 
-    panel.add(createRow("Cards on Table", String.valueOf(aTerra), false));
-    panel.add(createRow("Clean Burraco",  String.valueOf(puntiBurrachiP), false));
-    panel.add(createRow("Dirty Burraco",  String.valueOf(puntiBurrachiS), false));
-    panel.add(createRow("Closure Bonus",  String.valueOf(chiusura), false));
-    panel.add(createRow("Pot Penalty",    String.valueOf(mazzetto), false));
-    panel.add(createRow("Cards in Hand",  "-" + carteInMano, false));
+        // Building the stats list rows
+        panel.add(createRow("Cards on Table", String.valueOf(onTable), false));
+        panel.add(createRow("Clean Burraco",  String.valueOf(pointBurracoC), false));
+        panel.add(createRow("Dirty Burraco",  String.valueOf(pointBurracoD), false));
+        panel.add(createRow("Closure Bonus",  String.valueOf(closure), false));
+        panel.add(createRow("Pot Penalty",    String.valueOf(pot), false));
+        panel.add(createRow("Cards in Hand",  "-" + cardInHand, false));
 
-    panel.add(Box.createVerticalStrut(10));
-    JSeparator sep = new JSeparator();
-    sep.setMaximumSize(new Dimension(Integer.MAX_VALUE, 10)); 
-    panel.add(sep); 
-    panel.add(Box.createVerticalStrut(10));
-    
-    panel.add(Box.createVerticalStrut(10));
-    panel.add(createRow("ROUND TOTAL",    String.valueOf(totaleMano), true));
-    panel.add(createRow("MATCH TOTAL",    String.valueOf(totalePartita), true));
-    panel.add(Box.createVerticalGlue());
+        panel.add(Box.createVerticalStrut(10));
+        JSeparator sep = new JSeparator();
+        sep.setMaximumSize(new Dimension(Integer.MAX_VALUE, 10)); 
+        panel.add(sep); 
 
-    return panel;
-}
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(createRow("ROUND TOTAL",    String.valueOf(totalHand), true));
+        panel.add(createRow("MATCH TOTAL",    String.valueOf(totalMatch), true));
+        panel.add(Box.createVerticalGlue());
 
-class BackgroundPanel extends JPanel {
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        int w = getWidth();
-        int h = getHeight();
-        Color color1 = new Color(53, 102, 73); 
-        Color color2 = new Color(94, 153, 115); 
-        GradientPaint gp = new GradientPaint(0, 0, color1, 0, h, color2);
-        g2d.setPaint(gp);
-        g2d.fillRect(0, 0, w, h);
+        return panel;
     }
-}
 
+    /**
+     * Inner class to provide a decorative gradient background for the scoreboard.
+     */
+    class BackgroundPanel extends JPanel {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g;
+            int w = getWidth();
+            int h = getHeight();
+            Color color1 = new Color(53, 102, 73); 
+            Color color2 = new Color(94, 153, 115); 
+            GradientPaint gp = new GradientPaint(0, 0, color1, 0, h, color2);
+            g2d.setPaint(gp);
+            g2d.fillRect(0, 0, w, h);
+        }
+    }
+
+    /**
+     * Utility to create a formatted label-value row.
+     */
     private JPanel createRow(String label, String value, boolean bold) {
-    JPanel row = new JPanel(new BorderLayout());
-    row.setOpaque(false);
-    JLabel lLabel = new JLabel(label);
-    JLabel lValue = new JLabel(value);
+        JPanel row = new JPanel(new BorderLayout());
+        row.setOpaque(false);
+        JLabel lLabel = new JLabel(label);
+        JLabel lValue = new JLabel(value);
     
-    Font f = new Font("Arial", bold ? Font.BOLD : Font.PLAIN, 16);
-    lLabel.setFont(f);
-    lValue.setFont(f);
-    lLabel.setForeground(Color.WHITE);
-    lValue.setForeground(new Color(219, 112, 147));
+        Font f = new Font("Arial", bold ? Font.BOLD : Font.PLAIN, 16);
+        lLabel.setFont(f);
+        lValue.setFont(f);
+        lLabel.setForeground(Color.WHITE);
+        lValue.setForeground(new Color(219, 112, 147));
 
-    row.add(lLabel, BorderLayout.WEST);
-    row.add(lValue, BorderLayout.EAST);
-    row.setMaximumSize(new Dimension(250, 30));
-    return row;
-}
+        row.add(lLabel, BorderLayout.WEST);
+        row.add(lValue, BorderLayout.EAST);
+        row.setMaximumSize(new Dimension(250, 30));
+        return row;
+    }
 
     @Override
     public void display() {
