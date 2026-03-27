@@ -38,15 +38,8 @@ public class AttachController {
         if (StraightUtils.isSameSeed(combinationCards)) {
             hypothetical = StraightUtils.orderStraight(hypothetical);
         } else {
-            List<Card> toSort = hypothetical;  
-            toSort.sort((c1, c2) -> {
-            boolean w1 = CombinationValidator.isWildcard(c1, toSort);
-            boolean w2 = CombinationValidator.isWildcard(c2, toSort);
-            if (w1 && !w2) return 1;
-            if (!w1 && w2) return -1;
-            return 0;
-        });
-}
+            hypothetical.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
+        }
 
         if (!CombinationValidator.isValidCombination(hypothetical)) {
             return AttachResult.INVALID_COMBINATION;

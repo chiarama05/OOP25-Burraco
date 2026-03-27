@@ -11,23 +11,23 @@ public class CombinationManager {
     }
 
     public static List<Card> prepareForDisplay(List<Card> cards) {
-    List<Card> orderedCards = new ArrayList<>(cards);
-
-    List<Card> wildcards = new ArrayList<>();
-    List<Card> naturals = new ArrayList<>();
-
-    for (Card c : orderedCards) {
-        if (c.getValue().equalsIgnoreCase("Jolly") || CombinationValidator.isWildcard(c, orderedCards)) {
-            wildcards.add(c);
-        } else {
-            naturals.add(c);
+        List<Card> orderedCards = new ArrayList<>(cards);
+        
+        int jokerIndex = -1;
+        for (int i = 0; i < orderedCards.size(); i++) {
+            if (orderedCards.get(i).getValue().equals("Jolly")) {
+                jokerIndex = i;
+                break;
+            }
         }
+
+        if (jokerIndex != -1) {
+            boolean jokerAtExtremes = (jokerIndex == 0 || jokerIndex == orderedCards.size() - 1);
+            if (jokerAtExtremes) {
+                Card joker = orderedCards.remove(jokerIndex);
+                orderedCards.add(joker);
+            }
+        }
+        return orderedCards;
     }
-
-    orderedCards.clear();
-    orderedCards.addAll(naturals);
-    orderedCards.addAll(wildcards);   
-
-    return orderedCards;
-}
 }
