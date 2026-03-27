@@ -6,7 +6,7 @@ import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.view.deck.DeckView;
 import it.unibo.burraco.view.discard.DiscardViewImpl;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
-import it.unibo.burraco.view.hand.HandViewImpl;
+import it.unibo.burraco.view.hand.HandView;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -48,14 +48,14 @@ public class TableViewImpl implements TableView {
     this.combPanel2 = boardView.getCombPanel2();
     frame.add(boardView, BorderLayout.CENTER);
 
-    this.discardPanel = new JPanel();  // ← prima discardPanel
+    this.discardPanel = new JPanel();  
     JScrollPane discardScroll = new JScrollPane(discardPanel);
     discardScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     discardScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
     discardScroll.setPreferredSize(new Dimension(400, 110));
     discardScroll.setBorder(null);
 
-    this.initDist = new InitialDistributionView(discardPanel, selectionManager); // ← poi initDist
+    this.initDist = new InitialDistributionView(discardPanel, selectionManager);
 
     this.deckView = new DeckView();
     this.deckPanel = new JPanel(new BorderLayout());
@@ -172,17 +172,17 @@ public void addCombinationToPlayerPanel(List<Card> cards, boolean isP1) {
     }
 
     @Override
-    public HandViewImpl getHandViewForCurrentPlayer(boolean isPlayer1) {
+    public HandView getHandViewForCurrentPlayer(boolean isPlayer1) {
         return isPlayer1 ? getPlayer1HandView() : getPlayer2HandView();
     }
 
     @Override
-public HandViewImpl getPlayer1HandView() {
+public HandView getPlayer1HandView() {
     return initDist.getPlayer1HandView();
 }
 
 @Override
-public HandViewImpl getPlayer2HandView() {
+public HandView getPlayer2HandView() {
     return initDist.getPlayer2HandView();
 }
 
@@ -193,10 +193,10 @@ public void refreshHandPanel(boolean isPlayer1, List<Card> hand) {
         BorderFactory.createLineBorder(Color.WHITE, 1), "Hand",
         0, 0, new Font("Arial", Font.BOLD, 18), Color.BLACK));
 
-    HandViewImpl hv = getHandViewForCurrentPlayer(isPlayer1);
+    HandView hv = getHandViewForCurrentPlayer(isPlayer1);
     hv.refreshHand(hand);
 
-    JScrollPane handScroll = new JScrollPane(hv);
+    JScrollPane handScroll = new JScrollPane((JComponent) hv);
     handScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     handScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
     handScroll.setBorder(null);
