@@ -1,4 +1,4 @@
-package it.unibo.burraco.controller.discardcard;
+package it.unibo.burraco.controller.discardcard.discard;
 
 import it.unibo.burraco.controller.closure.ClosureState;
 import it.unibo.burraco.controller.closure.ClosureValidator;

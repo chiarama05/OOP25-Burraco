@@ -1,4 +1,4 @@
-package it.unibo.burraco.controller.discardcard;
+package it.unibo.burraco.controller.discardcard.discard;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
 
