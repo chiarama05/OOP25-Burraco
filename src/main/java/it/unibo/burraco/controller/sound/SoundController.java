@@ -1,16 +1,25 @@
 package it.unibo.burraco.controller.sound;
 
+/**
+ * Interface defining the audio feedback system for the game.
+ * It provides methods to trigger specific sound effects based on game events.
+ */
 public interface SoundController {
 
     /**
-     * Riproduce il suono del Burraco (7+ carte).
+     * Plays the sound effect associated with achieving a Burraco (a combination of 7+ cards).
      */
     void playBurracoSound();
 
-    /** Suona quando un giocatore scarta l'ultima carta e chiude la mano */
+    /** 
+     * Plays the sound effect triggered when a player discards their last card 
+     * to successfully close the current round.
+     */
     void playRoundEndSound();
 
-    /** Suona quando viene proclamato il vincitore definitivo della partita */
+    /** 
+     * Plays the sound effect for the final victory, when a player
+     * reaches the target match score.
+     */
     void playVictorySound();
-
 }
