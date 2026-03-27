@@ -1,21 +1,22 @@
 package it.unibo.burraco.controller.drawcard;
+
 import it.unibo.burraco.model.card.Card;
 
 /**
- * DrawResult represents the outcome of a draw action.
+ * Immutable object representing the outcome of a draw operation.
+ * It provides status information and the drawn card data to the caller.
  */
 public class DrawResult {
 
     /**
-     * Enumeration representing all possible outcomes
-     * of a draw operation.
+     * Enumerates all possible results of a draw attempt.
      */
     public enum Status {
-        SUCCESS,
-        SUCCESS_MULTIPLE,
-        EMPTY_DECK,
-        EMPTY_DISCARD,
-        ALREADY_DRAWN
+        SUCCESS,             // Single card drawn from deck
+        SUCCESS_MULTIPLE,    // Multiple cards taken from discard pile
+        EMPTY_DECK,          // Failed: Deck has no cards
+        EMPTY_DISCARD,       // Failed: Discard pile is empty
+        ALREADY_DRAWN        // Failed: Player already drew this turn
     }
 
     /** The result status of the draw operation */
@@ -30,78 +31,43 @@ public class DrawResult {
     private Card drawnCard;
 
     /**
-     * Private constructor to enforce the use of factory methods.
-     *
-     * @param status The result status.
-     * @param card   The drawn card (null if not applicable).
+     * Private constructor to maintain control over instance creation via factory methods.
      */
     private DrawResult(Status status, Card card) {
         this.status = status;
         this.drawnCard = card;
     }
 
-    /**
-     * Creates a successful result for drawing a single card.
-     *
-     * @param card The drawn card.
-     * @return DrawResult with SUCCESS status.
-     */
+    // --- Static Factory Methods ---
+
     public static DrawResult success(Card card) {
         return new DrawResult(Status.SUCCESS, card);
     }
 
-    /**
-     * Creates a successful result for drawing multiple cards
-     * from the discard pile.
-     *
-     * @return DrawResult with SUCCESS_MULTIPLE status.
-     */
     public static DrawResult successMultiple() {
         return new DrawResult(Status.SUCCESS_MULTIPLE, null);
     }
 
-    /**
-     * Creates a result indicating that the deck is empty.
-     *
-     * @return DrawResult with EMPTY_DECK status.
-     */
     public static DrawResult emptyDeck() {
         return new DrawResult(Status.EMPTY_DECK, null);
     }
 
-    /**
-     * Creates a result indicating that the discard pile is empty.
-     *
-     * @return DrawResult with EMPTY_DISCARD status.
-     */
     public static DrawResult emptyDiscard() {
         return new DrawResult(Status.EMPTY_DISCARD, null);
     }
 
-    /**
-     * Creates a result indicating that the player
-     * has already drawn during this turn.
-     *
-     * @return DrawResult with ALREADY_DRAWN status.
-     */
     public static DrawResult alreadyDrawn() {
         return new DrawResult(Status.ALREADY_DRAWN, null);
     }
 
-    /**
-     * Returns the result status.
-     *
-     * @return The draw operation status.
-     */
+    // --- Getters ---
+
     public Status getStatus() {
         return status;
     }
 
-     /**
-     * Returns the drawn card.
-     * 
-     * @return The drawn card if SUCCESS,
-     *         otherwise null.
+    /**
+     * @return the card drawn if status is SUCCESS; null otherwise.
      */
     public Card getDrawnCard() {
         return drawnCard;
