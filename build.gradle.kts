@@ -19,12 +19,12 @@ java {
 }
 
 dependencies {
-    // BOM (Bill of Materials) per sincronizzare le versioni di JUnit
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    // Annotazioni e asserzioni Jupiter
     testImplementation("org.junit.jupiter:junit-jupiter")
-    // Motore runtime per l'esecuzione dei test
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    testImplementation("org.mockito:mockito-core:5.11.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.11.0")
 }
 
 application {
@@ -42,11 +42,6 @@ tasks.withType<Test>().configureEach {
         events(*(TestLogEvent.entries.toTypedArray())) 
     }
     testLogging.showStandardStreams = true 
-}
-
-tasks.processResources {
-    from("src/main/resources")
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 tasks.withType<Jar> {
