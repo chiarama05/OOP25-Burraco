@@ -1,6 +1,6 @@
 package it.unibo.burraco.view.notification.discard;
 
-import it.unibo.burraco.controller.discardcard.DiscardResult;
+import it.unibo.burraco.controller.discardcard.discard.DiscardResult;
 
 public interface DiscardNotifier {
 

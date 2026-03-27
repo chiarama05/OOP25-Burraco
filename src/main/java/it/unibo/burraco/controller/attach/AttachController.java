@@ -38,14 +38,20 @@ public class AttachController {
         if (StraightUtils.isSameSeed(combinationCards)) {
             hypothetical = StraightUtils.orderStraight(hypothetical);
         } else {
-            hypothetical.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
-        }
+            List<Card> toSort = hypothetical;  
+            toSort.sort((c1, c2) -> {
+            boolean w1 = CombinationValidator.isWildcard(c1, toSort);
+            boolean w2 = CombinationValidator.isWildcard(c2, toSort);
+            if (w1 && !w2) return 1;
+            if (!w1 && w2) return -1;
+            return 0;
+        });
+}
 
         if (!CombinationValidator.isValidCombination(hypothetical)) {
             return AttachResult.INVALID_COMBINATION;
         }
 
-        // Controllo preventivo "stuck"
         if (ClosureValidator.wouldGetStuckAfterAttach(currentPlayer, selectedCards, combinationCards.size())) {
             return AttachResult.WOULD_GET_STUCK;
         }
@@ -59,7 +65,6 @@ public class AttachController {
             return AttachResult.ATTACH_FAILED;
         }
 
-        // Segnala al chiamante se è stato raggiunto un burraco (il suono lo suona la View/GameController)
         if (sizeBefore < 7 && combinationCards.size() >= 7) {
             return AttachResult.SUCCESS_BURRACO;
         }

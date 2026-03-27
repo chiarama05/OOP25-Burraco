@@ -1,4 +1,4 @@
-package it.unibo.burraco.controller.discardcard;
+package it.unibo.burraco.controller.discardcard.takediscard;
 
 import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.controller.drawcard.DrawResult;

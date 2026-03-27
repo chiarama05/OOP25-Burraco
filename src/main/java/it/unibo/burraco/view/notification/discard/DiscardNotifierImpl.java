@@ -3,7 +3,7 @@ package it.unibo.burraco.view.notification.discard;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import it.unibo.burraco.controller.discardcard.DiscardResult;
+import it.unibo.burraco.controller.discardcard.discard.DiscardResult;
 
 public class DiscardNotifierImpl implements DiscardNotifier{
 
