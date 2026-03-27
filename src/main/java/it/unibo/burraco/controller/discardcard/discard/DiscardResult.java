@@ -4,6 +4,11 @@ import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
 import java.util.List;
 
+/**
+ * A Result Object that encapsulates the outcome of a discard attempt.
+ * It carries information about the validity of the move, the state of the game, 
+ * and data required to update the UI.
+ */
 public class DiscardResult {
 
     private final boolean valid;
@@ -13,6 +18,9 @@ public class DiscardResult {
     private final List<Card> updatedDiscardPile; 
     private final Player currentPlayer;         
 
+    /**
+     * Private constructor to enforce the use of static factory methods.
+     */
     public DiscardResult(boolean valid, boolean turnEnds, boolean gameWon,
                           String message, List<Card> updatedDiscardPile, Player currentPlayer) {
         this.valid = valid;
@@ -23,18 +31,41 @@ public class DiscardResult {
         this.currentPlayer = currentPlayer;
     }
 
+    /**
+     * Creates a failed discard result with an error message.
+     * @param message the error key or description.
+     * @return a failed DiscardResult.
+     */
     public static DiscardResult error(String message) {
         return new DiscardResult(false, false, false, message, null, null);
     }
 
+    /**
+     * Creates a successful discard result.
+     * @param pile the updated state of the discard pile.
+     * @param player the player who performed the action.
+     * @param gameWon true if this discard triggers a round/match victory.
+     * @return a successful DiscardResult.
+     */
     public static DiscardResult success(List<Card> pile, Player player, boolean gameWon) {
         return new DiscardResult(true, true, gameWon, null, pile, player);
     }
 
+    /** @return true if the discard move was legal. */
     public boolean isValid()                    { return valid; }
+
+    /** @return true if the current player's turn should conclude. */
     public boolean isTurnEnds()                 { return turnEnds; }
+
+    /** @return true if the move resulted in winning the round or game. */
     public boolean isGameWon()                  { return gameWon; }
+
+    /** @return the error message if the move was invalid. */
     public String getMessage()                  { return message; }
+
+    /** @return the state of the discard pile after the move. */
     public List<Card> getUpdatedDiscardPile()   { return updatedDiscardPile; }
+
+    /** @return the player object with updated state. */
     public Player getCurrentPlayer()            { return currentPlayer; }
 }

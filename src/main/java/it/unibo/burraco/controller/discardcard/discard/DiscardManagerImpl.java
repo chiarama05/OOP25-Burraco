@@ -7,51 +7,67 @@ import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.player.Player;
 import java.util.List;
 
+/**
+ * Concrete implementation of {@link DiscardManager}.
+ * Manages the transition of a card from a player's hand to the discard pile
+ * and evaluates the win conditions (Closure) for the current round.
+ */
 public class DiscardManagerImpl implements DiscardManager {
 
     private final DiscardPile discardPile;
 
+    /**
+     * @param discardPile the shared discard pile model.
+     */
     public DiscardManagerImpl(DiscardPile discardPile) {
         this.discardPile = discardPile;
     }
 
-    
+    /**
+     * @return the current list of cards in the discard pile.
+     */
     public List<Card> getDiscardPile() {
         return discardPile.getCards();
     }
 
     @Override
     public DiscardResult discard(Player player, Card card) {
-
+        // Card selection check
         if (card == null) {
-        return DiscardResult.error("NOT_SELECTED");
-    }
+            return DiscardResult.error("NOT_SELECTED");
+        }
 
-    if (!player.getHand().contains(card)) {
-        return DiscardResult.error("NOT_IN_HAND");
-    }
+        // Verify the card actually belongs to the player's hand
+        if (!player.getHand().contains(card)) {
+            return DiscardResult.error("NOT_IN_HAND");
+        }   
 
-    // 2. Logica di scarto
-    player.removeCardHand(card);
-    discardPile.add(card);
+        // Temporary move of the card to the discard pile
+        player.removeCardHand(card);
+        discardPile.add(card);
 
-    // 3. Controllo chiusura
-    ClosureState state = ClosureValidator.evaluateAfterDiscard(player);
+        // Check if this discard results in a round win or an illegal closure
+        ClosureState state = ClosureValidator.evaluateAfterDiscard(player);
 
-    switch (state) {
-        case ROUND_WON:
-            return DiscardResult.success(discardPile.getCards(), player, true);
+        switch (state) {
+            case ROUND_WON:
+                // The player has legally closed the round
+                return DiscardResult.success(discardPile.getCards(), player, true);
 
-        case CANNOT_CLOSE_NO_BURRACO:
-            // Rollback: riporto lo stato a prima dello scarto
-            discardPile.drawLast();
-            player.addCardHand(card);
-            // Restituiamo solo l'identificativo dell'errore
-            return DiscardResult.error("NO_BURRACO_ERROR");
+            case CANNOT_CLOSE_NO_BURRACO:
+                /* 
+                 * Rollback Logic: 
+                 * If the player attempts to discard their last card but lacks a Burraco, 
+                 * the action is undone to restore the game state.
+                 */
+                discardPile.drawLast();
+                player.addCardHand(card);
+                return DiscardResult.error("NO_BURRACO_ERROR");
 
-        case OK:
-        default:
-            return DiscardResult.success(discardPile.getCards(), player, false);
+            case OK:
+            default:
+                // Standard discard without closing the round
+                return DiscardResult.success(discardPile.getCards(), player, false);
         }
     }
 }

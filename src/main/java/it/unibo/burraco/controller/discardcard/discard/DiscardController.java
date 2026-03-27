@@ -10,6 +10,11 @@ import it.unibo.burraco.model.turn.Turn;
 
 import java.util.Set;
 
+/**
+ * Main logic controller for the discard action.
+ * Verifies game rules (drawing before discarding) and coordinates
+ * pot collection, turn changes, and game closure.
+ */
 public class DiscardController {
 
     private final DiscardManagerImpl discardManager;
@@ -33,14 +38,19 @@ public class DiscardController {
         this.turnModel = turnModel;
     }
 
-    
+    /**
+     * Validates and executes a discard action.
+     * @param selectedCards the card selected by the player to be discarded.
+     * @return a DiscardResult containing the outcome of the operation.
+     */
     public DiscardResult tryDiscard(Set<Card> selectedCards) {
 
-       
+        // A player must draw from the deck or pile before discarding
         if (!drawManager.hasDrawn()) {
             return DiscardResult.error("must_draw");
         }
 
+        // Exactly one card must be discarded
         if (selectedCards.size() != 1) {
             return DiscardResult.error("select_one");
         }
@@ -48,27 +58,31 @@ public class DiscardController {
         Player current = turnModel.getCurrentPlayer();
         Card card = selectedCards.iterator().next();
 
+        // Check if this discard will lead to the player collecting the "pot"
+        // Happens if it's the last card in hand and the player hasn't taken the pot yet
         boolean willTakePot = (current.getHand().size() == 1 && !current.isInPot());
 
+        // Perform the actual discard on the model
         DiscardResult result = discardManager.discard(current, card);
 
         if (!result.isValid()) {
             return result;
         }
 
+        // The discard leads to winning the round/match
         if (result.isGameWon()) {
             closureCtrl.handleStateAfterDiscard(current);
-            return DiscardResult.success(
-                discardManager.getDiscardPile(), current, true);
+            return DiscardResult.success(discardManager.getDiscardPile(), current, true);
         }
 
+        // Collecting the pot
         if (willTakePot) {
             potCtrl.handlePot(true);
         }
 
+        // Move to the next turn if the game is not over
         turnCtrl.executeNextTurn();
 
-        return DiscardResult.success(
-            discardManager.getDiscardPile(), current, false);
+        return DiscardResult.success(discardManager.getDiscardPile(), current, false);
     }
 }
