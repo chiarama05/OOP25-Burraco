@@ -74,6 +74,7 @@ public class TableViewImpl implements TableView {
     frame.add(sideControlPanel, BorderLayout.EAST);
 
     frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    frame.setMinimumSize(new Dimension(900, 650));
     frame.setVisible(true);
 }
 
