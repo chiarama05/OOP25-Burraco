@@ -34,6 +34,7 @@ import it.unibo.burraco.view.notification.putcombination.PutCombinationNotifier;
 import it.unibo.burraco.view.notification.putcombination.PutCombinationNotifierImpl;
 import it.unibo.burraco.view.notification.takediscard.TakeDiscardNotifier;
 import it.unibo.burraco.view.notification.takediscard.TakeDiscardNotifierImpl;
+import it.unibo.burraco.view.score.ScoreViewImpl;
 import it.unibo.burraco.view.discard.TakeDiscardView;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
 import it.unibo.burraco.view.table.TableView;
@@ -56,10 +57,13 @@ public class GameWiring {
         PotManager potManager = new PotManager(turnModel, view);
 
         Score score = new ScoreImpl();
+        ScoreController.ViewProvider realViewProvider = (playerA, playerB, n1, n2, target, s, tv, over) -> 
+                new ScoreViewImpl(playerA, playerB, n1, n2, target, s, tv, over);
         ScoreController scoreController = new ScoreController(
                 score, p1, p2, nameP1, nameP2,
                 view, gameController, soundController, targetScore,
-                distributionView, SwingUtilities::invokeLater);
+                distributionView, SwingUtilities::invokeLater,
+                realViewProvider);
 
         ClosureManager closureManager = new ClosureManager(
                 turnModel, notifier, targetScore, scoreController);

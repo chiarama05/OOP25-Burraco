@@ -12,7 +12,6 @@ import it.unibo.burraco.controller.sound.SoundController;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.score.Score;
 import it.unibo.burraco.view.score.ScoreView;
-import it.unibo.burraco.view.score.ScoreViewImpl;
 import it.unibo.burraco.view.table.TableView;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
 
@@ -29,6 +28,12 @@ public class ScoreController {
     private final SoundController soundController;
     private final InitialDistributionView distributionView; 
     private final Consumer<Runnable> uiThreadRunner;
+    private final ViewProvider viewProvider;
+
+    public interface ViewProvider {
+        ScoreView create(Player p1, Player p2, String n1, String n2, 
+                         int target, Score s, TableView tv, boolean over);
+    }
 
     public ScoreController(
             Score score,
@@ -41,7 +46,8 @@ public class ScoreController {
             SoundController soundController,
             int targetScore,
             InitialDistributionView distributionView,
-            Consumer<Runnable> uiThreadRunner) { 
+            Consumer<Runnable> uiThreadRunner,
+            ViewProvider viewProvider) { 
 
         this.score           = score;
         this.player1         = player1;
@@ -54,6 +60,7 @@ public class ScoreController {
         this.targetScore     = targetScore;
         this.distributionView = distributionView;
         this.uiThreadRunner = uiThreadRunner;
+        this.viewProvider = viewProvider;
     }
 
     public void onRoundEnd() {
@@ -81,9 +88,9 @@ public class ScoreController {
 }
 
 private void showScoreView(boolean matchOver) {
-    ScoreView view = new ScoreViewImpl(
-        player1, player2, nameP1, nameP2,
-        targetScore, score, tableView, matchOver);
+    ScoreView view = viewProvider.create(
+            player1, player2, nameP1, nameP2,
+            targetScore, score, tableView, matchOver);
 
     view.setOnNextAction(() -> {
         view.close();
@@ -103,5 +110,5 @@ private void showScoreView(boolean matchOver) {
     });
 
     view.display();
-}
+    }
 }
