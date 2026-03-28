@@ -99,8 +99,26 @@ public class AttachButton extends JButton implements AttachView {
             cards.clear();
             cards.addAll(ordered);
         } else {
-            cards.sort((c1, c2) ->
-                    Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
+           String baseValue = cards.stream()
+        .filter(c -> !c.getValue().equalsIgnoreCase("Jolly"))
+        .map(Card::getValue)
+        .findFirst()
+        .orElse(null);
+
+    List<Card> naturals = new ArrayList<>();
+    List<Card> wildcards = new ArrayList<>();
+
+    for (Card c : cards) {
+        boolean isWild = c.getValue().equalsIgnoreCase("Jolly")
+            || (c.getValue().equals("2") && !"2".equals(baseValue));
+        if (isWild) wildcards.add(c);
+        else naturals.add(c);
+    }
+
+    naturals.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
+    cards.clear();
+    cards.addAll(wildcards); 
+     cards.addAll(naturals);
         }
 
         this.setBorder(BorderFactory.createCompoundBorder(

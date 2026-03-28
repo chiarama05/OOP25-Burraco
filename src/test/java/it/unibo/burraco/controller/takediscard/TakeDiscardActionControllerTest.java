@@ -7,7 +7,7 @@ import it.unibo.burraco.controller.drawcard.DrawResult;
 import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.turn.Turn;
-import it.unibo.burraco.view.discard.TakeDiscardActionView;
+import it.unibo.burraco.view.discardcard.takediscard.TakeDiscardActionView;
 import it.unibo.burraco.controller.discardcard.takediscard.TakeDiscardController;
 import it.unibo.burraco.controller.discardcard.takediscard.TakeDiscardActionController;
 

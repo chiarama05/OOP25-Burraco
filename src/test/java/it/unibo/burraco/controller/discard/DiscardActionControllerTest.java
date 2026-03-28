@@ -4,8 +4,8 @@ import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.Test;
 import it.unibo.burraco.controller.discardcard.discard.*;
-import it.unibo.burraco.view.discard.DiscardActionView;
 import it.unibo.burraco.model.player.Player;
+import it.unibo.burraco.view.discardcard.discard.DiscardActionView;
 
 public class DiscardActionControllerTest {
 

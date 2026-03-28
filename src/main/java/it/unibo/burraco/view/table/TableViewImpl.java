@@ -4,7 +4,7 @@ import it.unibo.burraco.controller.attach.AttachButtonFactory;
 import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.view.deck.DeckView;
-import it.unibo.burraco.view.discard.DiscardViewImpl;
+import it.unibo.burraco.view.discardcard.discard.DiscardViewImpl;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
 import it.unibo.burraco.view.hand.HandView;
 import javax.swing.*;

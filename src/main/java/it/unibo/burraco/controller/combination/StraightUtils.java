@@ -261,7 +261,6 @@ for (Card c : sequence) {
             if (14 + (index - i) == 2) return true;
             continue;
         }
-        // Per qualsiasi altra carta, il valore atteso alla posizione `index` è:
         return anchor.getNumericalValue() + (index - i) == 2;
     }
     return false;
