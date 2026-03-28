@@ -17,7 +17,7 @@ import java.util.function.BiConsumer;
 public class DiscardButton implements DiscardActionView {
 
     private final TableView view;
-    private final DiscardViewImpl discardView;
+    private final DiscardView discardView;
     private final GameNotifier notifier;
     private boolean isPlayer1;
 
@@ -29,7 +29,7 @@ public class DiscardButton implements DiscardActionView {
      * @param discardView the component managing the discard pile display.
      * @param notifier the utility used to show alerts to the player.
      */
-    public DiscardButton(TableView view, DiscardViewImpl discardView, GameNotifier notifier) {
+    public DiscardButton(TableView view, DiscardView discardView, GameNotifier notifier) {
         this.view = view;
         this.discardView = discardView;
         this.notifier = notifier;

@@ -4,7 +4,7 @@ import it.unibo.burraco.controller.attach.AttachButtonFactory;
 import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.view.deck.DeckView;
-import it.unibo.burraco.view.discardcard.discard.DiscardViewImpl;
+import it.unibo.burraco.view.discardcard.discard.DiscardView;
 import it.unibo.burraco.view.discardcard.takediscard.TakeDiscardView;
 import it.unibo.burraco.view.hand.HandView;
 import it.unibo.burraco.view.pot.PotView;
@@ -25,7 +25,7 @@ public interface TableView extends TakeDiscardView, PotView, SelectionView {
     HandView getPlayer2HandView();
     HandView getHandViewForCurrentPlayer(boolean isPlayer1);
     void refreshHandPanel(boolean isPlayer1, List<Card> hand);
-    DiscardViewImpl getDiscardView();
+    DiscardView getDiscardView();
     JPanel getDiscardPanel();
     JFrame getFrame();                       
     JButton getPutComboBtn();               

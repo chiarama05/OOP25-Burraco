@@ -4,6 +4,7 @@ import it.unibo.burraco.controller.attach.AttachButtonFactory;
 import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.view.deck.DeckView;
+import it.unibo.burraco.view.discardcard.discard.DiscardView;
 import it.unibo.burraco.view.discardcard.discard.DiscardViewImpl;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
 import it.unibo.burraco.view.hand.HandView;
@@ -18,7 +19,7 @@ public class TableViewImpl implements TableView {
     private final JPanel combPanel1, combPanel2, discardPanel, deckPanel;
     private final String nameP1, nameP2;
     private final InitialDistributionView initDist;
-    private final DiscardViewImpl discardView;
+    private final DiscardView discardView;
     private final DeckView deckView;
     private final JButton takeDiscardBtn;
     private final JButton putComboBtn;
@@ -66,8 +67,9 @@ public class TableViewImpl implements TableView {
 
     this.takeDiscardBtn = new JButton("TAKE DISCARD");
     this.putComboBtn = new JButton("PUT COMBINATION");
-    this.discardView = new DiscardViewImpl(discardPanel, new JPanel());
-    JButton discardBtn = (JButton) discardView.getActionPanel().getComponent(0);
+    DiscardViewImpl dvImpl = new DiscardViewImpl(discardPanel, new JPanel());
+    this.discardView = dvImpl;
+    JButton discardBtn = (JButton) dvImpl.getActionPanel().getComponent(0);
     discardBtn.setText("DISCARD");
 
     this.sideControlPanel = new ControlPanelView(takeDiscardBtn, putComboBtn, discardBtn, lightgreen);
@@ -102,7 +104,7 @@ public void addCombinationToPlayerPanel(List<Card> cards, boolean isP1) {
     JComponent btn = attachButtonFactory.create(cards, isP1);
     btn.setAlignmentY(Component.TOP_ALIGNMENT);
     panel.add(btn);
-    panel.add(Box.createRigidArea(new Dimension(5, 0))); // ← stacco orizzontale
+    panel.add(Box.createRigidArea(new Dimension(5, 0))); 
     
     frame.revalidate();
     frame.repaint();
@@ -208,7 +210,8 @@ public void refreshHandPanel(boolean isPlayer1, List<Card> hand) {
     deckPanel.repaint();
 }
 
-    @Override public DiscardViewImpl getDiscardView() { 
+    @Override 
+    public DiscardView getDiscardView() { 
         return discardView; 
     }
 
