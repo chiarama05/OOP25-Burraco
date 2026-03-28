@@ -35,7 +35,7 @@ public class AttachActionController {
     public void handle(List<Card> selectedCards, List<Card> combinationCards, AttachView view) {
     Player currentPlayer = gameController.getCurrentPlayer();
     boolean hasDrawn = gameController.getDrawManager().hasDrawn();
-    boolean isPlayer1Current = gameController.isPlayer1(currentPlayer); // aggiunto
+    boolean isPlayer1Current = gameController.isPlayer1(currentPlayer); 
     boolean isCurrentPlayer = isPlayer1Current == isPlayer1Owner;
 
     AttachResult result = attachController.tryAttach(
@@ -56,19 +56,19 @@ public class AttachActionController {
 
         case SUCCESS, SUCCESS_BURRACO -> {
             view.updateCombinationVisuals();
-            view.onAttachSuccess(currentPlayer, isPlayer1Current); // aggiornato
+            view.onAttachSuccess(currentPlayer, isPlayer1Current); 
         }
 
         case SUCCESS_TAKE_POT -> {
             view.updateCombinationVisuals();
             potManager.handlePot(false);
-            view.onAttachTakePot(currentPlayer, isPlayer1Current); // aggiornato
+            view.onAttachTakePot(currentPlayer, isPlayer1Current); 
         }
 
         case SUCCESS_CLOSE, SUCCESS_STUCK -> {
             view.updateCombinationVisuals();
             closureManager.handleStateAfterAction(currentPlayer);
-            view.onAttachClose(currentPlayer, isPlayer1Current); // aggiornato
+            view.onAttachClose(currentPlayer, isPlayer1Current);
         }
     }
 }
