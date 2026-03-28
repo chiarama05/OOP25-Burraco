@@ -10,11 +10,27 @@ import it.unibo.burraco.controller.closure.ClosureValidator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller class that manages the action of a player attaching cards to a combination.
+ * It validates game state, handles the execution of the move, and returns detailed results.
+ */
 public class AttachController {
 
+    /**
+     * Default constructor for AttachController.
+     */
     public AttachController() {}
 
-    
+    /**
+     * Attempts to attach selected cards to a combination. 
+     * Validates player turn, draw status and game rules.
+     * @param currentPlayer the player performing the action
+     * @param selectedCards the cards the player wants to play
+     * @param combinationCards the target combination on the table
+     * @param hasDrawn whether the player has already drawn a card this turn
+     * @param isCurrentPlayer whether it is the player's turn
+     * @return an {@link AttachResult} indicating success or the specific reason for failure
+     */
     public AttachResult tryAttach(Player currentPlayer,
                                    List<Card> selectedCards,
                                    List<Card> combinationCards,
@@ -32,9 +48,11 @@ public class AttachController {
             return AttachResult.NO_CARDS_SELECTED;
         }
 
+        // Create a hypothetical combination to validate the move
         List<Card> hypothetical = new ArrayList<>(combinationCards);
         hypothetical.addAll(selectedCards);
 
+        // Sort the cards based on whether it's a straight or a set
         if (StraightUtils.isSameSeed(combinationCards)) {
             hypothetical = StraightUtils.orderStraight(hypothetical);
         } else {
@@ -45,26 +63,26 @@ public class AttachController {
             return AttachResult.INVALID_COMBINATION;
         }
 
+        // Check if the move would leave the player with no cards but unable to finish/take pot
         if (ClosureValidator.wouldGetStuckAfterAttach(currentPlayer, selectedCards, combinationCards.size())) {
             return AttachResult.WOULD_GET_STUCK;
         }
 
-
-        
         int sizeBefore = combinationCards.size();
         boolean success = executeAttach(currentPlayer, selectedCards, combinationCards);
 
-       if (!success) {
+        if (!success) {
             return AttachResult.ATTACH_FAILED;
         }
 
+        // Check for Burraco after a successful attach
         if (sizeBefore < 7 && combinationCards.size() >= 7) {
             return AttachResult.SUCCESS_BURRACO;
         }
         
-       ClosureState state = ClosureValidator.evaluate(currentPlayer);
+        ClosureState state = ClosureValidator.evaluate(currentPlayer);
 
-       if (state == ClosureState.ZERO_CARDS_NO_POT) {
+        if (state == ClosureState.ZERO_CARDS_NO_POT) {
             return AttachResult.SUCCESS_TAKE_POT;
         } else if (state == ClosureState.CAN_CLOSE) {
             return AttachResult.SUCCESS_CLOSE;
@@ -75,13 +93,21 @@ public class AttachController {
         }
     }
 
-    
+    /**
+     * Performs the actual update of the game state:  
+     * updates the combination on the table and removes cards from the player's hand.
+     * @param player the player performing the move
+     * @param selectedCards the cards to remove from hand
+     * @param combinationCards the combination to update
+     * @return true if the execution was successful, false if validation failed
+     */
     private boolean executeAttach(Player player, List<Card> selectedCards, List<Card> combinationCards) {
         
         if (!AttachUtils.canAttach(combinationCards, selectedCards)) {
             return false;
         }
 
+        // Update the cards in the table combination
         combinationCards.addAll(selectedCards);
 
         for (List<Card> playerComb : player.getCombinations()) {
