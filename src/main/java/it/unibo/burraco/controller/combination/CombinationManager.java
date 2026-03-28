@@ -4,12 +4,24 @@ import it.unibo.burraco.model.card.Card;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility class for managing and formatting card combinations for display purposes.
+ */
 public class CombinationManager {
 
+    /**
+     * Private constructor to prevent instantiation of this utility class.
+     * @throws UnsupportedOperationException if an attempt is made to instantiate the class.
+     */
     private CombinationManager() {
         throw new UnsupportedOperationException("Utility class");
     }
 
+    /**
+     * Prepares a list of cards for visual display.
+     * @param cards the original list of cards in the combination
+     * @return a new list of cards ordered for display
+     */
     public static List<Card> prepareForDisplay(List<Card> cards) {
         List<Card> orderedCards = new ArrayList<>(cards);
         
