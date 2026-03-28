@@ -14,13 +14,16 @@ public class DeckImpl implements Deck {
 
     private List<Card> cards;
 
+    /**
+     * Constructs a new DeckImpl and initializes the full deck.
+     */
     public DeckImpl() {
         this.cards = new ArrayList<>();
         initializeDeck();
     }
 
     /**
-     * Svuota il mazzo e lo rigenera completamente.
+     * Clears the deck and regenerates it from scratch, including a new shuffle.
      */
     @Override
     public void reset() {
@@ -28,11 +31,13 @@ public class DeckImpl implements Deck {
         initializeDeck();
     }
 
+    /**
+     * Builds the full deck: two sets of 52 cards plus 2 Jokers each, then shuffles.
+     */
     private void initializeDeck() {
         String[] seeds = {"♠", "♥", "♣", "♦"};
         String[] values = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
 
-        // Due mazzi da 54 carte (52 + 2 Jolly) = 108 carte
         for (int j = 0; j < 2; j++) {
             for (String seed : seeds) {
                 for (String value : values) {
@@ -45,7 +50,6 @@ public class DeckImpl implements Deck {
         Collections.shuffle(cards);
     }
 
-    
     @Override
     public Card draw() {
         if (!cards.isEmpty()) {
@@ -54,13 +58,10 @@ public class DeckImpl implements Deck {
         return null;
     }
     
-
-
     @Override
     public boolean isEmpty() {
         return cards.isEmpty();
     }
-
 
     @Override
     public List<Card> getCards() {

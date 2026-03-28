@@ -42,6 +42,9 @@ public interface Deck {
      * @return a list of cards in the deck.
      */
     List<Card> getCards();
-
+    
+    /**
+     * Resets the deck to its initial state, regenerating and reshuffling all cards.
+     */
     void reset();
 }

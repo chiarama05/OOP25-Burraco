@@ -1,7 +1,6 @@
 package it.unibo.burraco.model.jolly;
 
 import java.util.List;
-
 import it.unibo.burraco.controller.combination.StraightUtils;
 import it.unibo.burraco.model.card.Card;
 
@@ -11,10 +10,9 @@ import it.unibo.burraco.model.card.Card;
  */
 public class JollyImpl implements Jolly {
 
-    // The card associated with this Jolly implementation 
     private final Card card;
 
-     /**
+    /**
      * Constructor that initializes the Jolly with a specific card.
      * 
      * @param card the card to wrap as a Jolly
@@ -22,31 +20,32 @@ public class JollyImpl implements Jolly {
     public JollyImpl(Card card) {
         this.card = card;
     }
-    
-    
+
     @Override
     public boolean isPureJolly() {
         return card.getValue().equals("Jolly");
     }
-
 
     @Override
     public boolean isJolly(List<Card> context) {
         if (context == null || context.isEmpty()) {
             return false;
         }
-
         if (isPureJolly()) {
             return true;
         }
         if (!card.getValue().equals("2")) {
             return false;
         }
-
+        // A "2" is a wildcard only when it is NOT a natural two in the straight
         return !StraightUtils.isNaturalTwo(card, context);
     }
 
-
+    /**
+     * Returns the underlying card wrapped by this Jolly.
+     *
+     * @return the card
+     */
     public Card getCard() {
         return card;
     }
