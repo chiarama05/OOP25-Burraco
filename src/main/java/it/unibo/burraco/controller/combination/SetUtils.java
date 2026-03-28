@@ -4,23 +4,40 @@ import it.unibo.burraco.model.card.Card;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Utility class providing helper methods for Set combinations.
+ * A Set is considered valid if all non-wildcard cards share the same face value.
+ */
 public class SetUtils {
 
+    /**
+     * Validates whether a list of cards forms a legal Set.
+     * The method filters out wildcards and ensures all remaining cards have an identical face value.
+     * @param cards the list of cards to be validated
+     * @return true if all natural cards in the list share the same value, false if empty or mismatched
+     */
     public static boolean isValidSet(List<Card> cards) {
-    List<Card> naturalCards = cards.stream()
+        List<Card> naturalCards = cards.stream()
             .filter(c -> !c.getValue().equalsIgnoreCase("Jolly") && !c.getValue().equals("2"))
             .collect(Collectors.toList());
 
-    if (naturalCards.isEmpty()) {
-        return false; 
+        if (naturalCards.isEmpty()) {
+            return false; 
+        }
+
+        String baseValue = naturalCards.get(0).getValue();
+
+        return naturalCards.stream().allMatch(c -> c.getValue().equals(baseValue));
     }
 
-    String baseValue = naturalCards.get(0).getValue();
-
-    return naturalCards.stream().allMatch(c -> c.getValue().equals(baseValue));
-    }
-
-
+    /**
+     * Determines if a specific card can be added to an existing Set combination.
+     * It checks the current wildcard count and verifies that the new card's value 
+     * matches the established value of the set.
+     * @param set the existing set of cards on the table
+     * @param newCard the card to attempt to attach
+     * @return true if the card matches the set's value or is a valid wildcard addition
+     */
     public static boolean canAttachCard(List<Card> set, Card newCard) {
 
         long wildcards = set.stream().filter(c -> CombinationValidator.isWildcard(c, set)).count();
@@ -28,6 +45,7 @@ public class SetUtils {
         if (CombinationValidator.isWildcard(newCard, set)){
             return wildcards < 1;
         }
+        
         String baseValue = set.stream()
                 .filter(c -> !CombinationValidator.isWildcard(c, set))
                 .map(Card::getValue)
@@ -36,18 +54,5 @@ public class SetUtils {
 
         return newCard.getValue().equals(baseValue);
     }
-
-    public static boolean isNaturalTwoInSet(Card two, List<Card> cards) {
-    if (!two.getValue().equals("2")) return false;
-
-    // In un Tris, il 2 è naturale se ha lo stesso seme delle altre carte del tris
-    // (che per definizione devono avere tutte lo stesso valore, es. tutti 7)
-    return cards.stream()
-            .filter(c -> !c.getValue().equals("2") && !c.getValue().equalsIgnoreCase("Jolly"))
-            .findFirst()
-            .map(firstReal -> firstReal.getSeed().equals(two.getSeed()))
-            .orElse(false);
-}
-
 
 }

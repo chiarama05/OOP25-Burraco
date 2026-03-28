@@ -5,13 +5,15 @@ import java.util.List;
 import it.unibo.burraco.model.card.Card;
 
 /**
- * Utility class that handles the attachment logic for Set combinations.
- * A Set is a combination of cards that all share the same value
+ * Utility class that handles the attachment logic specifically for Set combinations.
+ * Provides validation to ensure that any card added to a Set maintains its integrity.
  */
 public class SetAttachUtils {
 
     /**
      * Determines whether a new card can be legally attached to an existing Set.
+     * This method enforces the rule that a Set can contain a maximum of one wildcard 
+     * and that all natural cards must share the same face value.
      *
      * @param set the existing set of cards
      * @param newCard the card to attach
@@ -21,12 +23,11 @@ public class SetAttachUtils {
 
         // Count how many wildcards are already present in the set
         long wildcards = set.stream().filter(c -> CombinationValidator.isWildcard(c, set)).count();
-
-        // If the new card is a wildcard, allow it only if there is not already a wildcard in the set
         if (CombinationValidator.isWildcard(newCard, set)) {
             return wildcards < 1;
         }
 
+        // Identify the value of the Set by finding the first non-wildcard card
         String baseValue = set.stream()
                 .filter(c -> !CombinationValidator.isWildcard(c, set))
                 .map(Card::getValue)
