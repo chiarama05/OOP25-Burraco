@@ -11,6 +11,7 @@ import it.unibo.burraco.controller.distributioncard.DistributionManagerImpl;
 import it.unibo.burraco.controller.distributioncard.InitialDistributionController;
 import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
 import it.unibo.burraco.controller.sound.SoundController;
+import it.unibo.burraco.model.deck.Deck;
 import it.unibo.burraco.model.deck.DeckImpl;
 import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.discard.DiscardPileImpl;
@@ -21,7 +22,7 @@ import it.unibo.burraco.model.card.*;
 public class GameController {
     private final PlayerImpl player1;
     private final PlayerImpl player2;
-    private final DeckImpl commonDeck;
+    private final Deck commonDeck;
     private final Turn turnModel;
     private final SoundController soundController;
     private final DiscardPile discardPile;
@@ -82,7 +83,7 @@ public InitialDistributionController getDistributionController() {
     return attachController;
     }
 
-    public DeckImpl getCommonDeck() {
+    public Deck getCommonDeck() {
         return commonDeck;
     }
 
