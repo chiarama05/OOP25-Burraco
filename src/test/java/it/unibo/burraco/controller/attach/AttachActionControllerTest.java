@@ -54,8 +54,6 @@ class AttachActionControllerTest {
         when(gameController.getSoundController()).thenReturn(soundController);
         when(gameController.isPlayer1(player)).thenReturn(true);
         when(drawManager.hasDrawn()).thenReturn(true);
-
-        // isPlayer1Owner = true → isCurrentPlayer = true
         controller = new AttachActionController(
                 gameController, potManager, closureManager, attachNotifier, true);
     }
