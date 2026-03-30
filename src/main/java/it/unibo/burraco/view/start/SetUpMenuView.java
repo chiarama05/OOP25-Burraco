@@ -1,13 +1,18 @@
 package it.unibo.burraco.view.start;
 
+/**
+ * Interface representing the Game Configuration Menu view.
+ */
 public interface SetUpMenuView {
 
+    /** 
+     * Displays the configuration frame. 
+     */
     void display();
-    void close();
 
-    interface OnConfigurationCompleteListener {
-        void onConfigComplete(int score, String p1, String p2);
-        void onBackClicked();
-    }
+    /** 
+     * Closes and disposes of the configuration frame. 
+     */
+    void close();
 
 }
