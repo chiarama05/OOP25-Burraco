@@ -15,7 +15,6 @@ import it.unibo.burraco.view.start.StartMenuView;
 import it.unibo.burraco.view.start.StartMenuViewImpl;
 import it.unibo.burraco.view.table.TableViewImpl;
 
-
 public class BurracoApp {
     public static void main(final String[] args) {
         SwingUtilities.invokeLater(() -> showStartMenu());
