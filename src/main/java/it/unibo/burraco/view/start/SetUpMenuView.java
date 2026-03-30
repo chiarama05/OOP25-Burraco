@@ -14,5 +14,4 @@ public interface SetUpMenuView {
      * Closes and disposes of the configuration frame. 
      */
     void close();
-
 }

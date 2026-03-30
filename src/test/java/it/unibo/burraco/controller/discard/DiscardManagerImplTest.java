@@ -3,17 +3,21 @@ package it.unibo.burraco.controller.discard;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import it.unibo.burraco.model.card.Card;
-import it.unibo.burraco.model.discard.DiscardPile;
-import it.unibo.burraco.model.player.Player;
+
 import it.unibo.burraco.controller.discardcard.discard.DiscardManager;
 import it.unibo.burraco.controller.discardcard.discard.DiscardManagerImpl;
 import it.unibo.burraco.controller.discardcard.discard.DiscardResult;
+import it.unibo.burraco.model.card.Card;
+import it.unibo.burraco.model.discard.DiscardPile;
+import it.unibo.burraco.model.player.Player;
 
 class DiscardManagerImplTest {
 
@@ -30,11 +34,9 @@ class DiscardManagerImplTest {
 
     @Test
     void testDiscardSuccess() {
-        Card card = mock(Card.class);
+        final Card card = mock(Card.class);
         when(player.getHand()).thenReturn(List.of(card));
-
         final DiscardResult result = discardManager.discard(player, card);
-
         assertTrue(result.isValid());
         verify(player).removeCardHand(card);
         verify(discardPile).add(card);
@@ -43,21 +45,17 @@ class DiscardManagerImplTest {
     @Test
     void testDiscardNullCard() {
         final DiscardResult result = discardManager.discard(player, null);
-        
         assertFalse(result.isValid());
         assertEquals("NOT_SELECTED", result.getMessage());
     }
 
     @Test
     void testDiscardRollbackWhenNoBurraco() {
-        Card card = mock(Card.class);
+        final Card card = mock(Card.class);
         when(player.getHand()).thenReturn(List.of(card));
-        
         when(player.getBurracoCount()).thenReturn(0);
-        when(player.isInPot()).thenReturn(true); 
-
+        when(player.isInPot()).thenReturn(true);
         final DiscardResult result = discardManager.discard(player, card);
-
         if ("NO_BURRACO_ERROR".equals(result.getMessage())) {
             assertFalse(result.isValid());
             verify(discardPile).drawLast();
@@ -67,14 +65,11 @@ class DiscardManagerImplTest {
 
     @Test
     void testDiscardRoundWon() {
-        Card card = mock(Card.class);
+        final Card card = mock(Card.class);
         when(player.getHand()).thenReturn(List.of(card));
-        
         when(player.getBurracoCount()).thenReturn(1);
         when(player.isInPot()).thenReturn(true);
-
         final DiscardResult result = discardManager.discard(player, card);
-
         if (result.isGameWon()) {
             assertTrue(result.isValid());
             assertTrue(result.isTurnEnds());

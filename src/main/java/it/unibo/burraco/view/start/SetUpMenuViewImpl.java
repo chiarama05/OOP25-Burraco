@@ -9,7 +9,13 @@ import javax.swing.JTextField;
 
 import it.unibo.burraco.view.colorbutton.RoundedGradientButton;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.ArrayList; 
 import java.util.List;
 
@@ -46,20 +52,20 @@ public class SetUpMenuViewImpl implements SetUpMenuView{
      * 
      * @param listener the listener handling the configuration completion events.
      */
-    public SetUpMenuViewImpl(OnConfigurationCompleteListener listener) {
+    public SetUpMenuViewImpl(final OnConfigurationCompleteListener listener) {
         this.listener = listener;
         this.frame = new JFrame("Game Configuration");
-        setupUI();
+        this.setupUI();
     }
 
     /**
      * Initializes components and sets up the GridBagLayout.
      */
     private void setupUI() {
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(FRAME_WIDTH, FRAME_HEIGHT); 
-        frame.setResizable(true); 
-        frame.setLocationRelativeTo(null);
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.frame.setSize(FRAME_WIDTH, FRAME_HEIGHT); 
+        this.frame.setResizable(true); 
+        this.frame.setLocationRelativeTo(null);
 
         final JPanel panel = new JPanel(new GridBagLayout()); 
         panel.setBackground(BACKGROUND_COLOR);
@@ -79,8 +85,8 @@ public class SetUpMenuViewImpl implements SetUpMenuView{
         backBtn.setBackground(BUTTON_BG_COLOR); 
         backBtn.setPreferredSize(new Dimension(120, 35));
         backBtn.addActionListener(e -> {
-            close();
-            listener.onBackClicked();
+            this.close();
+            this.listener.onBackClicked();
         });
         panel.add(backBtn, gbc);
 
@@ -88,31 +94,31 @@ public class SetUpMenuViewImpl implements SetUpMenuView{
         gbc.anchor = GridBagConstraints.CENTER;
 
         gbc.gridy = 1;
-        panel.add(createLabel("Name Player 1:"), gbc);
+        panel.add(this.createLabel("Name Player 1:"), gbc);
         gbc.gridy = 2;
-        name1 = new JTextField("Player 1", 20);
-        name1.setFont(new Font("Arial", Font.PLAIN, 20)); 
-        name1.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));  
-        name1.setHorizontalAlignment(JTextField.LEFT); 
-        panel.add(name1, gbc);
+        this.name1 = new JTextField("Player 1", 20);
+        this.name1.setFont(new Font("Arial", Font.PLAIN, 20)); 
+        this.name1.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));  
+        this.name1.setHorizontalAlignment(JTextField.LEFT); 
+        panel.add(this.name1, gbc);
 
         gbc.gridy = 3;
-        panel.add(createLabel("Name Player 2:"), gbc);
+        panel.add(this.createLabel("Name Player 2:"), gbc);
         gbc.gridy = 4;
-        name2 = new JTextField("Player 2", 20);
-        name2.setFont(new Font("Arial", Font.PLAIN, 20));
-        name2.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));  
-        name2.setHorizontalAlignment(JTextField.LEFT);  
-        panel.add(name2, gbc);
+        this.name2 = new JTextField("Player 2", 20);
+        this.name2.setFont(new Font("Arial", Font.PLAIN, 20));
+        this.name2.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));  
+        this.name2.setHorizontalAlignment(JTextField.LEFT);  
+        panel.add(this.name2, gbc);
 
         gbc.gridy = 5;
-        panel.add(createLabel("Points to win:"), gbc);
+        panel.add(this.createLabel("Points to win:"), gbc);
         gbc.gridy = 6;
         final JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10)); 
         btnPanel.setOpaque(false);
-        btnPanel.add(createScoreBtn(1005));
-        btnPanel.add(createScoreBtn(1505));
-        btnPanel.add(createScoreBtn(2005));
+        btnPanel.add(this.createScoreBtn(1005));
+        btnPanel.add(this.createScoreBtn(1505));
+        btnPanel.add(this.createScoreBtn(2005));
         panel.add(btnPanel, gbc);
 
         gbc.gridy = 7;
@@ -123,23 +129,26 @@ public class SetUpMenuViewImpl implements SetUpMenuView{
         playBtn.setForeground(Color.BLACK);
         playBtn.setPreferredSize(new Dimension(250, 70)); 
         playBtn.addActionListener(e -> {
-            if (selectedScore == -1) {
-                JOptionPane.showMessageDialog(frame, "Please select a victory score first!");
+            if (this.selectedScore == -1) {
+                JOptionPane.showMessageDialog(this.frame, "Please select a victory score first!");
             } else {
                 close();
-                listener.onConfigComplete(selectedScore, name1.getText(), name2.getText());
+                this.listener.onConfigComplete(this.selectedScore, this.name1.getText(), this.name2.getText());
             }
         });
         panel.add(playBtn, gbc);
 
-        frame.add(panel);
+        this.frame.add(panel);
     }
 
     /**
      * Helper to create styled score selection buttons.
+     * 
+     * * @param score the numeric value for the button
+     * @return the styled JButton
      */
     private JButton createScoreBtn(final int score) {
-        JButton b = new JButton(String.valueOf(score));
+        final JButton b = new JButton(String.valueOf(score));
         b.setFocusPainted(false);
         b.setOpaque(true);
         b.setBorderPainted(true);
@@ -149,20 +158,23 @@ public class SetUpMenuViewImpl implements SetUpMenuView{
     
         b.addActionListener(e -> {
             this.selectedScore = score;
-            for (JButton btn : scoreButtons) {
+            for (final JButton btn : this.scoreButtons) {
                 btn.setBackground(Color.WHITE);
             }
             b.setBackground(SCORE_SELECTED_COLOR);
         }); 
-        scoreButtons.add(b);
+        this.scoreButtons.add(b);
         return b;
     }
 
     /**
      * Helper to create styled labels for input prompts.
+     * 
+     * * @param text the label text
+     * @return the styled JLabel
      */
     private JLabel createLabel(String text) {
-        JLabel l = new JLabel(text);
+        final JLabel l = new JLabel(text);
         l.setForeground(LABEL_COLOR);
         l.setFont(new Font("Arial", Font.BOLD, TITLE_FONT_SIZE));
         l.setHorizontalAlignment(JLabel.LEFT); 
@@ -170,10 +182,10 @@ public class SetUpMenuViewImpl implements SetUpMenuView{
     }
 
     @Override public void display() { 
-        frame.setVisible(true); 
+        this.frame.setVisible(true); 
     }
 
     @Override public void close() { 
-        frame.dispose(); 
+        this.frame.dispose(); 
     }
 }

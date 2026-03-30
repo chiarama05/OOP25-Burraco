@@ -44,25 +44,30 @@ public class StartMenuViewImpl implements StartMenuView{
     private static final int RULES_FONT_SIZE = 14;
     private static final int RULES_MARGIN = 20;
 
+    private static final String FONT_ARIAL = "Arial";
+    private static final String FONT_SERIF = "Serif";
+
     private final JFrame frame;
     private final OnGameStartListener listener;
 
     /**
+     * Constructs a StartMenuViewImpl.
+     *
      * @param listener callback handler for game start events.
      */
     public StartMenuViewImpl(final OnGameStartListener listener) {
         this.listener = listener;
         this.frame = new JFrame("Burraco Game - Home");
-        setupUI();
+        this.setupUI();
     }
 
     /**
      * Initializes components, layout, and styling.
      */
     private void setupUI() {
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(FRAME_WIDTH, FRAME_HEIGHT); 
-        frame.setLocationRelativeTo(null);
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.frame.setSize(FRAME_WIDTH, FRAME_HEIGHT); 
+        this.frame.setLocationRelativeTo(null);
 
         final JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(BG_COLOR);
@@ -70,7 +75,7 @@ public class StartMenuViewImpl implements StartMenuView{
         gbc.insets = new Insets(INSET_GAP, INSET_GAP, INSET_GAP, INSET_GAP);
 
         final JLabel title = new JLabel("BURRACO GAME");
-        title.setFont(new Font("Serif", Font.BOLD, TITLE_SIZE)); 
+        title.setFont(new Font(FONT_SERIF, Font.BOLD, TITLE_SIZE)); 
         title.setForeground(TITLE_COLOR);
         gbc.gridy = 0;
         panel.add(title, gbc);
@@ -78,28 +83,30 @@ public class StartMenuViewImpl implements StartMenuView{
         final RoundedGradientButton newBtn = new RoundedGradientButton("NEW MATCH");
         final RoundedGradientButton rulesBtn = new RoundedGradientButton("RULES");
         
-        styleButton(newBtn);
-        styleButton(rulesBtn);
+        this.styleButton(newBtn);
+        this.styleButton(rulesBtn);
 
         newBtn.addActionListener(e -> {
-            close();
-            listener.onStartClicked();
+            this.close();
+            this.listener.onStartClicked();
         });
         gbc.gridy = 1;
         panel.add(newBtn, gbc);
 
-        rulesBtn.addActionListener(e -> showRules());
+        rulesBtn.addActionListener(e -> this.showRules());
         gbc.gridy = 2;
         panel.add(rulesBtn, gbc);
 
-        frame.add(panel);
+        this.frame.add(panel);
     }
 
     /**
      * Standardizes button appearance.
+     *
+     * @param btn the button to style
      */
     private void styleButton(final JButton btn) {
-        btn.setFont(new Font("Arial", Font.BOLD, BTN_FONT_SIZE));
+        btn.setFont(new Font(FONT_ARIAL, Font.BOLD, BTN_FONT_SIZE));
         btn.setPreferredSize(new Dimension(BTN_WIDTH, BTN_HEIGHT));
         btn.setBackground(BTN_BG_COLOR);
         btn.setForeground(Color.BLACK);
@@ -131,26 +138,24 @@ public class StartMenuViewImpl implements StartMenuView{
              .append("Requires a Burraco, taking the Pot, and discarding a final natural card.");
 
         // Dialog configuration
-        final JDialog rulesDialog = new JDialog(frame, "Rules of the Game", true);
+        final JDialog rulesDialog = new JDialog(this.frame, "Rules of the Game", true);
         rulesDialog.setLayout(new BorderLayout());
         rulesDialog.setSize(RULES_WIDTH, RULES_HEIGHT);
-        rulesDialog.setLocationRelativeTo(frame);
+        rulesDialog.setLocationRelativeTo(this.frame);
 
         // Text configuration
         final JTextArea textArea = new JTextArea(rules.toString());
-        textArea.setFont(new Font("Arial", Font.BOLD, RULES_FONT_SIZE));
+        textArea.setFont(new Font(FONT_ARIAL, Font.BOLD, RULES_FONT_SIZE));
         textArea.setEditable(false);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         textArea.setOpaque(false);
         textArea.setForeground(Color.BLACK);
 
-        // Container panel
         final JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBackground(RULES_BG_COLOR);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(RULES_MARGIN, RULES_MARGIN, RULES_MARGIN, RULES_MARGIN));
 
-        // Scrollable area
         final JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setBorder(null);
         scrollPane.setOpaque(false);
@@ -158,11 +163,10 @@ public class StartMenuViewImpl implements StartMenuView{
         
         contentPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Close Button
         final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);
         final RoundedGradientButton closeBtn = new RoundedGradientButton("CLOSE");
-        closeBtn.setFont(new Font("Arial", Font.BOLD, BTN_FONT_SIZE - 2));
+        closeBtn.setFont(new Font(FONT_ARIAL, Font.BOLD, BTN_FONT_SIZE - 2));
         closeBtn.setPreferredSize(new Dimension(120, 40));
         closeBtn.addActionListener(e -> rulesDialog.dispose());
         buttonPanel.add(closeBtn);
@@ -174,11 +178,10 @@ public class StartMenuViewImpl implements StartMenuView{
     }
 
     @Override public void display() { 
-        frame.setVisible(true); 
+        this.frame.setVisible(true); 
     }
 
     @Override public void close() { 
-        frame.dispose(); 
+        this.frame.dispose(); 
     }
 }
-

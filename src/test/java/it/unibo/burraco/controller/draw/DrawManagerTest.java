@@ -1,7 +1,12 @@
 package it.unibo.burraco.controller.draw;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +33,9 @@ class DrawManagerTest {
 
     @Test
     void testDrawFromDeckSuccess() {
-        Card mockCard = mock(Card.class);
+        final Card mockCard = mock(Card.class);
         when(deck.draw()).thenReturn(mockCard);
-
-        DrawResult result = drawManager.drawFromDeck(player, deck);
-
+        final DrawResult result = drawManager.drawFromDeck(player, deck);
         assertEquals(DrawResult.Status.SUCCESS, result.getStatus());
         assertEquals(mockCard, result.getDrawnCard());
         assertTrue(drawManager.hasDrawn());
@@ -42,9 +45,7 @@ class DrawManagerTest {
     @Test
     void testDrawFromDeckEmpty() {
         when(deck.draw()).thenReturn(null);
-
-        DrawResult result = drawManager.drawFromDeck(player, deck);
-
+        final DrawResult result = drawManager.drawFromDeck(player, deck);
         assertEquals(DrawResult.Status.EMPTY_DECK, result.getStatus());
         assertFalse(drawManager.hasDrawn());
     }
@@ -52,28 +53,22 @@ class DrawManagerTest {
     @Test
     void testAlreadyDrawnFromDeck() {
         when(deck.draw()).thenReturn(mock(Card.class));
-        
         drawManager.drawFromDeck(player, deck);
-        
-        DrawResult result = drawManager.drawFromDeck(player, deck);
-
+        final DrawResult result = drawManager.drawFromDeck(player, deck);
         assertEquals(DrawResult.Status.ALREADY_DRAWN, result.getStatus());
         verify(deck, times(1)).draw(); 
     }
 
     @Test
     void testDrawFromDiscardSuccess() {
-        List<Card> discardPile = new ArrayList<>();
-        Card c1 = mock(Card.class);
-        Card c2 = mock(Card.class);
+        final List<Card> discardPile = new ArrayList<>();
+        final Card c1 = mock(Card.class);
+        final Card c2 = mock(Card.class);
         discardPile.add(c1);
         discardPile.add(c2);
-
-        List<Card> hand = new ArrayList<>();
+        final List<Card> hand = new ArrayList<>();
         when(player.getHand()).thenReturn(hand);
-
-        DrawResult result = drawManager.drawFromDiscard(player, discardPile);
-
+        final DrawResult result = drawManager.drawFromDiscard(player, discardPile);
         assertEquals(DrawResult.Status.SUCCESS_MULTIPLE, result.getStatus());
         assertTrue(hand.contains(c1));
         assertTrue(hand.contains(c2));
@@ -83,10 +78,8 @@ class DrawManagerTest {
 
     @Test
     void testDrawFromEmptyDiscard() {
-        List<Card> emptyDiscard = new ArrayList<>();
-
-        DrawResult result = drawManager.drawFromDiscard(player, emptyDiscard);
-
+        final List<Card> emptyDiscard = new ArrayList<>();
+        final DrawResult result = drawManager.drawFromDiscard(player, emptyDiscard);
         assertEquals(DrawResult.Status.EMPTY_DISCARD, result.getStatus());
         assertFalse(drawManager.hasDrawn());
     }
@@ -94,14 +87,11 @@ class DrawManagerTest {
     @Test
     void testResetTurn() {
         when(deck.draw()).thenReturn(mock(Card.class));
-        
         drawManager.drawFromDeck(player, deck);
         assertTrue(drawManager.hasDrawn());
-
         drawManager.resetTurn();
         assertFalse(drawManager.hasDrawn());
-        
-        DrawResult result = drawManager.drawFromDeck(player, deck);
+        final DrawResult result = drawManager.drawFromDeck(player, deck);
         assertEquals(DrawResult.Status.SUCCESS, result.getStatus());
     }
 }
