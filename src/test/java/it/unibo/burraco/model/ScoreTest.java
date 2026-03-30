@@ -16,8 +16,8 @@ class ScoreTest {
     private static final String SPADES = "♠";
     private static final String JOLLY_SEED = "♕";
 
-    private static final int CLEAN_BONUS  = 200;
-    private static final int DIRTY_BONUS  = 100;
+    private static final int CLEAN_BONUS = 200;
+    private static final int DIRTY_BONUS = 100;
     private static final int CLOSURE_BONUS = 100;
     private static final int NO_POT_PENALTY = -100;
 
@@ -26,15 +26,15 @@ class ScoreTest {
 
     @BeforeEach
     void init() {
-        this.score  = new ScoreImpl();
+        this.score = new ScoreImpl();
         this.player = new PlayerImpl("TestPlayer");
     }
 
     @Test
     void testConstantGetters() {
-        assertEquals(CLEAN_BONUS,    score.getCleanBurracoBonusValue());
-        assertEquals(DIRTY_BONUS,    score.getDirtyBurracoBonusValue());
-        assertEquals(CLOSURE_BONUS,  score.getClosureBonusValue());
+        assertEquals(CLEAN_BONUS, score.getCleanBurracoBonusValue());
+        assertEquals(DIRTY_BONUS, score.getDirtyBurracoBonusValue());
+        assertEquals(CLOSURE_BONUS, score.getClosureBonusValue());
         assertEquals(NO_POT_PENALTY, score.getNoPotPenalty());
     }
 
@@ -45,9 +45,9 @@ class ScoreTest {
 
     @Test
     void testRemainingHandValueWithCards() {
-        player.addCardHand(new CardImpl(HEARTS, "A"));   // 15
-        player.addCardHand(new CardImpl(HEARTS, "K"));   // 10
-        player.addCardHand(new CardImpl(HEARTS, "3"));   // 5
+        player.addCardHand(new CardImpl(HEARTS, "A"));   
+        player.addCardHand(new CardImpl(HEARTS, "K"));   
+        player.addCardHand(new CardImpl(HEARTS, "3"));  
         assertEquals(30, score.calculateRemainingHandValue(player));
     }
 

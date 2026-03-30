@@ -86,7 +86,7 @@ class TurnTest {
 
     @Test
     void testCanCloseReturnsFalseWithBurracoButNoPot() {
-        List<Card> burraco = List.of(
+        final List<Card> burraco = List.of(
             new CardImpl("♥", "3"), new CardImpl("♥", "4"),
             new CardImpl("♥", "5"), new CardImpl("♥", "6"),
             new CardImpl("♥", "7"), new CardImpl("♥", "8"),
@@ -99,7 +99,7 @@ class TurnTest {
     @Test
     void testCanCloseReturnsTrueWithPotAndBurraco() {
         player1.setInPot(true);
-        List<Card> burraco = List.of(
+        final List<Card> burraco = List.of(
             new CardImpl("♥", "3"), new CardImpl("♥", "4"),
             new CardImpl("♥", "5"), new CardImpl("♥", "6"),
             new CardImpl("♥", "7"), new CardImpl("♥", "8"),
@@ -111,9 +111,9 @@ class TurnTest {
 
     @Test
     void testCanCloseChecksCurrentPlayer() {
-        turn.nextTurn(); 
+        turn.nextTurn();
         player2.setInPot(true);
-        List<Card> burraco = List.of(
+        final List<Card> burraco = List.of(
             new CardImpl("♠", "3"), new CardImpl("♠", "4"),
             new CardImpl("♠", "5"), new CardImpl("♠", "6"),
             new CardImpl("♠", "7"), new CardImpl("♠", "8"),
