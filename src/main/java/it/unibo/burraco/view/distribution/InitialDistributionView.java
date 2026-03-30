@@ -6,7 +6,7 @@ import it.unibo.burraco.view.discardcard.discard.DiscardView;
 import it.unibo.burraco.view.hand.HandView;
 import it.unibo.burraco.view.hand.HandViewImpl;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 import java.util.List;
 
 /**
@@ -24,7 +24,7 @@ public class InitialDistributionView {
      * @param discardPanel context panel for the discard pile.
      * @param selectionManager the manager shared between hands to handle card selection.
      */
-    public InitialDistributionView(JPanel discardPanel, SelectionCardManager selectionManager) {
+    public InitialDistributionView(final JPanel discardPanel, final SelectionCardManager selectionManager) {
         this.handPlayer1 = new HandViewImpl(selectionManager);
         this.handPlayer2 = new HandViewImpl(selectionManager);
     }
@@ -51,11 +51,11 @@ public class InitialDistributionView {
      * @param discardView the component handling the discard pile visualization.
      * @param discardPile the initial list of cards for the discard pile.
      */
-    public void refresh(List<Card> hand1, List<Card> hand2,
-                        DiscardView discardView, List<Card> discardPile) {
+    public void refresh(final List<Card> hand1, final List<Card> hand2,
+                        final DiscardView discardView, final List<Card> discardPile) {
         // Delegating refresh logic to the respective hand components
-        handPlayer1.refreshHand(hand1);
-        handPlayer2.refreshHand(hand2);
+        this.handPlayer1.refreshHand(hand1);
+        this.handPlayer2.refreshHand(hand2);
 
         // Updating the discard pile view
         discardView.updateDiscardPile(discardPile);
