@@ -5,10 +5,19 @@ import javax.swing.JOptionPane;
 
 import it.unibo.burraco.controller.combination.putcombination.PutCombinationResult;
 
+/**
+ * Swing-based implementation of {@link PutCombinationNotifier}.
+ * Displays localized error messages using {@link JOptionPane} dialogs.
+ */
 public final class PutCombinationNotifierImpl implements PutCombinationNotifier {
 
     private final JFrame parent;
 
+    /**
+     * Constructs a PutCombinationNotifierImpl.
+     * 
+     * @param parent the parent {@link JFrame} used to center the error dialogs
+     */
     public PutCombinationNotifierImpl(final JFrame parent) {
         this.parent = parent;
     }
@@ -18,7 +27,7 @@ public final class PutCombinationNotifierImpl implements PutCombinationNotifier 
 
         PutCombinationResult.Status status = result.getStatus();
         
-        String message = switch (status) {
+        final String message = switch (status) {
             case NOT_DRAWN -> "Draw a card first!";
             case NO_CARDS_SELECTED -> "Select cards from your hand first!";
             case INVALID_COMBINATION -> "Invalid combination or not enough cards!";
@@ -34,11 +43,10 @@ public final class PutCombinationNotifierImpl implements PutCombinationNotifier 
             default -> throw new IllegalArgumentException("Not an error status: " + status);
         };
 
-        String title = switch (status) {
+        final String title = switch (status) {
             case WOULD_GET_STUCK -> "Move Not Allowed";
             default -> "Error";
         };
-
         JOptionPane.showMessageDialog(parent, message, title, JOptionPane.ERROR_MESSAGE);
     }
 }
