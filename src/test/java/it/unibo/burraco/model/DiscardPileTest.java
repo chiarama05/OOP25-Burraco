@@ -1,19 +1,19 @@
 package it.unibo.burraco.model;
 
-import it.unibo.burraco.model.discard.DiscardPile;
-import it.unibo.burraco.model.discard.DiscardPileImpl;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
+import it.unibo.burraco.model.discard.DiscardPile;
+import it.unibo.burraco.model.discard.DiscardPileImpl;
 
 class DiscardPileTest {
 
@@ -36,12 +36,11 @@ class DiscardPileTest {
 
     @Test
     void testAddSingleCard() {
-        int initialSize = discardPile.getCards().size();
+        final int initialSize = discardPile.getCards().size();
         final Card c = makeCard("♥", "A");
         discardPile.add(c);
-    
         assertEquals(initialSize + 1, discardPile.getCards().size());
-        List<Card> cards = discardPile.getCards();
+        final List<Card> cards = discardPile.getCards();
         assertEquals(c, cards.get(cards.size() - 1));
     }
 
@@ -49,7 +48,7 @@ class DiscardPileTest {
     void testTakeAll() {
         discardPile.add(new CardImpl("♥", "5"));
         discardPile.add(new CardImpl("♣", "Q"));
-        List<Card> allCards = discardPile.getCards();
+        final List<Card> allCards = discardPile.getCards();
         assertEquals(2, allCards.size());
         discardPile.reset();
         assertTrue(discardPile.isEmpty());
@@ -63,8 +62,7 @@ class DiscardPileTest {
     @Test
     void testReset() {
         discardPile.add(makeCard("♠", "J"));
-        discardPile.add(makeCard("♥", "10"));
-        
+        discardPile.add(makeCard("♥", "10"));  
         assertFalse(discardPile.isEmpty());
         discardPile.reset();
         assertTrue(discardPile.isEmpty());

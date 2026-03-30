@@ -20,7 +20,7 @@ class DeckTest {
     private static final int JOLLY_COUNT = 4;
     private static final String JOLLY_VALUE = "Jolly";
     private static final String[] SEEDS = {"♠", "♥", "♣", "♦"};
-    private static final String[] VALUES = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
+    private static final String[] VALUES = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
 
     private DeckImpl deck;
 

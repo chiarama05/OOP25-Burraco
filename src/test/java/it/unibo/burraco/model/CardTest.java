@@ -16,7 +16,6 @@ class CardTest {
     private static final String TWO = "2";
     private static final String JOLLY = "Jolly";
     private static final String INVALID = "InvalidValue";
-    
     private static final int ACE_NUM = 1;
     private static final int KING_NUM = 13;
     private static final int TWO_NUM = 2;
@@ -55,14 +54,12 @@ class CardTest {
     void testWildcardToggle() {
         aceOfHearts.setAsWildcard(true);
         assertTrue(aceOfHearts.isUsedAsWildcard());
-        
         aceOfHearts.setAsWildcard(false);
         assertFalse(aceOfHearts.isUsedAsWildcard());
     }
 
     @Test
     void testToStringFormat() {
-
         final String expected = ACE + HEARTS;
         assertEquals(expected, aceOfHearts.toString());
     }
