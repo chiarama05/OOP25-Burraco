@@ -12,6 +12,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+
+/**
+ * Concrete Swing implementation of {@link TableView}.
+ * <p>
+ * Builds and manages the main game window, including the combination panels for both
+ * players, the discard pile area, the deck panel, the hand panels, and the side control
+ * panel. All layout constants are defined as named {@code private static final} fields.
+ * </p>
+ */
 public final class TableViewImpl implements TableView {
 
     private static final int FRAME_WIDTH = 900;
@@ -41,6 +50,18 @@ public final class TableViewImpl implements TableView {
     private AttachButtonFactory attachButtonFactory;
     private SelectionCardManager selectionCardManager;        
 
+
+    /**
+     * Constructs the main game window and initialises all Swing sub-components.
+     * <p>
+     * The frame is shown immediately after construction. Player names default to
+     * {@code "Player 1"} / {@code "Player 2"} when {@code null} or blank strings are supplied.
+     * </p>
+     *
+     * @param n1               the display name for Player 1
+     * @param n2               the display name for Player 2
+     * @param selectionManager the manager tracking which cards are currently selected
+     */
     public TableViewImpl(final String n1, final String n2, final SelectionCardManager selectionManager) {
         this.nameP1 = (n1 == null || n1.isEmpty()) ? "Player 1" : n1;
         this.nameP2 = (n2 == null || n2.isEmpty()) ? "Player 2" : n2;
@@ -99,8 +120,7 @@ public final class TableViewImpl implements TableView {
 
     @Override
     public void markPotTaken(final boolean isP1) {
-        ((javax.swing.border.TitledBorder)(isP1 ? combPanel1 : combPanel2)
-            .getBorder()).setTitle((isP1 ? nameP1 : nameP2) + " [POT TAKEN]");
+        ((javax.swing.border.TitledBorder)(isP1 ? combPanel1 : combPanel2).getBorder()).setTitle((isP1 ? nameP1 : nameP2) + " [POT TAKEN]");
         frame.repaint();
     }
 
@@ -132,10 +152,7 @@ public final class TableViewImpl implements TableView {
         String activeName = isP1 ? nameP1 : nameP2;
         String idleName = isP1 ? nameP2 : nameP1;
 
-        JOptionPane.showMessageDialog(frame,
-            idleName + ", turn ended.\n\nHand the turn over to " + activeName + ".\n"
-            + activeName + ", Press OK when you are ready to see your cards.",
-            "Turn Privacy", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(frame,idleName + ", turn ended.\n\nHand the turn over to " + activeName + ".\n"+ activeName + ", Press OK when you are ready to see your cards.", "Turn Privacy", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
@@ -164,9 +181,7 @@ public final class TableViewImpl implements TableView {
 
     @Override
     public void showPotMessage(String playerName, boolean isDiscard) {
-        String msg = isDiscard ?
-            playerName + " You took the pot! You'll see the new cards next turn." :
-            playerName + " You took the pot on fly! Keep playing.";
+        String msg = isDiscard ?playerName + " You took the pot! You'll see the new cards next turn." : playerName + " You took the pot on fly! Keep playing.";
         JOptionPane.showMessageDialog(frame, msg, "Pot", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -204,8 +219,7 @@ public final class TableViewImpl implements TableView {
     public void refreshHandPanel(final boolean isPlayer1, final List<Card> hand) {
         deckPanel.removeAll();
         deckPanel.setBorder(BorderFactory.createTitledBorder(
-        BorderFactory.createLineBorder(Color.WHITE, 1), "Hand",
-        0, 0, new Font("Arial", Font.BOLD, FONT_SIZE_HAND), Color.BLACK));
+        BorderFactory.createLineBorder(Color.WHITE, 1), "Hand", 0, 0, new Font("Arial", Font.BOLD, FONT_SIZE_HAND), Color.BLACK));
 
         HandView hv = getHandViewForCurrentPlayer(isPlayer1);
         hv.refreshHand(hand);
@@ -242,10 +256,20 @@ public final class TableViewImpl implements TableView {
     @Override public JButton getTakeDiscardBtn() { 
         return takeDiscardBtn;
     }
+
     @Override public DeckView getDeckView() { 
         return deckView; 
     }
 
+    /**
+     * Provides access to the {@link InitialDistributionView} used during the setup phase.
+     * <p>
+     * This method is intentionally package-visible to support round resets performed by
+     * {@link it.unibo.burraco.controller.round.RoundControllerImpl}.
+     * </p>
+     *
+     * @return the initial distribution view
+     */
     public InitialDistributionView getInitDist() { 
         return initDist; 
     }
