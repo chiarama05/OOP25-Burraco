@@ -3,11 +3,11 @@ package it.unibo.burraco.view.notification.game;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class GameNotifierImpl implements GameNotifier{
+public final class GameNotifierImpl implements GameNotifier{
 
     private final JFrame parent;
 
-    public GameNotifierImpl(JFrame parent) {
+    public GameNotifierImpl(final JFrame parent) {
         this.parent = parent;
     }
 
@@ -37,13 +37,10 @@ public class GameNotifierImpl implements GameNotifier{
     }
 
     @Override
-    public void notifySelectionError(String message) {
+    public void notifySelectionError(final String message) {
         JOptionPane.showMessageDialog(parent, message, "Error Selection", JOptionPane.WARNING_MESSAGE);
     }
 
-
-
-    // ##
     @Override
     public void notifyMustTakePotBeforeDiscard(){
         JOptionPane.showMessageDialog(parent,"You have no more cards but you haven't taken your pot yet!\n"+ "The pot has been given to you automatically – keep playing.","Pot Taken Automatically", JOptionPane.INFORMATION_MESSAGE);

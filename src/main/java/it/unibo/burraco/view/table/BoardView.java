@@ -3,7 +3,7 @@ package it.unibo.burraco.view.table;
 import javax.swing.*;
 import java.awt.*;
 
-public class BoardView extends JPanel {
+public final class BoardView extends JPanel {
     private final JPanel combPanel1;
     private final JPanel combPanel2;
 

@@ -18,28 +18,24 @@ public class JollyImpl implements Jolly {
      * 
      * @param card the card to wrap as a Jolly
      */
-    public JollyImpl(Card card) {
+    public JollyImpl(final Card card) {
         this.card = card;
     }
 
     @Override
     public boolean isPureJolly() {
-        return card.getValue().equals("Jolly");
+        return "Jolly".equals(card.getValue());
     }
 
     @Override
-    public boolean isJolly(List<Card> context) {
+    public boolean isJolly(final List<Card> context) {
         if (context == null || context.isEmpty()) {
             return false;
         }
         if (isPureJolly()) {
             return true;
         }
-        if (!card.getValue().equals("2")) {
-            return false;
-        }
-        // A "2" is a wildcard only when it is NOT a natural two in the straight
-        return !StraightUtils.isNaturalTwo(card, context);
+        return "2".equals(card.getValue()) && !StraightUtils.isNaturalTwo(card, context);
     }
 
     /**

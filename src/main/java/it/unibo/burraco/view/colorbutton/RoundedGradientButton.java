@@ -8,9 +8,9 @@ import java.awt.geom.Point2D;
  * A custom Swing button with rounded corners and a radial gradient background.
  * It includes hover effects to enhance the user interface experience.
  */
-public class RoundedGradientButton extends JButton{
+public final class RoundedGradientButton extends JButton{
 
-    // Default color palette
+    private static final long serialVersionUID = 1L;
     private Color outerColor = new Color(255, 170, 185); 
     private Color innerColor = new Color(255, 245, 250); 
 

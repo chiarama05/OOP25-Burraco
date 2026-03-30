@@ -6,7 +6,9 @@ import java.awt.*;
 /**
  * Swing panel representing the deck button in the game UI.
  */
-public class DeckView extends JPanel {
+public final class DeckView extends JPanel {
+
+    private static final long serialVersionUID = 1L;
 
     private final JButton deckButton;
 
