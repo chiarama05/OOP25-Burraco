@@ -9,7 +9,7 @@ import it.unibo.burraco.model.card.Card;
  * Utility class that handles the attachment logic specifically for Set combinations.
  * Provides validation to ensure that any card added to a Set maintains its integrity.
  */
-public class SetAttachUtils {
+public final class SetAttachUtils {
 
     /**
      * Determines whether a new card can be legally attached to an existing Set.
@@ -20,16 +20,17 @@ public class SetAttachUtils {
      * @param newCard the card to attach
      * @return true if the card can be legally attached to the set, false otherwise
      */
-    public static boolean canAttachToSet(List<Card> set, Card newCard) {
+    public static boolean canAttachToSet(final List<Card> set, final Card newCard) {
 
         // Count how many wildcards are already present in the set
-        long wildcards = set.stream().filter(c -> CombinationValidator.isWildcard(c, set)).count();
+        final long wildcards = set.stream().filter(c -> CombinationValidator.isWildcard(c, set)).count();
+
         if (CombinationValidator.isWildcard(newCard, set)) {
             return wildcards < 1;
         }
 
         // Identify the value of the Set by finding the first non-wildcard card
-        String baseValue = set.stream()
+        final String baseValue = set.stream()
                 .filter(c -> !CombinationValidator.isWildcard(c, set))
                 .map(Card::getValue)
                 .findFirst()

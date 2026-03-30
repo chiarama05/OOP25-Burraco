@@ -3,7 +3,7 @@ package it.unibo.burraco.view.deck;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.table.TableView;
-import javax.swing.*;
+import javax.swing.JOptionPane;
 import java.util.List;
 
 /**
@@ -11,7 +11,7 @@ import java.util.List;
  * Handles the visual response to draw actions by refreshing the player's hand panel.
  * Delegates draw logic to the registered {@code onDrawAction} handler.
  */
-public class DeckButton implements DeckDrawView {
+public final class DeckButton implements DeckDrawView {
 
     private final DeckView deckView;
     private final TableView tableView;
@@ -24,10 +24,10 @@ public class DeckButton implements DeckDrawView {
      * @param deckView  the panel containing the deck button
      * @param tableView the main table view
      */
-    public DeckButton(DeckView deckView, TableView tableView) {
+    public DeckButton(final DeckView deckView, final TableView tableView) {
         this.deckView = deckView;
         this.tableView = tableView;
-        this.deckView.getDeckButton().addActionListener(e -> handleDraw());
+        this.deckView.getDeckButton().addActionListener(finalEvent -> handleDraw());
     }
 
     /**
@@ -35,7 +35,7 @@ public class DeckButton implements DeckDrawView {
      *
      * @param isPlayer1 true if Player 1, false if Player 2
      */
-    public void setIsPlayer1(boolean isPlayer1) {
+    public void setIsPlayer1(final boolean isPlayer1) {
         this.isPlayer1 = isPlayer1;
     }
 
@@ -44,12 +44,14 @@ public class DeckButton implements DeckDrawView {
      *
      * @param handler the draw action handler
      */
-    public void setOnDrawAction(Runnable handler) {
+    public void setOnDrawAction(final Runnable handler) {
         this.onDrawAction = handler;
     }
 
     private void handleDraw() {
-        if (onDrawAction != null) onDrawAction.run();
+        if (onDrawAction != null) {
+            onDrawAction.run();
+        }
     }
 
     /**
@@ -57,7 +59,7 @@ public class DeckButton implements DeckDrawView {
      * Refreshes the player's hand panel with the updated cards.
      */
     @Override
-    public void onDrawSuccess(Player current, List<Card> hand) {
+    public void onDrawSuccess(final Player current, final List<Card> hand) {
         tableView.refreshHandPanel(isPlayer1, hand);
     }
 
@@ -66,7 +68,7 @@ public class DeckButton implements DeckDrawView {
      * Displays an error dialog to the user.
      */
     @Override
-    public void showDrawError(String message) {
+    public void showDrawError(final String message) {
         JOptionPane.showMessageDialog(null, message);
     }
 }

@@ -1,13 +1,12 @@
 package it.unibo.burraco.controller.combination.putcombination;
 
-import it.unibo.burraco.controller.combination.putcombination.PutCombinationResult.Status;
+import java.util.List;
+
 import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.combination.PutCombinationView;
 import it.unibo.burraco.view.notification.putcombination.PutCombinationNotifier;
-
-import java.util.List;
 
 /**
  * Controller responsible for handling the action of putting a new combination on the table.
@@ -26,9 +25,9 @@ public class PutCombinationActionController {
      * @param putComboController the controller that handles the business logic of combinations
      * @param notifier            the component responsible for notifying users about errors
      */
-    public PutCombinationActionController(GameController gameController,
-                                           PutCombinationController putComboController,
-                                           PutCombinationNotifier notifier) { 
+    public PutCombinationActionController(final GameController gameController,
+                                           final PutCombinationController putComboController,
+                                           final PutCombinationNotifier notifier) { 
         this.gameController = gameController;
         this.putComboController = putComboController;
         this.notifier = notifier;
@@ -44,9 +43,9 @@ public class PutCombinationActionController {
      *           to the view callbacks to identify which player performed the action.
      */
     public void handle(List<Card> selected, PutCombinationView view) {
-        Player current = gameController.getCurrentPlayer();
-        PutCombinationResult result = putComboController.tryPutCombination(selected);
-        PutCombinationResult.Status status = result.getStatus();
+        final Player current = gameController.getCurrentPlayer();
+        final PutCombinationResult result = putComboController.tryPutCombination(selected);
+        final PutCombinationResult.Status status = result.getStatus();
 
         // Check if the result represents a failure/error state
         if (isError(status)) {

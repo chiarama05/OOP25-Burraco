@@ -1,7 +1,12 @@
 package it.unibo.burraco.view.deck;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.BorderFactory;
+import java.awt.FlowLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Dimension;
 
 /**
  * Swing panel representing the deck button in the game UI.
@@ -10,26 +15,34 @@ public final class DeckView extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
+    private static final int FLOW_HGAP = 5;
+    private static final int FLOW_VGAP = 5;
+    private static final int FONT_SIZE = 18;
+    private static final int BUTTON_WIDTH = 70;
+    private static final int BUTTON_HEIGHT = 100;
+    private static final int BORDER_THICKNESS = 1;
+    private static final int SHADOW_THICKNESS = 4;
+
     private final JButton deckButton;
 
     /**
      * Constructs the DeckView and initializes the deck button.
      */
     public DeckView() {
-        setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        super(new FlowLayout(FlowLayout.CENTER, FLOW_HGAP, FLOW_VGAP));
         setOpaque(false);
 
         deckButton = new JButton("DECK");
         deckButton.setBackground(Color.WHITE);
-        deckButton.setFont(new Font("Arial", Font.BOLD, 18));
-        deckButton.setPreferredSize(new Dimension(70, 100));
+        deckButton.setFont(new Font("Arial", Font.BOLD, FONT_SIZE));
+        deckButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
         deckButton.setFocusPainted(false);
         deckButton.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(Color.GRAY, 1),
-            BorderFactory.createMatteBorder(0, 0, 4, 4, Color.BLACK)
+            BorderFactory.createLineBorder(Color.GRAY, BORDER_THICKNESS),
+            BorderFactory.createMatteBorder(0, 0, SHADOW_THICKNESS, SHADOW_THICKNESS, Color.BLACK)
         ));
 
-        add(deckButton);
+        this.add(deckButton);
     }
 
     /**

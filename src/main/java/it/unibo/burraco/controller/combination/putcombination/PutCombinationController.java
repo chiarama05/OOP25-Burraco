@@ -1,10 +1,12 @@
 package it.unibo.burraco.controller.combination.putcombination;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import it.unibo.burraco.controller.closure.ClosureManager;
 import it.unibo.burraco.controller.closure.ClosureState;
 import it.unibo.burraco.controller.closure.ClosureValidator;
 import it.unibo.burraco.controller.combination.CombinationValidator;
-import it.unibo.burraco.controller.combination.putcombination.PutCombinationResult.Status;
 import it.unibo.burraco.controller.combination.set.SetUtils;
 import it.unibo.burraco.controller.combination.straight.StraightUtils;
 import it.unibo.burraco.controller.drawcard.DrawManager;
@@ -13,9 +15,6 @@ import it.unibo.burraco.controller.pot.PotManager;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.turn.Turn;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Controller responsible for managing the logic of placing a new combination on the table.
@@ -38,11 +37,11 @@ public class PutCombinationController {
      * @param closureManager manages the end of round or end of game states
      * @param turnModel provides information about the current player and turn
      */
-    public PutCombinationController(GameController gameController,
-                                    DrawManager drawManager,
-                                    PotManager potManager,
-                                    ClosureManager closureManager,
-                                    Turn turnModel) {
+    public PutCombinationController(final GameController gameController,
+                                     final DrawManager drawManager,
+                                     final PotManager potManager,
+                                     final ClosureManager closureManager,
+                                     final Turn turnModel) {
         this.gameController = gameController;
         this.drawManager = drawManager;
         this.potManager = potManager;
@@ -58,24 +57,18 @@ public class PutCombinationController {
      * @return a {@link PutCombinationResult} object containing the status and details of the action
      */
     public PutCombinationResult tryPutCombination(List<Card> selectedCards) {
-
-        // Pre-conditions validation
         if (!drawManager.hasDrawn()) {
             return PutCombinationResult.error(PutCombinationResult.Status.NOT_DRAWN);
         }
-
         if (selectedCards.isEmpty()) {
             return PutCombinationResult.error(PutCombinationResult.Status.NO_CARDS_SELECTED);
         }
 
-        Player current = turnModel.getCurrentPlayer();
+        final Player current = turnModel.getCurrentPlayer();
 
-        // Check if the move would leave the player stuck
         if (ClosureValidator.wouldGetStuckAfterPutCombo(current, selectedCards, selectedCards.size())) {
             return PutCombinationResult.error(PutCombinationResult.Status.WOULD_GET_STUCK);
         }
-
-        // Validate the rules for a legal combination (minimum 3 cards and valid sequence/set)
         if (selectedCards.size() < 3 || !CombinationValidator.isValidCombination(selectedCards)) {
             return PutCombinationResult.error(PutCombinationResult.Status.INVALID_COMBINATION);
         }
@@ -95,8 +88,8 @@ public class PutCombinationController {
             gameController.getSoundController().playBurracoSound();
         }
 
-        boolean isPlayer1 = gameController.isPlayer1(current);
-        ClosureState state = ClosureValidator.evaluate(current);
+        final boolean isPlayer1 = gameController.isPlayer1(current);
+        final ClosureState state = ClosureValidator.evaluate(current);
 
         if (state == ClosureState.ZERO_CARDS_NO_POT) {
             potManager.handlePot(false);

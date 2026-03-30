@@ -11,7 +11,7 @@ import java.util.List;
  * the "Put Combination" button and the main table display.
  * This class acts as a bridge between the user interface components and the game logic.
  */
-public class PutCombinationButton implements PutCombinationView {
+public final class PutCombinationButton implements PutCombinationView {
 
     private final TableView tableView;
     private boolean isPlayer1;
@@ -20,7 +20,7 @@ public class PutCombinationButton implements PutCombinationView {
      * Constructs a PutCombinationButton associated with a specific TableView.
      * @param tableView the main graphical view of the game table
      */
-    public PutCombinationButton(TableView tableView) {
+    public PutCombinationButton(final TableView tableView) {
         this.tableView = tableView;
     }
 
@@ -28,7 +28,7 @@ public class PutCombinationButton implements PutCombinationView {
      * Sets the player context for this view component.
      * @param isPlayer1 true if this button belongs to or acts for Player 1
      */
-    public void setIsPlayer1(boolean isPlayer1) {
+    public void setIsPlayer1(final boolean isPlayer1) {
         this.isPlayer1 = isPlayer1;
     }
 
@@ -41,6 +41,10 @@ public class PutCombinationButton implements PutCombinationView {
             tableView.getHandViewForCurrentPlayer(isPlayer1).getSelectedCards());
     }
 
+    /**
+     * Returns the player context.
+     * @return true if it is Player 1
+     */
     public boolean isPlayer1() {
         return isPlayer1;
     }
@@ -49,27 +53,35 @@ public class PutCombinationButton implements PutCombinationView {
      * Registers a listener action to be performed when the physical button is clicked.
      * @param action a {@link Runnable} containing the logic to execute on click
      */
-    public void setOnPutCombination(Runnable action) {
-        tableView.getPutComboBtn().addActionListener(e -> action.run());
+    public void setOnPutCombination(final Runnable action) {
+        tableView.getPutComboBtn().addActionListener(finalEvent -> action.run());
     }
 
     @Override
-    public void onCombinationSuccess(List<Card> combo, boolean isP1, Player current) {
-        tableView.addCombinationToPlayerPanel(combo, isP1);
-        tableView.getHandViewForCurrentPlayer(isP1).clearSelection();
-        tableView.refreshHandPanel(isP1, current.getHand());
+    public void onCombinationSuccess(final List<Card> combo, final boolean isP1, final Player current) {
+        this.updateView(combo, isP1, current);
     }
 
     @Override
-    public void onCombinationTakePot(List<Card> combo, boolean isP1, Player current) {
-        tableView.addCombinationToPlayerPanel(combo, isP1);
-        tableView.getHandViewForCurrentPlayer(isP1).clearSelection();
-        tableView.refreshHandPanel(isP1, current.getHand());
+    public void onCombinationTakePot(final List<Card> combo, final boolean isP1, final Player current) {
+        this.updateView(combo, isP1, current);
     }
 
     @Override
-    public void onCombinationClose(List<Card> combo, boolean isP1, Player current) {
-        tableView.addCombinationToPlayerPanel(combo, isP1);
+    public void onCombinationClose(final List<Card> combo, final boolean isP1, final Player current) {
+        this.updateView(combo, isP1, current);
+    }
+
+    /**
+     * Updates the table and hand views after a combination is placed.
+     * This method prevents code duplication.
+     * @param combo   the cards in the combination
+     * @param isP1    true if player 1
+     * @param current the player instance
+     */
+    private void updateView(final List<Card> combo, final boolean isP1, final Player current) {
+        final List<Card> comboCopy = new ArrayList<>(combo);
+        tableView.addCombinationToPlayerPanel(comboCopy, isP1);
         tableView.getHandViewForCurrentPlayer(isP1).clearSelection();
         tableView.refreshHandPanel(isP1, current.getHand());
     }
