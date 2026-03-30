@@ -5,7 +5,6 @@ import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import it.unibo.burraco.controller.discardcard.discard.*;
 import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.controller.turn.TurnController;
@@ -15,7 +14,6 @@ import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.turn.Turn;
 import it.unibo.burraco.model.discard.DiscardPile;
-
 import java.util.Set;
 import java.util.List;
 
