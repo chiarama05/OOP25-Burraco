@@ -12,7 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public final class TableViewImpl implements TableView {
+public class TableViewImpl implements TableView {
 
     private static final int FRAME_WIDTH = 900;
     private static final int FRAME_HEIGHT = 650;
@@ -41,7 +41,7 @@ public final class TableViewImpl implements TableView {
     private AttachButtonFactory attachButtonFactory;
     private SelectionCardManager selectionCardManager;        
 
-    public TableViewImpl(String n1, String n2, SelectionCardManager selectionManager) {
+    public TableViewImpl(final String n1, final String n2, final SelectionCardManager selectionManager) {
         this.nameP1 = (n1 == null || n1.isEmpty()) ? "Player 1" : n1;
         this.nameP2 = (n2 == null || n2.isEmpty()) ? "Player 2" : n2;
 
@@ -93,12 +93,12 @@ public final class TableViewImpl implements TableView {
     }
 
     @Override
-    public void refreshTurnLabel(boolean isP1) {
+    public void refreshTurnLabel(final boolean isP1) {
         turnLabel.setText("Turn: " + (isP1 ? nameP1 : nameP2));
     }
 
     @Override
-    public void markPotTaken(boolean isP1) {
+    public void markPotTaken(final boolean isP1) {
         ((javax.swing.border.TitledBorder)(isP1 ? combPanel1 : combPanel2)
             .getBorder()).setTitle((isP1 ? nameP1 : nameP2) + " [POT TAKEN]");
         frame.repaint();
@@ -110,7 +110,7 @@ public final class TableViewImpl implements TableView {
     }
 
   @Override
-    public void addCombinationToPlayerPanel(List<Card> cards, boolean isP1) {
+    public void addCombinationToPlayerPanel(final List<Card> cards, boolean isP1) {
         JPanel panel = isP1 ? combPanel1 : combPanel2;
     
         JComponent btn = attachButtonFactory.create(cards, isP1);
@@ -123,7 +123,7 @@ public final class TableViewImpl implements TableView {
     }
 
     @Override
-    public void switchHand(boolean isP1) {
+    public void switchHand(final boolean isP1) {
         deckPanel.removeAll();
         deckPanel.add(new JLabel("Shift turn in progress...", SwingConstants.CENTER));
         deckPanel.revalidate();
@@ -176,7 +176,7 @@ public final class TableViewImpl implements TableView {
     }
 
     @Override
-    public void updateDiscardPile(List<Card> cards) {
+    public void updateDiscardPile(final List<Card> cards) {
         discardView.updateDiscardPile(cards);
     }
 
@@ -201,7 +201,7 @@ public final class TableViewImpl implements TableView {
     }
 
     @Override
-    public void refreshHandPanel(boolean isPlayer1, List<Card> hand) {
+    public void refreshHandPanel(final boolean isPlayer1, final List<Card> hand) {
         deckPanel.removeAll();
         deckPanel.setBorder(BorderFactory.createTitledBorder(
         BorderFactory.createLineBorder(Color.WHITE, 1), "Hand",

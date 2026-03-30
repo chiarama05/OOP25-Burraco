@@ -7,7 +7,7 @@ public class GameNotifierImpl implements GameNotifier{
 
     private final JFrame parent;
 
-    public GameNotifierImpl(JFrame parent) {
+    public GameNotifierImpl(final JFrame parent) {
         this.parent = parent;
     }
 
@@ -37,7 +37,7 @@ public class GameNotifierImpl implements GameNotifier{
     }
 
     @Override
-    public void notifySelectionError(String message) {
+    public void notifySelectionError(final String message) {
         JOptionPane.showMessageDialog(parent, message, "Error Selection", JOptionPane.WARNING_MESSAGE);
     }
 
