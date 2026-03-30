@@ -6,22 +6,24 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 import it.unibo.burraco.model.player.PlayerImpl;
 
 class AttachControllerTest {
-    private static final String HEARTS   = "♥";
-    private static final String SPADES   = "♠";
+    private static final String HEARTS = "♥";
+    private static final String SPADES = "♠";
     private AttachController controller;
     private PlayerImpl player;
 
     @BeforeEach
     void init() {
         this.controller = new AttachController();
-        this.player     = new PlayerImpl("TestPlayer");
+        this.player = new PlayerImpl("TestPlayer");
     }
 
     private List<Card> setupCombination(List<Card> cards) {
@@ -32,7 +34,7 @@ class AttachControllerTest {
     @Test
     void testNotDrawn() {
         final List<Card> selected = List.of(new CardImpl(HEARTS, "6"));
-        final List<Card> combo    = setupCombination(new ArrayList<>(List.of(
+        final List<Card> combo = setupCombination(new ArrayList<>(List.of(
                 new CardImpl(HEARTS, "3"),
                 new CardImpl(HEARTS, "4"),
                 new CardImpl(HEARTS, "5")
@@ -45,7 +47,7 @@ class AttachControllerTest {
     @Test
     void testWrongPlayer() {
         final List<Card> selected = List.of(new CardImpl(HEARTS, "6"));
-        final List<Card> combo    = setupCombination(new ArrayList<>(List.of(
+        final List<Card> combo = setupCombination(new ArrayList<>(List.of(
                 new CardImpl(HEARTS, "3"),
                 new CardImpl(HEARTS, "4"),
                 new CardImpl(HEARTS, "5")
@@ -113,7 +115,7 @@ class AttachControllerTest {
         final CardImpl sixSpades = new CardImpl(SPADES, "6");
         final CardImpl sevenSpades = new CardImpl(SPADES, "7");
         player.addCardHand(sixSpades);
-        player.addCardHand(sevenSpades); 
+        player.addCardHand(sevenSpades);
 
         final List<Card> combo = setupCombination(new ArrayList<>(List.of(
                 new CardImpl(SPADES, "3"),
@@ -159,7 +161,7 @@ class AttachControllerTest {
         player.setInPot(true);
 
         final CardImpl nineSpades = new CardImpl(SPADES, "9");
-        final CardImpl spare      = new CardImpl(SPADES, "K");
+        final CardImpl spare = new CardImpl(SPADES, "K");
         player.addCardHand(nineSpades);
         player.addCardHand(spare);
 
@@ -183,7 +185,7 @@ class AttachControllerTest {
         player.setInPot(false);
 
         final CardImpl six = new CardImpl(HEARTS, "6");
-        player.addCardHand(six); 
+        player.addCardHand(six);
 
         final List<Card> combo = setupCombination(new ArrayList<>(List.of(
                 new CardImpl(HEARTS, "3"),

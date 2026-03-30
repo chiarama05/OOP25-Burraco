@@ -4,15 +4,17 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
-import java.util.List; 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
+
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 
 class AttachUtilsTest {
-    private static final String HEARTS  = "♥";
-    private static final String SPADES  = "♠";
-    private static final String CLUBS   = "♣";
+    private static final String HEARTS = "♥";
+    private static final String SPADES = "♠";
+    private static final String CLUBS    = "♣";
     private static final String DIAMONDS = "♦";
     private static final String JOLLY_SEED = "♕";
 
@@ -20,7 +22,7 @@ class AttachUtilsTest {
     void testNullCombinationReturnsFalse() {
         final Card card = new CardImpl(HEARTS, "5");
         assertFalse(AttachUtils.canAttach(null, card));
-    } 
+    }
 
     @Test
     void testCanAttachSameValueToSet() {

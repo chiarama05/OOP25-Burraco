@@ -15,6 +15,9 @@ import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.player.PlayerImpl;
 
 class ClosureValidatorTest {
+
+    private static final int BURRACO_SIZE = 7;
+
     private Player player;
 
     @BeforeEach
@@ -43,8 +46,10 @@ class ClosureValidatorTest {
     @Test
     void testEvaluateCanClose() {
         player.setInPot(true);
-        List<Card> burraco = new ArrayList<>();
-        for(int i=0; i<7; i++) burraco.add(new CardImpl("♥", String.valueOf(i)));
+        final List<Card> burraco = new ArrayList<>();
+        for (int i = 0; i < BURRACO_SIZE; i++) {
+            burraco.add(new CardImpl("♥", String.valueOf(i)));
+        }
         player.addCombination(burraco);
 
         assertEquals(ClosureState.CAN_CLOSE, ClosureValidator.evaluate(player));
@@ -56,7 +61,7 @@ class ClosureValidatorTest {
         player.addCardHand(new CardImpl("♣", "2"));
         player.addCardHand(new CardImpl("♣", "3"));
         
-        List<Card> toPlay = List.of(new CardImpl("♣", "2"), new CardImpl("♣", "3"));
+        final List<Card> toPlay = List.of(new CardImpl("♣", "2"), new CardImpl("♣", "3"));
         assertTrue(ClosureValidator.wouldGetStuckAfterPutCombo(player, toPlay, 2));
     }
 }
