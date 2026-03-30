@@ -14,7 +14,7 @@ import it.unibo.burraco.model.card.CardImpl;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.player.PlayerImpl;
 
-public class ClosureValidatorTest {
+class ClosureValidatorTest {
     private Player player;
 
     @BeforeEach

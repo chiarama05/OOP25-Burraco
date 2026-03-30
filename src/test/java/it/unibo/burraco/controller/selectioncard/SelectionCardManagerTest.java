@@ -19,7 +19,7 @@ import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.notification.selection.SelectionNotifier;
 import it.unibo.burraco.view.selection.SelectionView;
 
-public class SelectionCardManagerTest {
+class SelectionCardManagerTest {
     private SelectionCardManager selectionManager;
     private Card card1;
     private Card card2;
@@ -41,7 +41,7 @@ public class SelectionCardManagerTest {
     @Test
     void testToggleSelectionRemovesExistingCard() {
         selectionManager.toggleSelection(card1);
-        selectionManager.toggleSelection(card1); // Second toggle: remove
+        selectionManager.toggleSelection(card1); 
         assertFalse(selectionManager.isSelected(card1));
         assertTrue(selectionManager.isEmpty());
     }
@@ -69,12 +69,9 @@ public class SelectionCardManagerTest {
 
     @Test
     void testProcessCombinationInvalid() {
-        // Supponiamo che una sola carta non sia una combinazione valida (es. servono tris o scale)
         selectionManager.toggleSelection(card1);
         SelectionNotifier notifier = mock(SelectionNotifier.class);
         
-        // Nota: Se CombinationValidator è statico, il test dipende dalla sua logica reale.
-        // Se card1 non forma una combinazione valida:
         selectionManager.processCombination(mock(Player.class), mock(SelectionView.class), true, notifier);
 
         verify(notifier).notifySelectionError("INVALID_COMBINATION");
@@ -82,7 +79,6 @@ public class SelectionCardManagerTest {
 
     @Test
     void testProcessCombinationSuccessFlow() {
-        // Simuliamo una combinazione valida (es. 3 carte uguali)
         Card c1 = new CardImpl("♥", "7");
         Card c2 = new CardImpl("♠", "7");
         Card c3 = new CardImpl("♦", "7");
@@ -97,15 +93,12 @@ public class SelectionCardManagerTest {
 
         selectionManager.processCombination(player, view, true, notifier);
 
-        // Verifichiamo l'aggiornamento del modello
         verify(player).removeCards(anyList());
         verify(player).addCombination(anyList());
 
-        // Verifichiamo l'aggiornamento della vista
         verify(view).addCombinationToPlayerPanel(anyList(), eq(true));
         verify(view).refreshHandPanel(eq(true), any());
 
-        // Verifichiamo che la selezione sia stata pulita dopo il successo
         assertTrue(selectionManager.isEmpty());
     }
 }

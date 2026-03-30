@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 
-public class CombinationManagerTest {
+class CombinationManagerTest {
     @Test
     void testPrepareForDisplayMovesJokerToEnd() {
         Card c1 = new CardImpl("♥", "7");

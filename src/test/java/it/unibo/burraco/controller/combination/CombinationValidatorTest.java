@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 
-public class CombinationValidatorTest {
+class CombinationValidatorTest {
     @Test
     void testInvalidShortCombination() {
         List<Card> cards = List.of(new CardImpl("♥", "7"), new CardImpl("♠", "7"));

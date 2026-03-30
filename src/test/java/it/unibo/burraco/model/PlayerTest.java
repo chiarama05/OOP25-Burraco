@@ -13,7 +13,7 @@ import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 import it.unibo.burraco.model.player.PlayerImpl;
 
-public class PlayerTest {
+class PlayerTest {
     private static final String PLAYER_NAME = "Alice";
     private static final String DEFAULT_NAME = "Player";
     private static final String HEARTS = "♥";
@@ -249,5 +249,4 @@ public class PlayerTest {
         assertFalse(player.isInPot());
         assertEquals(100, player.getMatchTotalScore());
     }
-
 }

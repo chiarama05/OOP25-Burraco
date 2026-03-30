@@ -7,7 +7,7 @@ import it.unibo.burraco.controller.discardcard.discard.*;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.discardcard.discard.DiscardActionView;
 
-public class DiscardActionControllerTest {
+class DiscardActionControllerTest {
 
     @Test
     void testHandleSuccessInformsView() {

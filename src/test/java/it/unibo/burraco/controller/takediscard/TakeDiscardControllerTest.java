@@ -32,7 +32,6 @@ class TakeDiscardControllerTest {
 
     @Test
     void testTryTakeDiscardCallsManagerWithCorrectParams() {
-        // Setup
         Player mockPlayer = mock(Player.class);
         List<Card> mockCards = List.of(mock(Card.class));
         DrawResult mockResult = mock(DrawResult.class);

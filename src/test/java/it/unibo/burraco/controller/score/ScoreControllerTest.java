@@ -34,7 +34,6 @@ class ScoreControllerTest {
         viewProviderMock = mock(ScoreController.ViewProvider.class);
         gameControllerMock = mock(GameController.class);
         
-        // Setup del provider: quando viene chiesto di creare la view, restituisci il mock
         when(viewProviderMock.create(any(), any(), any(), any(), anyInt(), any(), any(), anyBoolean()))
             .thenReturn(scoreViewMock);
 
@@ -42,36 +41,33 @@ class ScoreControllerTest {
             scoreMock, p1Mock, p2Mock, "P1", "P2",
             mock(TableView.class), gameControllerMock, soundMock,
             2000, mock(InitialDistributionView.class),
-            Runnable::run, // uiThreadRunner sincrono
+            Runnable::run,
             viewProviderMock
         );
     }
 
     @Test
     void testRoundEndWithoutVictory() {
-        // Setup punteggi bassi
         when(scoreMock.calculateFinalScore(p1Mock)).thenReturn(100);
         when(p1Mock.getMatchTotalScore()).thenReturn(100);
         when(p2Mock.getMatchTotalScore()).thenReturn(100);
 
         scoreController.onRoundEnd();
 
-        // Verifiche
+
         verify(p1Mock).addPointsToMatch(100);
         verify(soundMock).playRoundEndSound();
-        verify(scoreViewMock).display(); // Verifica che la view venga mostrata
+        verify(scoreViewMock).display();
         verify(soundMock, never()).playVictorySound();
     }
 
     @Test
     void testRoundEndWithVictory() throws InterruptedException {
-        // Setup punteggio che supera il target (2000)
         when(scoreMock.calculateFinalScore(p1Mock)).thenReturn(500);
-        when(p1Mock.getMatchTotalScore()).thenReturn(2100); 
+        when(p1Mock.getMatchTotalScore()).thenReturn(2005); 
 
         scoreController.onRoundEnd();
 
-        // Poiché c'è un Thread nel controller, usiamo timeout o un piccolo sleep
         verify(soundMock, timeout(500)).playVictorySound();
         verify(scoreViewMock, timeout(500)).display();
     }

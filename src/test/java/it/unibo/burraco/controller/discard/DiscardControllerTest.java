@@ -19,7 +19,7 @@ import it.unibo.burraco.model.discard.DiscardPile;
 import java.util.Set;
 import java.util.List;
 
-public class DiscardControllerTest {
+class DiscardControllerTest {
 
     private DiscardController controller;
     private DrawManager drawManager;

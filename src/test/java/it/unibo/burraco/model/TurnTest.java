@@ -14,7 +14,7 @@ import it.unibo.burraco.model.card.CardImpl;
 import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.turn.TurnImpl;
 
-public class TurnTest {
+class TurnTest {
     private static final String NAME_P1 = "Alice";
     private static final String NAME_P2 = "Bob";
 
@@ -111,7 +111,7 @@ public class TurnTest {
 
     @Test
     void testCanCloseChecksCurrentPlayer() {
-        turn.nextTurn(); // ora è il turno di player2
+        turn.nextTurn(); 
         player2.setInPot(true);
         List<Card> burraco = List.of(
             new CardImpl("♠", "3"), new CardImpl("♠", "4"),

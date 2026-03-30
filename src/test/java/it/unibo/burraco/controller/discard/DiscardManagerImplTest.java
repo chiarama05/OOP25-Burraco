@@ -17,7 +17,7 @@ import it.unibo.burraco.controller.discardcard.discard.DiscardManager;
 import it.unibo.burraco.controller.discardcard.discard.DiscardManagerImpl;
 import it.unibo.burraco.controller.discardcard.discard.DiscardResult;
 
-public class DiscardManagerImplTest {
+class DiscardManagerImplTest {
 
     private DiscardManager discardManager;
     private DiscardPile discardPile;

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 
-public class SetAttachUtilsTest {
+class SetAttachUtilsTest {
     @Test
     void testCanAttachSameValue() {
         List<Card> set = new ArrayList<>(List.of(

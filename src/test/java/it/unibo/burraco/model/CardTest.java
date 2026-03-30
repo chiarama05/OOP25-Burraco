@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import it.unibo.burraco.model.card.CardImpl;
 
-public class CardTest {
+class CardTest {
 
     private static final String HEARTS = "♥";
     private static final String ACE = "A";

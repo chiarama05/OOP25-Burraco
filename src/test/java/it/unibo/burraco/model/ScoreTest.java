@@ -11,7 +11,7 @@ import it.unibo.burraco.model.card.CardImpl;
 import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.score.ScoreImpl;
 
-public class ScoreTest {
+class ScoreTest {
     private static final String HEARTS = "♥";
     private static final String SPADES = "♠";
     private static final String JOLLY_SEED = "♕";
@@ -58,7 +58,6 @@ public class ScoreTest {
 
     @Test
     void testCardsOnTableWithCombinations() {
-        // A(15) + K(10) + 3(5) = 30
         player.addCombination(List.of(
                 new CardImpl(HEARTS, "A"),
                 new CardImpl(HEARTS, "K"),
@@ -88,7 +87,6 @@ public class ScoreTest {
 
     @Test
     void testCleanBurracoNoTwosNoJolly() {
-        // Scala pura: 3-4-5-6-7-8-9 di cuori
         player.addCombination(List.of(
                 new CardImpl(HEARTS, "3"),
                 new CardImpl(HEARTS, "4"),
@@ -105,7 +103,6 @@ public class ScoreTest {
 
     @Test
     void testCleanBurracoWithTwoInNaturalPosition() {
-        // 2 di cuori in posizione naturale in una scala di cuori: A-2-3-4-5-6-7
         player.addCombination(List.of(
                 new CardImpl(HEARTS, "A"),
                 new CardImpl(HEARTS, "2"),
@@ -137,7 +134,6 @@ public class ScoreTest {
 
     @Test
     void testDirtyBurracoWithTwoNotInNaturalPosition() {
-        // 2 di picche in una scala di cuori = non posizione naturale
         player.addCombination(List.of(
                 new CardImpl(SPADES, "2"),
                 new CardImpl(HEARTS, "3"),
@@ -170,7 +166,6 @@ public class ScoreTest {
 
     @Test
     void testMultipleBurracoMixed() {
-        // 1 clean + 1 dirty = 300
         player.addCombination(List.of(
                 new CardImpl(HEARTS, "3"), new CardImpl(HEARTS, "4"),
                 new CardImpl(HEARTS, "5"), new CardImpl(HEARTS, "6"),
@@ -203,27 +198,21 @@ public class ScoreTest {
 
     @Test
     void testFinalScoreClosureBonus() {
-        // Giocatore ha finito le carte (mano vuota), pot preso
         player.setInPot(true);
-        // hasFinishedCards() = true perché la mano è vuota
         final int result = score.calculateFinalScore(player);
         assertEquals(CLOSURE_BONUS, result);
     }
 
     @Test
     void testFinalScoreHandPenalty() {
-        // Carte rimaste in mano sottraggono punti
         player.setInPot(true);
-        player.addCardHand(new CardImpl(HEARTS, "A")); // 15
-        player.addCardHand(new CardImpl(HEARTS, "K")); // 10
-        // 0 (tavolo) + 0 (burraco) - 25 (mano) = -25
+        player.addCardHand(new CardImpl(HEARTS, "A"));
+        player.addCardHand(new CardImpl(HEARTS, "K")); 
         assertEquals(-25, score.calculateFinalScore(player));
     }
 
     @Test
     void testFinalScoreFullScenario() {
-        // Pot preso, 1 clean burraco (3-9 di cuori), chiusura (mano vuota)
-        // Combinazione: 3(5)+4(5)+5(5)+6(5)+7(5)+8(10)+9(10) = 45 punti tavolo
         player.setInPot(true);
         player.addCombination(List.of(
                 new CardImpl(HEARTS, "3"), new CardImpl(HEARTS, "4"),
@@ -231,21 +220,17 @@ public class ScoreTest {
                 new CardImpl(HEARTS, "7"), new CardImpl(HEARTS, "8"),
                 new CardImpl(HEARTS, "9")
         ));
-        // mano vuota → closure bonus
-        // 45 (tavolo) + 100 (closure) + 200 (clean burraco) - 0 (mano) = 345
         assertEquals(345, score.calculateFinalScore(player));
     }
 
     @Test
     void testFinalScoreNoPotPenaltyApplied() {
-        // Pot non preso → penalità -100
         player.addCombination(List.of(
                 new CardImpl(HEARTS, "3"), new CardImpl(HEARTS, "4"),
                 new CardImpl(HEARTS, "5"), new CardImpl(HEARTS, "6"),
                 new CardImpl(HEARTS, "7"), new CardImpl(HEARTS, "8"),
                 new CardImpl(HEARTS, "9")
         ));
-        // 45 (tavolo) + 100 (closure) + 200 (clean burraco) - 100 (no pot) = 245
         assertEquals(245, score.calculateFinalScore(player));
     }
 }

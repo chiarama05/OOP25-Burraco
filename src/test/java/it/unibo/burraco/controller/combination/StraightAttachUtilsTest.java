@@ -125,7 +125,6 @@ class StraightAttachUtilsTest {
         @Test
         @DisplayName("6H is attached normally to [3H, Joker, 5H]: jolly stays in place")
         void testAttachAfterInternalJoker() {
-            // [3H, Joker, 5H, 6H] è una scala valida: il joker rimane sul 4
             List<Card> straight = new ArrayList<>(List.of(
                 card("H", "3"), card("Jolly", "Jolly"), card("H", "5")
             ));

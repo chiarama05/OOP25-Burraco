@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.deck.DeckImpl;
 
-public class DeckTest {
+class DeckTest {
     private static final int FULL_DECK_SIZE = 108;
     private static final int JOLLY_COUNT = 4;
     private static final String JOLLY_VALUE = "Jolly";
@@ -43,13 +43,11 @@ public class DeckTest {
     void testDeckComposition() {
         final List<Card> cards = deck.getCards();
 
-        // Verifica che ci siano esattamente 4 Jolly
         final long jollyCount = cards.stream()
                 .filter(c -> JOLLY_VALUE.equals(c.getValue()))
                 .count();
         assertEquals(JOLLY_COUNT, jollyCount);
 
-        // Verifica che ogni combinazione seme+valore appaia esattamente 2 volte
         for (final String seed : SEEDS) {
             for (final String value : VALUES) {
                 final String s = seed;

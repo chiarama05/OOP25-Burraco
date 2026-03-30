@@ -13,7 +13,7 @@ import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 import it.unibo.burraco.model.jolly.JollyImpl;
 
-public class JollyTest {
+class JollyTest {
     private static final String HEARTS = "♥";
 
     private CardImpl pureJolly;
@@ -68,7 +68,6 @@ public class JollyTest {
 
     @Test
     void testTwoActsAsJollyWhenNotNaturalTwo() {
-        // 2 surrounded by non-consecutive cards → acts as wildcard
         JollyImpl jolly = new JollyImpl(twoOfHearts);
         CardImpl fiveOfHearts = new CardImpl(HEARTS, "5");
         CardImpl sevenOfHearts = new CardImpl(HEARTS, "7");
@@ -78,7 +77,6 @@ public class JollyTest {
 
     @Test
     void testTwoIsNotJollyWhenNaturalTwo() {
-        // A-2-3 → 2 is natural, not a wildcard
         JollyImpl jolly = new JollyImpl(twoOfHearts);
         List<Card> context = List.of(aceOfHearts, twoOfHearts, threeOfHearts);
         assertFalse(jolly.isJolly(context));

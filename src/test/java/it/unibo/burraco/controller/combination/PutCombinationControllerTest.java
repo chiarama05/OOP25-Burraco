@@ -21,7 +21,7 @@ import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.turn.Turn;
 
-public class PutCombinationControllerTest {
+class PutCombinationControllerTest {
     private PutCombinationController controller;
     private DrawManager drawManager;
     private Player player;

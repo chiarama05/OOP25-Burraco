@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 
-public class DiscardPileTest {
+class DiscardPileTest {
 
     private DiscardPile discardPile;
 

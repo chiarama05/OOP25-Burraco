@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 
-public class AttachUtilsTest {
+class AttachUtilsTest {
     private static final String HEARTS  = "♥";
     private static final String SPADES  = "♠";
     private static final String CLUBS   = "♣";
@@ -32,7 +32,6 @@ public class AttachUtilsTest {
 
     @Test
     void testCanAttachSameValueToSet() {
-        // Tris di 7: aggiunta del quarto 7 → valida
         final List<Card> set = List.of(
                 new CardImpl(HEARTS,   "7"),
                 new CardImpl(SPADES,   "7"),
@@ -88,7 +87,6 @@ public class AttachUtilsTest {
 
     @Test
     void testCanAttachConsecutiveCardToStraight() {
-        // Scala 3-4-5 di cuori → aggiunta 6
         final List<Card> straight = new ArrayList<>(List.of(
                 new CardImpl(HEARTS, "3"),
                 new CardImpl(HEARTS, "4"),
@@ -100,7 +98,6 @@ public class AttachUtilsTest {
 
     @Test
     void testCanAttachAtBeginningOfStraight() {
-        // Scala 4-5-6 di cuori → aggiunta 3
         final List<Card> straight = new ArrayList<>(List.of(
                 new CardImpl(HEARTS, "4"),
                 new CardImpl(HEARTS, "5"),

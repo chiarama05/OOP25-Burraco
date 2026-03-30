@@ -14,7 +14,7 @@ import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 import it.unibo.burraco.model.player.PlayerImpl;
 
-public class AttachControllerTest {
+class AttachControllerTest {
     private static final String HEARTS   = "♥";
     private static final String SPADES   = "♠";
 
@@ -186,8 +186,6 @@ public class AttachControllerTest {
 
     @Test
     void testSuccessTakePot() {
-        // Giocatore non ha ancora il pozzetto, rimane a 0 carte dopo l'attacco
-        // deve prendere il pozzetto
         player.setInPot(false);
 
         final CardImpl six = new CardImpl(HEARTS, "6");

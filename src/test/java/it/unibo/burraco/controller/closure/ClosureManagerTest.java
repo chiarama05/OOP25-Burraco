@@ -17,7 +17,7 @@ import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.turn.Turn;
 import it.unibo.burraco.view.notification.game.GameNotifier;
 
-public class ClosureManagerTest {
+class ClosureManagerTest {
     private Turn turnModel;
     private GameNotifier notifier;
     private ScoreController scoreController;

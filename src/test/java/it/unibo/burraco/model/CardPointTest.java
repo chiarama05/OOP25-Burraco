@@ -10,7 +10,7 @@ import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 import it.unibo.burraco.model.score.CardPoint;
 
-public class CardPointTest {
+class CardPointTest {
     private static final String HEARTS = "♥";
     private static final String JOLLY_SEED = "♕";
 
