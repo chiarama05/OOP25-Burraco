@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.RadialGradientPaint;
 import java.awt.geom.Point2D;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * A custom Swing button with rounded corners and a radial gradient background.
@@ -44,16 +46,16 @@ public final class RoundedGradientButton extends JButton {
         setOpaque(false);
 
         // Add mouse listener to handle hover state transitions
-        addMouseListener(new java.awt.event.MouseAdapter() {
+        this.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+            public void mouseEntered(final MouseEvent evt) { 
                 innerColor = HOVER_INNER;
                 outerColor = HOVER_OUTER;
                 repaint();
             }
 
             @Override
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            public void mouseExited(final MouseEvent evt) { 
                 innerColor = DEFAULT_INNER;
                 outerColor = DEFAULT_OUTER;
                 repaint();

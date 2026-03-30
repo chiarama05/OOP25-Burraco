@@ -9,7 +9,7 @@ import it.unibo.burraco.model.player.Player;
  * Standard implementation of the Burraco scoring system.
  * Handles bonuses for clean/dirty burracos, closures, and penalties for uncollected pots.
  */
-public class ScoreImpl implements Score {
+public final class ScoreImpl implements Score {
 
     private static final int CLOSURE_BONUS = 100;
     private static final int CLEAN_BURRACO_BONUS = 200;
