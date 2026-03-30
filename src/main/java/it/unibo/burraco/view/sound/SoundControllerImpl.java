@@ -19,27 +19,31 @@ import it.unibo.burraco.controller.sound.SoundController;
  */
 public final class SoundControllerImpl implements SoundController {
 
-    /** Cache to store sound file bytes, preventing repeated disk I/O. */
+    private static final String BURRACO_WAV = "burraco.wav";
+    private static final String ROUND_END_WAV = "round_end.wav";
+    private static final String VICTORY_WAV = "victory.wav";
+
     private final Map<String, byte[]> soundCache = new HashMap<>();
 
     /**
      * Constructor that preloads all necessary sound effects into the cache.
      */
     public SoundControllerImpl() {
-        preLoadSound("burraco.wav");
-        preLoadSound("round_end.wav");
-        preLoadSound("victory.wav");
+        this.preLoadSound(BURRACO_WAV);
+        this.preLoadSound(ROUND_END_WAV);
+        this.preLoadSound(VICTORY_WAV);
     }
 
     /**
      * Loads a sound file from the resources folder and stores its bytes in memory.
+     * 
      * @param fileName the name of the file to load.
      */
-    private void preLoadSound(String fileName) {
-        String path = fileName.startsWith("/") ? fileName : "/" + fileName;
-        try (InputStream is = getClass().getResourceAsStream(path)) {
+    private void preLoadSound(final String fileName) {
+        final String path = fileName.startsWith("/") ? fileName : "/" + fileName;
+        try (InputStream is = this.getClass().getResourceAsStream(path)) {
             if (is != null) {
-                soundCache.put(fileName, is.readAllBytes());
+                this.soundCache.put(fileName, is.readAllBytes());
             } else {
                 System.err.println("Resource not found: " + path);
             }
@@ -49,33 +53,38 @@ public final class SoundControllerImpl implements SoundController {
     }
 
     @Override
-    public void playBurracoSound() { playFromCache("burraco.wav", false); }
+    public void playBurracoSound() { 
+        this.playFromCache(BURRACO_WAV, false); 
+    }
 
     @Override
-    public void playRoundEndSound() { playFromCache("round_end.wav", false); }
+    public void playRoundEndSound() { 
+        this.playFromCache(ROUND_END_WAV, false);
+    }
 
     @Override
-    public void playVictorySound() { playFromCache("victory.wav", false); }
+    public void playVictorySound() { 
+        this.playFromCache(VICTORY_WAV, false);
+    }
 
     /**
      * Logic to play a sound effect from the byte cache.
      * Creates a dedicated thread for audio playback to ensure non-blocking execution.
+     * 
      * @param fileName the name of the cached sound to play.
      * @param blocking if true, the calling thread will wait for the sound to finish.
      */
-    private void playFromCache(String fileName, boolean blocking) {
-        byte[] soundData = soundCache.get(fileName);
+    private void playFromCache(final String fileName, final boolean blocking) {
+        final byte[] soundData = soundCache.get(fileName);
         if (soundData == null) return;
 
-        Thread audioThread = new Thread(() -> {
+        final Thread audioThread = new Thread(() -> {
             try {
                 java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(soundData);
                 AudioInputStream stream = AudioSystem.getAudioInputStream(bais);
-
                 Clip clip = AudioSystem.getClip();
-                // Latch used to synchronize the closing of the clip with the end of playback
-                CountDownLatch latch = new CountDownLatch(1);
 
+                final CountDownLatch latch = new CountDownLatch(1);
                 clip.addLineListener(event -> {
                     if (event.getType() == LineEvent.Type.STOP) {
                         latch.countDown();
@@ -83,7 +92,6 @@ public final class SoundControllerImpl implements SoundController {
                 });
                 clip.open(stream);
                 clip.start();
-                // Wait for the sound to stop before proceeding to cleanup
                 latch.await();
 
                 clip.close();
@@ -92,11 +100,9 @@ public final class SoundControllerImpl implements SoundController {
                 e.printStackTrace();
             }
         });
-        // Ensure playback finishes even if triggered by a short-lived thread
         audioThread.setDaemon(false);
         audioThread.start();
 
-        // Optional blocking behavior (used for game-ending sounds if necessary)
         if (blocking) {
             try {
                 audioThread.join(); 

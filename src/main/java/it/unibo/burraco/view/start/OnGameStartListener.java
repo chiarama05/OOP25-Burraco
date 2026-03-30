@@ -10,5 +10,4 @@ public interface OnGameStartListener {
      * Triggered when the user clicks the "New Match" button.
      */
     void onStartClicked();
-
 }

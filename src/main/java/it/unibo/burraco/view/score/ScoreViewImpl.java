@@ -89,7 +89,7 @@ public final class ScoreViewImpl implements ScoreView {
         this.frame        = new JFrame("Burraco - Final Standings");
         this.targetScore  = targetScore;
 
-        setupUI(p1, p2, name1, name2, matchOver);
+        this.setupUI(p1, p2, name1, name2, matchOver);
     }
 
     /**
@@ -118,9 +118,9 @@ public final class ScoreViewImpl implements ScoreView {
             final String name1, final String name2,
             final boolean matchOver) {
 
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
-        frame.setLocationRelativeTo(null);
+        this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        this.frame.setLocationRelativeTo(null);
 
         final BackgroundPanel mainPanel = new BackgroundPanel();
         mainPanel.setLayout(new BorderLayout());
@@ -155,8 +155,8 @@ public final class ScoreViewImpl implements ScoreView {
         } else {
             actionBtn = new RoundedGradientButton("NEXT ROUND (Target: " + targetScore + " pts)");
             actionBtn.addActionListener(e -> {
-                if (nextAction != null) {
-                    nextAction.run(); 
+                if (this.nextAction != null) {
+                    this.nextAction.run(); 
                 }
             });
         }
@@ -171,7 +171,7 @@ public final class ScoreViewImpl implements ScoreView {
         buttonContainer.add(actionBtn);
         mainPanel.add(buttonContainer, BorderLayout.SOUTH);
 
-        frame.add(mainPanel);
+        this.frame.add(mainPanel);
     }
 
     /**
@@ -208,7 +208,6 @@ public final class ScoreViewImpl implements ScoreView {
         final int pointBurracoC = scoreManager.countCleanBurraco(p) * scoreManager.getCleanBurracoBonusValue();
         final int pointBurracoD = scoreManager.countDirtyBurraco(p) * scoreManager.getDirtyBurracoBonusValue();
         final int closure       = p.hasFinishedCards() ? scoreManager.getClosureBonusValue() : 0;
-
         final int pot           = p.isInPot() ? 0 : scoreManager.getNoPotPenalty();
         final int cardInHand    = scoreManager.calculateRemainingHandValue(p);
         final int totalHand     = scoreManager.calculateFinalScore(p);
@@ -219,7 +218,6 @@ public final class ScoreViewImpl implements ScoreView {
         panel.add(createRow("Dirty Burraco",  String.valueOf(pointBurracoD), false));
         panel.add(createRow("Closure Bonus",  String.valueOf(closure),       false));
         panel.add(createRow("Pot Penalty",    String.valueOf(pot),           false));
-
         panel.add(createRow("Cards in Hand",  "-" + cardInHand,             false));
 
         panel.add(Box.createVerticalStrut(SEPARATOR_STRUT));
@@ -228,8 +226,8 @@ public final class ScoreViewImpl implements ScoreView {
         panel.add(sep);
 
         panel.add(Box.createVerticalStrut(SEPARATOR_STRUT));
-        panel.add(createRow("ROUND TOTAL", String.valueOf(totalHand),  true));
-        panel.add(createRow("MATCH TOTAL", String.valueOf(totalMatch), true));
+        panel.add(this.createRow("ROUND TOTAL", String.valueOf(totalHand),  true));
+        panel.add(this.createRow("MATCH TOTAL", String.valueOf(totalMatch), true));
         panel.add(Box.createVerticalGlue());
 
         return panel;
@@ -269,7 +267,7 @@ public final class ScoreViewImpl implements ScoreView {
      */
     @Override
     public void display() {
-        frame.setVisible(true);
+        this.frame.setVisible(true);
     }
 
     /**
@@ -277,15 +275,17 @@ public final class ScoreViewImpl implements ScoreView {
      */
     @Override
     public void close() {
-        frame.dispose();
+        this.frame.dispose();
     }
 
     /**
      * Inner class that paints a vertical linear gradient as its background,
      * giving the scoreboard a polished green-felt appearance.
      */
-    static class BackgroundPanel extends JPanel {
+    private final static class BackgroundPanel extends JPanel {
 
+        private static final long serialVersionUID = 1L;
+        
         /**
          * Overrides the default painting to fill the panel with a top-to-bottom gradient.
          *

@@ -14,5 +14,4 @@ public interface StartMenuView {
      * Closes and disposes of the menu frame.
      */
     void close();
-
 }

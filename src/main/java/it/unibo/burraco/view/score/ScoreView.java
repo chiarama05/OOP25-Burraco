@@ -19,7 +19,8 @@ public interface ScoreView {
 
     /**
      * Sets the action to be performed when the user decides to proceed.
+     * 
      * @param action a Runnable provided by the controller.
      */
-    void setOnNextAction(final Runnable action);
+    void setOnNextAction(Runnable action);
 }

@@ -18,5 +18,4 @@ public interface OnConfigurationCompleteListener {
      * Called when the user clicks the back button to return to the main menu.
      */
     void onBackClicked();
-
 }

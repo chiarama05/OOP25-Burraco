@@ -9,8 +9,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.MouseAdapter; 
-import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Set;
 
@@ -38,24 +36,27 @@ public final class HandViewImpl extends JPanel implements HandView {
     private static final Color HOVER_BORDER = new Color(240, 230, 140);
     private static final int HOVER_BORDER_THICKNESS = 2;
 
+    private static final String JOLLY_FONT = "Segoe UI Symbol";
+    private static final String NORMAL_FONT = "Monospaced";
+
     private final transient SelectionCardManager selectionManager;
     private CardSelectionListener listener;
 
     /**
      * Constructs a HandViewImpl with a specific selection manager.
+     * 
      * @param selectionManager the manager responsible for tracking selected cards
      */
     public HandViewImpl(final SelectionCardManager selectionManager) {
         super(new FlowLayout(FlowLayout.LEFT, GAP, GAP));
         this.selectionManager = selectionManager;
-        setBackground(PANEL_BG);
+        this.setBackground(PANEL_BG);
     }
 
     @Override
     public void refreshHand(final List<Card> hand) {
         this.removeAll();
 
-        // Dynamically adjust panel width based on the number of cards
         final int preferredWidth = (hand.size() * PREF_CARD_STEP) + PREF_WIDTH_OFFSET;
         this.setPreferredSize(new Dimension(preferredWidth, PANEL_HEIGHT));
 
@@ -65,13 +66,11 @@ public final class HandViewImpl extends JPanel implements HandView {
 
             final JButton btn = new JButton(displayField);
 
-            // Apply specific styling for Jokers
             if (isJolly) {
-                btn.setFont(new Font("Segoe UI Symbol", Font.BOLD, JOLLY_FONT_SIZE)); 
+                btn.setFont(new Font(JOLLY_FONT, Font.BOLD, JOLLY_FONT_SIZE)); 
                 btn.setForeground(JOLLY_COLOR); 
             } else {
-                btn.setFont(new Font("Monospaced", Font.BOLD, NORMAL_FONT_SIZE));
-                // Set color based on the suit 
+                btn.setFont(new Font(NORMAL_FONT, Font.BOLD, NORMAL_FONT_SIZE));
                 if (displayField.contains("♥") || displayField.contains("♦")) {
                     btn.setForeground(Color.RED);
                 } else {
@@ -81,10 +80,9 @@ public final class HandViewImpl extends JPanel implements HandView {
 
             btn.setPreferredSize(new Dimension(CARD_WIDTH, CARD_HEIGHT));
             btn.setOpaque(true);
-            btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
+            btn.setBackground(this.selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
             btn.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
-            // Add interactive hover effects
             btn.addMouseListener(new java.awt.event.MouseAdapter() {
                 @Override
                 public void mouseEntered(java.awt.event.MouseEvent e) {
@@ -108,29 +106,29 @@ public final class HandViewImpl extends JPanel implements HandView {
             });
         
             btn.addActionListener(e -> {
-                selectionManager.toggleSelection(c);
-                btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
-                if (listener != null) {
-                    listener.onCardSelected(c);
+                this.selectionManager.toggleSelection(c);
+                btn.setBackground(this.selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
+                if (this.listener != null) {
+                    this.listener.onCardSelected(c);
                 }
             });
 
-            add(btn);
+            this.add(btn);
         }
-        revalidate();
-        repaint();
+        this.revalidate();
+        this.repaint();
     }    
 
     @Override
     public Set<Card> getSelectedCards() {
-        return selectionManager.getSelectedCards();
+        return this.selectionManager.getSelectedCards();
     }
 
     @Override
     public void clearSelection() {
-        selectionManager.clearSelection();
-        revalidate();
-        repaint();
+        this.selectionManager.clearSelection();
+        this.revalidate();
+        this.repaint();
     }
 
     @Override
@@ -140,19 +138,21 @@ public final class HandViewImpl extends JPanel implements HandView {
 
     /**
      * Helper method to retrieve a single selected card.
+     * 
      * @return the selected {@link Card} if exactly one is selected, null otherwise
      */
     public Card getSingleSelectedCard() {
-        Set<Card> selected = getSelectedCards();
+        final Set<Card> selected = this.getSelectedCards();
         return selected.size() == 1 ? selected.iterator().next() : null;
     }
 
     /**
      * Updates the hand and clears the current selection.
+     * 
      * @param hand the new list of cards to display
      */
     public void updateHand(final List<Card> hand) {
-        refreshHand(hand);
-        selectionManager.clearSelection();
+        this.refreshHand(hand);
+        this.selectionManager.clearSelection();
     }
 }
