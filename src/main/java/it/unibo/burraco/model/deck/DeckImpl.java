@@ -7,10 +7,12 @@ import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 
 /**
- * Constructs a new deck.
- *  - Two standard 52-card sets
- *  - Two Jokers for each set (4 Jokers total)
- * After creation, the deck is shuffled randomly.
+ * Standard Burraco deck implementation.
+ * <p>
+ * Composed of two standard 52-card sets (4 suits × 13 values) plus two Jokers per set,
+ * for a total of 108 cards. The deck is automatically shuffled on construction and
+ * after every {@link #reset()}.
+ * </p>
  */
 public class DeckImpl implements Deck {
 
