@@ -8,12 +8,12 @@ public class DeckNotifierImpl implements DeckNotifier{
 
     private final JFrame parent;
 
-    public DeckNotifierImpl(JFrame parent) {
+    public DeckNotifierImpl(final JFrame parent) {
         this.parent = parent;
     }
 
     @Override
-    public void notifyDrawError(DrawResult result) {
+    public void notifyDrawError(final DrawResult result) {
         String message = switch (result.getStatus()) {
             case ALREADY_DRAWN -> 
                 "You have already drawn a card this turn!";

@@ -4,6 +4,6 @@ import it.unibo.burraco.controller.discardcard.discard.DiscardResult;
 
 public interface DiscardNotifier {
 
-    void notifyDiscardError(DiscardResult result);
+    void notifyDiscardError(final DiscardResult result);
 
 }

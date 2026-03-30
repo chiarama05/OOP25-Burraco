@@ -9,12 +9,12 @@ public final class TakeDiscardNotifierImpl implements TakeDiscardNotifier{
 
     private final JFrame parent;
 
-    public TakeDiscardNotifierImpl(JFrame parent) {
+    public TakeDiscardNotifierImpl(final JFrame parent) {
         this.parent = parent;
     }
 
     @Override
-    public void notifyTakeDiscardError(DrawResult result) {
+    public void notifyTakeDiscardError(final DrawResult result) {
         String message = switch (result.getStatus()) {
             case ALREADY_DRAWN -> "You have already drawn a card this turn!";
             case EMPTY_DECK -> "The discard pile is empty!"; // O un messaggio specifico per la pila
