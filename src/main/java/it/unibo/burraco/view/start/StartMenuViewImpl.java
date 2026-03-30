@@ -81,7 +81,6 @@ public class StartMenuViewImpl implements StartMenuView{
         styleButton(newBtn);
         styleButton(rulesBtn);
 
-        // New Match Logic
         newBtn.addActionListener(e -> {
             close();
             listener.onStartClicked();
@@ -89,7 +88,6 @@ public class StartMenuViewImpl implements StartMenuView{
         gbc.gridy = 1;
         panel.add(newBtn, gbc);
 
-        // Rules Logic
         rulesBtn.addActionListener(e -> showRules());
         gbc.gridy = 2;
         panel.add(rulesBtn, gbc);
