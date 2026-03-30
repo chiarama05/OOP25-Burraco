@@ -24,12 +24,12 @@ public class DiscardController {
     private final DrawManager drawManager;  
     private final Turn turnModel;          
 
-    public DiscardController(DiscardManagerImpl discardManager,
-                              TurnController turnCtrl,
-                              PotManager potCtrl,
-                              ClosureManager closureCtrl,
-                              DrawManager drawManager,
-                              Turn turnModel) {
+    public DiscardController(final DiscardManagerImpl discardManager,
+                             final TurnController turnCtrl,
+                             final PotManager potCtrl,
+                             final ClosureManager closureCtrl,
+                             final DrawManager drawManager,
+                             final Turn turnModel) {
         this.discardManager = discardManager;
         this.turnCtrl = turnCtrl;
         this.potCtrl = potCtrl;
@@ -40,11 +40,11 @@ public class DiscardController {
 
     /**
      * Validates and executes a discard action.
+     * 
      * @param selectedCards the card selected by the player to be discarded.
      * @return a DiscardResult containing the outcome of the operation.
      */
-    public DiscardResult tryDiscard(Set<Card> selectedCards) {
-
+    public DiscardResult tryDiscard(final Set<Card> selectedCards) {
         // A player must draw from the deck or pile before discarding
         if (!drawManager.hasDrawn()) {
             return DiscardResult.error("must_draw");
@@ -55,15 +55,15 @@ public class DiscardController {
             return DiscardResult.error("select_one");
         }
 
-        Player current = turnModel.getCurrentPlayer();
-        Card card = selectedCards.iterator().next();
+        final Player current = turnModel.getCurrentPlayer();
+        final Card card = selectedCards.iterator().next();
 
         // Check if this discard will lead to the player collecting the "pot"
         // Happens if it's the last card in hand and the player hasn't taken the pot yet
-        boolean willTakePot = (current.getHand().size() == 1 && !current.isInPot());
+        final boolean willTakePot = (current.getHand().size() == 1 && !current.isInPot());
 
         // Perform the actual discard on the model
-        DiscardResult result = discardManager.discard(current, card);
+        final DiscardResult result = discardManager.discard(current, card);
 
         if (!result.isValid()) {
             return result;

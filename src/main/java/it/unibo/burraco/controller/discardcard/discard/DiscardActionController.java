@@ -14,18 +14,18 @@ public class DiscardActionController {
     /**
      * @param discardController the logic controller that handles the discard process.
      */
-    public DiscardActionController(DiscardController discardController) {
+    public DiscardActionController(final DiscardController discardController) {
         this.discardController = discardController;
     }
 
     /**
      * Handles the discard request from the view.
+     * 
      * @param view the view triggering the action.
      * @param isPlayer1 true if the action was performed by player 1.
      */
-    public void handle(DiscardActionView view, boolean isPlayer1) {
-        // Retrieve selected cards from the view and attempt the discard
-        DiscardResult result = discardController.tryDiscard(view.getSelectedCards(isPlayer1));
+    public void handle(final DiscardActionView view, final boolean isPlayer1) {
+        final DiscardResult result = discardController.tryDiscard(view.getSelectedCards(isPlayer1));
 
         if (result.isValid()) {
             // Update the UI in case of success

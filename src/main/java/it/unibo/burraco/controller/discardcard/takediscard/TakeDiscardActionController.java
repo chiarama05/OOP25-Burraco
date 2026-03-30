@@ -22,9 +22,9 @@ public class TakeDiscardActionController {
      * @param turnModel the model tracking the current turn state.
      * @param discardPile the model representing the pile of discarded cards.
      */
-    public TakeDiscardActionController(TakeDiscardController takeDiscardController,
-                                        Turn turnModel,
-                                        DiscardPile discardPile) {
+    public TakeDiscardActionController(final TakeDiscardController takeDiscardController,
+                                       final Turn turnModel,
+                                       final DiscardPile discardPile) {
         this.takeDiscardController = takeDiscardController;
         this.turnModel = turnModel;
         this.discardPile = discardPile;
@@ -34,14 +34,12 @@ public class TakeDiscardActionController {
      * Handles the user's request to take all cards from the discard pile.
      * @param view the view component that will receive success or error notifications.
      */
-    public void handle(TakeDiscardActionView view) {
-        // Attempt to execute the take-discard logic
-        DrawResult result = takeDiscardController.tryTakeDiscard();
+    public void handle(final TakeDiscardActionView view) {
+        final DrawResult result = takeDiscardController.tryTakeDiscard();
 
-        // Check if the operation was successful
         if (result.getStatus() == DrawResult.Status.SUCCESS_MULTIPLE) {
-            Player current = turnModel.getCurrentPlayer();
-            boolean isP1 = turnModel.isPlayer1Turn(); 
+            final Player current = turnModel.getCurrentPlayer();
+            final boolean isP1 = turnModel.isPlayer1Turn(); 
 
             // Update the view with the new hand of the current player
             view.onTakeDiscardSuccess(current, discardPile.getCards(), isP1);
