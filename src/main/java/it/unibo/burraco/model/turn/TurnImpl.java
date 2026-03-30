@@ -6,7 +6,7 @@ import it.unibo.burraco.model.player.Player;
  * Implementation of the {@link Turn} interface.
  * Manages turn alternation and game state for two players.
  */
-public class TurnImpl implements Turn {
+public final class TurnImpl implements Turn {
 
     private final Player player1;
     private final Player player2;
