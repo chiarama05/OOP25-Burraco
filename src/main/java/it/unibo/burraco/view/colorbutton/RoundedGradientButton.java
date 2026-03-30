@@ -1,32 +1,41 @@
 package it.unibo.burraco.view.colorbutton;
 
 import javax.swing.JButton;
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.RadialGradientPaint;
 import java.awt.geom.Point2D;
 
 /**
  * A custom Swing button with rounded corners and a radial gradient background.
  * It includes hover effects to enhance the user interface experience.
  */
-public final class RoundedGradientButton extends JButton{
+public final class RoundedGradientButton extends JButton {
 
     private static final long serialVersionUID = 1L;
-    private Color outerColor = new Color(255, 170, 185); 
-    private Color innerColor = new Color(255, 245, 250); 
 
-    // Constants to store the original colors for resetting after hover
-    private final Color originalOuter = outerColor;
-    private final Color originalInner = innerColor;
+    private static final Color DEFAULT_OUTER = new Color(255, 170, 185);
+    private static final Color DEFAULT_INNER = new Color(255, 245, 250);
+    private static final Color HOVER_OUTER = new Color(255, 140, 160);
+    private static final Color HOVER_INNER = new Color(255, 220, 230);
+    private static final Color BORDER_COLOR = new Color(200, 130, 145);
+    
+    private static final int ARC_SIZE = 25;
+    private static final float STROKE_WIDTH = 1.5f;
+    private static final float GRADIENT_RADIUS_RATIO = 1.5f;
+    private static final float[] GRADIENT_DIST = {0.0f, 1.0f};
 
-    // Hover effect colors
-    private final Color hoverOuter = new Color(255, 140, 160);
-    private final Color hoverInner = new Color(255, 220, 230);
+    private Color outerColor = DEFAULT_OUTER;
+    private Color innerColor = DEFAULT_INNER;
 
     /**
      * Constructs a new button with specified text and initializes transparency settings.
      * @param text the label displayed on the button.
      */
-    public RoundedGradientButton(String text) {
+    public RoundedGradientButton(final String text) {
         super(text);
         // Disable default Swing rendering to use custom painting
         setContentAreaFilled(false);
@@ -38,14 +47,15 @@ public final class RoundedGradientButton extends JButton{
         addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                outerColor = hoverOuter;
-                innerColor = hoverInner;
+                innerColor = HOVER_INNER;
+                outerColor = HOVER_OUTER;
                 repaint();
             }
+
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                outerColor = originalOuter;
-                innerColor = originalInner;
+                innerColor = DEFAULT_INNER;
+                outerColor = DEFAULT_OUTER;
                 repaint();
             }
         });
@@ -55,32 +65,31 @@ public final class RoundedGradientButton extends JButton{
      * Custom painting logic for the button's background and border.
      */
     @Override
-    protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g.create();
+    protected void paintComponent(final Graphics g) {
+        final Graphics2D g2 = (Graphics2D) g.create();
 
         // Enable anti-aliasing for smooth rounded corners
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        float radius = Math.max(getWidth(), getHeight());
-        float[] dist = {0.0f, 1.0f};
-        Color[] colors = {innerColor, outerColor}; 
+        final float radius = Math.max(getWidth(), getHeight());
+        final Color[] colors = {innerColor, outerColor}; 
         
         // Create a radial gradient centered in the button
-        RadialGradientPaint rgp = new RadialGradientPaint(
-            new Point2D.Double(getWidth() / 2.0, getHeight() / 2.0), 
-            radius / 1.5f, 
-            dist, 
+        final RadialGradientPaint rgp = new RadialGradientPaint(
+            new Point2D.Double(getWidth() / 2.0, getHeight() / 2.0),
+            radius / GRADIENT_RADIUS_RATIO,
+            GRADIENT_DIST,
             colors
         );
 
         // Draw the background
         g2.setPaint(rgp);
-        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 25, 25);
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), ARC_SIZE, ARC_SIZE);
 
         // Draw the border with a darker shade
-        g2.setColor(new Color(200, 130, 145)); 
-        g2.setStroke(new BasicStroke(1.5f));
-        g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 25, 25);
+        g2.setColor(BORDER_COLOR);
+        g2.setStroke(new BasicStroke(STROKE_WIDTH));
+        g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, ARC_SIZE, ARC_SIZE);
 
         g2.dispose();
 
