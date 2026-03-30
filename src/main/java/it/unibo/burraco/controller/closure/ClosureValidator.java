@@ -13,6 +13,14 @@ public final class ClosureValidator {
     
     private ClosureValidator() { }
 
+
+    /**
+     * Evaluates the full closure state of a player after any action (put combination or attach).
+     * The evaluation order is: hand not empty → OK; no pot → ZERO_CARDS_NO_POT;
+     * no burraco → ZERO_CARDS_NO_BURRACO; all conditions met → CAN_CLOSE.
+     * @param player the player to evaluate
+     * @return the appropriate {@link ClosureState}
+     */
     public static ClosureState evaluate(Player player) {
         final boolean handEmpty = player.getHand().isEmpty();
         final boolean hasPot = player.isInPot();
@@ -41,9 +49,7 @@ public final class ClosureValidator {
         return ClosureState.OK;
     }
 
-    public static boolean wouldGetStuckAfterPutCombo(final Player player, 
-                                                     final List<Card> cardsToPlay, 
-                                                     final int comboSize) {
+    public static boolean wouldGetStuckAfterPutCombo(final Player player, final List<Card> cardsToPlay, final int comboSize) {
         final int handAfter = player.getHand().size() - cardsToPlay.size();
         final boolean potTaken = player.isInPot();
         final boolean hasBurraco = player.getBurracoCount() >= 1;
@@ -65,9 +71,7 @@ public final class ClosureValidator {
         return false;
     }
 
-    public static boolean wouldGetStuckAfterAttach(final Player player, 
-                                                   final List<Card> cardsToAttach, 
-                                                   final int currentComboSize) {
+    public static boolean wouldGetStuckAfterAttach(final Player player,final List<Card> cardsToAttach, final int currentComboSize) {
         final int numToAttach = cardsToAttach.size(); 
         final int handAfter = player.getHand().size() - numToAttach;
         final boolean potTaken = player.isInPot();
@@ -83,7 +87,8 @@ public final class ClosureValidator {
         if (handAfter == 1) {
             if (hasBurraco || attachMakesBurraco) {
                 return false; 
-            } else {
+            } 
+            else {
                 return true; 
             }
         }
