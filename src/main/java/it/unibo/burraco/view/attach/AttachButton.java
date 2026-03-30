@@ -38,6 +38,11 @@ public final class AttachButton extends JButton implements AttachView {
     private static final int COLOR_JOLLY_R = 219;
     private static final int COLOR_JOLLY_G = 112;
     private static final int COLOR_JOLLY_B = 147;
+    private static final int GAP = 5;
+    private static final int BORDER_PADDING = 10;
+    private static final int LINE_THICKNESS = 1;
+    private static final String JOLLY_VALUE = "Jolly";
+    private static final String TWO_VALUE = "2";
 
     private final List<Card> cards;
     private final TableView tableView;
@@ -58,8 +63,8 @@ public final class AttachButton extends JButton implements AttachView {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.WHITE);
         this.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.GRAY, 1),
-                BorderFactory.createEmptyBorder(10, 5, 10, 5)));
+                BorderFactory.createLineBorder(Color.GRAY, LINE_THICKNESS),
+                BorderFactory.createEmptyBorder(BORDER_PADDING, GAP, BORDER_PADDING, GAP)));
         this.updateVisuals();
         this.addActionListener(e -> handleAttachAction());
     }
@@ -143,7 +148,7 @@ public final class AttachButton extends JButton implements AttachView {
             this.cards.addAll(ordered);
         } else {
             final String baseValue = cards.stream()
-                .filter(c -> !c.getValue().equalsIgnoreCase("Jolly"))
+                .filter(c -> !c.getValue().equalsIgnoreCase(JOLLY_VALUE))
                 .map(Card::getValue)
                 .findFirst()
                 .orElse(null);
@@ -152,8 +157,8 @@ public final class AttachButton extends JButton implements AttachView {
             final List<Card> wildcards = new ArrayList<>();
 
             for (final Card c : this.cards) {
-                final boolean isWild = c.getValue().equalsIgnoreCase("Jolly")
-                || (c.getValue().equals("2") && !"2".equals(baseValue));
+                final boolean isWild = c.getValue().equalsIgnoreCase(JOLLY_VALUE)
+                || (c.getValue().equals(TWO_VALUE) && !TWO_VALUE.equals(baseValue));
                 if (isWild) {
                     wildcards.add(c);
                 } else {
@@ -169,7 +174,7 @@ public final class AttachButton extends JButton implements AttachView {
 
         this.setBorder(BorderFactory.createCompoundBorder(
                 BurracoStyleManager.getBurracoBorder(this.cards),
-                BorderFactory.createEmptyBorder(10, 5, 10, 5)));
+                BorderFactory.createEmptyBorder(BORDER_PADDING, GAP, BORDER_PADDING, GAP)));
         this.setBackground(BurracoStyleManager.getBurracoBackground(this.cards));
 
         for (final Card c : this.cards) {
@@ -187,7 +192,7 @@ public final class AttachButton extends JButton implements AttachView {
      * @param c the card to render
      */
     private void renderCardLabel(final Card c) {
-        final boolean isJolly = c.getValue().equalsIgnoreCase("Jolly");
+        final boolean isJolly = c.getValue().equalsIgnoreCase(JOLLY_VALUE);
         final JLabel label = new JLabel(isJolly ? c.getSeed() : c.toString());
 
         if (isJolly) {
