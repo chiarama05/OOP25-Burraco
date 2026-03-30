@@ -17,7 +17,7 @@ import it.unibo.burraco.controller.sound.SoundController;
  * It uses a caching mechanism to store audio data in memory and plays 
  * sounds asynchronously to avoid blocking the main Game thread or the UI.
  */
-public class SoundControllerImpl implements SoundController {
+public final class SoundControllerImpl implements SoundController {
 
     /** Cache to store sound file bytes, preventing repeated disk I/O. */
     private final Map<String, byte[]> soundCache = new HashMap<>();

@@ -8,6 +8,7 @@ import it.unibo.burraco.controller.game.GameWiring;
 import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
 import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.turn.TurnImpl;
+import it.unibo.burraco.view.start.OnConfigurationCompleteListener;
 import it.unibo.burraco.view.start.SetUpMenuView;
 import it.unibo.burraco.view.start.SetUpMenuViewImpl;
 import it.unibo.burraco.view.start.StartMenuView;
@@ -26,10 +27,10 @@ public class BurracoApp {
     }
 
     private static void showSetupMenu() {
-        SetUpMenuView.OnConfigurationCompleteListener listener = new SetUpMenuView.OnConfigurationCompleteListener() {
+        OnConfigurationCompleteListener listener = new OnConfigurationCompleteListener() {
             
             @Override
-            public void onConfigComplete(int scoreThreshold, String nameP1, String nameP2) {
+            public void onConfigComplete(int targetScore, String nameP1, String nameP2) {
                 
                 PlayerImpl p1 = new PlayerImpl(nameP1);
                 PlayerImpl p2 = new PlayerImpl(nameP2);
@@ -40,7 +41,7 @@ public class BurracoApp {
                 SelectionCardManager selectionManager = new SelectionCardManager();
                 TableViewImpl view = new TableViewImpl(nameP1, nameP2, selectionManager);
 
-                GameWiring wiring = new GameWiring(p1, p2, nameP1, nameP2, turnManager, view, sound, scoreThreshold,view.getInitDist());
+                GameWiring wiring = new GameWiring(p1, p2, nameP1, nameP2, turnManager, view, sound, targetScore,view.getInitDist());
                 GameController gc = wiring.getGameController();
 
                 InitialDistributionController distController =
