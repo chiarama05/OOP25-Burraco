@@ -8,40 +8,40 @@ import it.unibo.burraco.model.card.Card;
  * Concrete implementation of the {@link DiscardPile} interface using an {@link ArrayList}.
  * Cards are managed in a LIFO (Last-In-First-Out) manner for draw operations.
  */
-public class DiscardPileImpl implements DiscardPile{
+public class DiscardPileImpl implements DiscardPile {
 
     /** 
      * Internal list used to store the discarded cards. 
      */
-    private List<Card> cards = new ArrayList<>();
+    private final List<Card> cards = new ArrayList<>();
 
     @Override
-    public void add(Card card){
+    public void add(final Card card) {
         this.cards.add(card);
     }
 
     @Override
-    public void addAll(List<Card> cards){
+    public void addAll(final List<Card> cards){
         this.cards.addAll(cards);
     }
 
     @Override
-    public Card drawLast(){
+    public Card drawLast() {
         if(!cards.isEmpty()){
             // Removes the element at the last available index
-            return cards.remove(cards.size()-1);
+            return cards.remove(cards.size() - 1);
         }
         return null;
     }
 
     @Override
-    public List<Card> getCards(){
+    public List<Card> getCards() {
         // Returns the reference to the internal list of cards
         return cards;
     }
 
     @Override
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return cards.isEmpty();
     }
 

@@ -2,14 +2,23 @@ package it.unibo.burraco.model.turn;
 
 import it.unibo.burraco.model.player.Player;
 
-public class TurnImpl implements Turn{
+/**
+ * Implementation of the {@link Turn} interface.
+ * Manages turn alternation and game state for two players.
+ */
+public class TurnImpl implements Turn {
 
     private final Player player1;
     private final Player player2;
     private boolean isPlayer1Turn = true;
-    private boolean gameFinished = false;
+    private boolean gameFinished;
 
-    public TurnImpl(Player p1, Player p2) {
+    /**
+     * Constructs a TurnImpl with the two players.
+     * @param p1 the first player.
+     * @param p2 the second player.
+     */
+    public TurnImpl(final Player p1, final Player p2) {
         this.player1 = p1;
         this.player2 = p2;
     }
@@ -32,27 +41,32 @@ public class TurnImpl implements Turn{
 
     @Override
     public boolean canClose() {
-        Player p = getCurrentPlayer();
+        final Player p = getCurrentPlayer();
         return p.isInPot() && p.getBurracoCount() >= 1;
     }
 
+    @Override
     public boolean isPlayer1Turn() {
         return isPlayer1Turn;
     }
 
+    @Override
     public boolean isGameFinished() {
         return gameFinished;
     }
 
-    public void setGameFinished(boolean finished) {
+    @Override
+    public void setGameFinished(final boolean finished) {
         this.gameFinished = finished;
     }
 
-    public Player getPlayer1() { 
-        return player1; 
+    @Override
+    public Player getPlayer1() {
+        return player1;
     }
 
-    public Player getPlayer2() { 
-        return player2; 
+    @Override
+    public Player getPlayer2() {
+        return player2;
     }
 }

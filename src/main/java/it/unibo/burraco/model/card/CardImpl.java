@@ -5,16 +5,16 @@ package it.unibo.burraco.model.card;
  * Represents a concrete playing card with a seed and a value.
  */
 public class CardImpl implements Card{
-    private String seed;
-    private String value;
-    private boolean wildcard = false;
+    private final String seed;
+    private final String value;
+    private boolean wildcard;
 
      /**
      * Constructs a CardImpl with the specified seed and value.
      * @param seed the seed of the card
      * @param value the face value of the card
      */
-    public CardImpl(String seed, String value){
+    public CardImpl(final String seed, final String value){
         this.seed=seed;
         this.value=value;
     }
@@ -23,7 +23,7 @@ public class CardImpl implements Card{
      * Sets the wildcard status of the card.
      * @param status true to set the card as a wildcard, false otherwise
      */
-    public void setAsWildcard(boolean status) {
+    public void setAsWildcard(final boolean status) {
         this.wildcard = status;
     }
 
