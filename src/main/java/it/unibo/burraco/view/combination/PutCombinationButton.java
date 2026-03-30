@@ -41,7 +41,7 @@ public final class PutCombinationButton implements PutCombinationView {
      */
     public List<Card> getSelectedCards() {
         return new ArrayList<>(
-            tableView.getHandViewForCurrentPlayer(isPlayer1).getSelectedCards());
+            this.tableView.getHandViewForCurrentPlayer(isPlayer1).getSelectedCards());
     }
 
     /**
@@ -50,7 +50,7 @@ public final class PutCombinationButton implements PutCombinationView {
      * @return true if it is Player 1
      */
     public boolean isPlayer1() {
-        return isPlayer1;
+        return this.isPlayer1;
     }
 
     /**
@@ -59,7 +59,7 @@ public final class PutCombinationButton implements PutCombinationView {
      * @param action a {@link Runnable} containing the logic to execute on click
      */
     public void setOnPutCombination(final Runnable action) {
-        tableView.getPutComboBtn().addActionListener(finalEvent -> action.run());
+        this.tableView.getPutComboBtn().addActionListener(finalEvent -> action.run());
     }
 
     @Override
@@ -87,8 +87,8 @@ public final class PutCombinationButton implements PutCombinationView {
      */
     private void updateView(final List<Card> combo, final boolean isP1, final Player current) {
         final List<Card> comboCopy = new ArrayList<>(combo);
-        tableView.addCombinationToPlayerPanel(comboCopy, isP1);
-        tableView.getHandViewForCurrentPlayer(isP1).clearSelection();
-        tableView.refreshHandPanel(isP1, current.getHand());
+        this.tableView.addCombinationToPlayerPanel(comboCopy, isP1);
+        this.tableView.getHandViewForCurrentPlayer(isP1).clearSelection();
+        this.tableView.refreshHandPanel(isP1, current.getHand());
     }
 }

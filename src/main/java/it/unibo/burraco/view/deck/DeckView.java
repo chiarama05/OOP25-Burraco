@@ -23,6 +23,8 @@ public final class DeckView extends JPanel {
     private static final int BORDER_THICKNESS = 1;
     private static final int SHADOW_THICKNESS = 4;
 
+    private static final String FONT_NAME = "Arial";
+
     private final JButton deckButton;
 
     /**
@@ -30,14 +32,14 @@ public final class DeckView extends JPanel {
      */
     public DeckView() {
         super(new FlowLayout(FlowLayout.CENTER, FLOW_HGAP, FLOW_VGAP));
-        setOpaque(false);
+        this.setOpaque(false);
 
-        deckButton = new JButton("DECK");
-        deckButton.setBackground(Color.WHITE);
-        deckButton.setFont(new Font("Arial", Font.BOLD, FONT_SIZE));
-        deckButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
-        deckButton.setFocusPainted(false);
-        deckButton.setBorder(BorderFactory.createCompoundBorder(
+        this.deckButton = new JButton("DECK");
+        this.deckButton.setBackground(Color.WHITE);
+        this.deckButton.setFont(new Font(FONT_NAME, Font.BOLD, FONT_SIZE));
+        this.deckButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
+        this.deckButton.setFocusPainted(false);
+        this.deckButton.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(Color.GRAY, BORDER_THICKNESS),
             BorderFactory.createMatteBorder(0, 0, SHADOW_THICKNESS, SHADOW_THICKNESS, Color.BLACK)
         ));
@@ -51,6 +53,6 @@ public final class DeckView extends JPanel {
      * @return the deck {@link JButton}
      */
     public JButton getDeckButton() {
-        return deckButton;
+        return this.deckButton;
     }
 }

@@ -32,6 +32,12 @@ public class DiscardViewImpl implements DiscardView {
     private static final Color BG_COLOR = new Color(220, 250, 220);
     private static final Color JOLLY_COLOR = new Color(219, 112, 147);
 
+    private static final String FONT_ARIAL = "Arial";
+    private static final String FONT_JOLLY = "Segoe UI Symbol";
+    private static final String FONT_MONO = "Monospaced";
+    private static final String DISCARD_LABEL = "Discard";
+    private static final String PILE_TITLE = "Discard Pile";
+
     private final JPanel discardPanel;
     private final JPanel actionPanel;
     private final JButton discardButton;
@@ -50,15 +56,14 @@ public class DiscardViewImpl implements DiscardView {
         this.discardPanel.setLayout(new FlowLayout(FlowLayout.LEFT, GAP, GAP));
         this.discardPanel.setBorder(BorderFactory.createTitledBorder(
             BorderFactory.createLineBorder(Color.WHITE, 1), 
-            "Discard Pile", 
+            PILE_TITLE, 
             0, 0, 
-            new Font("Arial", Font.BOLD, TITLE_FONT_SIZE), 
+            new Font(FONT_ARIAL, Font.BOLD, TITLE_FONT_SIZE), 
             Color.BLACK
         ));
         this.discardPanel.setBackground(BG_COLOR);
 
-        // Discard Button initialization
-        discardButton = new JButton("Discard");
+        this.discardButton = new JButton(DISCARD_LABEL);
         this.actionPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         this.actionPanel.add(discardButton);
     }
@@ -72,11 +77,10 @@ public class DiscardViewImpl implements DiscardView {
      */
     @Override
     public void updateDiscardPile(final List<Card> discardPile) {
-        discardPanel.removeAll();
+        this.discardPanel.removeAll();
 
-        // Dynamically adjust panel width to ensure scrollability
         final int width = (discardPile.size() * CARD_WIDTH_STEP) + WIDTH_OFFSET;
-        discardPanel.setPreferredSize(new Dimension(width, PANEL_HEIGHT));
+        this.discardPanel.setPreferredSize(new Dimension(width, PANEL_HEIGHT));
 
         for (final Card c : discardPile) {
             final boolean isJolly = c.getValue().equalsIgnoreCase("Jolly");
@@ -88,13 +92,11 @@ public class DiscardViewImpl implements DiscardView {
             label.setBackground(Color.WHITE);
             label.setHorizontalAlignment(JLabel.CENTER);
 
-            // Joker vs Regular cards
             if (isJolly) {
-                label.setFont(new Font("Segoe UI Symbol", Font.BOLD, JOLLY_FONT_SIZE)); 
+                label.setFont(new Font(FONT_JOLLY, Font.BOLD, JOLLY_FONT_SIZE)); 
                 label.setForeground(JOLLY_COLOR); 
             } else {
-                label.setFont(new Font("Monospaced", Font.BOLD, NORMAL_FONT_SIZE));
-                // Red for Hearts and Diamonds
+                label.setFont(new Font(FONT_MONO, Font.BOLD, NORMAL_FONT_SIZE));
                 if (textToShow.contains("♥") || textToShow.contains("♦")) {
                     label.setForeground(Color.RED);
                 } else {
@@ -102,11 +104,10 @@ public class DiscardViewImpl implements DiscardView {
                 }
             }
             label.setPreferredSize(new Dimension(LABEL_PREF_WIDTH, LABEL_PREF_HEIGHT));
-            discardPanel.add(label);
+            this.discardPanel.add(label);
         }
-        // Notify Swing to redraw the UI with new components
-        discardPanel.revalidate();
-        discardPanel.repaint();
+        this.discardPanel.revalidate();
+        this.discardPanel.repaint();
     }
 
 
@@ -122,6 +123,7 @@ public class DiscardViewImpl implements DiscardView {
 
     /**
      * Provides access to the action panel for layout assembly in the main Frame.
+     * 
      * @return the JPanel containing the discard button.
      */
     public JPanel getActionPanel() {

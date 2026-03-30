@@ -35,15 +35,16 @@ public final class RoundedGradientButton extends JButton {
 
     /**
      * Constructs a new button with specified text and initializes transparency settings.
+     * 
      * @param text the label displayed on the button.
      */
     public RoundedGradientButton(final String text) {
         super(text);
         // Disable default Swing rendering to use custom painting
-        setContentAreaFilled(false);
-        setFocusPainted(false);
-        setBorderPainted(false);
-        setOpaque(false);
+        this.setContentAreaFilled(false);
+        this.setFocusPainted(false);
+        this.setBorderPainted(false);
+        this.setOpaque(false);
 
         // Add mouse listener to handle hover state transitions
         this.addMouseListener(new MouseAdapter() {
@@ -65,6 +66,8 @@ public final class RoundedGradientButton extends JButton {
 
     /**
      * Custom painting logic for the button's background and border.
+     *
+     * @param g the Graphics context in which to paint.
      */
     @Override
     protected void paintComponent(final Graphics g) {
@@ -73,12 +76,12 @@ public final class RoundedGradientButton extends JButton {
         // Enable anti-aliasing for smooth rounded corners
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        final float radius = Math.max(getWidth(), getHeight());
-        final Color[] colors = {innerColor, outerColor}; 
+        final float radius = Math.max(this.getWidth(), this.getHeight());
+        final Color[] colors = {this.innerColor, this.outerColor}; 
         
         // Create a radial gradient centered in the button
         final RadialGradientPaint rgp = new RadialGradientPaint(
-            new Point2D.Double(getWidth() / 2.0, getHeight() / 2.0),
+            new Point2D.Double(this.getWidth() / 2.0, this.getHeight() / 2.0),
             radius / GRADIENT_RADIUS_RATIO,
             GRADIENT_DIST,
             colors
@@ -86,12 +89,12 @@ public final class RoundedGradientButton extends JButton {
 
         // Draw the background
         g2.setPaint(rgp);
-        g2.fillRoundRect(0, 0, getWidth(), getHeight(), ARC_SIZE, ARC_SIZE);
+        g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ARC_SIZE, ARC_SIZE);
 
         // Draw the border with a darker shade
         g2.setColor(BORDER_COLOR);
         g2.setStroke(new BasicStroke(STROKE_WIDTH));
-        g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, ARC_SIZE, ARC_SIZE);
+        g2.drawRoundRect(0, 0, this.getWidth() - 1,this.getHeight() - 1, ARC_SIZE, ARC_SIZE);
 
         g2.dispose();
 
