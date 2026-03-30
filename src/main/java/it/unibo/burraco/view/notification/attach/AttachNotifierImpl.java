@@ -5,17 +5,26 @@ import it.unibo.burraco.controller.attach.AttachResult;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+/**
+ * Swing-based implementation of {@link AttachNotifier}.
+ * Displays error messages using {@link JOptionPane} dialogs.
+ */
 public class AttachNotifierImpl implements AttachNotifier {
 
     private final JFrame parent;
 
+    /**
+     * Creates a new AttachNotifierImpl.
+     * 
+     * @param parent the parent frame used to center the notification dialogs
+     */
     public AttachNotifierImpl(final JFrame parent) {
         this.parent = parent;
     }
 
     @Override
     public void notifyAttachError(final AttachResult result) {
-        String message = switch (result) {
+        final String message = switch (result) {
             case NOT_DRAWN ->
                 "You have to draw first!";
             case WRONG_PLAYER ->

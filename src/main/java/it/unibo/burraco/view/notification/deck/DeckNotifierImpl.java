@@ -4,17 +4,26 @@ import it.unibo.burraco.controller.drawcard.DrawResult;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+/**
+ * Swing-based implementation of {@link DeckNotifier}.
+ * Uses {@link JOptionPane} to display warning messages to the player.
+ */
 public class DeckNotifierImpl implements DeckNotifier{
 
     private final JFrame parent;
 
+    /**
+     * Constructs a DeckNotifierImpl.
+     * 
+     * @param parent the parent frame used to center the warning dialogs
+     */
     public DeckNotifierImpl(final JFrame parent) {
         this.parent = parent;
     }
 
     @Override
     public void notifyDrawError(final DrawResult result) {
-        String message = switch (result.getStatus()) {
+        final String message = switch (result.getStatus()) {
             case ALREADY_DRAWN -> 
                 "You have already drawn a card this turn!";
             case EMPTY_DECK -> 
@@ -26,5 +35,4 @@ public class DeckNotifierImpl implements DeckNotifier{
             JOptionPane.showMessageDialog(parent, message, "Draw Error", JOptionPane.WARNING_MESSAGE);
         }
     }
-
 }
