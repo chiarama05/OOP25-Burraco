@@ -41,23 +41,27 @@ public class ScoreController {
      * of mock views instead of real GUI components.
      */
     public interface ViewProvider {
+        /**
+         * Creates a ScoreView.
+         * @param p1 player 1
+         * @param p2 player 2
+         * @param n1 name 1
+         * @param n2 name 2
+         * @param target target score
+         * @param s score model
+         * @param tv table view
+         * @param over match over flag
+         * @return a new ScoreView
+         */
         ScoreView create(Player p1, Player p2, String n1, String n2, 
                          int target, Score s, TableView tv, boolean over);
     }
 
-    public ScoreController(
-            Score score,
-            Player player1,
-            Player player2,
-            String nameP1,
-            String nameP2,
-            TableView tableView,
-            GameController gameController,
-            SoundController soundController,
-            int targetScore,
-            InitialDistributionView distributionView,
-            Consumer<Runnable> uiThreadRunner,
-            ViewProvider viewProvider) { 
+    public ScoreController(final Score score, final Player player1, final Player player2,
+            final String nameP1, final String nameP2, final TableView tableView,
+            final GameController gameController, final SoundController soundController,
+            final int targetScore, final InitialDistributionView distributionView,
+            final Consumer<Runnable> uiThreadRunner, final ViewProvider viewProvider) {
 
         this.score           = score;
         this.player1         = player1;
@@ -79,28 +83,27 @@ public class ScoreController {
      */
     public void onRoundEnd() {
         // Calculate points earned in the current round
-        int roundS1 = score.calculateFinalScore(player1);
-        int roundS2 = score.calculateFinalScore(player2);
+        final int roundS1 = score.calculateFinalScore(player1);
+        final int roundS2 = score.calculateFinalScore(player2);
 
         // Update the total match score for both players
-        player1.addPointsToMatch(roundS1);
-        player2.addPointsToMatch(roundS2);
+        this.player1.addPointsToMatch(roundS1);
+        this.player2.addPointsToMatch(roundS2);
 
         // Check if any player has reached or exceeded the target match score
-        boolean matchOver = player1.getMatchTotalScore() >= targetScore ||
-                            player2.getMatchTotalScore() >= targetScore;
+        final boolean matchOver = this.player1.getMatchTotalScore() >= this.targetScore 
+                               || this.player2.getMatchTotalScore() >= this.targetScore;
 
         if (matchOver) {
-            // Use a separate thread to play victory sound without blocking logic
-            Thread t = new Thread(() -> {
-                soundController.playVictorySound(); 
-                showScoreView(matchOver);
+            final Thread t = new Thread(() -> {
+                this.soundController.playVictorySound(); 
+                this.showScoreView(true);
             });
             t.setDaemon(false);
             t.start();
         } else {
-            soundController.playRoundEndSound(); 
-            showScoreView(matchOver);
+            this.soundController.playRoundEndSound(); 
+            this.showScoreView(matchOver);
         }
     }
 
@@ -110,29 +113,23 @@ public class ScoreController {
      * @param matchOver true if the entire match has concluded.
      */
     private void showScoreView(boolean matchOver) {
-        // Create the view via the provider (Factory)
-        ScoreView view = viewProvider.create(
-                player1, player2, nameP1, nameP2,
-                targetScore, score, tableView, matchOver);
-
-        // Define what happens when the user clicks 'Next'
+        final ScoreView view = this.viewProvider.create(
+                this.player1, this.player2, this.nameP1, this.nameP2,
+                this.targetScore, this.score, this.tableView, matchOver);
+     
         view.setOnNextAction(() -> {
             view.close();
-            gameController.getTurnModel().resetForNewRound();
+            this.gameController.getTurnModel().resetForNewRound();
 
-            // Instantiate a new RoundController to handle the next round's lifecycle
-            RoundController roundController = new RoundControllerImpl(
-                tableView,
-                new ResetManagerImpl(),
-                player1, player2,
-                gameController,
+            final RoundController roundController = new RoundControllerImpl(
+                this.tableView, new ResetManagerImpl(), this.player1, this.player2,
+                this.gameController,
                 new InitialDistributionController(new DistributionManagerImpl()),
-                distributionView
+                this.distributionView
             );
 
-            // Start the card distribution and turn cycle for the new round
             roundController.processNewRound();
-            tableView.refreshTurnLabel(true);
+            this.tableView.refreshTurnLabel(true);
         });
         view.display();
     }

@@ -25,26 +25,26 @@ public interface Player {
      * Adds a card to the player's hand.
      * @param c the card to add.
      */
-    void addCardHand(Card c);
+    void addCardHand(final Card c);
 
     /**
      * Removes a card from the player's hand.
      * @param c the card to remove.
      */
-    void removeCardHand(Card c);
+    void removeCardHand(final Card c);
 
     /**
      * Removes a list of cards from the player's hand.
      * @param cards the cards to remove.
      */
-    void removeCards(List<Card> cards);
+    void removeCards(final List<Card> cards);
 
     /**
      * Checks if the player has a specific card in hand.
      * @param card the card to look for.
      * @return true if the card is in hand, false otherwise.
      */
-    boolean hasCard(Card card);
+    boolean hasCard(final Card card);
 
     /**
      * Returns whether the player is currently playing from the pot.
@@ -56,13 +56,13 @@ public interface Player {
      * Sets the pot state of the player.
      * @param flag true if the player is in pot, false otherwise.
      */
-    void setInPot(boolean flag);
+    void setInPot(final boolean flag);
 
     /**
      * Adds a new combination to the player's table.
      * @param comb the list of cards forming the combination.
      */
-    void addCombination(List<Card> comb);
+    void addCombination(final List<Card> comb);
 
     /**
      * Returns all combinations placed on the table by the player.
@@ -91,7 +91,7 @@ public interface Player {
      * Adds cards to the player's pot.
      * @param cards the cards to add to the pot.
      */
-    void addToPot(List<Card> cards);
+    void addToPot(final List<Card> cards);
 
     /**
      * Returns the total accumulated score across all rounds of the match.
@@ -103,7 +103,7 @@ public interface Player {
      * Adds points to the player's total match score.
      * @param points the points to add.
      */
-    void addPointsToMatch(int points);
+    void addPointsToMatch(final int points);
 
     /**
      * Resets the player's state for a new round.
