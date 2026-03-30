@@ -135,9 +135,7 @@ class ClosureValidatorTest {
         assertFalse(ClosureValidator.canCloseByDiscarding(player));
     }
 
-    /**
-     * Pot not taken → cannot close even with burraco and 1 card.
-     */
+    //Pot not taken → cannot close even with burraco and 1 card.
     @Test
     void testCanCloseByDiscardingFalsePotNotTaken() {
         player.addCombination(CLEAN_BURRACO);
@@ -145,9 +143,7 @@ class ClosureValidatorTest {
         assertFalse(ClosureValidator.canCloseByDiscarding(player));
     }
 
-    /**
-     * No burraco → cannot close even with pot and 1 card.
-     */
+    //No burraco → cannot close even with pot and 1 card.
     @Test
     void testCanCloseByDiscardingFalseNoBurraco() {
         player.setInPot(true);
@@ -155,21 +151,20 @@ class ClosureValidatorTest {
         assertFalse(ClosureValidator.canCloseByDiscarding(player));
     }
 
-    // ── wouldGetStuckAfterPutCombo() ─────────────────────────────────────────
 
-    /**
-     * Without pot taken the move is always allowed, even going to 0 cards.
-     */
+
+    //wouldGetStuckAfterPutCombo()
+
+
+    //Without pot taken the move is always allowed, even going to 0 cards.
     @Test
     void testPutComboNeverBlockedIfPotNotTaken() {
         player.addCardHand(new CardImpl("♠", "5"));
-        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(
-                player, player.getHand(), 1));
+        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(player, player.getHand(), 1));
     }
 
-    /**
-     * Pot taken, playing all cards → hand goes to 0 → blocked.
-     */
+
+    //Pot taken, playing all cards → hand goes to 0 → blocked.
     @Test
     void testPutComboBlockedWhenHandGoesToZeroWithPot() {
         player.setInPot(true);
@@ -177,48 +172,38 @@ class ClosureValidatorTest {
         assertTrue(ClosureValidator.wouldGetStuckAfterPutCombo(player, player.getHand(), 1));
     }
 
-    /**
-     * Pot taken, 1 card remains after play, burraco already present → allowed
-     * (the remaining card will be the winning discard).
-     */
+    /*Pot taken, 1 card remains after play, burraco already present → allowed
+    (the remaining card will be the winning discard).*/
     @Test
     void testPutComboAllowedWhenOneCardRemainsAndBurracoPresent() {
         player.setInPot(true);
         player.addCombination(CLEAN_BURRACO);
         player.addCardHand(new CardImpl("♠", "5"));
         player.addCardHand(new CardImpl("♠", "6"));
-        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(
-                player, List.of(player.getHand().get(0)), 3));
+        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(player, List.of(player.getHand().get(0)), 3));
     }
 
-    /**
-     * Pot taken, 1 card remains after play, no burraco and combo < 7 → blocked.
-     */
+    //Pot taken, 1 card remains after play, no burraco and combo < 7 → blocked.
     @Test
     void testPutComboBlockedWhenOneCardRemainsNoBurracoComboNotBurraco() {
         player.setInPot(true);
         player.addCardHand(new CardImpl("♠", "5"));
         player.addCardHand(new CardImpl("♠", "6"));
-        assertTrue(ClosureValidator.wouldGetStuckAfterPutCombo(
-                player, List.of(player.getHand().get(0)), 3));
+        assertTrue(ClosureValidator.wouldGetStuckAfterPutCombo(player, List.of(player.getHand().get(0)), 3));
     }
 
-    /**
-     * The new combination itself is a burraco (size >= 7) and 1 card remains → allowed.
-     */
+
+    //The new combination itself is a burraco (size >= 7) and 1 card remains → allowed.
     @Test
     void testPutComboAllowedWhenNewComboIsBurracoAndOneCardRemains() {
         player.setInPot(true);
         player.addCardHand(new CardImpl("♠", "5"));
         player.addCardHand(new CardImpl("♠", "6"));
         // comboSize = 7 → newIsBurraco = true → allowed
-        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(
-                player, List.of(player.getHand().get(0)), 7));
+        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(player, List.of(player.getHand().get(0)), 7));
     }
 
-    /**
-     * Pot taken but more than 1 card remains after play → never blocked.
-     */
+    //Pot taken but more than 1 card remains after play → never blocked.
     @Test
     void testPutComboNotBlockedWhenMoreThanOneCardRemains() {
         player.setInPot(true);
@@ -226,37 +211,31 @@ class ClosureValidatorTest {
         player.addCardHand(new CardImpl("♠", "6"));
         player.addCardHand(new CardImpl("♠", "7"));
         // plays 1 → 2 remain → fine
-        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(
-                player, List.of(player.getHand().get(0)), 3));
+        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(player, List.of(player.getHand().get(0)), 3));
     }
 
-    // ── wouldGetStuckAfterAttach() ────────────────────────────────────────────
 
-    /**
-     * Without pot taken the attach is always allowed.
-     */
+
+    //wouldGetStuckAfterAttach()
+
+    
+    //Without pot taken the attach is always allowed.
     @Test
     void testAttachNeverBlockedIfPotNotTaken() {
         player.addCardHand(new CardImpl("♠", "5"));
-        assertFalse(ClosureValidator.wouldGetStuckAfterAttach(
-                player, player.getHand(), 5));
+        assertFalse(ClosureValidator.wouldGetStuckAfterAttach(player, player.getHand(), 5));
     }
 
-    /**
-     * Pot taken, attaching all cards → hand goes to 0 → blocked.
-     */
+    //Pot taken, attaching all cards → hand goes to 0 → blocked
     @Test
     void testAttachBlockedWhenHandGoesToZeroWithPot() {
         player.setInPot(true);
         player.addCardHand(new CardImpl("♠", "5"));
-        assertTrue(ClosureValidator.wouldGetStuckAfterAttach(
-                player, player.getHand(), 5));
+        assertTrue(ClosureValidator.wouldGetStuckAfterAttach(player, player.getHand(), 5));
     }
 
-    /**
-     * Pot taken, attach completes a burraco (currentCombo + attach >= 7),
-     * 1 card remains → allowed.
-     */
+    /*Pot taken, attach completes a burraco (currentCombo + attach >= 7),
+    1 card remains → allowed.*/
     @Test
     void testAttachAllowedWhenItCompletesBurracoAndOneCardRemains() {
         player.setInPot(true);
@@ -264,15 +243,12 @@ class ClosureValidatorTest {
         player.addCardHand(new CardImpl("♠", "5"));
         player.addCardHand(new CardImpl("♠", "6"));
         player.addCardHand(new CardImpl("♠", "7")); // 3 in hand
-        final List<Card> attach = List.of(
-                player.getHand().get(0), player.getHand().get(1)); // attach 2 → 1 remains
+        final List<Card> attach = List.of(player.getHand().get(0), player.getHand().get(1)); // attach 2 → 1 remains
         assertFalse(ClosureValidator.wouldGetStuckAfterAttach(player, attach, 5));
     }
 
-    /**
-     * Pot taken, 1 card remains after attach, no burraco and attach doesn't
-     * complete one → blocked.
-     */
+    /*Pot taken, 1 card remains after attach, no burraco and attach doesn't
+    complete one → blocked.*/
     @Test
     void testAttachBlockedWhenOneCardRemainsNoBurracoAttachDoesNotComplete() {
         player.setInPot(true);
@@ -283,9 +259,8 @@ class ClosureValidatorTest {
         assertTrue(ClosureValidator.wouldGetStuckAfterAttach(player, attach, 3));
     }
 
-    /**
-     * Pot taken, burraco already present, 1 card remains after attach → allowed.
-     */
+
+    //Pot taken, burraco already present, 1 card remains after attach → allowed.
     @Test
     void testAttachAllowedWhenOneCardRemainsAndBurracoAlreadyPresent() {
         player.setInPot(true);
