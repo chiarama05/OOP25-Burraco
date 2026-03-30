@@ -1,14 +1,14 @@
 package it.unibo.burraco.controller.attach;
 
-import it.unibo.burraco.model.card.Card;
-import it.unibo.burraco.model.player.Player;
+import java.util.ArrayList;
+import java.util.List;
+
 import it.unibo.burraco.controller.combination.CombinationValidator;
 import it.unibo.burraco.controller.combination.straight.StraightUtils;
 import it.unibo.burraco.controller.closure.ClosureState;
 import it.unibo.burraco.controller.closure.ClosureValidator;
-
-import java.util.ArrayList;
-import java.util.List;
+import it.unibo.burraco.model.card.Card;
+import it.unibo.burraco.model.player.Player;
 
 /**
  * Controller class that manages the action of a player attaching cards to a combination.
@@ -31,11 +31,11 @@ public class AttachController {
      * @param isCurrentPlayer whether it is the player's turn
      * @return an {@link AttachResult} indicating success or the specific reason for failure
      */
-    public AttachResult tryAttach(Player currentPlayer,
-                                   List<Card> selectedCards,
-                                   List<Card> combinationCards,
-                                   boolean hasDrawn,
-                                   boolean isCurrentPlayer) {
+    public AttachResult tryAttach(final Player currentPlayer,
+                                   final List<Card> selectedCards,
+                                   final List<Card> combinationCards,
+                                   final boolean hasDrawn,
+                                   final boolean isCurrentPlayer) {
 
         
         if (!hasDrawn) {
@@ -68,8 +68,8 @@ public class AttachController {
             return AttachResult.WOULD_GET_STUCK;
         }
 
-        int sizeBefore = combinationCards.size();
-        boolean success = executeAttach(currentPlayer, selectedCards, combinationCards);
+        final int sizeBefore = combinationCards.size();
+        final boolean success = executeAttach(currentPlayer, selectedCards, combinationCards);
 
         if (!success) {
             return AttachResult.ATTACH_FAILED;
@@ -80,7 +80,7 @@ public class AttachController {
             return AttachResult.SUCCESS_BURRACO;
         }
         
-        ClosureState state = ClosureValidator.evaluate(currentPlayer);
+        final ClosureState state = ClosureValidator.evaluate(currentPlayer);
 
         if (state == ClosureState.ZERO_CARDS_NO_POT) {
             return AttachResult.SUCCESS_TAKE_POT;
@@ -101,8 +101,9 @@ public class AttachController {
      * @param combinationCards the combination to update
      * @return true if the execution was successful, false if validation failed
      */
-    private boolean executeAttach(Player player, List<Card> selectedCards, List<Card> combinationCards) {
-        
+    private boolean executeAttach(final Player player,
+                                   final List<Card> selectedCards,
+                                   final List<Card> combinationCards) {
         if (!AttachUtils.canAttach(combinationCards, selectedCards)) {
             return false;
         }
@@ -110,7 +111,7 @@ public class AttachController {
         // Update the cards in the table combination
         combinationCards.addAll(selectedCards);
 
-        for (List<Card> playerComb : player.getCombinations()) {
+        for (final List<Card> playerComb : player.getCombinations()) {
             if (!combinationCards.isEmpty() && playerComb.contains(combinationCards.get(0))) {
                 playerComb.clear();
                 playerComb.addAll(combinationCards);

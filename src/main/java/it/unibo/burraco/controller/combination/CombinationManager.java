@@ -1,42 +1,40 @@
 package it.unibo.burraco.controller.combination;
 
-import it.unibo.burraco.model.card.Card;
 import java.util.ArrayList;
 import java.util.List;
+
+import it.unibo.burraco.model.card.Card;
 
 /**
  * Utility class for managing and formatting card combinations for display purposes.
  */
-public class CombinationManager {
+public final class CombinationManager {
 
     /**
      * Private constructor to prevent instantiation of this utility class.
-     * @throws UnsupportedOperationException if an attempt is made to instantiate the class.
      */
-    private CombinationManager() {
-        throw new UnsupportedOperationException("Utility class");
-    }
+    private CombinationManager() { }
 
     /**
      * Prepares a list of cards for visual display.
      * @param cards the original list of cards in the combination
      * @return a new list of cards ordered for display
      */
-    public static List<Card> prepareForDisplay(List<Card> cards) {
-        List<Card> orderedCards = new ArrayList<>(cards);
-        
+    public static List<Card> prepareForDisplay(final List<Card> cards) {
+        final List<Card> orderedCards = new ArrayList<>(cards);
+
         int jokerIndex = -1;
         for (int i = 0; i < orderedCards.size(); i++) {
-            if (orderedCards.get(i).getValue().equals("Jolly")) {
+            if ("Jolly".equals(orderedCards.get(i).getValue())) {
                 jokerIndex = i;
                 break;
             }
         }
 
         if (jokerIndex != -1) {
-            boolean jokerAtExtremes = (jokerIndex == 0 || jokerIndex == orderedCards.size() - 1);
+            final boolean jokerAtExtremes = jokerIndex == 0 || jokerIndex == orderedCards.size() - 1;
             if (jokerAtExtremes) {
-                Card joker = orderedCards.remove(jokerIndex);
+                final Card joker = orderedCards.remove(jokerIndex);
                 orderedCards.add(joker);
             }
         }

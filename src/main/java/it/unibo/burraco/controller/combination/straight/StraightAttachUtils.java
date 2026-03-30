@@ -11,7 +11,12 @@ import it.unibo.burraco.model.card.Card;
  * It provides logic to verify if new cards can be added to an existing straight,
  * including the special case of replacing an internal wildcard.
  */
-public class StraightAttachUtils {
+public final class StraightAttachUtils {
+
+    /**
+     * Private constructor to prevent instantiation of this utility class.
+     */
+    private StraightAttachUtils() { }
 
     /**
      * Checks if a list of new cards can be attached to an existing straight.
@@ -19,15 +24,14 @@ public class StraightAttachUtils {
      * @param newCards the cards the player wants to add
      * @return true if the resulting combination is valid or if a wildcard substitution occurs
      */
-    public static boolean canAttachToStraight(List<Card> straight, List<Card> newCards) {
-        List<Card> potentialStraight = new ArrayList<>(straight);
-        potentialStraight.addAll(newCards); 
+    public static boolean canAttachToStraight(final List<Card> straight, final List<Card> newCards) {
+        final List<Card> potentialStraight = new ArrayList<>(straight);
+        potentialStraight.addAll(newCards);
 
         if (CombinationValidator.isValidCombination(potentialStraight)) {
             return true;
         }
 
-        // Special case: if only one card is added, check if it can replace an internal wildcard
         if (newCards.size() == 1) {
             return canSubstituteInternalWildcard(straight, newCards.get(0));
         }
@@ -35,50 +39,48 @@ public class StraightAttachUtils {
     }
 
     /**
-     * Overloaded method to check if a single card can be attached to a straight.
-     * * @param straight the current straight on the table
-     * @param newCard the single card to add
+     * Checks if a single card can be attached to an existing straight.
+     * @param straight the current straight on the table
+     * @param newCard  the single card to add
      * @return true if the card can be attached
      */
-    public static boolean canAttachToStraight(List<Card> straight, Card newCard) {
+    public static boolean canAttachToStraight(final List<Card> straight, final Card newCard) {
         return canAttachToStraight(straight, List.of(newCard));
     }
 
     /**
-     * Checks if a specific card can substitute a wildcard (Jolly/2) currently
-     * positioned inside a straight.
+     * Checks if a specific card can substitute a wildcard currently positioned inside a straight.
      * @param straight the current straight
-     * @param newCard the card that might replace the wildcard
+     * @param newCard  the card that might replace the wildcard
      * @return true if the new card matches the required rank and suit to fill the gap
      */
-    private static boolean canSubstituteInternalWildcard(List<Card> straight, Card newCard) {
-        List<Card> ord = StraightUtils.orderStraight(straight);
-        
-        for (int i = 0; i < ord.size(); i++) {
-            Card current = ord.get(i);
-            if (CombinationValidator.isWildcard(current, straight)) {
-                if (i > 0 && i < ord.size() - 1) {
-                    Card prev = ord.get(i - 1);
-                    Card next = ord.get(i + 1);
+    private static boolean canSubstituteInternalWildcard(final List<Card> straight, final Card newCard) {
+        final List<Card> ord = StraightUtils.orderStraight(straight);
 
-                    if (!CombinationValidator.isWildcard(prev, straight) && !CombinationValidator.isWildcard(next, straight)) {
-                        // The new card must have the same seed as the straight
-                        if (!newCard.getSeed().equals(prev.getSeed())) continue;
+        for (int i = 1; i < ord.size() - 1; i++) {
+            final Card current = ord.get(i);
+            if (!CombinationValidator.isWildcard(current, straight)) {
+                continue;
+            }
+            final Card prev = ord.get(i - 1);
+            final Card next = ord.get(i + 1);
 
-                        int vPrev = prev.getNumericalValue();
-                        int vNew = newCard.getNumericalValue();
+            if (CombinationValidator.isWildcard(prev, straight)
+                    || CombinationValidator.isWildcard(next, straight)) {
+                continue;
+            }
+            if (!newCard.getSeed().equals(prev.getSeed())) {
+                continue;
+            }
 
-                        // Special Case: King (K) filling the gap between Queen (Q) and Ace (A)
-                        if (vPrev == 12 && next.getValue().equals("A") && newCard.getValue().equals("K")) {
-                            return true;
-                        }
-                   
-                        // Standard Case: The card value is the successor of the previous card
-                        if (vNew == vPrev + 1) {
-                            return true;
-                        }
-                    }
-                }
+            final int vPrev = prev.getNumericalValue();
+            final int vNew = newCard.getNumericalValue();
+
+            if (vPrev == 12 && "A".equals(next.getValue()) && "K".equals(newCard.getValue())) {
+                return true;
+            }
+            if (vNew == vPrev + 1) {
+                return true;
             }
         }
         return false;

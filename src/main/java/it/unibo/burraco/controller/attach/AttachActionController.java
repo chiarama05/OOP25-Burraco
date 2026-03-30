@@ -1,5 +1,7 @@
 package it.unibo.burraco.controller.attach;
 
+import java.util.List;
+
 import it.unibo.burraco.controller.closure.ClosureManager;
 import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.controller.pot.PotManager;
@@ -7,7 +9,6 @@ import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.attach.AttachView;
 import it.unibo.burraco.view.notification.attach.AttachNotifier;
-import java.util.List;
 
 /**
  * Controller responsible for handling a card attachment action.
@@ -33,11 +34,11 @@ public class AttachActionController {
      * @param attachNotifier  the notifier used to report attach errors to the user
      * @param isPlayer1Owner  true if this controller manages Player 1's combinations
      */
-    public AttachActionController(GameController gameController,
-                                   PotManager potManager,
-                                   ClosureManager closureManager,
-                                   AttachNotifier attachNotifier,
-                                   boolean isPlayer1Owner) {
+    public AttachActionController(final GameController gameController,
+                                   final PotManager potManager,
+                                   final ClosureManager closureManager,
+                                   final AttachNotifier attachNotifier,
+                                   final boolean isPlayer1Owner) {
         this.gameController = gameController;
         this.attachController = gameController.getAttachController();
         this.potManager = potManager;
@@ -55,13 +56,15 @@ public class AttachActionController {
      * @param combinationCards the existing combination to attach to
      * @param view             the view to update on success
      */
-    public void handle(List<Card> selectedCards, List<Card> combinationCards, AttachView view) {
-        Player currentPlayer = gameController.getCurrentPlayer();
-        boolean hasDrawn = gameController.getDrawManager().hasDrawn();
-        boolean isPlayer1Current = gameController.isPlayer1(currentPlayer);
-        boolean isCurrentPlayer = isPlayer1Current == isPlayer1Owner;
+    public void handle(final List<Card> selectedCards,
+                       final List<Card> combinationCards,
+                       final AttachView view) {
+        final Player currentPlayer = gameController.getCurrentPlayer();
+        final boolean hasDrawn = gameController.getDrawManager().hasDrawn();
+        final boolean isPlayer1Current = gameController.isPlayer1(currentPlayer);
+        final boolean isCurrentPlayer = isPlayer1Current == isPlayer1Owner;
 
-        AttachResult result = attachController.tryAttach(
+        final AttachResult result = attachController.tryAttach(
                 currentPlayer, selectedCards, combinationCards, hasDrawn, isCurrentPlayer);
 
         if (result == AttachResult.SUCCESS_BURRACO) {
