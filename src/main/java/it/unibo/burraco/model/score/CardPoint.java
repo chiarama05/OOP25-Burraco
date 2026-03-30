@@ -18,7 +18,7 @@ public final class CardPoint {
      * @param card the card to evaluate.
      * @return the points assigned to the card.
      */
-    public static int getCardPoints(final Card card) {
+    public static int getCardPoints(Card card) {
         final String value = card.getValue();
         switch (value) {
             case "Jolly":
@@ -51,7 +51,7 @@ public final class CardPoint {
      * @return an integer from 1 (Ace) to 13 (King).
      * @throws IllegalArgumentException if the card value is not a standard rank.
      */
-    public static int toInt(final Card card) {
+    public static int toInt(Card card) {
         return switch (card.getValue()) {
             case "A"  -> 1;
             case "2"  -> 2;

@@ -13,14 +13,14 @@ public interface DiscardPile {
      * Adds a single card to the top of the discard pile.
      * @param card the card to be discarded.
      */
-    void add(final Card card);
+    void add(Card card);
 
     
     /**
      * Adds a collection of cards to the discard pile.
      * @param cards the list of cards to add.
      */
-    void addAll(final List<Card> cards);
+    void addAll(List<Card> cards);
 
 
     /**

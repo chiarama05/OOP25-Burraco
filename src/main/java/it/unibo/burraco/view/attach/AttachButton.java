@@ -6,8 +6,16 @@ import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.burraco.BurracoStyleManager;
 import it.unibo.burraco.view.table.TableView;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,10 +31,17 @@ public final class AttachButton extends JButton implements AttachView {
 
     private static final long serialVersionUID = 1L;
 
+    private static final int FIXED_WIDTH = 64;
+    private static final int VERTICAL_STRUT_SIZE = 8;
+    private static final int FONT_SIZE_JOLLY = 28;
+    private static final int FONT_SIZE_NORMAL = 22;
+    private static final int COLOR_JOLLY_R = 219;
+    private static final int COLOR_JOLLY_G = 112;
+    private static final int COLOR_JOLLY_B = 147;
+
     private final List<Card> cards;
     private final TableView tableView;
     private final boolean isPlayer1Owner;
-    private static final int FIXED_WIDTH = 64;
     private BiConsumer<List<Card>, AttachButton> onAttachAction;
 
     /**
@@ -36,7 +51,7 @@ public final class AttachButton extends JButton implements AttachView {
      * @param tableView      the main table view
      * @param isPlayer1Owner true if this combination belongs to Player 1
      */
-    public AttachButton(List<Card> initialCards, TableView tableView, boolean isPlayer1Owner) {
+    public AttachButton(final List<Card> initialCards, final TableView tableView, final boolean isPlayer1Owner) {
         this.cards = initialCards;
         this.tableView = tableView;
         this.isPlayer1Owner = isPlayer1Owner;
@@ -45,7 +60,7 @@ public final class AttachButton extends JButton implements AttachView {
         this.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.GRAY, 1),
                 BorderFactory.createEmptyBorder(10, 5, 10, 5)));
-        updateVisuals();
+        this.updateVisuals();
         this.addActionListener(e -> handleAttachAction());
     }
 
@@ -54,7 +69,7 @@ public final class AttachButton extends JButton implements AttachView {
      *
      * @param handler a consumer receiving the selected cards and this button
      */
-    public void setOnAttachAction(BiConsumer<List<Card>, AttachButton> handler) {
+    public void setOnAttachAction(final BiConsumer<List<Card>, AttachButton> handler) {
         this.onAttachAction = handler;
     }
 
@@ -63,38 +78,38 @@ public final class AttachButton extends JButton implements AttachView {
      * and forwards them to the registered attach action handler.
      */
     private void handleAttachAction() {
-        if (onAttachAction == null) return;
-        List<Card> selected = new ArrayList<>(
-                tableView.getHandViewForCurrentPlayer(isPlayer1Owner).getSelectedCards());
-        onAttachAction.accept(selected, this);
+        if (this.onAttachAction == null) return;
+        final List<Card> selected = new ArrayList<>(
+                this.tableView.getHandViewForCurrentPlayer(isPlayer1Owner).getSelectedCards());
+        this.onAttachAction.accept(selected, this);
     }
 
     @Override
-    public void showAttachError(String message, String title) {
+    public void showAttachError(final String message, final String title) {
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
     }
 
     
     @Override
     public void updateCombinationVisuals() {
-        updateVisuals();
+        this.updateVisuals();
     }
 
     @Override
-    public void onAttachSuccess(Player p, boolean isPlayer1) {
-        tableView.getHandViewForCurrentPlayer(isPlayer1).clearSelection();
-        tableView.refreshHandPanel(isPlayer1, p.getHand());
+    public void onAttachSuccess(final Player p, final boolean isPlayer1) {
+        this.tableView.getHandViewForCurrentPlayer(isPlayer1).clearSelection();
+        this.tableView.refreshHandPanel(isPlayer1, p.getHand());
     }
 
     @Override
-    public void onAttachTakePot(Player p, boolean isPlayer1) {
-        tableView.getHandViewForCurrentPlayer(isPlayer1).clearSelection();
+    public void onAttachTakePot(final Player p, final boolean isPlayer1) {
+        this.tableView.getHandViewForCurrentPlayer(isPlayer1).clearSelection();
     }
 
     @Override
-    public void onAttachClose(Player p, boolean isPlayer1) {
-        tableView.getHandViewForCurrentPlayer(isPlayer1).clearSelection();
-        tableView.refreshHandPanel(isPlayer1, p.getHand());
+    public void onAttachClose(final Player p, final boolean isPlayer1) {
+        this.tableView.getHandViewForCurrentPlayer(isPlayer1).clearSelection();
+        this.tableView.refreshHandPanel(isPlayer1, p.getHand());
     }
 
     @Override
@@ -122,40 +137,43 @@ public final class AttachButton extends JButton implements AttachView {
         this.removeAll();
 
         if (StraightUtils.isSameSeed(cards)) {
-            List<Card> ordered = StraightUtils.orderStraight(new ArrayList<>(cards));
+            final List<Card> ordered = StraightUtils.orderStraight(new ArrayList<>(this.cards));
             Collections.reverse(ordered);
-            cards.clear();
-            cards.addAll(ordered);
+            this.cards.clear();
+            this.cards.addAll(ordered);
         } else {
-            String baseValue = cards.stream()
+            final String baseValue = cards.stream()
                 .filter(c -> !c.getValue().equalsIgnoreCase("Jolly"))
                 .map(Card::getValue)
                 .findFirst()
                 .orElse(null);
 
-            List<Card> naturals = new ArrayList<>();
-            List<Card> wildcards = new ArrayList<>();
+            final List<Card> naturals = new ArrayList<>();
+            final List<Card> wildcards = new ArrayList<>();
 
-            for (Card c : cards) {
-                boolean isWild = c.getValue().equalsIgnoreCase("Jolly")
+            for (final Card c : this.cards) {
+                final boolean isWild = c.getValue().equalsIgnoreCase("Jolly")
                 || (c.getValue().equals("2") && !"2".equals(baseValue));
-                if (isWild) wildcards.add(c);
-                else naturals.add(c);
+                if (isWild) {
+                    wildcards.add(c);
+                } else {
+                    naturals.add(c);
+                }
             }
 
             naturals.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
-            cards.clear();
-            cards.addAll(wildcards); 
-            cards.addAll(naturals);
+            this.cards.clear();
+            this.cards.addAll(wildcards); 
+            this.cards.addAll(naturals);
         }
 
         this.setBorder(BorderFactory.createCompoundBorder(
-                BurracoStyleManager.getBurracoBorder(cards),
+                BurracoStyleManager.getBurracoBorder(this.cards),
                 BorderFactory.createEmptyBorder(10, 5, 10, 5)));
-        this.setBackground(BurracoStyleManager.getBurracoBackground(cards));
+        this.setBackground(BurracoStyleManager.getBurracoBackground(this.cards));
 
-        for (Card c : cards) {
-            renderCardLabel(c);
+        for (final Card c : this.cards) {
+            this.renderCardLabel(c);
         }
 
         this.revalidate();
@@ -168,15 +186,15 @@ public final class AttachButton extends JButton implements AttachView {
      *
      * @param c the card to render
      */
-    private void renderCardLabel(Card c) {
-        boolean isJolly = c.getValue().equalsIgnoreCase("Jolly");
-        JLabel label = new JLabel(isJolly ? c.getSeed() : c.toString());
+    private void renderCardLabel(final Card c) {
+        final boolean isJolly = c.getValue().equalsIgnoreCase("Jolly");
+        final JLabel label = new JLabel(isJolly ? c.getSeed() : c.toString());
 
         if (isJolly) {
-            label.setFont(new Font("Segoe UI Symbol", Font.BOLD, 28));
-            label.setForeground(new Color(219, 112, 147));
+            label.setFont(new Font("Segoe UI Symbol", Font.BOLD, FONT_SIZE_JOLLY));
+            label.setForeground(new Color(COLOR_JOLLY_R, COLOR_JOLLY_G, COLOR_JOLLY_B));
         } else {
-            label.setFont(new Font("Monospaced", Font.BOLD, 22));
+            label.setFont(new Font("Monospaced", Font.BOLD, FONT_SIZE_NORMAL));
             label.setForeground(
                     c.toString().contains("♥") || c.toString().contains("♦")
                             ? Color.RED : Color.BLACK);
@@ -184,16 +202,16 @@ public final class AttachButton extends JButton implements AttachView {
 
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.add(label);
-        this.add(Box.createVerticalStrut(8));
+        this.add(Box.createVerticalStrut(VERTICAL_STRUT_SIZE));
     }
 
     /** @return the list of cards in this combination */
     public List<Card> getCards() { 
-        return cards; 
+        return this.cards; 
     }
 
     /** @return true if this combination belongs to Player 1 */
     public boolean isPlayer1Owner() { 
-        return isPlayer1Owner; 
+        return this.isPlayer1Owner; 
     }
 }

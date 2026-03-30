@@ -8,7 +8,6 @@ import it.unibo.burraco.model.card.Card;
  * Defines the contract for a player in the Burraco game.
  */
 public interface Player {
-
     /**
      * Returns the player's name.
      * @return the name of the player.
@@ -25,26 +24,26 @@ public interface Player {
      * Adds a card to the player's hand.
      * @param c the card to add.
      */
-    void addCardHand(final Card c);
+    void addCardHand(Card c);
 
     /**
      * Removes a card from the player's hand.
      * @param c the card to remove.
      */
-    void removeCardHand(final Card c);
+    void removeCardHand(Card c);
 
     /**
      * Removes a list of cards from the player's hand.
      * @param cards the cards to remove.
      */
-    void removeCards(final List<Card> cards);
+    void removeCards(List<Card> cards);
 
     /**
      * Checks if the player has a specific card in hand.
      * @param card the card to look for.
      * @return true if the card is in hand, false otherwise.
      */
-    boolean hasCard(final Card card);
+    boolean hasCard(Card card);
 
     /**
      * Returns whether the player is currently playing from the pot.
@@ -56,13 +55,13 @@ public interface Player {
      * Sets the pot state of the player.
      * @param flag true if the player is in pot, false otherwise.
      */
-    void setInPot(final boolean flag);
+    void setInPot(boolean flag);
 
     /**
      * Adds a new combination to the player's table.
      * @param comb the list of cards forming the combination.
      */
-    void addCombination(final List<Card> comb);
+    void addCombination(List<Card> comb);
 
     /**
      * Returns all combinations placed on the table by the player.
@@ -91,7 +90,7 @@ public interface Player {
      * Adds cards to the player's pot.
      * @param cards the cards to add to the pot.
      */
-    void addToPot(final List<Card> cards);
+    void addToPot(List<Card> cards);
 
     /**
      * Returns the total accumulated score across all rounds of the match.
@@ -103,7 +102,7 @@ public interface Player {
      * Adds points to the player's total match score.
      * @param points the points to add.
      */
-    void addPointsToMatch(final int points);
+    void addPointsToMatch(int points);
 
     /**
      * Resets the player's state for a new round.

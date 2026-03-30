@@ -23,5 +23,5 @@ public interface Jolly {
      * @param context the list of cards representing the current set or straight
      * @return true if the card acts as a Jolly in this context, false otherwise
      */
-    boolean isJolly(final List<Card> context);
+    boolean isJolly(List<Card> context);
 }

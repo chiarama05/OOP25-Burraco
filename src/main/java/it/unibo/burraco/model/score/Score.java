@@ -12,42 +12,42 @@ public interface Score {
      * @param player the player to evaluate.
      * @return total final score.
      */
-    int calculateFinalScore(final Player player);
+    int calculateFinalScore(Player player);
 
     /**
      * Calculates the total bonus points from burracos (clean/dirty).
      * @param player the player to evaluate.
      * @return total bonus points from burracos.
      */
-    int calculateBurracoBonus(final Player player);
+    int calculateBurracoBonus(Player player);
 
     /**
      * Calculates the total point value of cards still in the player's hand.
      * @param player the player to evaluate.
      * @return total value of remaining hand cards.
      */
-    int calculateRemainingHandValue(final Player player);
+    int calculateRemainingHandValue(Player player);
 
     /**
      * Counts the number of clean burracos found on the table.
      * @param player the player to evaluate.
      * @return the number of clean burracos.
      */
-    int countCleanBurraco(final Player player);
+    int countCleanBurraco(Player player);
 
     /**
      * Counts the number of dirty burracos found on the table.
      * @param player the player to evaluate.
      * @return the number of dirty burracos.
      */
-    int countDirtyBurraco(final Player player);
+    int countDirtyBurraco(Player player);
 
     /**
      * Calculates the sum of card values currently placed on the table.
      * @param player the player to evaluate.
      * @return sum of card values on the table.
      */
-    int calculateOnlyCardsOnTable(final Player player);
+    int calculateOnlyCardsOnTable(Player player);
 
     /**
      * Returns the bonus value awarded for a clean burraco.
