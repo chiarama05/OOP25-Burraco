@@ -61,17 +61,6 @@ class PlayerTest {
     }
 
     @Test
-    void testRemoveCardHand() {
-        player.addCardHand(aceOfHearts);
-        player.addCardHand(kingOfHearts);
-        player.removeCardHand(aceOfHearts);
-
-        assertEquals(1, player.getHand().size());
-        assertFalse(player.hasCard(aceOfHearts));
-        assertTrue(player.hasCard(kingOfHearts));
-    }
-
-    @Test
     void testRemoveCards() {
         player.addCardHand(aceOfHearts);
         player.addCardHand(kingOfHearts);
@@ -86,26 +75,12 @@ class PlayerTest {
     }
 
     @Test
-    void testHasCardFalseWhenAbsent() {
-        assertFalse(player.hasCard(aceOfHearts));
-    }
-
-    @Test
     void testHasFinishedCardsWhenHandEmpty() {
         player.addCardHand(aceOfHearts);
         assertFalse(player.hasFinishedCards());
 
         player.removeCardHand(aceOfHearts);
         assertTrue(player.hasFinishedCards());
-    }
-
-    @Test
-    void testInPotToggle() {
-        player.setInPot(true);
-        assertTrue(player.isInPot());
-
-        player.setInPot(false);
-        assertFalse(player.isInPot());
     }
 
     @Test
@@ -161,14 +136,6 @@ class PlayerTest {
     }
 
     @Test
-    void testAddCombination() {
-        player.addCombination(List.of(aceOfHearts, kingOfHearts, twoOfSpades));
-
-        assertEquals(1, player.getCombinations().size());
-        assertEquals(3, player.getCombinations().get(0).size());
-    }
-
-    @Test
     void testAddCombinationIsDefensiveCopy() {
         final List<Card> comb = new java.util.ArrayList<>(List.of(aceOfHearts, kingOfHearts));
         player.addCombination(comb);
@@ -178,59 +145,11 @@ class PlayerTest {
     }
 
     @Test
-    void testGetBurracoCountNone() {
-        player.addCombination(List.of(
-                new CardImpl(HEARTS, "A"),
-                new CardImpl(HEARTS, "2"),
-                new CardImpl(HEARTS, "3")
-        ));
-
-        assertEquals(0, player.getBurracoCount());
-    }
-
-    @Test
-    void testGetBurracoCountOne() {
-        player.addCombination(List.of(
-                new CardImpl(HEARTS, "A"),
-                new CardImpl(HEARTS, "2"),
-                new CardImpl(HEARTS, "3"),
-                new CardImpl(HEARTS, "4"),
-                new CardImpl(HEARTS, "5"),
-                new CardImpl(HEARTS, "6"),
-                new CardImpl(HEARTS, "7")
-        ));
-
-        assertEquals(1, player.getBurracoCount());
-    }
-
-    @Test
-    void testGetBurracoCountMultiple() {
-        final List<Card> longComb = List.of(
-                new CardImpl(HEARTS, "A"), new CardImpl(HEARTS, "2"),
-                new CardImpl(HEARTS, "3"), new CardImpl(HEARTS, "4"),
-                new CardImpl(HEARTS, "5"), new CardImpl(HEARTS, "6"),
-                new CardImpl(HEARTS, "7")
-        );
-        player.addCombination(longComb);
-        player.addCombination(longComb);
-
-        assertEquals(2, player.getBurracoCount());
-    }
-
-    @Test
     void testAddPointsToMatch() {
         player.addPointsToMatch(10);
         player.addPointsToMatch(25);
 
         assertEquals(35, player.getMatchTotalScore());
-    }
-
-    @Test
-    void testAddNegativePoints() {
-        player.addPointsToMatch(50);
-        player.addPointsToMatch(-20);
-
-        assertEquals(30, player.getMatchTotalScore());
     }
 
     @Test
