@@ -1,8 +1,12 @@
-package it.unibo.burraco.controller.combination;
+package it.unibo.burraco.controller.combination.putcombination;
 
 import it.unibo.burraco.controller.closure.ClosureManager;
 import it.unibo.burraco.controller.closure.ClosureState;
 import it.unibo.burraco.controller.closure.ClosureValidator;
+import it.unibo.burraco.controller.combination.CombinationValidator;
+import it.unibo.burraco.controller.combination.putcombination.PutCombinationResult.Status;
+import it.unibo.burraco.controller.combination.set.SetUtils;
+import it.unibo.burraco.controller.combination.straight.StraightUtils;
 import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.controller.pot.PotManager;

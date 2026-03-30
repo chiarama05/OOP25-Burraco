@@ -1,6 +1,6 @@
 package it.unibo.burraco.view.notification.putcombination;
 
-import it.unibo.burraco.controller.combination.PutCombinationResult;
+import it.unibo.burraco.controller.combination.putcombination.PutCombinationResult;
 
 public interface PutCombinationNotifier {
   

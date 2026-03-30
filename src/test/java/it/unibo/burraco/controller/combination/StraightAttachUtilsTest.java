@@ -1,6 +1,8 @@
 package it.unibo.burraco.controller.combination;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import it.unibo.burraco.controller.combination.straight.StraightAttachUtils;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 import org.junit.jupiter.api.Test;

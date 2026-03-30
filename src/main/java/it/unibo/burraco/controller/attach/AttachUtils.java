@@ -5,6 +5,8 @@ import java.util.List;
 
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.controller.combination.*;
+import it.unibo.burraco.controller.combination.set.SetUtils;
+import it.unibo.burraco.controller.combination.straight.StraightUtils;
 
 /**
  * Utility class responsible for determining whether one or more cards 

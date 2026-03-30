@@ -1,5 +1,7 @@
 package it.unibo.burraco.controller.combination;
 
+import it.unibo.burraco.controller.combination.set.SetUtils;
+import it.unibo.burraco.controller.combination.straight.StraightUtils;
 import it.unibo.burraco.model.card.*;
 
 import java.util.*;

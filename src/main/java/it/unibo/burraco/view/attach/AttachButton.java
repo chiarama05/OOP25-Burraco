@@ -1,10 +1,11 @@
 package it.unibo.burraco.view.attach;
 
+import it.unibo.burraco.controller.combination.straight.StraightUtils;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.burraco.BurracoStyleManager;
 import it.unibo.burraco.view.table.TableView;
-import it.unibo.burraco.controller.combination.StraightUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;

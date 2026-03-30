@@ -1,8 +1,9 @@
 package it.unibo.burraco.view.notification.putcombination;
  
-import it.unibo.burraco.controller.combination.PutCombinationResult;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import it.unibo.burraco.controller.combination.putcombination.PutCombinationResult;
 
 public class PutCombinationNotifierImpl implements PutCombinationNotifier {
 

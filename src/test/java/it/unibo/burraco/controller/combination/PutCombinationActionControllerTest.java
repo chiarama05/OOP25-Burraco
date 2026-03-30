@@ -1,6 +1,10 @@
 package it.unibo.burraco.controller.combination;
 
 import static org.mockito.Mockito.*;
+
+import it.unibo.burraco.controller.combination.putcombination.PutCombinationActionController;
+import it.unibo.burraco.controller.combination.putcombination.PutCombinationController;
+import it.unibo.burraco.controller.combination.putcombination.PutCombinationResult;
 import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;

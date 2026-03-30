@@ -10,6 +10,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import it.unibo.burraco.controller.closure.ClosureManager;
+import it.unibo.burraco.controller.combination.putcombination.PutCombinationController;
+import it.unibo.burraco.controller.combination.putcombination.PutCombinationResult;
 import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.controller.pot.PotManager;

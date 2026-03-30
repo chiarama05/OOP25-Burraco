@@ -4,8 +4,8 @@ import javax.swing.SwingUtilities;
 
 import it.unibo.burraco.controller.attach.AttachButtonFactory;
 import it.unibo.burraco.controller.closure.ClosureManager;
-import it.unibo.burraco.controller.combination.PutCombinationActionController;
-import it.unibo.burraco.controller.combination.PutCombinationController;
+import it.unibo.burraco.controller.combination.putcombination.PutCombinationActionController;
+import it.unibo.burraco.controller.combination.putcombination.PutCombinationController;
 import it.unibo.burraco.controller.deck.DeckActionController;
 import it.unibo.burraco.controller.discardcard.discard.DiscardActionController;
 import it.unibo.burraco.controller.discardcard.discard.DiscardController;

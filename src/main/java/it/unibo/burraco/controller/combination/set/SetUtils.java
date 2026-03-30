@@ -1,5 +1,6 @@
-package it.unibo.burraco.controller.combination;
+package it.unibo.burraco.controller.combination.set;
 
+import it.unibo.burraco.controller.combination.CombinationValidator;
 import it.unibo.burraco.model.card.Card;
 import java.util.List;
 import java.util.stream.Collectors;
