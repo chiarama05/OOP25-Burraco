@@ -14,12 +14,14 @@ public interface SelectionView {
     /**
      * Displays an error message to the user when a selection or 
      * combination move is invalid.
+     * 
      * @param message the descriptive error message to show.
      */
     void showSelectionError(String message);
 
     /**
      * Updates the player's table area by adding a new valid combination of cards.
+     * 
      * @param cards the list of cards forming the combination.
      * @param isP1 true if the cards belong to Player 1, false for Player 2.
      */
@@ -28,6 +30,7 @@ public interface SelectionView {
     /**
      * Refreshes the player's hand panel, typically called after cards 
      * have been removed to form a combination or discard.
+     * 
      * @param isPlayer1 true to refresh Player 1's hand, false for Player 2.
      * @param hand the updated list of cards currently held by the player.
      */
