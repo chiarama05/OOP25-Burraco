@@ -4,6 +4,7 @@ package it.unibo.burraco.controller.round;
  * Interface defining the lifecycle of a game round.
  * It provides the method to start a fresh round within an ongoing match.
  */
+@FunctionalInterface
 public interface RoundController {
 
     /**
