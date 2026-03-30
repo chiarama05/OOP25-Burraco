@@ -16,9 +16,15 @@ public class TakeDiscardController {
     private final Turn turnModel;
     private final DiscardPile discardPile;
 
-    public TakeDiscardController(final DrawManager drawManager, 
-                                 final Turn turnModel, 
-                                 final DiscardPile discardPile) {
+
+    /**
+     * Constructs a TakeDiscardController.
+     *
+     * @param drawManager  the manager that enforces draw-once-per-turn rules
+     * @param turnModel    provides the current player reference
+     * @param discardPile  the discard pile whose cards will be transferred to the player's hand
+     */
+    public TakeDiscardController(final DrawManager drawManager, final Turn turnModel, final DiscardPile discardPile) {
         this.drawManager = drawManager;
         this.turnModel = turnModel;
         this.discardPile = discardPile;

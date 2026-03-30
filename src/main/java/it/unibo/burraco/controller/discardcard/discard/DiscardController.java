@@ -51,6 +51,7 @@ public class DiscardController {
      * @return a DiscardResult containing the outcome of the operation.
      */
     public DiscardResult tryDiscard(final Set<Card> selectedCards) {
+        
         // A player must draw from the deck or pile before discarding
         if (!drawManager.hasDrawn()) {
             return DiscardResult.error("must_draw");
