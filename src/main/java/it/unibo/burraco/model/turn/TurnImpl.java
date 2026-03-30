@@ -10,7 +10,7 @@ public class TurnImpl implements Turn {
 
     private final Player player1;
     private final Player player2;
-    private boolean isPlayer1Turn = true;
+    private boolean isPlayer1Turn;
     private boolean gameFinished;
 
     /**
@@ -21,11 +21,13 @@ public class TurnImpl implements Turn {
     public TurnImpl(final Player p1, final Player p2) {
         this.player1 = p1;
         this.player2 = p2;
+        this.isPlayer1Turn = true;
+        this.gameFinished = false;
     }
 
     @Override
     public void nextTurn() {
-        this.isPlayer1Turn = !isPlayer1Turn;
+        this.isPlayer1Turn = !this.isPlayer1Turn;
     }
 
     @Override
@@ -47,12 +49,12 @@ public class TurnImpl implements Turn {
 
     @Override
     public boolean isPlayer1Turn() {
-        return isPlayer1Turn;
+        return this.isPlayer1Turn;
     }
 
     @Override
     public boolean isGameFinished() {
-        return gameFinished;
+        return this.gameFinished;
     }
 
     @Override
@@ -62,11 +64,11 @@ public class TurnImpl implements Turn {
 
     @Override
     public Player getPlayer1() {
-        return player1;
+        return this.player1;
     }
 
     @Override
     public Player getPlayer2() {
-        return player2;
+        return this.player2;
     }
 }
