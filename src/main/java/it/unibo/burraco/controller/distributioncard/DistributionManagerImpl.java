@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import it.unibo.burraco.model.card.*;
 import it.unibo.burraco.model.deck.Deck;
+import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.player.Player;
 
 /**
@@ -13,23 +14,24 @@ import it.unibo.burraco.model.player.Player;
  */
 public class DistributionManagerImpl implements DistributionManager{
 
-    // Internal storage for the initial discard pile state
-    private List<Card> discardPile = new ArrayList<>();
+    private static final int INITIAL_HAND_SIZE = 11;
+    private final List<Card> discardPile = new ArrayList<>();
 
     @Override
-    public void distributeInitialCards(Player player1, Player player2, Deck deck, it.unibo.burraco.model.discard.DiscardPile modelDiscardPile){
+    public void distributeInitialCards(final Player player1, 
+                                final Player player2, 
+                                final Deck deck, 
+                                final DiscardPile modelDiscardPile){
 
-        // Distribute 11 cards to each player's starting hand
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < INITIAL_HAND_SIZE; i++) {
             player1.addCardHand(deck.draw());
             player2.addCardHand(deck.draw());
         }
 
-        // Prepare the two "side pots" of 11 cards each
-        List<Card> pot1 = new ArrayList<>();
-        List<Card> pot2 = new ArrayList<>();
+        final List<Card> pot1 = new ArrayList<>();
+        final List<Card> pot2 = new ArrayList<>();
 
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < INITIAL_HAND_SIZE; i++) {
             pot1.add(deck.draw());
             pot2.add(deck.draw());
         }

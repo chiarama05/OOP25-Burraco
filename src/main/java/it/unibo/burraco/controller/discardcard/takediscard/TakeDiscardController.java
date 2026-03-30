@@ -16,7 +16,9 @@ public class TakeDiscardController {
     private final Turn turnModel;
     private final DiscardPile discardPile;
 
-    public TakeDiscardController(DrawManager drawManager, Turn turnModel, DiscardPile discardPile) {
+    public TakeDiscardController(final DrawManager drawManager, 
+                                 final Turn turnModel, 
+                                 final DiscardPile discardPile) {
         this.drawManager = drawManager;
         this.turnModel = turnModel;
         this.discardPile = discardPile;
@@ -28,8 +30,7 @@ public class TakeDiscardController {
      * * @return a {@link DrawResult} indicating success or the specific reason for failure.
      */
     public DrawResult tryTakeDiscard() {
-        Player current = turnModel.getCurrentPlayer();
-        // Delegates the card transfer logic to the central DrawManager
+        final Player current = turnModel.getCurrentPlayer();
         return drawManager.drawFromDiscard(current, discardPile.getCards());
     }
 }

@@ -3,6 +3,7 @@ package it.unibo.burraco.controller.distributioncard;
 import java.util.List;
 
 import it.unibo.burraco.model.deck.Deck;
+import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.card.*;
 
@@ -22,10 +23,14 @@ public interface DistributionManager {
      * @param deck the game deck to draw from.
      * @param modelDiscardPile the discard pile model to be initialized.
      */
-    void distributeInitialCards(Player player1, Player player2, Deck deck, it.unibo.burraco.model.discard.DiscardPile modelDiscardPile);
+    void distributeInitialCards(final Player player1, 
+                                final Player player2, 
+                                final Deck deck, 
+                                final DiscardPile modelDiscardPile);
 
     /**
      * Retrieves the state of the initial discard pile after distribution.
+     * 
      * @return a list of cards representing the initial discard pile.
      */
     List<Card> getInitialDiscardPile();
