@@ -24,16 +24,22 @@ public class DiscardController {
     private final DrawManager drawManager;  
     private final Turn turnModel;          
 
-    public DiscardController(final DiscardManagerImpl discardManager,
-                             final TurnController turnCtrl,
-                             final PotManager potCtrl,
-                             final ClosureManager closureCtrl,
-                             final DrawManager drawManager,
-                             final Turn turnModel) {
+
+    /**
+     * Constructs a DiscardController with all its required collaborators.
+     *
+     * @param discardManager the manager that performs the actual card transfer
+     * @param turnCtrl       the controller responsible for advancing the turn
+     * @param potCtrl        the manager that handles automatic pot collection
+     * @param closureCtrl    the manager that evaluates and triggers round closure
+     * @param drawManager    used to verify that the player has drawn before discarding
+     * @param turnModel      provides the current player reference
+     */
+    public DiscardController(final DiscardManagerImpl discardManager,final TurnController turnCtrl,final PotManager potCtrl, final ClosureManager closureCtrl, final DrawManager drawManager, final Turn turnModel) {
         this.discardManager = discardManager;
-        this.turnCtrl = turnCtrl;
+        this.turnCtrl= turnCtrl;
         this.potCtrl = potCtrl;
-        this.closureCtrl = closureCtrl;
+        this.closureCtrl =closureCtrl;
         this.drawManager = drawManager;
         this.turnModel = turnModel;
     }

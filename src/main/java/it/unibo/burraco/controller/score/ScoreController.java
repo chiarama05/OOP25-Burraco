@@ -53,25 +53,20 @@ public class ScoreController {
          * @param over match over flag
          * @return a new ScoreView
          */
-        ScoreView create(Player p1, Player p2, String n1, String n2, 
-                         int target, Score s, TableView tv, boolean over);
+        ScoreView create(Player p1, Player p2, String n1, String n2,int target, Score s, TableView tv, boolean over);
     }
 
-    public ScoreController(final Score score, final Player player1, final Player player2,
-            final String nameP1, final String nameP2, final TableView tableView,
-            final GameController gameController, final SoundController soundController,
-            final int targetScore, final InitialDistributionView distributionView,
-            final Consumer<Runnable> uiThreadRunner, final ViewProvider viewProvider) {
+    public ScoreController(final Score score, final Player player1, final Player player2, final String nameP1, final String nameP2, final TableView tableView, final GameController gameController, final SoundController soundController, final int targetScore, final InitialDistributionView distributionView, final Consumer<Runnable> uiThreadRunner, final ViewProvider viewProvider) {
 
-        this.score           = score;
-        this.player1         = player1;
-        this.player2         = player2;
-        this.nameP1          = nameP1;
-        this.nameP2          = nameP2;
-        this.tableView       = tableView;
-        this.gameController  = gameController;
-        this.soundController = soundController;
-        this.targetScore     = targetScore;
+        this.score = score;
+        this.player1= player1;
+        this.player2= player2;
+        this.nameP1= nameP1;
+        this.nameP2= nameP2;
+        this.tableView= tableView;
+        this.gameController= gameController;
+        this.soundController= soundController;
+        this.targetScore = targetScore;
         this.distributionView = distributionView;
         this.uiThreadRunner = uiThreadRunner;
         this.viewProvider = viewProvider;
