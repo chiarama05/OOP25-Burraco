@@ -14,7 +14,7 @@ public interface AttachView {
      * @param message a human-readable description of the error
      * @param title   the title of the error dialog
      */
-    void showAttachError(String message, String title);
+    void showAttachError(final String message, final String title);
 
     /**
      * Refreshes the visual representation of the combination after a successful attach.
@@ -28,7 +28,7 @@ public interface AttachView {
      * @param p        the player who performed the attach
      * @param isPlayer1 true if the action was performed by Player 1
      */
-    void onAttachSuccess(Player p, boolean isPlayer1);
+    void onAttachSuccess(final Player p, final boolean isPlayer1);
 
     /**
      * Called when an attach leaves the player with no cards and the pot must be taken.
@@ -37,7 +37,7 @@ public interface AttachView {
      * @param p        the player who performed the attach
      * @param isPlayer1 true if the action was performed by Player 1
      */
-    void onAttachTakePot(Player p, boolean isPlayer1);
+    void onAttachTakePot(final Player p, final boolean isPlayer1);
 
     /**
      * Called when an attach triggers a game closure or a stuck state.
@@ -46,5 +46,5 @@ public interface AttachView {
      * @param p        the player who performed the attach
      * @param isPlayer1 true if the action was performed by Player 1
      */
-    void onAttachClose(Player p, boolean isPlayer1);
+    void onAttachClose(final Player p, final boolean isPlayer1);
 }

@@ -16,7 +16,7 @@ public interface PutCombinationView {
      * @param isP1 true if the action was performed by Player 1
      * @param current the player object containing the updated hand and state
      */
-    void onCombinationSuccess(List<Card> combo, boolean isP1, Player current);
+    void onCombinationSuccess(final List<Card> combo, final boolean isP1, final Player current);
 
     /**
      * Called when a combination is placed and triggers the taking of a pot.
@@ -24,7 +24,7 @@ public interface PutCombinationView {
      * @param isP1 true if performed by Player 1
      * @param current the player object, used to refresh the new hand from the pot
      */
-    void onCombinationTakePot(List<Card> combo, boolean isP1, Player current);
+    void onCombinationTakePot(final List<Card> combo, final boolean isP1, final Player current);
 
     /**
      * Called when a combination is placed and leads to the closure of the round.
@@ -32,5 +32,5 @@ public interface PutCombinationView {
      * @param isP1    true if performed by Player 1
      * @param current the player object
      */
-    void onCombinationClose(List<Card> combo, boolean isP1, Player current);
+    void onCombinationClose(final List<Card> combo, final boolean isP1, final Player current);
 }
