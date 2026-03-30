@@ -68,7 +68,6 @@ public class SetUpMenuViewImpl implements SetUpMenuView{
         gbc.fill = GridBagConstraints.HORIZONTAL; 
         gbc.insets = new Insets(12, 15, 12, 15);
     
-        // Back button
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2; 
@@ -88,7 +87,6 @@ public class SetUpMenuViewImpl implements SetUpMenuView{
         gbc.gridwidth = 1; 
         gbc.anchor = GridBagConstraints.CENTER;
 
-
         gbc.gridy = 1;
         panel.add(createLabel("Name Player 1:"), gbc);
         gbc.gridy = 2;
@@ -106,7 +104,6 @@ public class SetUpMenuViewImpl implements SetUpMenuView{
         name2.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));  
         name2.setHorizontalAlignment(JTextField.LEFT);  
         panel.add(name2, gbc);
-
 
         gbc.gridy = 5;
         panel.add(createLabel("Points to win:"), gbc);
@@ -141,7 +138,7 @@ public class SetUpMenuViewImpl implements SetUpMenuView{
     /**
      * Helper to create styled score selection buttons.
      */
-    private JButton createScoreBtn(int score) {
+    private JButton createScoreBtn(final int score) {
         JButton b = new JButton(String.valueOf(score));
         b.setFocusPainted(false);
         b.setOpaque(true);
