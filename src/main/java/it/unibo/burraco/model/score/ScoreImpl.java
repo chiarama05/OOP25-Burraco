@@ -15,6 +15,7 @@ public final class ScoreImpl implements Score {
     private static final int CLEAN_BURRACO_BONUS = 200;
     private static final int DIRTY_BURRACO_BONUS = 100;
     private static final int NO_POT_PENALTY = -100;
+    private static final int BURRACO_MIN_CARDS = 7;
 
     @Override
     public int calculateFinalScore(final Player player) {
@@ -39,7 +40,7 @@ public final class ScoreImpl implements Score {
     public int calculateBurracoBonus(final Player player) {
         int bonus = 0;
         for (final List<Card> combination : player.getCombinations()) {
-            if (combination.size() >= 7) {
+            if (combination.size() >= BURRACO_MIN_CARDS) {
                 if (isCleanBurraco(combination)) {
                     bonus += CLEAN_BURRACO_BONUS;
                 } else {
@@ -106,13 +107,13 @@ public final class ScoreImpl implements Score {
     @Override
     public int countCleanBurraco(final Player player) {
         return (int) player.getCombinations().stream()
-                .filter(c -> c.size() >= 7 && isCleanBurraco(c)).count();
+                .filter(c -> c.size() >= BURRACO_MIN_CARDS && isCleanBurraco(c)).count();
     }
 
     @Override
     public int countDirtyBurraco(final Player player) {
         return (int) player.getCombinations().stream()
-                .filter(c -> c.size() >= 7 && !isCleanBurraco(c)).count();
+                .filter(c -> c.size() >= BURRACO_MIN_CARDS && !isCleanBurraco(c)).count();
     }
 
     @Override
