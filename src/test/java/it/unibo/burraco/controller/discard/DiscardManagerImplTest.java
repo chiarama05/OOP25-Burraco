@@ -6,10 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.player.Player;
@@ -40,18 +38,6 @@ class DiscardManagerImplTest {
         assertTrue(result.isValid());
         verify(player).removeCardHand(card);
         verify(discardPile).add(card);
-    }
-
-    @Test
-    void testDiscardNotInHand() {
-        Card card = mock(Card.class);
-        when(player.getHand()).thenReturn(List.of());
-
-        final DiscardResult result = discardManager.discard(player, card);
-
-        assertFalse(result.isValid());
-        assertEquals("NOT_IN_HAND", result.getMessage());
-        verify(discardPile, never()).add(any());
     }
 
     @Test

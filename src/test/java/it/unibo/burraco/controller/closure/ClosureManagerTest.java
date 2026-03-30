@@ -31,7 +31,7 @@ class ClosureManagerTest {
         scoreController = mock(ScoreController.class);
         player = new PlayerImpl("Player1");
         
-        manager = new ClosureManager(turnModel, notifier, 2000, scoreController);
+        manager = new ClosureManager(turnModel, notifier, 2005, scoreController);
     }
 
     @Test

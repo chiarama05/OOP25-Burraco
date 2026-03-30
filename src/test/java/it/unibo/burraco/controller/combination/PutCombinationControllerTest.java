@@ -7,10 +7,8 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 
 import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import it.unibo.burraco.controller.closure.ClosureManager;
 import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.controller.game.GameController;
