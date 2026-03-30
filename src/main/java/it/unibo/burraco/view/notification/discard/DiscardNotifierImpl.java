@@ -9,12 +9,12 @@ public class DiscardNotifierImpl implements DiscardNotifier{
 
     private final JFrame parent;
 
-    public DiscardNotifierImpl(JFrame parent) {
+    public DiscardNotifierImpl(final JFrame parent) {
         this.parent = parent;
     }
 
     @Override
-    public void notifyDiscardError(DiscardResult result) {
+    public void notifyDiscardError(final DiscardResult result) {
         String errorCode = result.getMessage(); // Prende la stringa "NO_BURRACO_ERROR"
     
     String userMessage = switch (errorCode) {

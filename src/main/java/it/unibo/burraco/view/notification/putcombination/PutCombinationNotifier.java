@@ -4,5 +4,5 @@ import it.unibo.burraco.controller.combination.putcombination.PutCombinationResu
 
 public interface PutCombinationNotifier {
   
-    void notifyCombinationError(PutCombinationResult result);
+    void notifyCombinationError(final PutCombinationResult result);
 }

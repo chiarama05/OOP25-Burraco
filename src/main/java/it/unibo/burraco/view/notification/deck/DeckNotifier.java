@@ -4,6 +4,6 @@ import it.unibo.burraco.controller.drawcard.DrawResult;
 
 public interface DeckNotifier {
 
-    void notifyDrawError(DrawResult result);
+    void notifyDrawError(final DrawResult result);
 
 }
