@@ -1,7 +1,7 @@
 package it.unibo.burraco.view.discardcard.discard;
 
 import java.util.List;
-import it.unibo.burraco.model.card.*;
+import it.unibo.burraco.model.card.Card;
 import java.awt.event.ActionListener;
 
 /**

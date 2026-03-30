@@ -5,7 +5,7 @@ import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.notification.takediscard.TakeDiscardNotifier;
 
-import javax.swing.*;
+import javax.swing.JButton;
 import java.util.List;
 
 /**
@@ -17,7 +17,9 @@ public class TakeDiscardButton implements TakeDiscardActionView {
     private final TakeDiscardView view;
     private final TakeDiscardNotifier notifier;
 
-    /** Callback to be executed when the button is clicked. */
+    /** 
+     * Callback to be executed when the button is clicked. 
+     */
     private Runnable onTakeDiscardAction;
 
     /**
@@ -25,7 +27,7 @@ public class TakeDiscardButton implements TakeDiscardActionView {
      * @param view the view interface responsible for panel refreshing.
      * @param notifier the utility to notify errors to the user.
      */
-    public TakeDiscardButton(JButton button, TakeDiscardView view, TakeDiscardNotifier notifier) {
+    public TakeDiscardButton(final JButton button, final TakeDiscardView view, final TakeDiscardNotifier notifier) {
         this.view = view;
         this.notifier = notifier;
 
@@ -41,20 +43,20 @@ public class TakeDiscardButton implements TakeDiscardActionView {
      * Registers the logic to be executed when the user triggers the action.
      * @param handler a Runnable containing the controller's logic.
      */
-    public void setOnTakeDiscardAction(Runnable handler) {
+    public void setOnTakeDiscardAction(final Runnable handler) {
         this.onTakeDiscardAction = handler;
     }
 
     @Override
-    public void onTakeDiscardSuccess(Player current, List<Card> updatedPile, boolean isPlayer1) {
+    public void onTakeDiscardSuccess(final Player current, final List<Card> updatedPile, final boolean isPlayer1) {
         // Refresh the UI components to show the cards moved to the hand
-        view.refreshHandPanel(isPlayer1, current.getHand());
-        view.updateDiscardPile(updatedPile);
+        this.view.refreshHandPanel(isPlayer1, current.getHand());
+        this.view.updateDiscardPile(updatedPile);
     }
 
     @Override
-    public void onTakeDiscardError(DrawResult result) {
+    public void onTakeDiscardError(final DrawResult result) {
         // Delegate the visual error feedback to the notifier
-        notifier.notifyTakeDiscardError(result);
+        this.notifier.notifyTakeDiscardError(result);
     }
 }

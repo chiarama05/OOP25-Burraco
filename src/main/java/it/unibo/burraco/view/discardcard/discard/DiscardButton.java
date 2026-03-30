@@ -21,7 +21,9 @@ public class DiscardButton implements DiscardActionView {
     private final GameNotifier notifier;
     private boolean isPlayer1;
 
-    /** Callback handler to notify the controller when the button is clicked. */
+    /** 
+     * Callback handler to notify the controller when the button is clicked. 
+     */
     private BiConsumer<DiscardButton, Boolean> onDiscardAction;
 
     /**
@@ -29,20 +31,23 @@ public class DiscardButton implements DiscardActionView {
      * @param discardView the component managing the discard pile display.
      * @param notifier the utility used to show alerts to the player.
      */
-    public DiscardButton(TableView view, DiscardView discardView, GameNotifier notifier) {
+    public DiscardButton(final TableView view, final DiscardView discardView, final GameNotifier notifier) {
         this.view = view;
         this.discardView = discardView;
         this.notifier = notifier;
 
         // Register a listener on the UI component to trigger the action callback
-        this.discardView.setDiscardListener(e -> {
+        this.discardView.setDiscardListener(finalEvent -> {
             if (onDiscardAction != null) {
                 onDiscardAction.accept(this, isPlayer1);
             }
         });
     }
 
-    public void setIsPlayer1(boolean isPlayer1) {
+    /**
+     * @param isPlayer1 true if the current player is Player 1.
+     */
+    public void setIsPlayer1(final boolean isPlayer1) {
         this.isPlayer1 = isPlayer1;
     }
 
@@ -50,30 +55,36 @@ public class DiscardButton implements DiscardActionView {
      * Sets the action handler.
      * @param handler the callback logic to execute on click.
      */
-    public void setOnDiscardAction(BiConsumer<DiscardButton, Boolean> handler) {
+    public void setOnDiscardAction(final BiConsumer<DiscardButton, Boolean> handler) {
         this.onDiscardAction = handler;
     }
 
     @Override
-    public Set<Card> getSelectedCards(boolean isPlayer1) {
+    public Set<Card> getSelectedCards(final boolean isPlayer1) {
         // Delegates selection retrieval to the current player's hand view
         return view.getHandViewForCurrentPlayer(isPlayer1).getSelectedCards();
     }
 
     @Override
-    public void onDiscardSuccess(Player player, List<Card> updatedPile, boolean isPlayer1) {
+    public void onDiscardSuccess(final Player player, final List<Card> updatedPile, final boolean isPlayer1) {
         // Clear selection and refresh the pile graphics
         view.getHandViewForCurrentPlayer(isPlayer1).clearSelection();
         discardView.updateDiscardPile(updatedPile);
     }
 
     @Override
-    public void onDiscardError(String errorCode) {
+    public void onDiscardError(final String errorCode) {
         // Maps internal logic error codes to user-friendly notifications
         switch (errorCode) {
-            case "must_draw" -> notifier.notifyMustDraw();
-            case "select_one" -> notifier.notifySelectionError("Select only one card!");
-            default -> notifier.notifySelectionError(errorCode);
+            case "must_draw":
+                notifier.notifyMustDraw();
+                break;
+            case "select_one":
+                notifier.notifySelectionError("Select only one card!");
+                break;
+            default:
+                notifier.notifySelectionError(errorCode);
+                break;
         }
     }
 }
