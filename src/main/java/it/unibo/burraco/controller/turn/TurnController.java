@@ -9,26 +9,25 @@ public class TurnController {
     private final DrawManager drawManager;
     private Runnable onTurnChanged;
 
-    public TurnController(Turn turnModel, DrawManager dm) {
+    public TurnController(final Turn turnModel, final DrawManager dm) {
         this.turnModel = turnModel;
         this.drawManager = dm;
     }
 
     
-    public void setOnTurnChangedListener(Runnable listener) {
+    public void setOnTurnChangedListener(final Runnable listener) {
         this.onTurnChanged = listener;
     }
 
     public void executeNextTurn() {
-       
-        turnModel.nextTurn();
+       this.turnModel.nextTurn();
         
-        if (drawManager != null) {
-            drawManager.resetTurn();
+        if (this.drawManager != null) {
+            this.drawManager.resetTurn();
         }
 
-        if (onTurnChanged != null) {
-            onTurnChanged.run();
+        if (this.onTurnChanged != null) {
+            this.onTurnChanged.run();
         }
     }
 }

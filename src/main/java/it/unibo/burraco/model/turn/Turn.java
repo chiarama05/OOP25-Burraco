@@ -40,7 +40,7 @@ public interface Turn {
      * Sets the game finished state.
      * @param finished true to mark the game as finished, false otherwise.
      */
-    void setGameFinished(boolean finished);
+    void setGameFinished(final boolean finished);
 
     /**
      * Resets the turn state for a new round.

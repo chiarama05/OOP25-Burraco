@@ -1,20 +1,26 @@
 package it.unibo.burraco.controller.attach;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyBoolean;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import it.unibo.burraco.controller.closure.ClosureManager;
+import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.controller.pot.PotManager;
 import it.unibo.burraco.controller.sound.SoundController;
-import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.attach.AttachView;
 import it.unibo.burraco.view.notification.attach.AttachNotifier;
-import java.util.List;
 
 class AttachActionControllerTest {
 
@@ -35,17 +41,17 @@ class AttachActionControllerTest {
 
     @BeforeEach
     void setUp() {
-        gameController   = mock(GameController.class);
+        gameController = mock(GameController.class);
         attachController = mock(AttachController.class);
-        potManager       = mock(PotManager.class);
-        closureManager   = mock(ClosureManager.class);
-        attachNotifier   = mock(AttachNotifier.class);
-        view             = mock(AttachView.class);
-        player           = mock(Player.class);
-        drawManager      = mock(DrawManager.class);
-        soundController  = mock(SoundController.class);
+        potManager = mock(PotManager.class);
+        closureManager = mock(ClosureManager.class);
+        attachNotifier = mock(AttachNotifier.class);
+        view = mock(AttachView.class);
+        player = mock(Player.class);
+        drawManager = mock(DrawManager.class);
+        soundController = mock(SoundController.class);
 
-        selectedCards    = List.of(mock(Card.class));
+        selectedCards = List.of(mock(Card.class));
         combinationCards = List.of(mock(Card.class));
 
         when(gameController.getCurrentPlayer()).thenReturn(player);
