@@ -16,15 +16,13 @@ public class TakeDiscardButton implements TakeDiscardActionView {
 
     private final TakeDiscardView view;
     private final TakeDiscardNotifier notifier;
-
-    /** 
-     * Callback to be executed when the button is clicked. 
-     */
     private Runnable onTakeDiscardAction;
 
     /**
-     * @param button the JButton component to attach the listener to.
-     * @param view the view interface responsible for panel refreshing.
+     * Constructs a TakeDiscardButton and registers the listener on the Swing component.
+     *
+     * @param button   the JButton component to attach the listener to.
+     * @param view     the view interface responsible for panel refreshing.
      * @param notifier the utility to notify errors to the user.
      */
     public TakeDiscardButton(final JButton button, final TakeDiscardView view, final TakeDiscardNotifier notifier) {
@@ -33,14 +31,15 @@ public class TakeDiscardButton implements TakeDiscardActionView {
 
         // Link the Swing ActionEvent to the internal Runnable callback
         button.addActionListener(e -> {
-            if (onTakeDiscardAction != null) {
-                onTakeDiscardAction.run();
+            if (this.onTakeDiscardAction != null) {
+                this.onTakeDiscardAction.run();
             }
         });
     }
 
     /**
      * Registers the logic to be executed when the user triggers the action.
+     * 
      * @param handler a Runnable containing the controller's logic.
      */
     public void setOnTakeDiscardAction(final Runnable handler) {
@@ -49,14 +48,12 @@ public class TakeDiscardButton implements TakeDiscardActionView {
 
     @Override
     public void onTakeDiscardSuccess(final Player current, final List<Card> updatedPile, final boolean isPlayer1) {
-        // Refresh the UI components to show the cards moved to the hand
         this.view.refreshHandPanel(isPlayer1, current.getHand());
         this.view.updateDiscardPile(updatedPile);
     }
 
     @Override
     public void onTakeDiscardError(final DrawResult result) {
-        // Delegate the visual error feedback to the notifier
         this.notifier.notifyTakeDiscardError(result);
     }
 }
