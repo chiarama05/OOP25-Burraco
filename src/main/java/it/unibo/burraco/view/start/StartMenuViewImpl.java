@@ -11,7 +11,14 @@ import javax.swing.JTextArea;
 
 import it.unibo.burraco.view.colorbutton.RoundedGradientButton;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.FlowLayout;
+import java.awt.BorderLayout;
 
 /**
  * Swing-based implementation of the StartMenuView.
@@ -43,7 +50,7 @@ public class StartMenuViewImpl implements StartMenuView{
     /**
      * @param listener callback handler for game start events.
      */
-    public StartMenuViewImpl(OnGameStartListener listener) {
+    public StartMenuViewImpl(final OnGameStartListener listener) {
         this.listener = listener;
         this.frame = new JFrame("Burraco Game - Home");
         setupUI();
