@@ -3,7 +3,7 @@ package it.unibo.burraco.view.notification.selection;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class SelectionNotifierImpl implements SelectionNotifier{
+public final class SelectionNotifierImpl implements SelectionNotifier{
 
     private final JFrame parent;
 

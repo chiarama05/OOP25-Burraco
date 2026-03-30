@@ -12,7 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class TableViewImpl implements TableView {
+public final class TableViewImpl implements TableView {
 
     private static final int FRAME_WIDTH = 900;
     private static final int FRAME_HEIGHT = 650;

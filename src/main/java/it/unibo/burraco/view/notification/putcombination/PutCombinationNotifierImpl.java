@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 
 import it.unibo.burraco.controller.combination.putcombination.PutCombinationResult;
 
-public class PutCombinationNotifierImpl implements PutCombinationNotifier {
+public final class PutCombinationNotifierImpl implements PutCombinationNotifier {
 
     private final JFrame parent;
 
