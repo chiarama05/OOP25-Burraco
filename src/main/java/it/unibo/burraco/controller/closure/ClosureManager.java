@@ -12,12 +12,11 @@ public class ClosureManager {
     private final int targetScore;
     private final ScoreController scoreController;
     
-    public ClosureManager(final Turn turnModel, final GameNotifier notifier, 
-                          final int targetScore, final ScoreController scoreController) { 
-        this.turnModel        = turnModel;
-        this.notifier         = notifier;
-        this.targetScore      = targetScore;
-        this.scoreController  = scoreController; 
+    public ClosureManager(final Turn turnModel, final GameNotifier notifier, final int targetScore, final ScoreController scoreController) { 
+        this.turnModel=turnModel;
+        this.notifier = notifier;
+        this.targetScore= targetScore;
+        this.scoreController= scoreController; 
     }
 
     public boolean handleStateAfterAction(final Player player) {
