@@ -9,13 +9,13 @@ public class PotManager {
     private final Turn model;
     private final PotView view;
 
-    public PotManager(Turn model, PotView view) {
+    public PotManager(final Turn model, final PotView view) {
         this.model = model;
         this.view = view;
     }
 
-    public boolean handlePot(boolean isDiscard) {
-        Player p = model.getCurrentPlayer();
+    public boolean handlePot(final boolean isDiscard) {
+        final Player p = model.getCurrentPlayer();
 
         if (p.getHand().isEmpty() && !p.isInPot()) {
             p.setInPot(true);
@@ -27,7 +27,6 @@ public class PotManager {
             if (!isDiscard) {
                 view.refreshHandPanel(model.isPlayer1Turn(), p.getHand());
             }
-
             return true;
         }
         return false;

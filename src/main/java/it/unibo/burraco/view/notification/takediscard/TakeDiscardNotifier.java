@@ -4,6 +4,6 @@ import it.unibo.burraco.controller.drawcard.DrawResult;
 
 public interface TakeDiscardNotifier {
 
-    void notifyTakeDiscardError(DrawResult result);
+    void notifyTakeDiscardError(final DrawResult result);
 
 }

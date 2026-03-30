@@ -24,54 +24,57 @@ public class SelectionCardManager {
 
     /**
      * Adds a card to the selection if not present, or removes it if already selected.
+     * 
      * @param card the card to toggle.
      */
-    public void toggleSelection(Card card) {
-        if (selectedCards.contains(card)) {
-            selectedCards.remove(card);
+    public void toggleSelection(final Card card) {
+        if (this.selectedCards.contains(card)) {
+            this.selectedCards.remove(card);
         } else {
-            selectedCards.add(card);
+            this.selectedCards.add(card);
         }
     }
 
     /** 
      * @return true if the specified card is currently in the selection set. 
      */
-    public boolean isSelected(Card card) {
-        return selectedCards.contains(card);
+    public boolean isSelected(final Card card) {
+        return this.selectedCards.contains(card);
     }
 
     /**
      * Returns an unmodifiable view of the selected cards to prevent 
      * external corruption of the internal state.
+     * 
      * @return a read-only Set of selected cards.
      */
     public Set<Card> getSelectedCards() {
-        return Collections.unmodifiableSet(selectedCards);
+        return Collections.unmodifiableSet(this.selectedCards);
     }
 
     /** Clears all currently selected cards. */
     public void clearSelection() {
-        selectedCards.clear();
+        this.selectedCards.clear();
     }
 
     /** 
      * @return the total number of currently selected cards. 
      */
     public int getSelectionSize() {
-        return selectedCards.size();
+        return this.selectedCards.size();
     }
 
     /** 
      * @return true if the selection buffer is empty. 
      */
     public boolean isEmpty() {
-        return selectedCards.isEmpty();
+        return this.selectedCards.isEmpty();
     }
 
     /**
      * Validates the current selection and attempts to play it as a new combination.
      * If valid, updates the player model and synchronizes the view.
+     * 
      * @param player   the player attempting the move.
      * @param view     the view component to update on success.
      * @param isPlayer1 boolean flag to identify which UI panel to update.
@@ -80,7 +83,7 @@ public class SelectionCardManager {
     public void processCombination(final Player player, final SelectionView view, 
                                    final boolean isPlayer1, final SelectionNotifier notifier) {
 
-        if (selectedCards.isEmpty()) {
+        if (this.selectedCards.isEmpty()) {
             notifier.notifySelectionError("EMPTY_SELECTION");
             return;
         }
@@ -90,7 +93,7 @@ public class SelectionCardManager {
 
         // Delegation to specialized validator
         if (CombinationValidator.isValidCombination(cardsToPut)) {
-            executeMove(player, view, isPlayer1, cardsToPut);
+            this.executeMove(player, view, isPlayer1, cardsToPut);
         } else {
             notifier.notifySelectionError("INVALID_COMBINATION");
         }
@@ -102,15 +105,12 @@ public class SelectionCardManager {
      */
     private void executeMove(final Player player, final SelectionView view, 
                              final boolean isPlayer1, final List<Card> cardsToPut) {
-        // Model update
         player.removeCards(cardsToPut);
         player.addCombination(cardsToPut);
 
-        // View synchronization
         view.addCombinationToPlayerPanel(cardsToPut, isPlayer1);
         view.refreshHandPanel(isPlayer1, player.getHand());
 
-        // State reset
-        clearSelection();
+        this.clearSelection();
     }
 }

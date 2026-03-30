@@ -9,12 +9,12 @@ public class AttachNotifierImpl implements AttachNotifier {
 
     private final JFrame parent;
 
-    public AttachNotifierImpl(JFrame parent) {
+    public AttachNotifierImpl(final JFrame parent) {
         this.parent = parent;
     }
 
     @Override
-    public void notifyAttachError(AttachResult result) {
+    public void notifyAttachError(final AttachResult result) {
         String message = switch (result) {
             case NOT_DRAWN ->
                 "You have to draw first!";

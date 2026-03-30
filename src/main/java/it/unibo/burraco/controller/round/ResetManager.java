@@ -8,6 +8,7 @@ import it.unibo.burraco.model.player.Player;
  * Interface responsible for resetting the game state components 
  * to prepare for a new round of play.
  */
+@FunctionalInterface
 public interface ResetManager {
 
     /**
@@ -17,5 +18,8 @@ public interface ResetManager {
      * @param deck the game deck.
      * @param discardPile the discard pile.
      */
-    void resetRound(Player p1, Player p2, Deck deck, DiscardPile discardPile);
+    void resetRound(final Player p1, 
+                    final Player p2, 
+                    final Deck deck, 
+                    final DiscardPile discardPile);
 }

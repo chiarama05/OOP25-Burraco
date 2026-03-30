@@ -1,9 +1,16 @@
 package it.unibo.burraco.view.hand;
 
 import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
-import it.unibo.burraco.model.card.*;
-import javax.swing.*;
-import java.awt.*;
+import it.unibo.burraco.model.card.Card;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.BorderFactory;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.MouseAdapter; 
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Set;
 
@@ -16,39 +23,54 @@ public final class HandViewImpl extends JPanel implements HandView {
 
     private static final long serialVersionUID = 1L;
 
-    private final SelectionCardManager selectionManager;
+    private static final int GAP = 5;
+    private static final int CARD_WIDTH = 65;
+    private static final int CARD_HEIGHT = 90;
+    private static final int PREF_CARD_STEP = 70;
+    private static final int PREF_WIDTH_OFFSET = 20;
+    private static final int PANEL_HEIGHT = 105;
+
+    private static final int JOLLY_FONT_SIZE = 27;
+    private static final int NORMAL_FONT_SIZE = 19;
+    private static final Color PANEL_BG = new Color(180, 220, 180);
+    private static final Color JOLLY_COLOR = new Color(219, 112, 147);
+    private static final Color HOVER_BG = new Color(255, 255, 225);
+    private static final Color HOVER_BORDER = new Color(240, 230, 140);
+    private static final int HOVER_BORDER_THICKNESS = 2;
+
+    private final transient SelectionCardManager selectionManager;
     private CardSelectionListener listener;
 
     /**
      * Constructs a HandViewImpl with a specific selection manager.
      * @param selectionManager the manager responsible for tracking selected cards
      */
-    public HandViewImpl(SelectionCardManager selectionManager) {
-        super(new FlowLayout(FlowLayout.LEFT, 5, 5));
+    public HandViewImpl(final SelectionCardManager selectionManager) {
+        super(new FlowLayout(FlowLayout.LEFT, GAP, GAP));
         this.selectionManager = selectionManager;
-        setBackground(new Color(180, 220, 180));
+        setBackground(PANEL_BG);
     }
 
     @Override
-    public void refreshHand(List<Card> hand) {
+    public void refreshHand(final List<Card> hand) {
         this.removeAll();
 
         // Dynamically adjust panel width based on the number of cards
-        int preferredWidth = (hand.size() * 70) + 20;
-        this.setPreferredSize(new Dimension(preferredWidth, 105));
+        final int preferredWidth = (hand.size() * PREF_CARD_STEP) + PREF_WIDTH_OFFSET;
+        this.setPreferredSize(new Dimension(preferredWidth, PANEL_HEIGHT));
 
-        for (Card c : hand) {
-            boolean isJolly = c.getValue().equalsIgnoreCase("Jolly");
-            String displayField = isJolly ? c.getSeed() : c.toString();
+        for (final Card c : hand) {
+            final boolean isJolly = c.getValue().equalsIgnoreCase("Jolly");
+            final String displayField = isJolly ? c.getSeed() : c.toString();
 
-            JButton btn = new JButton(displayField);
+            final JButton btn = new JButton(displayField);
 
             // Apply specific styling for Jokers
             if (isJolly) {
-                btn.setFont(new Font("Segoe UI Symbol", Font.BOLD, 27)); 
-                btn.setForeground(new Color(219, 112, 147)); 
+                btn.setFont(new Font("Segoe UI Symbol", Font.BOLD, JOLLY_FONT_SIZE)); 
+                btn.setForeground(JOLLY_COLOR); 
             } else {
-                btn.setFont(new Font("Monospaced", Font.BOLD, 19));
+                btn.setFont(new Font("Monospaced", Font.BOLD, NORMAL_FONT_SIZE));
                 // Set color based on the suit 
                 if (displayField.contains("♥") || displayField.contains("♦")) {
                     btn.setForeground(Color.RED);
@@ -57,7 +79,7 @@ public final class HandViewImpl extends JPanel implements HandView {
                 }
             }
 
-            btn.setPreferredSize(new Dimension(65, 90));
+            btn.setPreferredSize(new Dimension(CARD_WIDTH, CARD_HEIGHT));
             btn.setOpaque(true);
             btn.setBackground(selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
             btn.setBorder(BorderFactory.createLineBorder(Color.GRAY));
@@ -67,9 +89,9 @@ public final class HandViewImpl extends JPanel implements HandView {
                 @Override
                 public void mouseEntered(java.awt.event.MouseEvent e) {
                     if (!selectionManager.isSelected(c)) {
-                        btn.setBackground(new Color(255, 255, 225)); 
+                        btn.setBackground(HOVER_BG); 
                     }
-                    btn.setBorder(BorderFactory.createLineBorder(new Color(240, 230, 140), 2)); 
+                    btn.setBorder(BorderFactory.createLineBorder(HOVER_BORDER, HOVER_BORDER_THICKNESS)); 
                     btn.setLocation(btn.getX(), btn.getY() - 2);
                 }
 
@@ -112,7 +134,7 @@ public final class HandViewImpl extends JPanel implements HandView {
     }
 
     @Override
-    public void setCardSelectionListener(CardSelectionListener listener) {
+    public void setCardSelectionListener(final CardSelectionListener listener) {
         this.listener = listener;
     }
 
@@ -129,7 +151,7 @@ public final class HandViewImpl extends JPanel implements HandView {
      * Updates the hand and clears the current selection.
      * @param hand the new list of cards to display
      */
-    public void updateHand(List<Card> hand) {
+    public void updateHand(final List<Card> hand) {
         refreshHand(hand);
         selectionManager.clearSelection();
     }

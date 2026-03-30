@@ -23,7 +23,9 @@ public class DeckActionController {
      * @param drawManager    the manager responsible for the draw logic
      * @param notifier       the notifier used to report draw errors to the user
      */
-    public DeckActionController(GameController gameController, DrawManager drawManager, DeckNotifier notifier) {
+    public DeckActionController(final GameController gameController, 
+                                final DrawManager drawManager, 
+                                final DeckNotifier notifier) {
         this.gameController = gameController;
         this.drawManager = drawManager;
         this.notifier = notifier;
@@ -36,11 +38,11 @@ public class DeckActionController {
      *
      * @param view the view that initiated the draw action and will be updated on success
      */
-    public void handle(DeckDrawView view) {
-        var currentPlayer = gameController.getCurrentPlayer();
-        var deck = gameController.getCommonDeck();
+    public void handle(final DeckDrawView view) {
+        final var currentPlayer = gameController.getCurrentPlayer();
+        final var deck = gameController.getCommonDeck();
 
-        DrawResult result = drawManager.drawFromDeck(currentPlayer, deck);
+        final DrawResult result = drawManager.drawFromDeck(currentPlayer, deck);
 
         if (result.getStatus() == DrawResult.Status.SUCCESS) {
             // Notify the view to update the player's hand display

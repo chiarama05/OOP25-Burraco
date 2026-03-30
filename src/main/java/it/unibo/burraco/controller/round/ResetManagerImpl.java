@@ -5,13 +5,16 @@ import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.player.Player;
 
 /**
- * Concrete implementation of ResetManager.
+ * Concrete implementation of {@link ResetManager}.
  * It coordinates the reset sequence across the domain models.
  */
 public class ResetManagerImpl implements ResetManager{
 
     @Override
-    public void resetRound(Player p1, Player p2, Deck deck, DiscardPile discardPile) {
+    public void resetRound(final Player p1, 
+                           final Player p2, 
+                           final Deck deck, 
+                           final DiscardPile discardPile) {
         // Clear player hands, side pots, and combinations
         p1.resetForNewRound();
         p2.resetForNewRound();

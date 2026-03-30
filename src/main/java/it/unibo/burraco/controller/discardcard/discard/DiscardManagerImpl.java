@@ -19,7 +19,7 @@ public class DiscardManagerImpl implements DiscardManager {
     /**
      * @param discardPile the shared discard pile model.
      */
-    public DiscardManagerImpl(DiscardPile discardPile) {
+    public DiscardManagerImpl(final DiscardPile discardPile) {
         this.discardPile = discardPile;
     }
 
@@ -47,7 +47,7 @@ public class DiscardManagerImpl implements DiscardManager {
         discardPile.add(card);
 
         // Check if this discard results in a round win or an illegal closure
-        ClosureState state = ClosureValidator.evaluateAfterDiscard(player);
+        final ClosureState state = ClosureValidator.evaluateAfterDiscard(player);
 
         switch (state) {
             case ROUND_WON:
