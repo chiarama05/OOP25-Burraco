@@ -8,14 +8,13 @@ public interface GameNotifier {
 
     void notifyInvalidClosure();
 
-    void notifyVictory(String winnerName);
+    void notifyVictory(final String winnerName);
 
     void notifyMustDraw();
 
-    void notifySelectionError(String message);
+    void notifySelectionError(final String message);
 
     void notifyMustTakePotBeforeDiscard();
     
     void notifyMustFormBurracoBeforeClose();
-
 }

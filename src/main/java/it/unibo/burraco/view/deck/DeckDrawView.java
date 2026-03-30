@@ -17,7 +17,7 @@ public interface DeckDrawView {
      * @param current the player who performed the draw
      * @param hand    the updated list of cards in the player's hand
      */
-    void onDrawSuccess(Player current, List<Card> hand);
+    void onDrawSuccess(final Player current, final List<Card> hand);
 
     /**
      * Called when a draw attempt fails.
@@ -25,5 +25,5 @@ public interface DeckDrawView {
      *
      * @param message a human-readable description of the error
      */
-    void showDrawError(String message);
+    void showDrawError(final String message);
 }
