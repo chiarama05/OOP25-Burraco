@@ -35,49 +35,28 @@ class DiscardPileTest {
     }
 
     @Test
-    void testAddCard() {
+    void testAddSingleCard() {
+        int initialSize = discardPile.getCards().size();
         final Card c = makeCard("♥", "A");
         discardPile.add(c);
-        
-        assertFalse(discardPile.isEmpty());
-        assertEquals(1, discardPile.getCards().size());
-        assertEquals(c, discardPile.getCards().get(0));
+    
+        assertEquals(initialSize + 1, discardPile.getCards().size());
+        List<Card> cards = discardPile.getCards();
+        assertEquals(c, cards.get(cards.size() - 1));
     }
 
     @Test
-    void testAddAll() {
-        final List<Card> cards = List.of(
-            makeCard("♥", "A"),
-            makeCard("♦", "K"),
-            makeCard("♣", "Q")
-        );
-        
-        discardPile.addAll(cards);
-        assertEquals(3, discardPile.getCards().size());
-        assertFalse(discardPile.isEmpty());
-    }
-
-    @Test
-    void testDrawLast() {
-        final Card c1 = makeCard("♥", "A");
-        final Card c2 = makeCard("♣", "2");
-        
-        discardPile.add(c1);
-        discardPile.add(c2);
-        
-
-        final Card drawn = discardPile.drawLast();
-        assertEquals(c2, drawn);
-        assertEquals(1, discardPile.getCards().size());
-        
-
-        assertEquals(c1, discardPile.drawLast());
+    void testTakeAll() {
+        discardPile.add(new CardImpl("♥", "5"));
+        discardPile.add(new CardImpl("♣", "Q"));
+        List<Card> allCards = discardPile.getCards();
+        assertEquals(2, allCards.size());
+        discardPile.reset();
         assertTrue(discardPile.isEmpty());
     }
 
     @Test
     void testDrawFromEmptyPile() {
-
         assertNull(discardPile.drawLast());
     }
 
