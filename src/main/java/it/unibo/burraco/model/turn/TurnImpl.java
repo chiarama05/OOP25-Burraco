@@ -37,7 +37,6 @@ public final class TurnImpl implements Turn {
     }
 
 
-
     /**
      * Resets the turn state for a new round.
      * Player 1 is always given the first turn, and the finished flag is cleared.
@@ -47,6 +46,7 @@ public final class TurnImpl implements Turn {
         this.isPlayer1Turn = true;
         this.gameFinished = false;
     }
+    
 
     @Override
     public Player getCurrentPlayer() {
