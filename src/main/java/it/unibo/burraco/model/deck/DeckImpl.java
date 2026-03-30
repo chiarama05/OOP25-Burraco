@@ -1,6 +1,8 @@
 package it.unibo.burraco.model.deck;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 
@@ -12,7 +14,7 @@ import it.unibo.burraco.model.card.CardImpl;
  */
 public class DeckImpl implements Deck {
 
-    private List<Card> cards;
+    private final List<Card> cards;
 
     /**
      * Constructs a new DeckImpl and initializes the full deck.
@@ -35,12 +37,12 @@ public class DeckImpl implements Deck {
      * Builds the full deck: two sets of 52 cards plus 2 Jokers each, then shuffles.
      */
     private void initializeDeck() {
-        String[] seeds = {"♠", "♥", "♣", "♦"};
-        String[] values = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
+        final String[] seeds = {"♠", "♥", "♣", "♦"};
+        final String[] values = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
 
         for (int j = 0; j < 2; j++) {
-            for (String seed : seeds) {
-                for (String value : values) {
+            for (final String seed : seeds) {
+                for (final String value : values) {
                     cards.add(new CardImpl(seed, value));
                 }
             }
