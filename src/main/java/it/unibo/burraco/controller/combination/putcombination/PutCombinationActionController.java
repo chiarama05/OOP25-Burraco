@@ -1,5 +1,6 @@
-package it.unibo.burraco.controller.combination;
+package it.unibo.burraco.controller.combination.putcombination;
 
+import it.unibo.burraco.controller.combination.putcombination.PutCombinationResult.Status;
 import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;

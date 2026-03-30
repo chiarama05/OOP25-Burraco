@@ -1,4 +1,4 @@
-package it.unibo.burraco.controller.combination;
+package it.unibo.burraco.controller.combination.putcombination;
 
 import it.unibo.burraco.model.card.Card;
 import java.util.List;

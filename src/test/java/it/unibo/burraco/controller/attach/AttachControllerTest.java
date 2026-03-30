@@ -6,10 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 import it.unibo.burraco.model.player.PlayerImpl;
@@ -17,7 +15,6 @@ import it.unibo.burraco.model.player.PlayerImpl;
 class AttachControllerTest {
     private static final String HEARTS   = "♥";
     private static final String SPADES   = "♠";
-
     private AttachController controller;
     private PlayerImpl player;
 
@@ -86,8 +83,6 @@ class AttachControllerTest {
 
     @Test
     void testWouldGetStuckAfterAttach() {
-        // Giocatore ha il pozzetto, ha in mano SOLO la carta che vuole attaccare
-        // resterebbe a 0 carte 
         player.setInPot(true);
 
         final CardImpl six = new CardImpl(HEARTS, "6");
@@ -106,7 +101,6 @@ class AttachControllerTest {
 
     @Test
     void testSuccess() {
-        // Giocatore ha pozzetto, ha 2 carte in mano, ne attacca 1 → resta con 1 e ha burraco
         player.setInPot(true);
 
         player.addCombination(List.of(
@@ -119,7 +113,7 @@ class AttachControllerTest {
         final CardImpl sixSpades = new CardImpl(SPADES, "6");
         final CardImpl sevenSpades = new CardImpl(SPADES, "7");
         player.addCardHand(sixSpades);
-        player.addCardHand(sevenSpades); // carta di riserva: resta con 1 dopo l'attacco
+        player.addCardHand(sevenSpades); 
 
         final List<Card> combo = setupCombination(new ArrayList<>(List.of(
                 new CardImpl(SPADES, "3"),

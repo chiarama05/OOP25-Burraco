@@ -1,8 +1,9 @@
-package it.unibo.burraco.controller.combination;
+package it.unibo.burraco.controller.combination.straight;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import it.unibo.burraco.controller.combination.CombinationValidator;
 import it.unibo.burraco.model.card.Card;
 
 /**
