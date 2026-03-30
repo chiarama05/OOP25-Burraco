@@ -5,9 +5,25 @@ import it.unibo.burraco.model.score.Score;
 import it.unibo.burraco.view.colorbutton.RoundedGradientButton;
 import it.unibo.burraco.view.table.TableView;
 
-import javax.swing.*;
+import javax.swing.BoxLayout;
+import javax.swing.Box;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.util.Locale;
 
 /**
  * Swing implementation of the ScoreView interface.
@@ -19,35 +35,34 @@ public final class ScoreViewImpl implements ScoreView {
 
     private static final long serialVersionUID = 1L;
     
-    private static final int FRAME_WIDTH         = 650;
-    private static final int FRAME_HEIGHT        = 750;
-    private static final int BORDER_PADDING      = 20;
-    private static final int GRID_GAP            = 30;
-    private static final int TITLE_FONT_SIZE     = 28;
+    private static final int FRAME_WIDTH = 650;
+    private static final int FRAME_HEIGHT = 750;
+    private static final int BORDER_PADDING = 20;
+    private static final int GRID_GAP = 30;
+    private static final int TITLE_FONT_SIZE = 28;
     private static final int TITLE_BOTTOM_BORDER = 40;
-    private static final int NAME_FONT_SIZE      = 22;
-    private static final int NAME_STRUT          = 20;
-    private static final int BUTTON_FONT_SIZE    = 18;
-    private static final int BUTTON_WIDTH        = 500;
-    private static final int BUTTON_HEIGHT       = 60;
-    private static final int BUTTON_TOP_BORDER   = 40;
-    private static final int BUTTON_BOT_BORDER   = 10;
-    private static final int ROW_FONT_SIZE       = 16;
-    private static final int ROW_MAX_WIDTH       = 250;
-    private static final int ROW_MAX_HEIGHT      = 30;
-    private static final int SEPARATOR_STRUT     = 10;
-    private static final int SEPARATOR_HEIGHT    = 10;
+    private static final int NAME_FONT_SIZE = 22;
+    private static final int NAME_STRUT = 20;
+    private static final int BUTTON_FONT_SIZE = 18;
+    private static final int BUTTON_WIDTH = 500;
+    private static final int BUTTON_HEIGHT = 60;
+    private static final int BUTTON_TOP_BORDER = 40;
+    private static final int BUTTON_BOT_BORDER = 10;
+    private static final int ROW_FONT_SIZE = 16;
+    private static final int ROW_MAX_WIDTH = 250;
+    private static final int ROW_MAX_HEIGHT = 30;
+    private static final int SEPARATOR_STRUT = 10;
+    private static final int SEPARATOR_HEIGHT = 10;
 
-    private static final Color BACKGROUND_COLOR  = new Color(0, 102, 51);
-    private static final Color TITLE_COLOR       = new Color(255, 182, 193);
-    private static final Color GRADIENT_TOP      = new Color(53, 102, 73);
-    private static final Color GRADIENT_BOTTOM   = new Color(94, 153, 115);
-    private static final Color ACCENT_COLOR      = new Color(219, 112, 147);
+    private static final Color BACKGROUND_COLOR = new Color(0, 102, 51);
+    private static final Color TITLE_COLOR = new Color(255, 182, 193);
+    private static final Color GRADIENT_TOP = new Color(53, 102, 73);
+    private static final Color GRADIENT_BOTTOM = new Color(94, 153, 115);
+    private static final Color ACCENT_COLOR = new Color(219, 112, 147);
 
     private final JFrame frame;
     private final Score scoreManager;
     private final int targetScore;
-    private final TableView tableView;
     private Runnable nextAction;
 
     /**
@@ -73,7 +88,6 @@ public final class ScoreViewImpl implements ScoreView {
         this.scoreManager = scoreManager;
         this.frame        = new JFrame("Burraco - Final Standings");
         this.targetScore  = targetScore;
-        this.tableView    = tableView;
 
         setupUI(p1, p2, name1, name2, matchOver);
     }
@@ -136,7 +150,7 @@ public final class ScoreViewImpl implements ScoreView {
         final RoundedGradientButton actionBtn;
         if (matchOver) {
             final String winnerName = p1.getMatchTotalScore() > p2.getMatchTotalScore() ? name1 : name2;
-            actionBtn = new RoundedGradientButton("CHAMPION: " + winnerName.toUpperCase() + " (FINISH GAME)");
+            actionBtn = new RoundedGradientButton("CHAMPION: " + winnerName.toUpperCase(Locale.ROOT) + " (FINISH GAME)");
             actionBtn.addActionListener(e -> System.exit(0));
         } else {
             actionBtn = new RoundedGradientButton("NEXT ROUND (Target: " + targetScore + " pts)");
@@ -222,29 +236,6 @@ public final class ScoreViewImpl implements ScoreView {
     }
 
     /**
-     * Inner class that paints a vertical linear gradient as its background,
-     * giving the scoreboard a polished green-felt appearance.
-     */
-    static class BackgroundPanel extends JPanel {
-
-        /**
-         * Overrides the default painting to fill the panel with a top-to-bottom gradient.
-         *
-         * @param g The {@link Graphics} context provided by Swing.
-         */
-        @Override
-        protected void paintComponent(final Graphics g) {
-            super.paintComponent(g);
-            final Graphics2D g2d = (Graphics2D) g;
-            final int w = getWidth();
-            final int h = getHeight();
-            final GradientPaint gp = new GradientPaint(0, 0, GRADIENT_TOP, 0, h, GRADIENT_BOTTOM);
-            g2d.setPaint(gp);
-            g2d.fillRect(0, 0, w, h);
-        }
-    }
-
-    /**
      * Creates a single label–value row used inside the player stats panel.
      * The label is left-aligned and the value is right-aligned within a
      * {@link BorderLayout}, capped at a fixed maximum size for consistent alignment.
@@ -287,5 +278,28 @@ public final class ScoreViewImpl implements ScoreView {
     @Override
     public void close() {
         frame.dispose();
+    }
+
+    /**
+     * Inner class that paints a vertical linear gradient as its background,
+     * giving the scoreboard a polished green-felt appearance.
+     */
+    static class BackgroundPanel extends JPanel {
+
+        /**
+         * Overrides the default painting to fill the panel with a top-to-bottom gradient.
+         *
+         * @param g The {@link Graphics} context provided by Swing.
+         */
+        @Override
+        protected void paintComponent(final Graphics g) {
+            super.paintComponent(g);
+            final Graphics2D g2d = (Graphics2D) g;
+            final int w = getWidth();
+            final int h = getHeight();
+            final GradientPaint gp = new GradientPaint(0, 0, GRADIENT_TOP, 0, h, GRADIENT_BOTTOM);
+            g2d.setPaint(gp);
+            g2d.fillRect(0, 0, w, h);
+        }
     }
 }
