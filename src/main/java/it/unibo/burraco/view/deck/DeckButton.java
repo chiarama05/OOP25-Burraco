@@ -27,7 +27,7 @@ public final class DeckButton implements DeckDrawView {
     public DeckButton(final DeckView deckView, final TableView tableView) {
         this.deckView = deckView;
         this.tableView = tableView;
-        this.deckView.getDeckButton().addActionListener(finalEvent -> handleDraw());
+        this.deckView.getDeckButton().addActionListener(finalEvent -> this.handleDraw());
     }
 
     /**
@@ -49,23 +49,28 @@ public final class DeckButton implements DeckDrawView {
     }
 
     private void handleDraw() {
-        if (onDrawAction != null) {
-            onDrawAction.run();
+        if (this.onDrawAction != null) {
+            this.onDrawAction.run();
         }
     }
 
     /**
      * Called by the controller when the draw succeeds.
      * Refreshes the player's hand panel with the updated cards.
+     *
+     * @param current the player who drew
+     * @param hand    the updated list of cards in hand
      */
     @Override
     public void onDrawSuccess(final Player current, final List<Card> hand) {
-        tableView.refreshHandPanel(isPlayer1, hand);
+        this.tableView.refreshHandPanel(this.isPlayer1, hand);
     }
 
     /**
      * Called by the controller when the draw fails.
      * Displays an error dialog to the user.
+     *
+     * @param message the error message to display
      */
     @Override
     public void showDrawError(final String message) {
