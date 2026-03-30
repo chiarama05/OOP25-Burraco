@@ -19,7 +19,9 @@ import java.util.function.BiConsumer;
  * when the player clicks the button with selected cards.
  * Implements {@link AttachView} to react to attach outcomes from the controller.
  */
-public class AttachButton extends JButton implements AttachView {
+public final class AttachButton extends JButton implements AttachView {
+
+    private static final long serialVersionUID = 1L;
 
     private final List<Card> cards;
     private final TableView tableView;

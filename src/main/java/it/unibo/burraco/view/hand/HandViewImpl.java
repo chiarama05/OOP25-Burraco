@@ -12,7 +12,9 @@ import java.util.Set;
  * It displays cards as interactive {@link JButton} components within a panel,
  * handling visual feedback for selection, hover effects, and Jolly-specific styling.
  */
-public class HandViewImpl extends JPanel implements HandView {
+public final class HandViewImpl extends JPanel implements HandView {
+
+    private static final long serialVersionUID = 1L;
 
     private final SelectionCardManager selectionManager;
     private CardSelectionListener listener;
