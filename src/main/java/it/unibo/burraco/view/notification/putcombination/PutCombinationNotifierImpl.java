@@ -5,16 +5,16 @@ import javax.swing.JOptionPane;
 
 import it.unibo.burraco.controller.combination.putcombination.PutCombinationResult;
 
-public class PutCombinationNotifierImpl implements PutCombinationNotifier {
+public final class PutCombinationNotifierImpl implements PutCombinationNotifier {
 
     private final JFrame parent;
 
-    public PutCombinationNotifierImpl(JFrame parent) {
+    public PutCombinationNotifierImpl(final JFrame parent) {
         this.parent = parent;
     }
 
     @Override
-    public void notifyCombinationError(PutCombinationResult result) {
+    public void notifyCombinationError(final PutCombinationResult result) {
 
         PutCombinationResult.Status status = result.getStatus();
         

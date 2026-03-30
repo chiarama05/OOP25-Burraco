@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 
 import it.unibo.burraco.controller.drawcard.DrawResult;
 
-public class TakeDiscardNotifierImpl implements TakeDiscardNotifier{
+public final class TakeDiscardNotifierImpl implements TakeDiscardNotifier{
 
     private final JFrame parent;
 

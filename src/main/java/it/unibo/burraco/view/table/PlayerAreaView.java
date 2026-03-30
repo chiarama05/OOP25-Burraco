@@ -3,7 +3,7 @@ package it.unibo.burraco.view.table;
 import javax.swing.*;
 import java.awt.*;
 
-public class PlayerAreaView extends JPanel {
+public final class PlayerAreaView extends JPanel {
 
     public PlayerAreaView(JComponent discardComponent, JPanel deckView, JPanel deckPanel, Color lightgreen) {
         this.setLayout(new BorderLayout());

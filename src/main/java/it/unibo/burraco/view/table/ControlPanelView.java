@@ -3,7 +3,7 @@ package it.unibo.burraco.view.table;
 import javax.swing.*;
 import java.awt.*;
 
-public class ControlPanelView extends JPanel {
+public final class ControlPanelView extends JPanel {
     private final JButton takeDiscardBtn;
     private final JButton putComboBtn;
     private final JButton discardBtn;
