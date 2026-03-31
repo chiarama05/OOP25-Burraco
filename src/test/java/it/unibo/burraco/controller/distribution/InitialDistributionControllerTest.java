@@ -21,7 +21,9 @@ class InitialDistributionControllerTest {
         final Player p2 = mock(Player.class);
         final Deck deck = mock(Deck.class);
         final DiscardPile discard = mock(DiscardPile.class);
+
         controller.distribute(p1, p2, deck, discard);
+        
         verify(mockManager).distributeInitialCards(p1, p2, deck, discard);
     }
 }
