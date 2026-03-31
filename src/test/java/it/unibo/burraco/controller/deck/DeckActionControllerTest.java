@@ -32,43 +32,52 @@ class DeckActionControllerTest {
 
     @BeforeEach
     void setUp() {
-        gameController = mock(GameController.class);
-        drawManager = mock(DrawManager.class);
-        notifier = mock(DeckNotifier.class);
-        view = mock(DeckDrawView.class);
-        player = mock(Player.class);
-        deck = mock(DeckImpl.class);
-        when(gameController.getCurrentPlayer()).thenReturn(player);
-        when(gameController.getCommonDeck()).thenReturn(deck);
-        when(player.getHand()).thenReturn(List.of(mock(Card.class)));
-        controller = new DeckActionController(gameController, drawManager, notifier);
+        this.gameController = mock(GameController.class);
+        this.drawManager = mock(DrawManager.class);
+        this.notifier = mock(DeckNotifier.class);
+        this.view = mock(DeckDrawView.class);
+        this.player = mock(Player.class);
+        this.deck = mock(DeckImpl.class);
+        
+        when(this.gameController.getCurrentPlayer()).thenReturn(this.player);
+        when(this.gameController.getCommonDeck()).thenReturn(this.deck);
+        when(this.player.getHand()).thenReturn(List.of(mock(Card.class)));
+        
+        this.controller = new DeckActionController(this.gameController, this.drawManager, this.notifier);
     }
 
     @Test
-    void whenDrawSucceeds_thenViewIsNotified() {
-        DrawResult success = DrawResult.success(mock(Card.class));
-        when(drawManager.drawFromDeck(player, deck)).thenReturn(success);
-        controller.handle(view);
-        verify(view).onDrawSuccess(player, player.getHand());
-        verify(notifier, never()).notifyDrawError(any());
+    void testHandleWhenDrawSucceedsThenViewIsNotified() {
+        final DrawResult success = DrawResult.success(mock(Card.class));
+        when(this.drawManager.drawFromDeck(this.player, this.deck)).thenReturn(success);
+        
+        this.controller.handle(this.view);
+        
+        verify(this.view).onDrawSuccess(this.player, this.player.getHand());
+        verify(this.notifier, never()).notifyDrawError(any());
     }
 
     @Test
-    void whenDrawFails_thenNotifierIsCalledAndViewIsNot() {
-        DrawResult failure = DrawResult.alreadyDrawn(); 
-        when(drawManager.drawFromDeck(player, deck)).thenReturn(failure);
-        controller.handle(view);
-        verify(notifier).notifyDrawError(failure);
-        verify(view, never()).onDrawSuccess(any(), any());
+    void testHandleWhenDrawFailsThenNotifierIsCalled() {
+        final DrawResult failure = DrawResult.alreadyDrawn(); 
+        when(this.drawManager.drawFromDeck(this.player, this.deck)).thenReturn(failure);
+
+        this.controller.handle(this.view);
+
+        verify(this.notifier).notifyDrawError(failure);
+        verify(this.view, never()).onDrawSuccess(any(), any());
     }
 
     @Test
-    void handle_alwaysGetsCurrentPlayerAndDeckFromController() {
-        when(drawManager.drawFromDeck(any(), any()))
-            .thenReturn(DrawResult.success(mock(Card.class))); 
-        controller.handle(view);
-        verify(gameController).getCurrentPlayer();
-        verify(gameController).getCommonDeck();
+    void testHandleAlwaysGetsDataFromGameController() {
+        // Setup a dummy result to allow the execution
+        final DrawResult dummyResult = DrawResult.success(mock(Card.class));
+        when(this.drawManager.drawFromDeck(any(), any())).thenReturn(dummyResult);
+
+        this.controller.handle(this.view);
+
+        verify(this.gameController).getCurrentPlayer();
+        verify(this.gameController).getCommonDeck();
+        verify(this.drawManager).drawFromDeck(this.player, this.deck);
     }
 }
-
