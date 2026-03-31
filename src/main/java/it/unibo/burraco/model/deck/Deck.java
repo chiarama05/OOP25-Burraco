@@ -5,12 +5,12 @@ import it.unibo.burraco.model.card.Card;
 
 /**
  * Represents a generic deck of cards.
- * 
+ *
  * A Deck provides basic operations such as:
  * - Drawing a card
  * - Checking if the deck is empty
  * - Retrieving the current list of cards
- * 
+ *
  * Implementations of this interface define how
  * the deck is created and managed.
  */
@@ -42,7 +42,7 @@ public interface Deck {
      * @return a list of cards in the deck.
      */
     List<Card> getCards();
-    
+
     /**
      * Resets the deck to its initial state, regenerating and reshuffling all cards.
      */

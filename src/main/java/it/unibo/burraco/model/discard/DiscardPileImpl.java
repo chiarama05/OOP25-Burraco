@@ -10,8 +10,8 @@ import it.unibo.burraco.model.card.Card;
  */
 public final class DiscardPileImpl implements DiscardPile {
 
-    /** 
-     * Internal list used to store the discarded cards. 
+    /**
+     * Internal list used to store the discarded cards.
      */
     private final List<Card> cards = new ArrayList<>();
 
@@ -45,7 +45,7 @@ public final class DiscardPileImpl implements DiscardPile {
         return cards.isEmpty();
     }
 
-    
+
     @Override
     public void reset() {
         this.cards.clear();

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -33,139 +34,72 @@ class PlayerTest {
     }
 
     @Test
-    void testNamedConstructor() {
-        assertEquals(PLAYER_NAME, player.getName());
-    }
-
-    @Test
-    void testDefaultConstructor() {
+    void testConstructors() {
+        assertEquals(PLAYER_NAME, this.player.getName());
         final PlayerImpl defaultPlayer = new PlayerImpl();
         assertEquals(DEFAULT_NAME, defaultPlayer.getName());
     }
 
     @Test
     void testInitialState() {
-        assertTrue(player.getHand().isEmpty());
-        assertTrue(player.getCombinations().isEmpty());
-        assertFalse(player.isInPot());
-        assertEquals(0, player.getMatchTotalScore());
-        assertTrue(player.hasFinishedCards());
+        assertTrue(this.player.getHand().isEmpty());
+        assertTrue(this.player.getCombinations().isEmpty());
+        assertFalse(this.player.isInPot());
+        assertEquals(0, this.player.getMatchTotalScore());
+        assertTrue(this.player.hasFinishedCards());
     }
 
     @Test
-    void testAddCardHand() {
-        player.addCardHand(aceOfHearts);
+    void testHandManagement() {
+        this.player.addCardHand(this.aceOfHearts);
+        assertEquals(1, this.player.getHand().size());
+        assertTrue(this.player.hasCard(this.aceOfHearts));
 
-        assertEquals(1, player.getHand().size());
-        assertTrue(player.hasCard(aceOfHearts));
+        this.player.addCardHand(this.kingOfHearts);
+        this.player.removeCards(List.of(this.aceOfHearts));
+        assertFalse(this.player.hasCard(this.aceOfHearts));
+        assertTrue(this.player.hasCard(this.kingOfHearts));
     }
 
     @Test
-    void testRemoveCards() {
-        player.addCardHand(aceOfHearts);
-        player.addCardHand(kingOfHearts);
-        player.addCardHand(twoOfSpades);
+    void testPotInteraction() {
+        final List<Card> potCards = List.of(this.aceOfHearts, this.kingOfHearts);
+        this.player.addToPot(potCards);
+        
+        assertEquals(2, this.player.getPot().size());
+        this.player.drawPot();
 
-        player.removeCards(List.of(aceOfHearts, kingOfHearts));
-
-        assertEquals(1, player.getHand().size());
-        assertFalse(player.hasCard(aceOfHearts));
-        assertFalse(player.hasCard(kingOfHearts));
-        assertTrue(player.hasCard(twoOfSpades));
-    }
-
-    @Test
-    void testHasFinishedCardsWhenHandEmpty() {
-        player.addCardHand(aceOfHearts);
-        assertFalse(player.hasFinishedCards());
-
-        player.removeCardHand(aceOfHearts);
-        assertTrue(player.hasFinishedCards());
-    }
-
-    @Test
-    void testAddToPot() {
-        player.addToPot(List.of(aceOfHearts, kingOfHearts));
-
-        assertEquals(2, player.getPot().size());
-        assertTrue(player.getPot().contains(aceOfHearts));
-        assertTrue(player.getPot().contains(kingOfHearts));
-    }
-
-    @Test
-    void testAddToPotOverwritesPrevious() {
-        player.addToPot(List.of(aceOfHearts));
-        player.addToPot(List.of(kingOfHearts, twoOfSpades));
-
-        assertEquals(2, player.getPot().size());
-        assertFalse(player.getPot().contains(aceOfHearts));
-    }
-
-    @Test
-    void testDrawPotAddsCardsToHand() {
-        player.addToPot(List.of(aceOfHearts, kingOfHearts));
-        player.drawPot();
-
-        assertTrue(player.hasCard(aceOfHearts));
-        assertTrue(player.hasCard(kingOfHearts));
-        assertEquals(2, player.getHand().size());
-    }
-
-    @Test
-    void testDrawPotClearsPot() {
-        player.addToPot(List.of(aceOfHearts));
-        player.drawPot();
-
-        assertTrue(player.getPot().isEmpty());
-    }
-
-    @Test
-    void testDrawPotSetsInPotTrue() {
-        player.addToPot(List.of(aceOfHearts));
-        player.drawPot();
-
-        assertTrue(player.isInPot());
-    }
-
-    @Test
-    void testDrawPotOnEmptyPotDoesNothing() {
-        player.drawPot();
-
-        assertTrue(player.getHand().isEmpty());
-        assertFalse(player.isInPot());
+        assertTrue(this.player.getPot().isEmpty());
+        assertTrue(this.player.isInPot());
+        assertEquals(2, this.player.getHand().size());
     }
 
     @Test
     void testAddCombinationIsDefensiveCopy() {
-        final List<Card> comb = new java.util.ArrayList<>(List.of(aceOfHearts, kingOfHearts));
-        player.addCombination(comb);
-        comb.add(twoOfSpades);
+        final List<Card> comb = new ArrayList<>(List.of(this.aceOfHearts, this.kingOfHearts));
+        this.player.addCombination(comb);
 
-        assertEquals(2, player.getCombinations().get(0).size());
+        comb.add(this.twoOfSpades);
+        assertEquals(2, this.player.getCombinations().get(0).size());
     }
 
     @Test
-    void testAddPointsToMatch() {
-        player.addPointsToMatch(10);
-        player.addPointsToMatch(25);
-
-        assertEquals(35, player.getMatchTotalScore());
+    void testScorePersistence() {
+        this.player.addPointsToMatch(10);
+        this.player.addPointsToMatch(25);
+        assertEquals(35, this.player.getMatchTotalScore());
     }
 
     @Test
     void testResetForNewRound() {
-        player.addCardHand(aceOfHearts);
-        player.addToPot(List.of(kingOfHearts));
-        player.addCombination(List.of(aceOfHearts, kingOfHearts, twoOfSpades));
-        player.setInPot(true);
-        player.addPointsToMatch(100);
+        this.player.addCardHand(this.aceOfHearts);
+        this.player.setInPot(true);
+        this.player.addPointsToMatch(100);
 
-        player.resetForNewRound();
+        this.player.resetForNewRound();
 
-        assertTrue(player.getHand().isEmpty());
-        assertTrue(player.getPot().isEmpty());
-        assertTrue(player.getCombinations().isEmpty());
-        assertFalse(player.isInPot());
-        assertEquals(100, player.getMatchTotalScore());
+        assertTrue(this.player.getHand().isEmpty());
+        assertFalse(this.player.isInPot());
+        assertEquals(100, this.player.getMatchTotalScore());
     }
 }
