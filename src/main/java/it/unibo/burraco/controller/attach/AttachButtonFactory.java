@@ -26,6 +26,12 @@ public class AttachButtonFactory {
 
     /**
      * Constructs the factory with all shared dependencies.
+     *
+     * @param tableView       the table view shared across buttons
+     * @param gameController  the main game controller
+     * @param closureManager  the closure manager
+     * @param potManager      the pot manager
+     * @param frame           the parent frame used for notifications
      */
     public AttachButtonFactory(final TableView tableView,
                                 final GameController gameController,
@@ -47,18 +53,17 @@ public class AttachButtonFactory {
      * @param isPlayer1 true if the combination belongs to Player 1
      * @return a fully configured {@link AttachButton} ready to be added to the UI
      */
-    public AttachButton create(List<Card> cards, boolean isPlayer1) {
+    public AttachButton create(final List<Card> cards, final boolean isPlayer1) {
         final AttachButton btn = new AttachButton(cards, this.tableView, isPlayer1);
         final AttachNotifier notifier = new AttachNotifierImpl(this.frame);
-
         final AttachActionController ctrl = new AttachActionController(
-                this.gameController, 
-                this.potManager, 
-                this.closureManager, 
-                notifier, 
+                this.gameController,
+                this.potManager,
+                this.closureManager,
+                notifier,
                 isPlayer1
         );
-        btn.setOnAttachAction((final List<Card> selected, final AttachButton self) -> 
+        btn.setOnAttachAction((final List<Card> selected, final AttachButton self) ->
             ctrl.handle(selected, self.getCards(), self)
         );
         return btn;
