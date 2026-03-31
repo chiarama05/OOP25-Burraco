@@ -21,7 +21,7 @@ public final class CardPoint {
     public static final int RANK_JACK = 11;
     public static final int RANK_QUEEN = 12;
     public static final int RANK_KING = 13;
-    
+
     private static final int POINTS_JOLLY = 30;
     private static final int POINTS_TWO = 20;
     private static final int POINTS_ACE = 15;
@@ -52,7 +52,7 @@ public final class CardPoint {
 
     /**
      * Calculates the score value of a specific card.
-     * 
+     *
      * @param card the card to evaluate.
      * @return the points assigned to the card.
      */
@@ -67,11 +67,11 @@ public final class CardPoint {
         if (ACE_STR.equals(value)) {
             return POINTS_ACE;
         }
-        if (KING_STR.equals(value) || QUEEN_STR.equals(value) || JACK_STR.equals(value) 
+        if (KING_STR.equals(value) || QUEEN_STR.equals(value) || JACK_STR.equals(value)
             || TEN_STR.equals(value) || NINE_STR.equals(value) || EIGHT_STR.equals(value)) {
             return POINTS_HIGH_CARDS;
         }
-        if (SEVEN_STR.equals(value) || SIX_STR.equals(value) || FIVE_STR.equals(value) 
+        if (SEVEN_STR.equals(value) || SIX_STR.equals(value) || FIVE_STR.equals(value)
             || FOUR_STR.equals(value) || THREE_STR.equals(value)) {
             return POINTS_LOW_CARDS;
         }
@@ -80,7 +80,7 @@ public final class CardPoint {
 
     /**
      * Converts a card's string value to its numerical rank for sorting/sequence logic.
-     * 
+     *
      * @param card the card to convert.
      * @return an integer from 1 (Ace) to 13 (King).
      * @throws IllegalArgumentException if the card value is not a standard rank.

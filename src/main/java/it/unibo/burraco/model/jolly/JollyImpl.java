@@ -15,7 +15,7 @@ public final class JollyImpl implements Jolly {
 
     /**
      * Constructor that initializes the Jolly with a specific card.
-     * 
+     *
      * @param card the card to wrap as a Jolly
      */
     public JollyImpl(final Card card) {

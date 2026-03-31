@@ -14,7 +14,7 @@ public final class CardImpl implements Card {
 
     /**
      * Constructs a CardImpl with the specified seed and value.
-     * 
+     *
      * @param seed the seed of the card
      * @param value the face value of the card
      */
@@ -25,7 +25,7 @@ public final class CardImpl implements Card {
 
     /**
      * Sets the wildcard status of the card.
-     * 
+     *
      * @param status true to set the card as a wildcard, false otherwise
      */
     public void setAsWildcard(final boolean status) {
@@ -49,12 +49,12 @@ public final class CardImpl implements Card {
 
     /**
      * Returns a string representation of the card.
-     * 
+     *
      * @return a string combining value and seed (e.g. "A♠")
      */
     @Override
     public String toString() {
-        return value + seed; 
+        return value + seed;
     }
 
     /**
@@ -64,7 +64,7 @@ public final class CardImpl implements Card {
      * "Jolly" is mapped to 0.
      * "2" is also treated as a wildcard/jolly in some contexts.
      * Returns -1 if the value is not recognized.
-     * 
+     *
      * @return the numerical value of the card
      */
     @Override
