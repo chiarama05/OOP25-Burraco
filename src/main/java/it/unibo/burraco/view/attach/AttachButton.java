@@ -97,7 +97,6 @@ public final class AttachButton extends JButton implements AttachView {
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.WARNING_MESSAGE);
     }
 
-    
     @Override
     public void updateCombinationVisuals() {
         this.updateVisuals();
@@ -139,7 +138,7 @@ public final class AttachButton extends JButton implements AttachView {
      * Re-renders the combination cards, applying correct ordering:
      * - Straights are ordered by value and reversed for display
      * - Sets place wildcards (Jolly or 2 used as wildcard) at the top,
-     *   followed by natural cards sorted by descending value
+     *   followed by natural cards sorted by descending value.
      */
     public void updateVisuals() {
         this.removeAll();
@@ -161,7 +160,7 @@ public final class AttachButton extends JButton implements AttachView {
 
             for (final Card c : this.cards) {
                 final boolean isWild = c.getValue().equalsIgnoreCase(JOLLY_VALUE)
-                || (c.getValue().equals(TWO_VALUE) && !TWO_VALUE.equals(baseValue));
+                || c.getValue().equals(TWO_VALUE) && !TWO_VALUE.equals(baseValue);
                 if (isWild) {
                     wildcards.add(c);
                 } else {
@@ -171,7 +170,7 @@ public final class AttachButton extends JButton implements AttachView {
 
             naturals.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
             this.cards.clear();
-            this.cards.addAll(wildcards); 
+            this.cards.addAll(wildcards);
             this.cards.addAll(naturals);
         }
 
@@ -213,15 +212,19 @@ public final class AttachButton extends JButton implements AttachView {
         this.add(Box.createVerticalStrut(VERTICAL_STRUT_SIZE));
     }
 
-    /** 
-     * @return the list of cards in this combination 
+    /**
+     * Returns the list of cards in this combination.
+     *
+     * @return the list of cards
      */
     public List<Card> getCards() { 
         return this.cards; 
     }
 
-    /** 
-     * @return true if this combination belongs to Player 1 
+    /**
+     * Returns true if this combination belongs to Player 1.
+     *
+     * @return true if Player 1 owns this combination
      */
     public boolean isPlayer1Owner() { 
         return this.isPlayer1Owner; 

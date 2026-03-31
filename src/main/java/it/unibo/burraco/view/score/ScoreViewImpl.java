@@ -1,18 +1,5 @@
 package it.unibo.burraco.view.score;
 
-import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.model.score.Score;
-import it.unibo.burraco.view.colorbutton.RoundedGradientButton;
-import it.unibo.burraco.view.table.TableView;
-
-import javax.swing.BoxLayout;
-import javax.swing.Box;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -25,6 +12,20 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.util.Locale;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import it.unibo.burraco.model.player.Player;
+import it.unibo.burraco.model.score.Score;
+import it.unibo.burraco.view.colorbutton.RoundedGradientButton;
+import it.unibo.burraco.view.table.TableView;
+
 /**
  * Swing implementation of the ScoreView interface.
  * Displays a detailed scoreboard window at the end of each round or match,
@@ -34,7 +35,6 @@ import java.util.Locale;
 public final class ScoreViewImpl implements ScoreView {
 
     private static final long serialVersionUID = 1L;
-    
     private static final int FRAME_WIDTH = 650;
     private static final int FRAME_HEIGHT = 750;
     private static final int BORDER_PADDING = 20;
@@ -68,14 +68,14 @@ public final class ScoreViewImpl implements ScoreView {
     /**
      * Constructs a new ScoreViewImpl and initializes the UI.
      *
-     * @param p1           The first player.
-     * @param p2           The second player.
-     * @param name1        Display name of the first player.
-     * @param name2        Display name of the second player.
-     * @param targetScore  The score threshold required to win the match.
+     * @param p1 The first player.
+     * @param p2 The second player.
+     * @param name1 Display name of the first player.
+     * @param name2 Display name of the second player.
+     * @param targetScore The score threshold required to win the match.
      * @param scoreManager The scoring engine providing score computations.
-     * @param tableView    Reference to the main table view.
-     * @param matchOver    {@code true} if the match has concluded; {@code false} if only a round ended.
+     * @param tableView Reference to the main table view.
+     * @param matchOver {@code true} if the match has concluded; {@code false} if only a round ended.
      */
     public ScoreViewImpl(
             final Player p1, final Player p2,
@@ -106,11 +106,10 @@ public final class ScoreViewImpl implements ScoreView {
      * Builds and arranges all UI components inside the scoreboard window.
      * Includes the title bar, the two side-by-side player stat panels,
      * and the bottom action button (either "Next Round" or "Finish Game").
-     *
-     * @param p1        The first player.
-     * @param p2        The second player.
-     * @param name1     Display name of the first player.
-     * @param name2     Display name of the second player.
+     * @param p1 The first player.
+     * @param p2 The second player.
+     * @param name1 Display name of the first player.
+     * @param name2 Display name of the second player.
      * @param matchOver {@code true} if the match is over, determining button behavior.
      */
     private void setupUI(
@@ -156,7 +155,7 @@ public final class ScoreViewImpl implements ScoreView {
             actionBtn = new RoundedGradientButton("NEXT ROUND (Target: " + targetScore + " pts)");
             actionBtn.addActionListener(e -> {
                 if (this.nextAction != null) {
-                    this.nextAction.run(); 
+                    this.nextAction.run();
                 }
             });
         }
@@ -180,8 +179,8 @@ public final class ScoreViewImpl implements ScoreView {
      * pot penalty, hand penalty) plus the round and cumulative match totals.
      * The winner's name is highlighted with trophy emojis when the match is over.
      *
-     * @param p        The player whose stats are displayed.
-     * @param name     The player's display name.
+     * @param p The player whose stats are displayed.
+     * @param name The player's display name.
      * @param isWinner {@code true} if this player won the match.
      * @return A fully configured {@link JPanel} ready to be added to the center layout.
      */
@@ -194,7 +193,7 @@ public final class ScoreViewImpl implements ScoreView {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
 
-        final String displayName = isWinner ? "🏆 " + name.toUpperCase(Locale.ROOT) + " 🏆" 
+        final String displayName = isWinner ? "🏆 " + name.toUpperCase(Locale.ROOT) + " 🏆"
                                             : name.toUpperCase(Locale.ROOT);
 
         final JLabel nameLabel = new JLabel(displayName);
@@ -227,7 +226,7 @@ public final class ScoreViewImpl implements ScoreView {
         panel.add(sep);
 
         panel.add(Box.createVerticalStrut(SEPARATOR_STRUT));
-        panel.add(this.createRow("ROUND TOTAL", String.valueOf(totalHand),  true));
+        panel.add(this.createRow("ROUND TOTAL", String.valueOf(totalHand), true));
         panel.add(this.createRow("MATCH TOTAL", String.valueOf(totalMatch), true));
         panel.add(Box.createVerticalGlue());
 
@@ -241,7 +240,7 @@ public final class ScoreViewImpl implements ScoreView {
      *
      * @param label The descriptive text shown on the left side.
      * @param value The numeric or string value shown on the right side.
-     * @param bold  {@code true} to render both texts in bold (used for totals).
+     * @param bold {@code true} to render both texts in bold (used for totals).
      * @return A configured {@link JPanel} representing one score row.
      */
     private JPanel createRow(final String label, final String value, final boolean bold) {
@@ -286,7 +285,6 @@ public final class ScoreViewImpl implements ScoreView {
     private static final class BackgroundPanel extends JPanel {
 
         private static final long serialVersionUID = 1L;
-        
         /**
          * Overrides the default painting to fill the panel with a top-to-bottom gradient.
          *
