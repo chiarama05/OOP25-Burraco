@@ -21,11 +21,14 @@ class DiscardActionControllerTest {
         final DiscardActionView view = mock(DiscardActionView.class);
         final DiscardController logic = mock(DiscardController.class);
         final DiscardResult successResult = mock(DiscardResult.class);
+        
         when(successResult.isValid()).thenReturn(true);
         when(successResult.getCurrentPlayer()).thenReturn(mock(Player.class));
         when(logic.tryDiscard(any())).thenReturn(successResult);
+        
         final DiscardActionController actionCtrl = new DiscardActionController(logic);
         actionCtrl.handle(view, true);
+        
         verify(view).onDiscardSuccess(any(), any(), eq(true));
     }
 
@@ -34,11 +37,15 @@ class DiscardActionControllerTest {
         final DiscardActionView view = mock(DiscardActionView.class);
         final DiscardController logic = mock(DiscardController.class);
         final DiscardResult errorResult = mock(DiscardResult.class);
+        
+        final String errorMsg = "error_msg";
         when(errorResult.isValid()).thenReturn(false);
-        when(errorResult.getMessage()).thenReturn("error_msg");
+        when(errorResult.getMessage()).thenReturn(errorMsg);
         when(logic.tryDiscard(any())).thenReturn(errorResult);
+        
         final DiscardActionController actionCtrl = new DiscardActionController(logic);
         actionCtrl.handle(view, true);
-        verify(view).onDiscardError("error_msg");
+
+        verify(view).onDiscardError(errorMsg);
     }
 }

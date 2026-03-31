@@ -30,51 +30,59 @@ class DiscardControllerTest {
     private DiscardController controller;
     private DrawManager drawManager;
     private Turn turnModel;
-    private DiscardManagerImpl discardManager;
     private DiscardPile discardPile;
     private Player currentPlayer;
-
+    
     @BeforeEach
     void init() {
-        discardPile = mock(DiscardPile.class);
-        discardManager = new DiscardManagerImpl(discardPile);
-        drawManager = mock(DrawManager.class);
-        turnModel = mock(Turn.class);
-        currentPlayer = mock(Player.class);
-        when(turnModel.getCurrentPlayer()).thenReturn(currentPlayer);
+        this.discardPile = mock(DiscardPile.class);
+        this.drawManager = mock(DrawManager.class);
+        this.turnModel = mock(Turn.class);
+        this.currentPlayer = mock(Player.class);
+       
+        when(this.turnModel.getCurrentPlayer()).thenReturn(this.currentPlayer);
+        
+        final DiscardManagerImpl discardManager = new DiscardManagerImpl(this.discardPile);
         this.controller = new DiscardController(
             discardManager, 
             mock(TurnController.class),
             mock(PotManager.class),
             mock(ClosureManager.class),
-            drawManager,
-            turnModel
+            this.drawManager,
+            this.turnModel
         );
     }
 
     @Test
-    void testMustDrawBeforeDiscard() {
-        when(drawManager.hasDrawn()).thenReturn(false);
-        final DiscardResult result = controller.tryDiscard(Set.of(mock(Card.class)));
-        assertFalse(result.isValid());
+    void testTryDiscardFailsWhenNotDrawn() {
+        when(this.drawManager.hasDrawn()).thenReturn(false);
+        
+        final DiscardResult result = this.controller.tryDiscard(Set.of(mock(Card.class)));
+        
+        assertFalse(result.isValid(), "Discard should be invalid if player hasn't drawn");
         assertEquals("must_draw", result.getMessage());
     }
 
     @Test
-    void testMustSelectExactlyOneCard() {
-        when(drawManager.hasDrawn()).thenReturn(true);
-        final DiscardResult result = controller.tryDiscard(Set.of(mock(Card.class), mock(Card.class)));
-        assertFalse(result.isValid());
+    void testTryDiscardFailsWithMultipleCards() {
+        when(this.drawManager.hasDrawn()).thenReturn(true);
+        
+        final Set<Card> multipleCards = Set.of(mock(Card.class), mock(Card.class));
+        final DiscardResult result = this.controller.tryDiscard(multipleCards);
+        
+        assertFalse(result.isValid(), "Discard should be invalid if multiple cards are selected");
         assertEquals("select_one", result.getMessage());
     }
 
     @Test
-    void testSuccessfulDiscardFlow() {
-        when(drawManager.hasDrawn()).thenReturn(true);
-        final Card card = mock(Card.class);
-        when(currentPlayer.getHand()).thenReturn(List.of(card));
-        final DiscardResult result = controller.tryDiscard(Set.of(card));
-        assertTrue(result.isValid());
-        verify(discardPile).add(card); 
+    void testTryDiscardSuccessFlow() {
+        when(this.drawManager.hasDrawn()).thenReturn(true);
+        final Card cardToDiscard = mock(Card.class);
+        when(this.currentPlayer.getHand()).thenReturn(List.of(cardToDiscard));
+        
+        final DiscardResult result = this.controller.tryDiscard(Set.of(cardToDiscard));
+        
+        assertTrue(result.isValid(), "Discard should be valid");
+        verify(this.discardPile).add(cardToDiscard); 
     }
 }

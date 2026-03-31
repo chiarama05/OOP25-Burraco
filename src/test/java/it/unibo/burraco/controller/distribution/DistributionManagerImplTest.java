@@ -26,22 +26,22 @@ class DistributionManagerImplTest {
 
     @BeforeEach
     void setUp() {
-        distManager = new DistributionManagerImpl();
-        p1 = mock(Player.class);
-        p2 = mock(Player.class);
-        deck = mock(Deck.class);
-        discardPile = mock(DiscardPile.class);
-        when(deck.draw()).thenReturn(mock(Card.class));
+        this.distManager = new DistributionManagerImpl();
+        this.p1 = mock(Player.class);
+        this.p2 = mock(Player.class);
+        this.deck = mock(Deck.class);
+        this.discardPile = mock(DiscardPile.class);
+        when(this.deck.draw()).thenReturn(mock(Card.class));
     }
 
     @Test
     void testDistributeInitialCards() {
-        distManager.distributeInitialCards(p1, p2, deck, discardPile);
-        verify(p1, times(11)).addCardHand(any(Card.class));
-        verify(p2, times(11)).addCardHand(any(Card.class));
-        verify(p1).addToPot(argThat(list -> list.size() == 11));
-        verify(p2).addToPot(argThat(list -> list.size() == 11));
-        verify(discardPile).add(any(Card.class));
-        verify(deck, times(45)).draw();
+        this.distManager.distributeInitialCards(this.p1, this.p2, this.deck, this.discardPile);
+        verify(this.p1, times(11)).addCardHand(any(Card.class));
+        verify(this.p2, times(11)).addCardHand(any(Card.class));
+        verify(this.p1).addToPot(argThat(list -> list.size() == 11));
+        verify(this.p2).addToPot(argThat(list -> list.size() == 11));
+        verify(this.discardPile).add(any(Card.class));
+        verify(this.deck, times(45)).draw();
     }
 }

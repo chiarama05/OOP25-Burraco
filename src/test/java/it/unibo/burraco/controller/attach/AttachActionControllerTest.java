@@ -65,7 +65,7 @@ class AttachActionControllerTest {
     }
 
     @Test
-    void whenNotDrawn_thenNotifierCalled() {
+    void whenNotDrawnthenNotifierCalled() {
         when(attachController.tryAttach(any(), any(), any(), anyBoolean(), anyBoolean()))
                 .thenReturn(AttachResult.NOT_DRAWN);
 
@@ -76,7 +76,7 @@ class AttachActionControllerTest {
     }
 
     @Test
-    void whenWrongPlayer_thenNotifierCalled() {
+    void whenWrongPlayerthenNotifierCalled() {
         when(attachController.tryAttach(any(), any(), any(), anyBoolean(), anyBoolean()))
                 .thenReturn(AttachResult.WRONG_PLAYER);
 
@@ -87,7 +87,7 @@ class AttachActionControllerTest {
     }
 
     @Test
-    void whenInvalidCombination_thenNotifierCalled() {
+    void whenInvalidCombinationthenNotifierCalled() {
         when(attachController.tryAttach(any(), any(), any(), anyBoolean(), anyBoolean()))
                 .thenReturn(AttachResult.INVALID_COMBINATION);
 
@@ -98,7 +98,7 @@ class AttachActionControllerTest {
     }
 
     @Test
-    void whenSuccess_thenViewUpdated() {
+    void whenSuccessthenViewUpdated() {
         when(attachController.tryAttach(any(), any(), any(), anyBoolean(), anyBoolean()))
                 .thenReturn(AttachResult.SUCCESS);
 
@@ -110,7 +110,7 @@ class AttachActionControllerTest {
     }
 
     @Test
-    void whenSuccessBurraco_thenSoundPlayedAndViewUpdated() {
+    void whenSuccessBurracothenSoundPlayedAndViewUpdated() {
         when(attachController.tryAttach(any(), any(), any(), anyBoolean(), anyBoolean()))
                 .thenReturn(AttachResult.SUCCESS_BURRACO);
 
@@ -122,7 +122,7 @@ class AttachActionControllerTest {
     }
 
     @Test
-    void whenSuccessTakePot_thenPotHandledAndViewUpdated() {
+    void whenSuccessTakePotthenPotHandledAndViewUpdated() {
         when(attachController.tryAttach(any(), any(), any(), anyBoolean(), anyBoolean()))
                 .thenReturn(AttachResult.SUCCESS_TAKE_POT);
 
@@ -134,7 +134,7 @@ class AttachActionControllerTest {
     }
 
     @Test
-    void whenSuccessClose_thenClosureHandledAndViewUpdated() {
+    void whenSuccessClosethenClosureHandledAndViewUpdated() {
         when(attachController.tryAttach(any(), any(), any(), anyBoolean(), anyBoolean()))
                 .thenReturn(AttachResult.SUCCESS_CLOSE);
 
@@ -146,7 +146,7 @@ class AttachActionControllerTest {
     }
 
     @Test
-    void whenSuccessStuck_thenClosureHandledAndViewUpdated() {
+    void whenSuccessStuckthenClosureHandledAndViewUpdated() {
         when(attachController.tryAttach(any(), any(), any(), anyBoolean(), anyBoolean()))
                 .thenReturn(AttachResult.SUCCESS_STUCK);
 
@@ -158,7 +158,7 @@ class AttachActionControllerTest {
     }
 
     @Test
-    void whenWouldGetStuck_thenNotifierCalled() {
+    void whenWouldGetStuckthenNotifierCalled() {
         when(attachController.tryAttach(any(), any(), any(), anyBoolean(), anyBoolean()))
                 .thenReturn(AttachResult.WOULD_GET_STUCK);
 
