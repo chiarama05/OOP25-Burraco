@@ -24,14 +24,14 @@ import it.unibo.burraco.model.card.*;
  * Controller that manages the main game logic and state transitions.
  */
 public final class GameController {
-
+    
     private final PlayerImpl player1;
     private final PlayerImpl player2;
     private final Deck commonDeck;
     private final Turn turnModel;
     private final SoundController soundController;
     private final DiscardPile discardPile;
-    private boolean hasDrawn = false;
+    private boolean hasDrawn;
     private final SelectionCardManager selectionManager = new SelectionCardManager();
     private final DrawManager drawManager = new DrawManager();
     private final AttachController attachController;
@@ -68,12 +68,13 @@ public final class GameController {
 
         final Player currentPlayer = turnModel.getCurrentPlayer();
         final boolean hasDrawn = drawManager.hasDrawn();
-        final boolean isCurrentPlayer = (isPlayer1(currentPlayer) == isPlayer1Owner);
+        final boolean isCurrentPlayer = isPlayer1(currentPlayer) == isPlayer1Owner;
 
-        final AttachResult result = attachController.tryAttach(currentPlayer,selectedCards,combinationCards,hasDrawn,isCurrentPlayer);
+        final AttachResult result = this.attachController.tryAttach(
+                currentPlayer, selectedCards, combinationCards, hasDrawn, isCurrentPlayer);
   
-        if (result == AttachResult.SUCCESS_BURRACO) {
-            soundController.playBurracoSound();
+        if (AttachResult.SUCCESS_BURRACO.equals(result)) {
+            this.soundController.playBurracoSound();
         }
         return result;
     }
@@ -94,7 +95,7 @@ public final class GameController {
      * @return true if p is the same object as Player 1
      */
     public boolean isPlayer1(final Player p) {
-        return p == player1;
+        return this.player1.equals(p);
     }
 
     /**
