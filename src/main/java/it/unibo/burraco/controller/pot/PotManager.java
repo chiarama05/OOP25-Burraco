@@ -31,10 +31,6 @@ public class PotManager {
         this.view = view;
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> bd19a2fab146cf858a00b11ee24426ad265e263e
     /**
      * Checks whether the current player should draw the pot, and if so, executes the draw.
      *

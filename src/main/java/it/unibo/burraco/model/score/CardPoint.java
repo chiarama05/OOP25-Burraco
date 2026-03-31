@@ -71,7 +71,11 @@ public final class CardPoint {
             || TEN_STR.equals(value) || NINE_STR.equals(value) || EIGHT_STR.equals(value)) {
             return POINTS_HIGH_CARDS;
         }
-        return POINTS_LOW_CARDS;
+        if (SEVEN_STR.equals(value) || SIX_STR.equals(value) || FIVE_STR.equals(value) 
+            || FOUR_STR.equals(value) || THREE_STR.equals(value)) {
+            return POINTS_LOW_CARDS;
+        }
+        return 0;
     }
 
     /**

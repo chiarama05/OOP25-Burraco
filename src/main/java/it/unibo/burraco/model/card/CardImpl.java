@@ -4,7 +4,8 @@ package it.unibo.burraco.model.card;
  * Implementation of the {@link Card} interface.
  * Represents a concrete playing card with a seed and a value.
  */
-public final class CardImpl implements Card{
+public final class CardImpl implements Card {
+
     private final String seed;
     private final String value;
     private boolean wildcard;
@@ -15,9 +16,9 @@ public final class CardImpl implements Card{
      * @param seed the seed of the card
      * @param value the face value of the card
      */
-    public CardImpl(final String seed, final String value){
-        this.seed=seed;
-        this.value=value;
+    public CardImpl(final String seed, final String value) {
+        this.seed = seed;
+        this.value = value;
     }
 
     /**
@@ -35,12 +36,12 @@ public final class CardImpl implements Card{
     }
 
     @Override
-    public String getSeed(){
+    public String getSeed() {
         return this.seed;
     }
 
     @Override
-    public String getValue(){
+    public String getValue() {
         return this.value;
     }
 
@@ -65,8 +66,9 @@ public final class CardImpl implements Card{
      * @return the numerical value of the card
      */
     @Override
-    public int getNumericalValue(){
-        switch(value){
+    public int getNumericalValue() {
+
+        switch (value) {
             case "A": return 1;
             case "2": return 2; 
             case "3": return 3;

@@ -21,15 +21,10 @@ import it.unibo.burraco.model.card.*;
 
 
 /**
- * Central controller that owns and exposes the core domain objects of a Burraco match.
- * <p>
- * Acts as a service-locator / façade: it holds the two players, the shared deck,
- * the discard pile, the turn model, and the supporting managers
- * ({@link DrawManager}, {@link SelectionCardManager}, {@link AttachController}).
- * Higher-level controllers obtain references to these components through this class.
- * </p>
+ * Controller that manages the main game logic and state transitions.
  */
-public class GameController {
+public final class GameController {
+
     private final PlayerImpl player1;
     private final PlayerImpl player2;
     private final Deck commonDeck;
@@ -42,7 +37,6 @@ public class GameController {
     private final AttachController attachController;
     private final InitialDistributionController distributionController;
 
-
     /**
      * Constructs a GameController and initialises all core game components.
      *
@@ -51,7 +45,7 @@ public class GameController {
      * @param turnModel the turn model tracking whose turn it is
      * @param sc        the sound controller for audio feedback
      */
-    public GameController(PlayerImpl p1, PlayerImpl p2, Turn turnModel, SoundController sc) {
+    public GameController(final PlayerImpl p1, final PlayerImpl p2, final Turn turnModel, final SoundController sc) {
         this.player1 = p1;
         this.player2 = p2;
         this.turnModel = turnModel;
@@ -62,137 +56,144 @@ public class GameController {
         this.distributionController = new InitialDistributionController(new DistributionManagerImpl());
     }
 
-
-
     /**
      * Attempts to attach a set of selected cards to an existing combination.
-     * Delegates the validation to {@link AttachController} and triggers the burraco sound
-     * on a successful burraco.
      *
      * @param selectedCards    the cards the player wants to attach
      * @param combinationCards the existing combination to attach to
-     * @param isPlayer1Owner   {@code true} if the combination belongs to Player 1
-     * @return an {@link AttachResult} describing the outcome
+     * @param isPlayer1Owner   true if the combination belongs to Player 1
+     * @return an AttachResult describing the outcome
      */
-    public AttachResult tryAttach(List<Card> selectedCards,List<Card> combinationCards,boolean isPlayer1Owner) {
+    public AttachResult tryAttach(final List<Card> selectedCards, final List<Card> combinationCards, final boolean isPlayer1Owner) {
 
-        Player currentPlayer = turnModel.getCurrentPlayer();
-        boolean hasDrawn = drawManager.hasDrawn();
-        boolean isCurrentPlayer = (isPlayer1(currentPlayer) == isPlayer1Owner);
+        final Player currentPlayer = turnModel.getCurrentPlayer();
+        final boolean hasDrawn = drawManager.hasDrawn();
+        final boolean isCurrentPlayer = (isPlayer1(currentPlayer) == isPlayer1Owner);
 
-        AttachResult result = attachController.tryAttach(currentPlayer,selectedCards,combinationCards,hasDrawn,isCurrentPlayer);
-
-        
+        final AttachResult result = attachController.tryAttach(currentPlayer,selectedCards,combinationCards,hasDrawn,isCurrentPlayer);
+  
         if (result == AttachResult.SUCCESS_BURRACO) {
             soundController.playBurracoSound();
         }
-
         return result;
     }
 
-
-     /**
+    /**
      * Returns the initial distribution controller used during the setup phase.
      *
-     * @return the {@link InitialDistributionController}
+     * @return the InitialDistributionController
      */
     public InitialDistributionController getDistributionController() {
-        return distributionController;
+        return this.distributionController;
     }
-
 
     /**
      * Checks whether the given player is Player 1.
      *
      * @param p the player to test
-     * @return {@code true} if {@code p} is the same object as Player 1
+     * @return true if p is the same object as Player 1
      */
-    public boolean isPlayer1(Player p) {
+    public boolean isPlayer1(final Player p) {
         return p == player1;
     }
-
 
     /**
      * Returns the player whose turn it currently is.
      *
-     * @return the current {@link Player}
+     * @return the current Player
      */
     public Player getCurrentPlayer() {
-        return turnModel.getCurrentPlayer();
+        return this.turnModel.getCurrentPlayer();
     }
 
-    /** @return the {@link AttachController} */
+    /**
+     * @return the AttachController
+     */
     public AttachController getAttachController() {
-        return attachController;
+        return this.attachController;
     }
 
-    /** @return the shared {@link Deck} */
+    /**
+     * @return the shared Deck
+     */
     public Deck getCommonDeck() {
-        return commonDeck;
+        return this.commonDeck;
     }
 
-    /** @return the {@link SoundController} */
+    /**
+     * @return the SoundController
+     */
     public SoundController getSoundController() {
-        return soundController;
+        return this.soundController;
     }
 
-    /** @return the {@link SelectionCardManager} */
+    /**
+     * @return the SelectionCardManager
+     */
     public SelectionCardManager getSelectionManager() {
-        return selectionManager;
+        return this.selectionManager;
     }
 
-    /** @return the {@link DrawManager} */
+    /**
+     * @return the DrawManager
+     */
     public DrawManager getDrawManager() {
-        return drawManager;
+        return this.drawManager;
     }
 
-    /** @return the shared {@link DiscardPile} */
+    /**
+     * @return the shared DiscardPile
+     */
     public DiscardPile getDiscardPile() {
         return this.discardPile;
     }
 
-    /** @return the {@link Turn} model */
+    /**
+     * @return the Turn model
+     */
     public Turn getTurnModel() {
         return this.turnModel;
     }
 
     /**
      * Returns whether the player is currently allowed to draw.
-     * Note: this flag is separate from {@link DrawManager#hasDrawn()} and is used only
-     * by legacy code paths; prefer {@link DrawManager} for new code.
      *
-     * @return {@code true} if the player has not yet drawn in this turn
+     * @return true if the player has not yet drawn in this turn
      */
     public boolean canDraw() { 
-        return !hasDrawn; 
+        return !this.hasDrawn; 
     }
 
     /**
      * Sets the legacy draw flag.
      *
-     * @param value {@code true} to mark as drawn, {@code false} to allow drawing again
+     * @param value true to mark as drawn, false to allow drawing again
      */
-    public void setHasDrawn(boolean value) { 
+    public void setHasDrawn(final boolean value) { 
         this.hasDrawn = value; 
     }
 
 
     /**
-     * Returns {@code true} if the player has already drawn in this turn (legacy flag).
+     * Returns true if the player has already drawn in this turn.
      *
-     * @return {@code true} if already drawn
+     * @return true if already drawn
      */
     public boolean hasAlreadyDrawn() { 
-        return hasDrawn; 
+        return this.hasDrawn; 
     }
 
-    /** @return the first player */
+    /**
+     * @return the first player
+     */
     public PlayerImpl getPlayer1() { 
-        return player1; 
+        return this.player1; 
     }
 
-    /** @return the second player */
+    /**
+     * @return the second player
+     */
     public PlayerImpl getPlayer2() { 
-        return player2; 
+        return this.player2; 
     }
 }
