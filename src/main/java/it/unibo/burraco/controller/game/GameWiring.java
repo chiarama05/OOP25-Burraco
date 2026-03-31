@@ -39,102 +39,115 @@ import it.unibo.burraco.view.score.ScoreViewImpl;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
 import it.unibo.burraco.view.table.TableView;
 
-public class GameWiring {
+public final class GameWiring {
 
     private final GameController gameController;
 
+    /**
+     * Constructs and wires the entire game logic.
+     * 
+     * @param p1                player 1 model
+     * @param p2                player 2 model
+     * @param nameP1            name of player 1
+     * @param nameP2            name of player 2
+     * @param turnModel         the turn model
+     * @param view              the main table view
+     * @param soundController   the sound controller
+     * @param targetScore       points needed to win the match
+     * @param distributionView the initial distribution view
+     */
     public GameWiring(PlayerImpl p1, PlayerImpl p2, String nameP1, String nameP2,
                       Turn turnModel, TableView view, SoundController soundController,
                       int targetScore, InitialDistributionView distributionView) {
 
-        GameNotifier notifier = new GameNotifierImpl(view.getFrame());
+                final GameNotifier notifier = new GameNotifierImpl(view.getFrame());
 
-        this.gameController = new GameController(p1, p2, turnModel, soundController);
-        DrawManager drawManager = gameController.getDrawManager();
+                this.gameController = new GameController(p1, p2, turnModel, soundController);
+                final DrawManager drawManager = gameController.getDrawManager();
 
-        TurnController turnCtrl = new TurnController(turnModel, drawManager);
+                final TurnController turnCtrl = new TurnController(turnModel, drawManager);
 
-        PotManager potManager = new PotManager(turnModel, view);
+                final PotManager potManager = new PotManager(turnModel, view);
 
-        Score score = new ScoreImpl();
-        ScoreController.ViewProvider realViewProvider = (playerA, playerB, n1, n2, target, s, tv, over) -> 
-                new ScoreViewImpl(playerA, playerB, n1, n2, target, s, tv, over);
-        ScoreController scoreController = new ScoreController(
-                score, p1, p2, nameP1, nameP2,
-                view, gameController, soundController, targetScore,
-                distributionView, SwingUtilities::invokeLater,
-                realViewProvider);
+                final Score score = new ScoreImpl();
+                final ScoreController.ViewProvider realViewProvider = (playerA, playerB, n1, n2, target, s, tv, over) -> 
+                        new ScoreViewImpl(playerA, playerB, n1, n2, target, s, tv, over);
+                final ScoreController scoreController = new ScoreController(
+                        score, p1, p2, nameP1, nameP2,
+                        view, gameController, soundController, targetScore,
+                        distributionView, SwingUtilities::invokeLater,
+                        realViewProvider);
 
-        ClosureManager closureManager = new ClosureManager(
-                turnModel, notifier, targetScore, scoreController);
+                final ClosureManager closureManager = new ClosureManager(
+                        turnModel, notifier, targetScore, scoreController);
 
-        DiscardController discardCoreLogic = new DiscardController(
-                new DiscardManagerImpl(gameController.getDiscardPile()),
-                turnCtrl, potManager, closureManager, drawManager, turnModel);
+                final DiscardController discardCoreLogic = new DiscardController(
+                        new DiscardManagerImpl(gameController.getDiscardPile()),
+                        turnCtrl, potManager, closureManager, drawManager, turnModel);
 
-        AttachButtonFactory attachFactory = new AttachButtonFactory(
-                view, gameController, closureManager, potManager, view.getFrame());
-        view.setAttachButtonFactory(attachFactory);
+                final AttachButtonFactory attachFactory = new AttachButtonFactory(
+                        view, gameController, closureManager, potManager, view.getFrame());
+                view.setAttachButtonFactory(attachFactory);
 
-        DiscardActionController discardActionCtrl = new DiscardActionController(discardCoreLogic); 
+                final DiscardActionController discardActionCtrl = new DiscardActionController(discardCoreLogic); 
 
-        DiscardButton discardButton = new DiscardButton(view, view.getDiscardView(), notifier); 
-        discardButton.setIsPlayer1(turnModel.isPlayer1Turn());
-        discardButton.setOnDiscardAction((btn, isP1) -> discardActionCtrl.handle(btn, isP1)); 
+                final DiscardButton discardButton = new DiscardButton(view, view.getDiscardView(), notifier); 
+                discardButton.setIsPlayer1(turnModel.isPlayer1Turn());
+                discardButton.setOnDiscardAction((btn, isP1) -> discardActionCtrl.handle(btn, isP1)); 
 
-        // --- PutCombination: controller separato dalla view ---
-        PutCombinationController putCombinationCtrl = new PutCombinationController(
-                gameController, drawManager, potManager, closureManager, turnModel);
+                final PutCombinationController putCombinationCtrl = new PutCombinationController(
+                        gameController, drawManager, potManager, closureManager, turnModel);
 
-        PutCombinationNotifier putNotifier = new PutCombinationNotifierImpl(view.getFrame());
-        PutCombinationActionController putActionCtrl = new PutCombinationActionController(
-                gameController, putCombinationCtrl, putNotifier);
+                final PutCombinationNotifier putNotifier = new PutCombinationNotifierImpl(view.getFrame());
+                final PutCombinationActionController putActionCtrl = new PutCombinationActionController(
+                        gameController, putCombinationCtrl, putNotifier);
 
-        PutCombinationButton putCombinationView = new PutCombinationButton(view);
-        putCombinationView.setIsPlayer1(turnModel.isPlayer1Turn());
+                final PutCombinationButton putCombinationView = new PutCombinationButton(view);
+                putCombinationView.setIsPlayer1(turnModel.isPlayer1Turn());
 
-        putCombinationView.setOnPutCombination(() -> {
-            putActionCtrl.handle(putCombinationView.getSelectedCards(), putCombinationView);
-        });
+                putCombinationView.setOnPutCombination(() -> {
+                        putActionCtrl.handle(putCombinationView.getSelectedCards(), putCombinationView);
+                });
 
-        // --- DeckButton ---
-        DeckNotifier deckNotifier = new DeckNotifierImpl(view.getFrame());
-        DeckActionController deckActionCtrl = new DeckActionController(
-        gameController, drawManager, deckNotifier); // ← controller fuori dalla view
+                final DeckNotifier deckNotifier = new DeckNotifierImpl(view.getFrame());
+                final DeckActionController deckActionCtrl = new DeckActionController(
+                gameController, drawManager, deckNotifier);
 
-        DeckButton deckButton = new DeckButton(view.getDeckView(), view);
-        deckButton.setIsPlayer1(turnModel.isPlayer1Turn());
-        deckButton.setOnDrawAction(() -> deckActionCtrl.handle(deckButton)); 
+                final DeckButton deckButton = new DeckButton(view.getDeckView(), view);
+                deckButton.setIsPlayer1(turnModel.isPlayer1Turn());
+                deckButton.setOnDrawAction(() -> deckActionCtrl.handle(deckButton)); 
 
-        // --- TakeDiscard ---
-        TakeDiscardController takeDiscardCtrl = new TakeDiscardController(
-        drawManager, turnModel, gameController.getDiscardPile());
+                final TakeDiscardController takeDiscardCtrl = new TakeDiscardController(
+                        drawManager, turnModel, gameController.getDiscardPile());
 
-        TakeDiscardActionController takeDiscardActionCtrl = new TakeDiscardActionController(
-        takeDiscardCtrl, turnModel, gameController.getDiscardPile());
+                final TakeDiscardActionController takeDiscardActionCtrl = new TakeDiscardActionController(
+                        takeDiscardCtrl, turnModel, gameController.getDiscardPile());
 
-        TakeDiscardNotifier takeDiscardNotifier = new TakeDiscardNotifierImpl(view.getFrame());
+                final TakeDiscardNotifier takeDiscardNotifier = new TakeDiscardNotifierImpl(view.getFrame());
 
-        TakeDiscardButton takeDiscardButton = new TakeDiscardButton(
-        view.getTakeDiscardBtn(), (TakeDiscardView) view, takeDiscardNotifier); 
+                final TakeDiscardButton takeDiscardButton = new TakeDiscardButton(
+                        view.getTakeDiscardBtn(), (TakeDiscardView) view, takeDiscardNotifier); 
 
-        takeDiscardButton.setOnTakeDiscardAction(() -> 
-        takeDiscardActionCtrl.handle(takeDiscardButton)); 
+                takeDiscardButton.setOnTakeDiscardAction(() -> 
+                        takeDiscardActionCtrl.handle(takeDiscardButton)
+                ); 
 
-        // --- Turn change ---
-        turnCtrl.setOnTurnChangedListener(() -> {
-            boolean isP1 = turnModel.isPlayer1Turn();
-            Player current = turnModel.getCurrentPlayer();
-            view.refreshTurnLabel(isP1);
-            view.switchHand(isP1);
-            view.refreshHandPanel(isP1, current.getHand());
-            discardButton.setIsPlayer1(isP1);
-            putCombinationView.setIsPlayer1(isP1); 
-            deckButton.setIsPlayer1(isP1);
-        });
-    }
+                turnCtrl.setOnTurnChangedListener(() -> {
+                        boolean isP1 = turnModel.isPlayer1Turn();
+                        Player current = turnModel.getCurrentPlayer();
+                        view.refreshTurnLabel(isP1);
+                        view.switchHand(isP1);
+                        view.refreshHandPanel(isP1, current.getHand());
+                        discardButton.setIsPlayer1(isP1);
+                        putCombinationView.setIsPlayer1(isP1); 
+                        deckButton.setIsPlayer1(isP1);
+                });
+        }
 
-    public GameController getGameController() {
-        return gameController;
-    }
+        /**
+        * @return the game controller instance.
+        */
+        public GameController getGameController() {
+                return gameController;
+        }
 }

@@ -20,7 +20,7 @@ import it.unibo.burraco.view.distribution.InitialDistributionView;
  * and match termination. It acts as an orchestrator between the scoring model, 
  * the game state, and the score visualization.
  */
-public class ScoreController {
+public final class ScoreController {
 
     private final Score score;
     private final Player player1;
@@ -34,29 +34,6 @@ public class ScoreController {
     private final InitialDistributionView distributionView; 
     private final Consumer<Runnable> uiThreadRunner;
     private final ViewProvider viewProvider;
-
-    /**
-     * Interface acting as a Factory for the ScoreView.
-     * This abstraction allows for easier testing by enabling the injection 
-     * of mock views instead of real GUI components.
-     */
-    public interface ViewProvider {
-        /**
-         * Creates a ScoreView.
-         * 
-         * @param p1 player 1
-         * @param p2 player 2
-         * @param n1 name 1
-         * @param n2 name 2
-         * @param target target score
-         * @param s score model
-         * @param tv table view
-         * @param over match over flag
-         * @return a new ScoreView
-         */
-        ScoreView create(Player p1, Player p2, String n1, String n2,int target, Score s, TableView tv, boolean over);
-    }
-
 
     /**
      * Constructs the ScoreController with all required dependencies.
@@ -74,16 +51,28 @@ public class ScoreController {
      * @param uiThreadRunner   a consumer that schedules tasks on the UI thread (e.g. {@code SwingUtilities::invokeLater})
      * @param viewProvider     a factory for creating the {@link ScoreView}
      */
-    public ScoreController(final Score score, final Player player1, final Player player2, final String nameP1, final String nameP2, final TableView tableView, final GameController gameController, final SoundController soundController, final int targetScore, final InitialDistributionView distributionView, final Consumer<Runnable> uiThreadRunner, final ViewProvider viewProvider) {
-
+    public ScoreController(
+        final Score score, 
+        final Player player1, 
+        final Player player2, 
+        final String nameP1, 
+        final String nameP2, 
+        final TableView tableView, 
+        final GameController gameController, 
+        final SoundController soundController, 
+        final int targetScore, 
+        final InitialDistributionView distributionView, 
+        final Consumer<Runnable> uiThreadRunner, 
+        final ViewProvider viewProvider
+    ) {
         this.score = score;
-        this.player1= player1;
-        this.player2= player2;
-        this.nameP1= nameP1;
-        this.nameP2= nameP2;
-        this.tableView= tableView;
-        this.gameController= gameController;
-        this.soundController= soundController;
+        this.player1 = player1; 
+        this.player2 = player2;
+        this.nameP1 = nameP1;
+        this.nameP2 = nameP2;
+        this.tableView = tableView;
+        this.gameController = gameController;
+        this.soundController = soundController;
         this.targetScore = targetScore;
         this.distributionView = distributionView;
         this.uiThreadRunner = uiThreadRunner;
@@ -116,8 +105,7 @@ public class ScoreController {
             t.setDaemon(false);
             t.start();
 
-        }
-         else {
+        } else {
             this.soundController.playRoundEndSound(); 
             this.showScoreView(matchOver);
         }
@@ -129,8 +117,11 @@ public class ScoreController {
      * 
      * @param matchOver true if the entire match has concluded.
      */
-    private void showScoreView(boolean matchOver) {
-        final ScoreView view = this.viewProvider.create(this.player1, this.player2, this.nameP1, this.nameP2,this.targetScore, this.score, this.tableView, matchOver);
+    private void showScoreView(final boolean matchOver) {
+        final ScoreView view = this.viewProvider.create(
+                this.player1, this.player2, this.nameP1, this.nameP2, 
+                this.targetScore, this.score, this.tableView, matchOver
+        );
      
         view.setOnNextAction(() -> {
             view.close();
@@ -147,5 +138,29 @@ public class ScoreController {
             this.tableView.refreshTurnLabel(true);
         });
         view.display();
+    }
+
+    /**
+     * Interface acting as a Factory for the ScoreView.
+     * This abstraction allows for easier testing by enabling the injection 
+     * of mock views instead of real GUI components.
+     */
+    public interface ViewProvider {
+        
+        /**
+         * Creates a ScoreView.
+         * 
+         * @param p1 player 1
+         * @param p2 player 2
+         * @param n1 name 1
+         * @param n2 name 2
+         * @param target target score
+         * @param s score model
+         * @param tv table view
+         * @param over match over flag
+         * @return a new ScoreView
+         */
+        ScoreView create(Player p1, Player p2, String n1, String n2, 
+            int target, Score s, TableView tv, boolean over);
     }
 }

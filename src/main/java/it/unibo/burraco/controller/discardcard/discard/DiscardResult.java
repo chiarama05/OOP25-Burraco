@@ -20,10 +20,17 @@ public class DiscardResult {
 
     /**
      * Private constructor to enforce the use of static factory methods.
+     *
+     * @param valid              if the move is valid
+     * @param turnEnds           if the turn is finished
+     * @param gameWon            if the game is won
+     * @param message            error message
+     * @param updatedDiscardPile updated pile
+     * @param currentPlayer      updated player
      */
-    public DiscardResult(final boolean valid, final boolean turnEnds, final boolean gameWon,
-                         final String message, final List<Card> updatedDiscardPile, 
-                         final Player currentPlayer) {
+    private DiscardResult(final boolean valid, final boolean turnEnds, final boolean gameWon,
+                          final String message, final List<Card> updatedDiscardPile, 
+                          final Player currentPlayer) {
         this.valid = valid;
         this.turnEnds = turnEnds;
         this.gameWon = gameWon;
@@ -55,33 +62,45 @@ public class DiscardResult {
         return new DiscardResult(true, true, gameWon, null, pile, player);
     }
 
-    /** @return true if the discard move was legal. */
+    /** 
+     * @return true if the discard move was legal. 
+     */
     public boolean isValid() { 
-        return valid; 
+        return this.valid; 
     }
 
-    /** @return true if the current player's turn should conclude. */
+    /**
+     * @return true if the current player's turn should conclude. 
+     */
     public boolean isTurnEnds() { 
-        return turnEnds; 
+        return this.turnEnds; 
     }
 
-    /** @return true if the move resulted in winning the round or game. */
+    /**
+     * @return true if the move resulted in winning the round or game.
+     */
     public boolean isGameWon() { 
-        return gameWon; 
+        return this.gameWon; 
     }
 
-    /** @return the error message if the move was invalid. */
+    /**
+     * @return the error message if the move was invalid.
+     */
     public String getMessage() { 
-        return message; 
+        return this.message; 
     }
 
-    /** @return the state of the discard pile after the move. */
+    /**
+     * @return the state of the discard pile after the move.
+     */
     public List<Card> getUpdatedDiscardPile() { 
-        return updatedDiscardPile; 
+        return this.updatedDiscardPile; 
     }
 
-    /** @return the player object with updated state. */
+    /** 
+     * @return the player object with updated state. 
+     */
     public Player getCurrentPlayer() { 
-        return currentPlayer; 
+        return this.currentPlayer; 
     }
 }
