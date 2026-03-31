@@ -17,8 +17,8 @@ public class DrawManager {
     /**
      * Resets the draw state. 
      */
-    public void resetTurn(){
-        drawCard = false;
+    public void resetTurn() {
+        this.drawCard = false;
     }
 
     /**
@@ -53,7 +53,7 @@ public class DrawManager {
      * @param discards the current list of cards in the discard pile.
      * @return a {@link DrawResult} reflecting the outcome of the action.
      */
-    public DrawResult drawFromDiscard(final Player player, final List<Card> discards){
+    public DrawResult drawFromDiscard(final Player player, final List<Card> discards) {
         if (this.drawCard) {
             return DrawResult.alreadyDrawn();
         }

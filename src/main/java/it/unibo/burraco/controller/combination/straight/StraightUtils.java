@@ -1,6 +1,7 @@
 package it.unibo.burraco.controller.combination.straight;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -26,7 +27,6 @@ public final class StraightUtils {
     private static final String TWO = "2";
     private static final String ACE = "A";
     private static final String THREE = "3";
-    private static final String KING = "K";
 
     private static final int ACE_LOW_VALUE = 1;
     private static final int ACE_HIGH_VALUE = 14;
@@ -146,7 +146,7 @@ public final class StraightUtils {
         if (!TWO.equals(two.getValue())) {
             return false;
         }
-        String suit = two.getSeed();
+        final String suit = two.getSeed();
         final boolean hasAce = straight.stream()
                 .anyMatch(c -> ACE.equals(c.getValue()) && c.getSeed().equals(suit));
         final boolean hasThree = straight.stream()
@@ -204,7 +204,7 @@ public final class StraightUtils {
      */
     public static List<Card> orderStraight(final List<Card> sequence) {
         if (sequence == null || sequence.isEmpty()) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
         List<Card> attempt = buildOrdering(sequence, false);
         if (attempt != null) {
@@ -245,7 +245,7 @@ public final class StraightUtils {
         }
 
         if (wilds.size() > 1 || real.isEmpty()) {
-            return null;
+            return Collections.emptyList();
         }
 
         final String suit = real.get(0).getSeed();
@@ -306,10 +306,7 @@ public final class StraightUtils {
     private static boolean decideIfAceIsLow(final List<Card> real, final int wildCount) {
         final List<Integer> lowVals = real.stream()
                 .map(c -> mapValue(c, true)).sorted().collect(Collectors.toList());
-        if (canBeSequential(lowVals, wildCount)) {
-            return !real.stream().anyMatch(c -> "K".equals(c.getValue()));
-        }
-        return false;
+        return canBeSequential(lowVals, wildCount) && real.stream().noneMatch(c -> "K".equals(c.getValue()));
     }
 
     /**
@@ -335,12 +332,12 @@ public final class StraightUtils {
                 continue;
             }
             if (ACE.equals(anchor.getValue())) {
-                if (ACE_LOW_VALUE + (index - i) == TWO_VALUE || ACE_HIGH_VALUE + (index - i) == TWO_VALUE) {
+                if (ACE_LOW_VALUE + index - i == TWO_VALUE || ACE_HIGH_VALUE + index - i == TWO_VALUE) {
                     return true;
                 }
-                continue;
+            } else if (anchor.getNumericalValue() + index - i == TWO_VALUE) {
+                return true;
             }
-            return anchor.getNumericalValue() + (index - i) == TWO_VALUE;
         }
         return false;
     }
