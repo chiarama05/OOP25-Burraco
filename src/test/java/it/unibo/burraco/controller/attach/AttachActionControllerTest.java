@@ -22,6 +22,9 @@ import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.attach.AttachView;
 import it.unibo.burraco.view.notification.attach.AttachNotifier;
 
+/**
+ * Test class for AttachActionController.
+ */
 class AttachActionControllerTest {
 
     private GameController gameController;
