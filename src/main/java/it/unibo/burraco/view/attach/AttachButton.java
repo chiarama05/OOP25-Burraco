@@ -217,8 +217,8 @@ public final class AttachButton extends JButton implements AttachView {
      *
      * @return the list of cards
      */
-    public List<Card> getCards() { 
-        return this.cards; 
+    public List<Card> getCards() {
+        return this.cards;
     }
 
     /**
@@ -226,7 +226,7 @@ public final class AttachButton extends JButton implements AttachView {
      *
      * @return true if Player 1 owns this combination
      */
-    public boolean isPlayer1Owner() { 
-        return this.isPlayer1Owner; 
+    public boolean isPlayer1Owner() {
+        return this.isPlayer1Owner;
     }
 }

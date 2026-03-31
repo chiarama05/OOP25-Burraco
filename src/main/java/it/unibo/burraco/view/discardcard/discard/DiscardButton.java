@@ -11,7 +11,7 @@ import java.util.function.BiConsumer;
 
 /**
  * Concrete implementation of {@link DiscardActionView}.
- * It wraps the physical button logic and maps controller results 
+ * It wraps the physical button logic and maps controller results
  * to visual updates and notifications.
  */
 public class DiscardButton implements DiscardActionView {

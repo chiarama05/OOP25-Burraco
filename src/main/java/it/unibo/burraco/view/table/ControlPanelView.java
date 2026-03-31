@@ -39,7 +39,7 @@ public final class ControlPanelView extends JPanel {
     private static final Color PINK_DOWN = new Color(255, 220, 235);
     private static final Color HOVER_COLOR = new Color(255, 180, 200);
     private static final Color BORDER_COLOR = new Color(230, 200, 215);
-    
+
     private final JButton takeDiscardBtn;
     private final JButton putComboBtn;
     private final JButton discardBtn;
@@ -53,13 +53,13 @@ public final class ControlPanelView extends JPanel {
      * @param backgroundColor the background color of the panel
      */
     public ControlPanelView(
-            final JButton takeDiscardBtn, 
-            final JButton putComboBtn, 
-            final JButton discardBtn, 
+            final JButton takeDiscardBtn,
+            final JButton putComboBtn,
+            final JButton discardBtn,
             final Color lightgreen) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-        this.setBackground(lightgreen); 
+        this.setBackground(lightgreen);
 
         this.takeDiscardBtn = takeDiscardBtn;
         this.putComboBtn = putComboBtn;
@@ -72,7 +72,7 @@ public final class ControlPanelView extends JPanel {
             b.setCursor(new Cursor(Cursor.HAND_CURSOR));
             b.setBorder(BorderFactory.createLineBorder(BORDER_COLOR, 1));
             b.setContentAreaFilled(false);
- 
+
             final boolean[] hoverStatus = {false};
 
             b.setUI(new BasicButtonUI() {

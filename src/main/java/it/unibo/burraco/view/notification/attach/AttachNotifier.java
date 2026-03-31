@@ -11,7 +11,7 @@ public interface AttachNotifier {
 
     /**
      * Notifies the user of an error during the attach process.
-     * 
+     *
      * @param result the result of the attachment attempt containing the error type
      */
     void notifyAttachError(AttachResult result);

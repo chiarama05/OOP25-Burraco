@@ -12,7 +12,7 @@ import java.awt.Color;
 public final class PlayerAreaView extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    
+
     /**
      * Constructs the player area view.
      *
@@ -42,6 +42,6 @@ public final class PlayerAreaView extends JPanel {
          * CENTER: The area dedicated to the player's hand cards
          */
         this.add(centralBottomPanel, BorderLayout.NORTH);
-        this.add(deckPanel, BorderLayout.CENTER); 
+        this.add(deckPanel, BorderLayout.CENTER);
     }
 }

@@ -18,7 +18,7 @@ import it.unibo.burraco.controller.sound.SoundController;
 
 /**
  * Concrete implementation of the SoundController interface.
- * It uses a caching mechanism to store audio data in memory and plays 
+ * It uses a caching mechanism to store audio data in memory and plays
  * sounds asynchronously to avoid blocking the main Game thread or the UI.
  */
 public final class SoundControllerImpl implements SoundController {
@@ -40,7 +40,7 @@ public final class SoundControllerImpl implements SoundController {
 
     /**
      * Loads a sound file from the resources folder and stores its bytes in memory.
-     * 
+     *
      * @param fileName the name of the file to load.
      */
     private void preLoadSound(final String fileName) {
@@ -55,24 +55,24 @@ public final class SoundControllerImpl implements SoundController {
     }
 
     @Override
-    public void playBurracoSound() { 
-        this.playFromCache(BURRACO_WAV, false); 
+    public void playBurracoSound() {
+        this.playFromCache(BURRACO_WAV, false);
     }
 
     @Override
-    public void playRoundEndSound() { 
+    public void playRoundEndSound() {
         this.playFromCache(ROUND_END_WAV, false);
     }
 
     @Override
-    public void playVictorySound() { 
+    public void playVictorySound() {
         this.playFromCache(VICTORY_WAV, false);
     }
 
     /**
      * Logic to play a sound effect from the byte cache.
      * Creates a dedicated thread for audio playback to ensure non-blocking execution.
-     * 
+     *
      * @param fileName the name of the cached sound to play.
      * @param blocking if true, the calling thread will wait for the sound to finish.
      */
@@ -91,13 +91,13 @@ public final class SoundControllerImpl implements SoundController {
                 clip.addLineListener(event -> {
                     if (event.getType() == LineEvent.Type.STOP) {
                         latch.countDown();
-                    }   
+                    }
                 });
                 clip.open(stream);
                 clip.start();
                 latch.await();
 
-            } catch (final UnsupportedAudioFileException | IOException 
+            } catch (final UnsupportedAudioFileException | IOException
                     | LineUnavailableException | InterruptedException e) {
                 if (e instanceof InterruptedException) {
                     Thread.currentThread().interrupt();
@@ -109,7 +109,7 @@ public final class SoundControllerImpl implements SoundController {
 
         if (blocking) {
             try {
-                audioThread.join(); 
+                audioThread.join();
             } catch (final InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

@@ -6,14 +6,14 @@ import it.unibo.burraco.model.player.Player;
 import java.util.List;
 
 /**
- * Interface that defines the necessary methods for the controller to interact 
+ * Interface that defines the necessary methods for the controller to interact
  * with the "Take Discard" UI logic.
  */
 public interface TakeDiscardActionView {
 
     /**
      * Updates the UI when the player successfully picks up the discard pile.
-     * 
+     *
      * @param current the player who took the cards.
      * @param updatedPile the new state of the discard pile.
      * @param isPlayer1 true if the current player is Player 1.
@@ -22,7 +22,7 @@ public interface TakeDiscardActionView {
 
     /**
      * Handles the display of error messages when the action is not allowed.
-     * 
+     *
      * @param result the result object containing the error status.
      */
     void onTakeDiscardError(DrawResult result);

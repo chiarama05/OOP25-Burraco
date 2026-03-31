@@ -15,7 +15,7 @@ public class DiscardNotifierImpl implements DiscardNotifier{
 
     /**
      * Constructs a DiscardNotifierImpl.
-     * 
+     *
      * @param parent the parent frame used to center the error dialogs
      */
     public DiscardNotifierImpl(final JFrame parent) {
@@ -24,16 +24,16 @@ public class DiscardNotifierImpl implements DiscardNotifier{
 
     @Override
     public void notifyDiscardError(final DiscardResult result) {
-        final String errorCode = result.getMessage(); 
-    
+        final String errorCode = result.getMessage();
+
         final String userMessage = switch (errorCode) {
-            case "NOT_SELECTED" -> 
+            case "NOT_SELECTED" ->
                 "You must select a card to discard.";
-            case "NOT_IN_HAND" -> 
+            case "NOT_IN_HAND" ->
                 "The selected card is not in your hand.";
-            case "NO_BURRACO_ERROR" -> 
+            case "NO_BURRACO_ERROR" ->
                 "You need at least one Burraco to close the round!";
-            default -> 
+            default ->
                 "An error occurred during discard.";
         };
 

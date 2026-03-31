@@ -109,38 +109,38 @@ public interface TableView extends TakeDiscardView, PotView, SelectionView {
     /**
      * Returns the panel containing the discard pile.
      *
-     * @return the discard JPanel 
+     * @return the discard JPanel
      */
     JPanel getDiscardPanel();
 
     /**
      * Returns the main application frame.
      *
-     * @return the main JFrame 
+     * @return the main JFrame
      */
-    JFrame getFrame();   
-    
+    JFrame getFrame();
+
     /**
      * Returns the button used to place combinations.
      *
-     * @return the put combination JButton 
+     * @return the put combination JButton
      */
-    JButton getPutComboBtn();      
-    
-    /** 
+    JButton getPutComboBtn();
+
+    /**
      * Returns the button used to take the discard pile.
      *
-     * @return the take discard JButton 
+     * @return the take discard JButton
      */
     JButton getTakeDiscardBtn();
-    
+
     /**
      * Returns the DeckView component.
      *
-     * @return the deck view 
+     * @return the deck view
      */
-    DeckView getDeckView();    
-    
+    DeckView getDeckView();
+
     /**
      * Injects the factory for creating combination buttons.
      *

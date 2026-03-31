@@ -16,12 +16,12 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Swing-based implementation of the SetUpMenuView.
- * Provides a graphical interface for configuring game parameters such as 
+ * Provides a graphical interface for configuring game parameters such as
  * player names and the target victory score.
  */
 public final class SetUpMenuViewImpl implements SetUpMenuView {
@@ -71,7 +71,7 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
 
     /**
      * Constructor for the configuration menu.
-     * 
+     *
      * @param listener the listener handling the configuration completion events.
      */
     public SetUpMenuViewImpl(final OnConfigurationCompleteListener listener) {
@@ -92,10 +92,10 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
         final JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(BACKGROUND_COLOR);
         final GridBagConstraints gbc = new GridBagConstraints();
-    
+
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(INSET_STD, INSET_SIDE, INSET_STD, INSET_SIDE);
-    
+
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -165,7 +165,7 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
 
     /**
      * Helper to create styled score selection buttons.
-     * 
+     *
      * @param score the numeric value for the button
      * @return the styled JButton
      */
@@ -190,7 +190,7 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
 
     /**
      * Helper to create styled labels for input prompts.
-     * 
+     *
      * @param text the label text
      * @return the styled JLabel
      */
@@ -202,13 +202,13 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
         return l;
     }
 
-    @Override 
-    public void display() { 
+    @Override
+    public void display() {
         this.frame.setVisible(true);
     }
 
-    @Override 
-    public void close() { 
+    @Override
+    public void close() {
         this.frame.dispose();
     }
 }

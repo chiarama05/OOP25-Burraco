@@ -1,5 +1,5 @@
 package it.unibo.burraco.view.notification.putcombination;
- 
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -15,7 +15,7 @@ public final class PutCombinationNotifierImpl implements PutCombinationNotifier 
 
     /**
      * Constructs a PutCombinationNotifierImpl.
-     * 
+     *
      * @param parent the parent {@link JFrame} used to center the error dialogs
      */
     public PutCombinationNotifierImpl(final JFrame parent) {
@@ -26,7 +26,7 @@ public final class PutCombinationNotifierImpl implements PutCombinationNotifier 
     public void notifyCombinationError(final PutCombinationResult result) {
 
         PutCombinationResult.Status status = result.getStatus();
-        
+
         final String message = switch (status) {
             case NOT_DRAWN -> "Draw a card first!";
             case NO_CARDS_SELECTED -> "Select cards from your hand first!";

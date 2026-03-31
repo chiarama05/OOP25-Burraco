@@ -8,9 +8,9 @@ import javax.swing.border.Border;
 import javax.swing.BorderFactory;
 
 public final class BurracoStyleManager {
-    
-    private static final Color BURRACO_GREEN = new Color(50, 205, 50); 
-    private static final Color BURRACO_BG = new Color(240, 255, 240); 
+
+    private static final Color BURRACO_GREEN = new Color(50, 205, 50);
+    private static final Color BURRACO_BG = new Color(240, 255, 240);
     private static final Color DEFAULT_BORDER = Color.GRAY;
 
     private static final int BURRACO_MIN_CARDS = 7;
@@ -29,7 +29,7 @@ public final class BurracoStyleManager {
      * Checks if a list of cards forms a Burraco.
      *
      * @param cards the list of cards to check.
-     * 
+     *
      * @return true if the size is at least 7, false otherwise.
      */
     public static boolean isBurraco(final List<Card> cards) {
@@ -40,7 +40,7 @@ public final class BurracoStyleManager {
      * Returns the appropriate border based on whether the combination is a Burraco.
      *
      * @param cards the list of cards.
-     * 
+     *
      * @return a thick green border for Burraco, a thin gray one otherwise.
      */
     public static Border getBurracoBorder(final List<Card> cards) {
@@ -54,7 +54,7 @@ public final class BurracoStyleManager {
      * Returns the appropriate background color.
      *
      * @param cards the list of cards.
-     * 
+     *
      * @return a light green color for Burraco, white otherwise.
      */
     public static Color getBurracoBackground(final List<Card> cards) {

@@ -27,16 +27,16 @@ public class BurracoApp {
 
     private static void showSetupMenu() {
         OnConfigurationCompleteListener listener = new OnConfigurationCompleteListener() {
-            
+
             @Override
             public void onConfigComplete(int targetScore, String nameP1, String nameP2) {
-                
+
                 PlayerImpl p1 = new PlayerImpl(nameP1);
                 PlayerImpl p2 = new PlayerImpl(nameP2);
                 TurnImpl turnManager = new TurnImpl(p1, p2);
 
                 it.unibo.burraco.controller.sound.SoundController sound = new it.unibo.burraco.view.sound.SoundControllerImpl();
-                
+
                 SelectionCardManager selectionManager = new SelectionCardManager();
                 TableViewImpl view = new TableViewImpl(nameP1, nameP2, selectionManager);
 
@@ -53,7 +53,7 @@ public class BurracoApp {
                 view.getDiscardView(),
                 gc.getDiscardPile().getCards()
                 );
-                
+
                 view.refreshHandPanel(true, p1.getHand());
             }
 

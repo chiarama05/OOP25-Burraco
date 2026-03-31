@@ -39,7 +39,7 @@ public class TakeDiscardButton implements TakeDiscardActionView {
 
     /**
      * Registers the logic to be executed when the user triggers the action.
-     * 
+     *
      * @param handler a Runnable containing the controller's logic.
      */
     public void setOnTakeDiscardAction(final Runnable handler) {

@@ -14,7 +14,7 @@ public class DeckNotifierImpl implements DeckNotifier{
 
     /**
      * Constructs a DeckNotifierImpl.
-     * 
+     *
      * @param parent the parent frame used to center the warning dialogs
      */
     public DeckNotifierImpl(final JFrame parent) {
@@ -24,9 +24,9 @@ public class DeckNotifierImpl implements DeckNotifier{
     @Override
     public void notifyDrawError(final DrawResult result) {
         final String message = switch (result.getStatus()) {
-            case ALREADY_DRAWN -> 
+            case ALREADY_DRAWN ->
                 "You have already drawn a card this turn!";
-            case EMPTY_DECK -> 
+            case EMPTY_DECK ->
                 "The deck is empty! You must draw from the discard pile.";
             default -> null;
         };

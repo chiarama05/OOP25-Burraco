@@ -102,7 +102,7 @@ public final class StartMenuViewImpl implements StartMenuView {
         gbc.gridy = 0;
         panel.add(title, gbc);
         final RoundedGradientButton newBtn = new RoundedGradientButton("NEW MATCH");
-        final RoundedGradientButton rulesBtn = new RoundedGradientButton("RULES");        
+        final RoundedGradientButton rulesBtn = new RoundedGradientButton("RULES");
         this.styleButton(newBtn);
         this.styleButton(rulesBtn);
         newBtn.addActionListener(e -> {
@@ -165,12 +165,12 @@ public final class StartMenuViewImpl implements StartMenuView {
         rulesDialog.setVisible(true);
     }
 
-    @Override 
+    @Override
     public void display() {
         this.frame.setVisible(true);
     }
 
-    @Override 
+    @Override
     public void close() {
         this.frame.dispose();
     }

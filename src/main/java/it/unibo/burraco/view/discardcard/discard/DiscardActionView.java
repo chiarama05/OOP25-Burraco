@@ -7,14 +7,14 @@ import java.util.Set;
 
 /**
  * Defines the contract for the discard action UI.
- * It provides methods for retrieving user selection and handling the 
+ * It provides methods for retrieving user selection and handling the
  * feedback from the controller regarding the success or failure of the discard.
  */
 public interface DiscardActionView {
 
     /**
      * Retrieves the set of cards currently selected by the player.
-     * 
+     *
      * @param isPlayer1 true if the current player is Player 1.
      * @return a set of selected {@link Card} objects.
      */
@@ -22,7 +22,7 @@ public interface DiscardActionView {
 
     /**
      * Updates the UI state after a successful discard move.
-     * 
+     *
      * @param player the updated player model.
      * @param updatedPile the new state of the discard pile.
      * @param isPlayer1 true if Player 1 performed the move.
@@ -31,7 +31,7 @@ public interface DiscardActionView {
 
     /**
      * Notifies the user about an error during the discard attempt.
-     * 
+     *
      * @param errorCode a string representing the specific rule violation.
      */
     void onDiscardError(String errorCode);

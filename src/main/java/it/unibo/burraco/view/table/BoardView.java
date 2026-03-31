@@ -22,7 +22,7 @@ public final class BoardView extends JPanel {
     private static final int SECTION_BG_G = 102;
     private static final int SECTION_BG_B = 51;
     private static final String FONT_NAME = "Arial";
- 
+
     private final JPanel combPanel1;
     private final JPanel combPanel2;
 
@@ -36,17 +36,17 @@ public final class BoardView extends JPanel {
     public BoardView(final String nameP1, final  String nameP2, final Color lightgreen) {
         this.setLayout(new GridLayout(1, 2, GRID_HGAP, GRID_VGAP));
         this.setBackground(lightgreen);
- 
+
         this.combPanel1 = this.createSection(nameP1);
         this.combPanel2 = this.createSection(nameP2);
- 
+
         this.add(this.createScrollWrapper(this.combPanel1, lightgreen));
         this.add(this.createScrollWrapper(this.combPanel2, lightgreen));
     }
 
     /**
      * Helper method to create a player section with a titled border.
-     * 
+     *
      * @param title the name of the player to display on the border
      * @return a styled JPanel for combinations
      */
@@ -64,7 +64,7 @@ public final class BoardView extends JPanel {
 
     /**
      * Wraps a panel into a JScrollPane with transparent-like background.
-     * 
+     *
      * @param panel the panel to wrap
      * @param bg the background color to apply to the viewport
      * @return a JScrollPane containing the panel
@@ -76,7 +76,7 @@ public final class BoardView extends JPanel {
         s.setBackground(bg);
         return s;
     }
-    
+
     /**
      * Returns the combination panel for Player 1.
      *
@@ -85,7 +85,7 @@ public final class BoardView extends JPanel {
     public JPanel getCombPanel1() {
         return combPanel1;
     }
- 
+
     /**
      * Returns the combination panel for Player 2.
      *
