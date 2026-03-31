@@ -58,7 +58,7 @@ public class PutCombinationController {
      * @param selectedCards the list of cards selected by the player to form a new combination
      * @return a {@link PutCombinationResult} object containing the status and details of the action
      */
-    public PutCombinationResult tryPutCombination(List<Card> selectedCards) {
+    public PutCombinationResult tryPutCombination(final List<Card> selectedCards) {
         if (!drawManager.hasDrawn()) {
             return PutCombinationResult.error(PutCombinationResult.Status.NOT_DRAWN);
         }

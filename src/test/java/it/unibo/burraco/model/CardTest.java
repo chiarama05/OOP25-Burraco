@@ -3,6 +3,7 @@ package it.unibo.burraco.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ class CardTest {
     private static final String TWO = "2";
     private static final String JOLLY = "Jolly";
     private static final String INVALID = "InvalidValue";
-    
+
     private static final int ACE_NUM = 1;
     private static final int KING_NUM = 13;
     private static final int TWO_NUM = 2;
@@ -74,9 +75,7 @@ class CardTest {
 
         assertEquals(this.aceOfHearts, anotherAceOfHearts);
         assertEquals(this.aceOfHearts.hashCode(), anotherAceOfHearts.hashCode());
-        
         assertNotEquals(this.aceOfHearts, aceOfSpades);
-       
-        assertTrue(this.aceOfHearts != anotherAceOfHearts);
+        assertNotSame(this.aceOfHearts, anotherAceOfHearts);
     }
 }

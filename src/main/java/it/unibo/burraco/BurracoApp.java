@@ -15,35 +15,45 @@ import it.unibo.burraco.view.start.StartMenuView;
 import it.unibo.burraco.view.start.StartMenuViewImpl;
 import it.unibo.burraco.view.table.TableViewImpl;
 
-public class BurracoApp {
+public final class BurracoApp {
+
+    private BurracoApp() {
+        // Utility class constructor
+    }
+
+    /**
+     * Main entry point of the application.
+     * 
+     * @param args command line arguments
+     */
     public static void main(final String[] args) {
         SwingUtilities.invokeLater(() -> showStartMenu());
     }
 
     private static void showStartMenu() {
-        StartMenuView startMenu = new StartMenuViewImpl(() -> showSetupMenu());
+        final StartMenuView startMenu = new StartMenuViewImpl(() -> showSetupMenu());
         startMenu.display();
     }
 
     private static void showSetupMenu() {
-        OnConfigurationCompleteListener listener = new OnConfigurationCompleteListener() {
+        final OnConfigurationCompleteListener listener = new OnConfigurationCompleteListener() {
 
             @Override
-            public void onConfigComplete(int targetScore, String nameP1, String nameP2) {
+            public void onConfigComplete(final int targetScore, final String nameP1, final String nameP2) {
 
-                PlayerImpl p1 = new PlayerImpl(nameP1);
-                PlayerImpl p2 = new PlayerImpl(nameP2);
-                TurnImpl turnManager = new TurnImpl(p1, p2);
+                final PlayerImpl p1 = new PlayerImpl(nameP1);
+                final PlayerImpl p2 = new PlayerImpl(nameP2);
+                final TurnImpl turnManager = new TurnImpl(p1, p2);
 
-                it.unibo.burraco.controller.sound.SoundController sound = new it.unibo.burraco.view.sound.SoundControllerImpl();
+                final it.unibo.burraco.controller.sound.SoundController sound = new it.unibo.burraco.view.sound.SoundControllerImpl();
 
-                SelectionCardManager selectionManager = new SelectionCardManager();
-                TableViewImpl view = new TableViewImpl(nameP1, nameP2, selectionManager);
+                final SelectionCardManager selectionManager = new SelectionCardManager();
+                final TableViewImpl view = new TableViewImpl(nameP1, nameP2, selectionManager);
 
-                GameWiring wiring = new GameWiring(p1, p2, nameP1, nameP2, turnManager, view, sound, targetScore,view.getInitDist());
-                GameController gc = wiring.getGameController();
+                final GameWiring wiring = new GameWiring(p1, p2, nameP1, nameP2, turnManager, view, sound, targetScore,view.getInitDist());
+                final GameController gc = wiring.getGameController();
 
-                InitialDistributionController distController =
+                final InitialDistributionController distController =
                 new InitialDistributionController(new DistributionManagerImpl());
                 distController.distribute(p1, p2, gc.getCommonDeck(), gc.getDiscardPile());
 
@@ -63,7 +73,7 @@ public class BurracoApp {
             }
         };
 
-        SetUpMenuView setupMenu = new SetUpMenuViewImpl(listener);
+        final SetUpMenuView setupMenu = new SetUpMenuViewImpl(listener);
         setupMenu.display();
     }
 }

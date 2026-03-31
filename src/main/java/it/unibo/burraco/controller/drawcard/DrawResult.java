@@ -42,7 +42,7 @@ public final class DrawResult {
      * @param card the drawn card
      * @return a success result for a single card draw
      */
-    public static DrawResult success(Card card) {
+    public static DrawResult success(final Card card) {
         return new DrawResult(Status.SUCCESS, card);
     }
 

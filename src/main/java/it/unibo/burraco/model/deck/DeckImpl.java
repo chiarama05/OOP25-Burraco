@@ -8,11 +8,6 @@ import it.unibo.burraco.model.card.CardImpl;
 
 /**
  * Standard Burraco deck implementation.
- * <p>
- * Composed of two standard 52-card sets (4 suits × 13 values) plus two Jokers per set,
- * for a total of 108 cards. The deck is automatically shuffled on construction and
- * after every {@link #reset()}.
- * </p>
  */
 public final class DeckImpl implements Deck {
 
