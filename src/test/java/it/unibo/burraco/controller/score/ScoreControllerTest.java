@@ -1,6 +1,13 @@
 package it.unibo.burraco.controller.score;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,9 +16,9 @@ import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.controller.sound.SoundController;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.score.Score;
-import it.unibo.burraco.view.table.TableView;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
 import it.unibo.burraco.view.score.ScoreView;
+import it.unibo.burraco.view.table.TableView;
 
 class ScoreControllerTest {
 
@@ -33,10 +40,8 @@ class ScoreControllerTest {
         scoreViewMock = mock(ScoreView.class);
         viewProviderMock = mock(ScoreController.ViewProvider.class);
         gameControllerMock = mock(GameController.class);
-        
         when(viewProviderMock.create(any(), any(), any(), any(), anyInt(), any(), any(), anyBoolean()))
             .thenReturn(scoreViewMock);
-
         scoreController = new ScoreController(
             scoreMock, p1Mock, p2Mock, "P1", "P2",
             mock(TableView.class), gameControllerMock, soundMock,
@@ -51,10 +56,7 @@ class ScoreControllerTest {
         when(scoreMock.calculateFinalScore(p1Mock)).thenReturn(100);
         when(p1Mock.getMatchTotalScore()).thenReturn(100);
         when(p2Mock.getMatchTotalScore()).thenReturn(100);
-
         scoreController.onRoundEnd();
-
-
         verify(p1Mock).addPointsToMatch(100);
         verify(soundMock).playRoundEndSound();
         verify(scoreViewMock).display();
@@ -65,9 +67,7 @@ class ScoreControllerTest {
     void testRoundEndWithVictory() throws InterruptedException {
         when(scoreMock.calculateFinalScore(p1Mock)).thenReturn(500);
         when(p1Mock.getMatchTotalScore()).thenReturn(2005); 
-
         scoreController.onRoundEnd();
-
         verify(soundMock, timeout(500)).playVictorySound();
         verify(scoreViewMock, timeout(500)).display();
     }

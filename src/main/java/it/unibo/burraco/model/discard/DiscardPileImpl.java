@@ -21,7 +21,7 @@ public final class DiscardPileImpl implements DiscardPile {
     }
 
     @Override
-    public void addAll(final List<Card> cards){
+    public void addAll(final List<Card> cardsToAdd) {
         this.cards.addAll(cards);
     }
 

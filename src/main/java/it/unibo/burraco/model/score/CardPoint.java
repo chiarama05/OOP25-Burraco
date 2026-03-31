@@ -8,25 +8,25 @@ import it.unibo.burraco.model.card.Card;
  */
 public final class CardPoint {
 
+    public static final int RANK_ACE = 1;
+    public static final int RANK_TWO = 2;
+    public static final int RANK_THREE = 3;
+    public static final int RANK_FOUR = 4;
+    public static final int RANK_FIVE = 5;
+    public static final int RANK_SIX = 6;
+    public static final int RANK_SEVEN = 7;
+    public static final int RANK_EIGHT = 8;
+    public static final int RANK_NINE = 9;
+    public static final int RANK_TEN = 10;
+    public static final int RANK_JACK = 11;
+    public static final int RANK_QUEEN = 12;
+    public static final int RANK_KING = 13;
+    
     private static final int POINTS_JOLLY = 30;
     private static final int POINTS_TWO = 20;
     private static final int POINTS_ACE = 15;
     private static final int POINTS_HIGH_CARDS = 10;
     private static final int POINTS_LOW_CARDS = 5;
-
-    private static final int RANK_ACE = 1;
-    private static final int RANK_TWO = 2;
-    private static final int RANK_THREE = 3;
-    private static final int RANK_FOUR = 4;
-    private static final int RANK_FIVE = 5;
-    private static final int RANK_SIX = 6;
-    private static final int RANK_SEVEN = 7;
-    private static final int RANK_EIGHT = 8;
-    private static final int RANK_NINE = 9;
-    private static final int RANK_TEN = 10;
-    private static final int RANK_JACK = 11;
-    private static final int RANK_QUEEN = 12;
-    private static final int RANK_KING = 13;
 
     private static final String JOLLY_STR = "Jolly";
     private static final String TWO_STR = "2";
