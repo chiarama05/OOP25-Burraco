@@ -33,22 +33,8 @@ public class PotManager {
         this.view = view;
     }
 
-
-
-
     /**
      * Checks whether the current player should draw the pot, and if so, executes the draw.
-     * <p>
-     * The pot is drawn if and only if the player's hand is empty <em>and</em> the player
-     * has not already taken the pot in this round. When those conditions are met:
-     * <ol>
-     *   <li>The player is flagged as "in pot" and the pot cards are moved to their hand.</li>
-     *   <li>The view is notified to display an informational message.</li>
-     *   <li>The combination panel border is updated to show "[POT TAKEN]".</li>
-     *   <li>If {@code isDiscard} is {@code false}, the hand panel is also refreshed immediately
-     *       (discard-triggered pot draws skip this step because the discard flow handles it).</li>
-     * </ol>
-     * </p>
      *
      * @param isDiscard {@code true} if the pot draw was triggered by a discard action,
      *                  {@code false} if triggered by another action (put combination, attach)

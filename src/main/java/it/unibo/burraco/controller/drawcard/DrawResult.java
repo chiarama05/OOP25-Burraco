@@ -29,6 +29,7 @@ public final class DrawResult {
 
     /**
      * Private constructor to maintain control over instance creation via factory methods.
+     * 
      * @param status the status of the draw operation
      * @param card   the card drawn, if applicable
      */

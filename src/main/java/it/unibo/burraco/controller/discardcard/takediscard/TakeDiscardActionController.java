@@ -32,6 +32,7 @@ public class TakeDiscardActionController {
 
     /**
      * Handles the user's request to take all cards from the discard pile.
+     * 
      * @param view the view component that will receive success or error notifications.
      */
     public void handle(final TakeDiscardActionView view) {

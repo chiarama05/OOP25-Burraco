@@ -17,6 +17,7 @@ public final class CombinationManager {
 
     /**
      * Prepares a list of cards for visual display.
+     * 
      * @param cards the original list of cards in the combination
      * @return a new list of cards ordered for display
      */

@@ -43,6 +43,7 @@ public class ScoreController {
     public interface ViewProvider {
         /**
          * Creates a ScoreView.
+         * 
          * @param p1 player 1
          * @param p2 player 2
          * @param n1 name 1
@@ -110,6 +111,7 @@ public class ScoreController {
     /**
      * Initializes and displays the score view.
      * Sets up the callback for the "Next" action to reset the game for a new round.
+     * 
      * @param matchOver true if the entire match has concluded.
      */
     private void showScoreView(boolean matchOver) {

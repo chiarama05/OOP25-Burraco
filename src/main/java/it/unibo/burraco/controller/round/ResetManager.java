@@ -13,6 +13,7 @@ public interface ResetManager {
 
     /**
      * Resets players, the deck, and the discard pile.
+     * 
      * @param p1 the first player.
      * @param p2 the second player.
      * @param deck the game deck.

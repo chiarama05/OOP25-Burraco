@@ -7,6 +7,7 @@ import it.unibo.burraco.controller.combination.set.SetUtils;
 import it.unibo.burraco.controller.combination.straight.StraightUtils;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
+
 /**
  * Utility class responsible for validating whether a set of cards 
  * forms a legal game combination (Straight or Set) according to the rules.
@@ -18,6 +19,7 @@ public final class CombinationValidator {
      * Validates a combination of cards. 
      * Checks for minimum size, type of combination (Straight/Set), 
      * and the correct usage of wildcards (Jolly and 2).
+     * 
      * @param cards the list of cards to validate
      * @return true if the combination is valid, false otherwise
      */ 
@@ -81,6 +83,7 @@ public final class CombinationValidator {
 
     /**
      * Determines if a specific card is acting as a wildcard.
+     * 
      * @param c the card to check
      * @param context the combination of cards the card belongs to
      * @return true if the card is a Joker or a "2" used as a wildcard, false otherwise

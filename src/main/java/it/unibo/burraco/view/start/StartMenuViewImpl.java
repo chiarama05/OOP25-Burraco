@@ -181,4 +181,3 @@ public class StartMenuViewImpl implements StartMenuView{
         frame.dispose(); 
     }
 }
-

@@ -15,6 +15,7 @@ public final class CardPoint {
 
     /**
      * Calculates the score value of a specific card.
+     * 
      * @param card the card to evaluate.
      * @return the points assigned to the card.
      */
@@ -47,6 +48,7 @@ public final class CardPoint {
 
     /**
      * Converts a card's string value to its numerical rank for sorting/sequence logic.
+     * 
      * @param card the card to convert.
      * @return an integer from 1 (Ace) to 13 (King).
      * @throws IllegalArgumentException if the card value is not a standard rank.
