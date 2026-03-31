@@ -59,7 +59,7 @@ public final class PlayerImpl implements Player {
 
     @Override
     public List<Card> getHand() {
-        return hand;
+        return new ArrayList<>(this.hand);
     }
 
     @Override

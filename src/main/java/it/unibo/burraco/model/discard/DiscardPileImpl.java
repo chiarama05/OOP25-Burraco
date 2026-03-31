@@ -27,7 +27,7 @@ public final class DiscardPileImpl implements DiscardPile {
 
     @Override
     public Card drawLast() {
-        if(!cards.isEmpty()){
+        if (!cards.isEmpty()) {
             // Removes the element at the last available index
             return cards.remove(cards.size() - 1);
         }

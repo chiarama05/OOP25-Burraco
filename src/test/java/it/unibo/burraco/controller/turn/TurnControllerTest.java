@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
-import it.unibo.burraco.model.deck.DeckImpl;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.turn.Turn;
