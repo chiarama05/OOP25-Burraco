@@ -272,25 +272,6 @@ public final class TableViewImpl implements TableView {
         return this.discardView;
     }
 
-<<<<<<< HEAD
-    @Override public JPanel getDiscardPanel() {
-        return this.discardPanel;
-    }
-
-    @Override public JFrame getFrame() {
-        return this.frame;
-    }
-
-    @Override public JButton getPutComboBtn() {
-        return this.putComboBtn;
-    }
-
-    @Override public JButton getTakeDiscardBtn() {
-        return this.takeDiscardBtn;
-    }
-
-    @Override public DeckView getDeckView() {
-=======
     @Override
     public JPanel getDiscardPanel() {
         return this.discardPanel;
@@ -313,7 +294,6 @@ public final class TableViewImpl implements TableView {
 
     @Override
     public DeckView getDeckView() {
->>>>>>> b6d33d15ab6196e5bf9031acf3ec39ffb395bf0f
         return this.deckView;
     }
 
