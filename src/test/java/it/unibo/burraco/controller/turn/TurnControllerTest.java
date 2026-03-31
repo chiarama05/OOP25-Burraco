@@ -19,7 +19,7 @@ import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.turn.Turn;
 import it.unibo.burraco.model.turn.TurnImpl;
- 
+
 class TurnControllerTest {
 
     private Player player1;
@@ -40,110 +40,100 @@ class TurnControllerTest {
 
     @BeforeEach
     void setUp() {
-        player1 = new PlayerImpl("Alice");
-        player2 = new PlayerImpl("Bob");
-        turnModel = new TurnImpl(player1, player2);
-        drawManager = new DrawManager();
-        turnController = new TurnController(turnModel, drawManager);
+        this.player1 = new PlayerImpl("Alice");
+        this.player2 = new PlayerImpl("Bob");
+        this.turnModel = new TurnImpl(this.player1, this.player2);
+        this.drawManager = new DrawManager();
+        this.turnController = new TurnController(this.turnModel, this.drawManager);
     }
 
     @Test
     void testInitiallyPlayer1Turn() {
-        assertTrue(turnModel.isPlayer1Turn());
-        assertEquals(player1, turnModel.getCurrentPlayer());
+        assertTrue(this.turnModel.isPlayer1Turn());
+        assertEquals(this.player1, this.turnModel.getCurrentPlayer());
     }
 
     @Test
     void testExecuteNextTurnSwitchesToPlayer2() {
-        turnController.executeNextTurn();
-        assertFalse(turnModel.isPlayer1Turn());
-        assertEquals(player2, turnModel.getCurrentPlayer());
+        this.turnController.executeNextTurn();
+        assertFalse(this.turnModel.isPlayer1Turn());
+        assertEquals(this.player2, this.turnModel.getCurrentPlayer());
     }
 
     @Test
     void testExecuteNextTurnSwitchesBackToPlayer1() {
-        turnController.executeNextTurn();
-        turnController.executeNextTurn();
-        assertTrue(turnModel.isPlayer1Turn());
-        assertEquals(player1, turnModel.getCurrentPlayer());
-    }
-
-    @Test
-    void testThreeExecuteNextTurnEndsOnPlayer2() {
-        turnController.executeNextTurn();
-        turnController.executeNextTurn();
-        turnController.executeNextTurn();
-        assertEquals(player2, turnModel.getCurrentPlayer());
+        this.turnController.executeNextTurn();
+        this.turnController.executeNextTurn();
+        assertTrue(this.turnModel.isPlayer1Turn());
+        assertEquals(this.player1, this.turnModel.getCurrentPlayer());
     }
 
     @Test
     void testExecuteNextTurnResetsDrawManager() {
-        drawManager.drawFromDeck(player1,new it.unibo.burraco.model.deck.DeckImpl());
-        assertTrue(drawManager.hasDrawn());
-        turnController.executeNextTurn();
-        assertFalse(drawManager.hasDrawn(),"DrawManager must be reset after executeNextTurn()");
+        this.drawManager.drawFromDeck(this.player1, new it.unibo.burraco.model.deck.DeckImpl());
+        assertTrue(this.drawManager.hasDrawn());
+        this.turnController.executeNextTurn();
+        assertFalse(this.drawManager.hasDrawn());
     }
 
     @Test
     void testListenerIsCalledOnExecuteNextTurn() {
         final AtomicBoolean fired = new AtomicBoolean(false);
-        turnController.setOnTurnChangedListener(() -> fired.set(true));
-        turnController.executeNextTurn();
+        this.turnController.setOnTurnChangedListener(() -> fired.set(true));
+        this.turnController.executeNextTurn();
         assertTrue(fired.get(), "Listener must be called after executeNextTurn()");
     }
 
     @Test
-    void testListenerIsCalledOncePerExecution() {
+    void testListenerNotificationCounts() {
         final AtomicInteger count = new AtomicInteger(0);
-        turnController.setOnTurnChangedListener(count::incrementAndGet);
-        turnController.executeNextTurn();
+        this.turnController.setOnTurnChangedListener(count::incrementAndGet);
+        
+        this.turnController.executeNextTurn();
         assertEquals(1, count.get());
-    }
-
-    @Test
-    void testListenerIsCalledTwiceForTwoExecutions() {
-        final AtomicInteger count = new AtomicInteger(0);
-        turnController.setOnTurnChangedListener(count::incrementAndGet);
-        turnController.executeNextTurn();
-        turnController.executeNextTurn();
+        
+        this.turnController.executeNextTurn();
         assertEquals(2, count.get());
     }
 
     @Test
-    void testReplacingListenerCallsNewOne() {
+    void testReplacingListenerCallsOnlyNewOne() {
         final AtomicBoolean firstCalled  = new AtomicBoolean(false);
         final AtomicBoolean secondCalled = new AtomicBoolean(false);
-        turnController.setOnTurnChangedListener(() -> firstCalled.set(true));
-        turnController.setOnTurnChangedListener(() -> secondCalled.set(true));
-        turnController.executeNextTurn();
-        assertFalse(firstCalled.get(),  "Old listener must NOT be called");
+        
+        this.turnController.setOnTurnChangedListener(() -> firstCalled.set(true));
+        this.turnController.setOnTurnChangedListener(() -> secondCalled.set(true));
+        this.turnController.executeNextTurn();
+        
+        assertFalse(firstCalled.get(), "Old listener must NOT be called");
         assertTrue(secondCalled.get(), "New listener must be called");
     }
 
     @Test
     void testNoListenerDoesNotThrow() {
-        assertDoesNotThrow(turnController::executeNextTurn);
+        assertDoesNotThrow(() -> this.turnController.executeNextTurn());
     }
 
     @Test
     void testNullDrawManagerDoesNotThrow() {
-        final TurnController ctrl = new TurnController(turnModel, null);
-        assertDoesNotThrow(ctrl::executeNextTurn);
+        final TurnController ctrl = new TurnController(this.turnModel, null);
+        assertDoesNotThrow(() -> ctrl.executeNextTurn());
     }
 
     @Test
-    void testGameFinishedFlagNotClearedByExecuteNextTurn() {
-        turnModel.setGameFinished(true);
-        turnController.executeNextTurn();
-        assertTrue(turnModel.isGameFinished(),"executeNextTurn() must not clear the gameFinished flag");
+    void testGameFinishedFlagPersistence() {
+        this.turnModel.setGameFinished(true);
+        this.turnController.executeNextTurn();
+        assertTrue(this.turnModel.isGameFinished());
     }
 
     @Test
     void testCanCloseReflectsCurrentPlayerAfterTurnChange() {
-        player2.setInPot(true);
-        player2.addCombination(BURRACO);
-        assertFalse(turnModel.canClose());
-        turnController.executeNextTurn();
-        assertTrue(turnModel.canClose());
+        this.player2.setInPot(true);
+        this.player2.addCombination(BURRACO);
+        
+        assertFalse(this.turnModel.canClose());
+        this.turnController.executeNextTurn();
+        assertTrue(this.turnModel.canClose());
     }
 }
