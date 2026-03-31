@@ -8,7 +8,7 @@ import it.unibo.burraco.model.card.Card;
  * Implementation of the {@link Player} interface.
  * Represents a player in the Burraco game.
  */
-public class PlayerImpl implements Player {
+public final class PlayerImpl implements Player {
 
     private final List<Card> hand = new ArrayList<>();
     private final List<Card> pot = new ArrayList<>();
@@ -27,6 +27,7 @@ public class PlayerImpl implements Player {
 
     /**
      * Constructs a PlayerImpl with the specified name.
+     * 
      * @param name the player's name
      */
     public PlayerImpl(final String name) {
@@ -127,6 +128,7 @@ public class PlayerImpl implements Player {
 
     /**
      * Returns the current pot cards.
+     * 
      * @return the pot cards
      */
     public List<Card> getPot() {

@@ -11,7 +11,7 @@ import it.unibo.burraco.view.table.TableView;
  * It acts as an orchestrator that coordinates the reset logic, the distribution logic,
  * and the synchronization of multiple view components.
  */
-public class RoundControllerImpl implements RoundController {
+public final class RoundControllerImpl implements RoundController {
 
     private final TableView tableView;
     private final ResetManager resetManager;

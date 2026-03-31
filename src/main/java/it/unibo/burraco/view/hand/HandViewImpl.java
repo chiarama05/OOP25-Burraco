@@ -9,6 +9,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.MouseAdapter; 
+import java.awt.event.MouseEvent;    
 import java.util.List;
 import java.util.Set;
 
@@ -36,11 +38,13 @@ public final class HandViewImpl extends JPanel implements HandView {
     private static final Color HOVER_BORDER = new Color(240, 230, 140);
     private static final int HOVER_BORDER_THICKNESS = 2;
 
+    private static final int HOVER_OFFSET = 2;
+    private static final String JOLLY_VALUE = "Jolly";
     private static final String JOLLY_FONT = "Segoe UI Symbol";
     private static final String NORMAL_FONT = "Monospaced";
 
     private final transient SelectionCardManager selectionManager;
-    private CardSelectionListener listener;
+    private CardSelectionListener cardSelectionListener;
 
     /**
      * Constructs a HandViewImpl with a specific selection manager.
@@ -61,7 +65,7 @@ public final class HandViewImpl extends JPanel implements HandView {
         this.setPreferredSize(new Dimension(preferredWidth, PANEL_HEIGHT));
 
         for (final Card c : hand) {
-            final boolean isJolly = c.getValue().equalsIgnoreCase("Jolly");
+            final boolean isJolly = JOLLY_VALUE.equalsIgnoreCase(c.getValue());
             final String displayField = isJolly ? c.getSeed() : c.toString();
 
             final JButton btn = new JButton(displayField);
@@ -83,33 +87,33 @@ public final class HandViewImpl extends JPanel implements HandView {
             btn.setBackground(this.selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
             btn.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
-            btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            btn.addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseEntered(java.awt.event.MouseEvent e) {
+                public void mouseEntered(final MouseEvent e) { 
                     if (!selectionManager.isSelected(c)) {
                         btn.setBackground(HOVER_BG); 
                     }
                     btn.setBorder(BorderFactory.createLineBorder(HOVER_BORDER, HOVER_BORDER_THICKNESS)); 
-                    btn.setLocation(btn.getX(), btn.getY() - 2);
+                    btn.setLocation(btn.getX(), btn.getY() - HOVER_OFFSET);
                 }
 
                 @Override
-                public void mouseExited(java.awt.event.MouseEvent e) {
+                public void mouseExited(final MouseEvent e) {
                     if (!selectionManager.isSelected(c)) {
                         btn.setBackground(Color.WHITE);
                     } else {
                         btn.setBackground(Color.YELLOW);
                     }
                     btn.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-                    btn.setLocation(btn.getX(), btn.getY() + 2);
+                    btn.setLocation(btn.getX(), btn.getY() + HOVER_OFFSET);
                 }
             });
         
             btn.addActionListener(e -> {
                 this.selectionManager.toggleSelection(c);
                 btn.setBackground(this.selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
-                if (this.listener != null) {
-                    this.listener.onCardSelected(c);
+                if (this.cardSelectionListener != null) {
+                    this.cardSelectionListener.onCardSelected(c);
                 }
             });
 
@@ -117,7 +121,7 @@ public final class HandViewImpl extends JPanel implements HandView {
         }
         this.revalidate();
         this.repaint();
-    }    
+    }
 
     @Override
     public Set<Card> getSelectedCards() {
@@ -133,7 +137,7 @@ public final class HandViewImpl extends JPanel implements HandView {
 
     @Override
     public void setCardSelectionListener(final CardSelectionListener listener) {
-        this.listener = listener;
+        this.cardSelectionListener = listener;
     }
 
     /**

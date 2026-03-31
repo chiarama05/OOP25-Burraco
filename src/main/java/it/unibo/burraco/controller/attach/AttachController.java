@@ -24,6 +24,7 @@ public class AttachController {
     /**
      * Attempts to attach selected cards to a combination. 
      * Validates player turn, draw status and game rules.
+     * 
      * @param currentPlayer the player performing the action
      * @param selectedCards the cards the player wants to play
      * @param combinationCards the target combination on the table
@@ -96,6 +97,7 @@ public class AttachController {
     /**
      * Performs the actual update of the game state:  
      * updates the combination on the table and removes cards from the player's hand.
+     * 
      * @param player the player performing the move
      * @param selectedCards the cards to remove from hand
      * @param combinationCards the combination to update

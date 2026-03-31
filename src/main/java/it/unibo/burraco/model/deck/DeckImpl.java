@@ -14,7 +14,7 @@ import it.unibo.burraco.model.card.CardImpl;
  * after every {@link #reset()}.
  * </p>
  */
-public class DeckImpl implements Deck {
+public final class DeckImpl implements Deck {
 
     private final List<Card> cards;
 

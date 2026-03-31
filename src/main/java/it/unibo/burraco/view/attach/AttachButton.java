@@ -39,6 +39,7 @@ public final class AttachButton extends JButton implements AttachView {
     private static final int COLOR_JOLLY_G = 112;
     private static final int COLOR_JOLLY_B = 147;
     private static final int GAP = 5;
+
     private static final int BORDER_PADDING = 10;
     private static final int LINE_THICKNESS = 1;
     private static final String JOLLY_VALUE = "Jolly";
@@ -47,7 +48,7 @@ public final class AttachButton extends JButton implements AttachView {
     private final List<Card> cards;
     private final TableView tableView;
     private final boolean isPlayer1Owner;
-    private BiConsumer<List<Card>, AttachButton> onAttachAction;
+    private transient BiConsumer<List<Card>, AttachButton> onAttachAction;
 
     /**
      * Constructs the button, initializes its layout and triggers the first visual render.
@@ -83,7 +84,9 @@ public final class AttachButton extends JButton implements AttachView {
      * and forwards them to the registered attach action handler.
      */
     private void handleAttachAction() {
-        if (this.onAttachAction == null) return;
+        if (this.onAttachAction == null) {
+            return;
+        }
         final List<Card> selected = new ArrayList<>(
                 this.tableView.getHandViewForCurrentPlayer(isPlayer1Owner).getSelectedCards());
         this.onAttachAction.accept(selected, this);
@@ -101,9 +104,9 @@ public final class AttachButton extends JButton implements AttachView {
     }
 
     @Override
-    public void onAttachSuccess(final Player p, final boolean isPlayer1) {
-        this.tableView.getHandViewForCurrentPlayer(isPlayer1).clearSelection();
-        this.tableView.refreshHandPanel(isPlayer1, p.getHand());
+    public void onAttachSuccess(final Player p, final boolean isP1) {
+        this.tableView.getHandViewForCurrentPlayer(isP1).clearSelection();
+        this.tableView.refreshHandPanel(isP1, p.getHand());
     }
 
     @Override
@@ -210,12 +213,16 @@ public final class AttachButton extends JButton implements AttachView {
         this.add(Box.createVerticalStrut(VERTICAL_STRUT_SIZE));
     }
 
-    /** @return the list of cards in this combination */
+    /** 
+     * @return the list of cards in this combination 
+     */
     public List<Card> getCards() { 
         return this.cards; 
     }
 
-    /** @return true if this combination belongs to Player 1 */
+    /** 
+     * @return true if this combination belongs to Player 1 
+     */
     public boolean isPlayer1Owner() { 
         return this.isPlayer1Owner; 
     }

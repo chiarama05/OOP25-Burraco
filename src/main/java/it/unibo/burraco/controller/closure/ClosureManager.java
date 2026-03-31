@@ -42,10 +42,6 @@ public class ClosureManager {
     /**
     * Evaluates the game state after a generic action (put combination or attach)
     * and reacts to constraint violations or valid closure conditions.
-    * <p>
-    * Returns {@code true} if the turn flow must be interrupted (either because the player
-    * must do something before discarding, or because the round has ended).
-    * </p>
     *
     * @param player the player who just performed the action
     * @return {@code true} if the normal turn flow must be interrupted, {@code false} otherwise
@@ -73,10 +69,6 @@ public class ClosureManager {
     /**
     * Evaluates the game state after a discard action and triggers the end of the
     * round if the conditions for a valid closure are met.
-    * <p>
-    * Returns {@code true} only when the round actually ends ({@link ClosureState#ROUND_WON}).
-    * Returns {@code false} for all other states, including invalid closure attempts.
-    * </p>
     *
     * @param player the player who just discarded
     * @return {@code true} if the round ended, {@code false} otherwise
