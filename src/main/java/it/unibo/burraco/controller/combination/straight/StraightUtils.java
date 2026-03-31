@@ -50,7 +50,7 @@ public final class StraightUtils {
         }
 
         final List<Card> pureReal = cards.stream()
-                .filter(c -> !JOLLY.equalsIgnoreCase(c.getValue()) && !TWO.equals(c.getValue()))
+                .filter((final Card c) -> !JOLLY.equalsIgnoreCase(c.getValue()) && !TWO.equals(c.getValue()))
                 .collect(Collectors.toList());
 
         if (pureReal.isEmpty()) {
@@ -206,13 +206,13 @@ public final class StraightUtils {
         if (sequence == null || sequence.isEmpty()) {
             return Collections.emptyList();
         }
-        List<Card> attempt = buildOrdering(sequence, false);
-        if (attempt != null) {
-            return attempt;
+        final List<Card> lowAttempt = buildOrdering(sequence, false);
+        if (lowAttempt != null) {
+            return lowAttempt;
         }
-        attempt = buildOrdering(sequence, true);
-        if (attempt != null) {
-            return attempt;
+        final List<Card> highAttempt = buildOrdering(sequence, true);
+        if (highAttempt != null) {
+            return highAttempt;
         }
         return new ArrayList<>(sequence);
     }
@@ -305,7 +305,7 @@ public final class StraightUtils {
      */
     private static boolean decideIfAceIsLow(final List<Card> real, final int wildCount) {
         final List<Integer> lowVals = real.stream()
-                .map(c -> mapValue(c, true)).sorted().collect(Collectors.toList());
+                .map((final Card c) -> mapValue(c, true)).sorted().collect(Collectors.toList());
         return canBeSequential(lowVals, wildCount) && real.stream().noneMatch(c -> "K".equals(c.getValue()));
     }
 
