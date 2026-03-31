@@ -24,16 +24,13 @@ public final class ClosureValidator {
      */
     public static ClosureState evaluate(final Player player) {
         final boolean handEmpty = player.getHand().isEmpty();
-        final boolean hasPot = player.isInPot();
-        final boolean hasBurraco = player.getBurracoCount() >= 1;
-
         if (!handEmpty) {
             return ClosureState.OK;
         }
-        if (!hasPot) {
+        if (!player.isInPot()) {
             return ClosureState.ZERO_CARDS_NO_POT;
         }
-        if (!hasBurraco) {
+        if (player.getBurracoCount() < 1) {
             return ClosureState.ZERO_CARDS_NO_BURRACO;
         }
         return ClosureState.CAN_CLOSE;
@@ -75,23 +72,16 @@ public final class ClosureValidator {
             final Player player, 
             final List<Card> cardsToPlay, 
             final int comboSize) {
-        final int handAfter = player.getHand().size() - cardsToPlay.size();
-        final boolean potTaken = player.isInPot();
-        final boolean hasBurraco = player.getBurracoCount() >= 1;
-        final boolean newIsBurraco = comboSize >= BURRACO_THRESHOLD;
 
-        if (!potTaken) {
+        if (!player.isInPot()) {
             return false;
         }
+        final int handAfter = player.getHand().size() - cardsToPlay.size();
         if (handAfter == 0) {
             return true; 
         }
         if (handAfter == 1) {
-            if (hasBurraco || newIsBurraco) {
-                return false;
-            } else {
-                return true;
-            }
+            return !(player.getBurracoCount() >= 1 || comboSize >= BURRACO_THRESHOLD);
         }
         return false;
     }
@@ -108,25 +98,17 @@ public final class ClosureValidator {
             final Player player, 
             final List<Card> cardsToAttach, 
             final int currentComboSize) {
-        final int numToAttach = cardsToAttach.size(); 
-        final int handAfter = player.getHand().size() - numToAttach;
-        final boolean potTaken = player.isInPot();
-        final boolean hasBurraco = player.getBurracoCount() >= 1;
-        final boolean attachMakesBurraco = (currentComboSize + numToAttach) >= 7;
 
-        if (!potTaken) {
+        if (!player.isInPot()) {
             return false;
         }
+        final int handAfter = player.getHand().size() - cardsToAttach.size();
         if (handAfter == 0) {
             return true; 
         }
+
         if (handAfter == 1) {
-            if (hasBurraco || attachMakesBurraco) {
-                return false; 
-            } 
-            else {
-                return true; 
-            }
+            return !(player.getBurracoCount() >= 1 || (currentComboSize + cardsToAttach.size()) >= BURRACO_THRESHOLD);
         }
         return false;
     }

@@ -22,6 +22,17 @@ import it.unibo.burraco.model.card.Card;
  */
 public final class StraightUtils {
 
+    private static final String JOLLY = "Jolly";
+    private static final String TWO = "2";
+    private static final String ACE = "A";
+    private static final String THREE = "3";
+    private static final String KING = "K";
+
+    private static final int ACE_LOW_VALUE = 1;
+    private static final int ACE_HIGH_VALUE = 14;
+    private static final int TWO_VALUE = 2;
+    private static final int MIN_STRAIGHT_SIZE = 3;
+
     /**
      * Private constructor to prevent instantiation of this utility class.
      */
@@ -39,15 +50,15 @@ public final class StraightUtils {
         }
 
         final List<Card> pureReal = cards.stream()
-                .filter(c -> !"Jolly".equalsIgnoreCase(c.getValue()) && !"2".equals(c.getValue()))
+                .filter(c -> !JOLLY.equalsIgnoreCase(c.getValue()) && !TWO.equals(c.getValue()))
                 .collect(Collectors.toList());
 
         if (pureReal.isEmpty()) {
             return true;
         }
 
-        final String suit = pureReal.get(0).getSeed();
-        return pureReal.stream().allMatch(c -> c.getSeed().equals(suit));
+        final String seed = pureReal.get(0).getSeed();
+        return pureReal.stream().allMatch(c -> c.getSeed().equals(seed));
     }
 
     /**
@@ -57,7 +68,7 @@ public final class StraightUtils {
      * @return true if the cards form a valid sequence, false otherwise
      */
     public static boolean isValidStraight(final List<Card> cards) {
-        if (cards == null || cards.size() < 3) {
+        if (cards == null || cards.size() < MIN_STRAIGHT_SIZE) {
             return false;
         }
         return checkLogic(cards, false) || checkLogic(cards, true);
@@ -76,9 +87,9 @@ public final class StraightUtils {
         boolean naturalTwoUsed = false;
 
         for (final Card c : cards) {
-            if ("Jolly".equals(c.getValue())) {
+            if (JOLLY.equals(c.getValue())) {
                 wildcards++;
-            } else if ("2".equals(c.getValue())) {
+            } else if (TWO.equals(c.getValue())) {
                 if (!forceTwosAsWildcards && !naturalTwoUsed && isSameSeedAsRest(c, cards)) {
                     real.add(c);
                     naturalTwoUsed = true;
@@ -117,7 +128,7 @@ public final class StraightUtils {
      */
     private static boolean isSameSeedAsRest(final Card two, final List<Card> cards) {
         return cards.stream()
-                .filter(c -> !"Jolly".equals(c.getValue()) && !"2".equals(c.getValue()))
+                .filter(c -> !JOLLY.equals(c.getValue()) && !TWO.equals(c.getValue()))
                 .findFirst()
                 .map(firstReal -> firstReal.getSeed().equals(two.getSeed()))
                 .orElse(true);
@@ -132,14 +143,14 @@ public final class StraightUtils {
      * @return true if the 2 is natural, false otherwise
      */
     public static boolean isNaturalTwo(final Card two, final List<Card> straight) {
-        if (!"2".equals(two.getValue())) {
+        if (!TWO.equals(two.getValue())) {
             return false;
         }
-        final String suit = two.getSeed();
+        String suit = two.getSeed();
         final boolean hasAce = straight.stream()
-                .anyMatch(c -> "A".equals(c.getValue()) && c.getSeed().equals(suit));
+                .anyMatch(c -> ACE.equals(c.getValue()) && c.getSeed().equals(suit));
         final boolean hasThree = straight.stream()
-                .anyMatch(c -> "3".equals(c.getValue()) && c.getSeed().equals(suit));
+                .anyMatch(c -> THREE.equals(c.getValue()) && c.getSeed().equals(suit));
         return hasAce || hasThree;
     }
 
@@ -151,8 +162,8 @@ public final class StraightUtils {
      * @return the numeric value of the card
      */
     private static int mapValue(final Card c, final boolean aceLow) {
-        if ("A".equals(c.getValue())) {
-            return aceLow ? 1 : 14;
+        if (ACE.equals(c.getValue())) {
+            return aceLow ? ACE_LOW_VALUE : ACE_HIGH_VALUE;
         }
         return c.getNumericalValue();
     }
@@ -219,9 +230,9 @@ public final class StraightUtils {
         boolean naturalTwoUsed = false;
 
         for (final Card c : sequence) {
-            if ("Jolly".equalsIgnoreCase(c.getValue())) {
+            if (JOLLY.equalsIgnoreCase(c.getValue())) {
                 wilds.add(c);
-            } else if ("2".equals(c.getValue())) {
+            } else if (TWO.equals(c.getValue())) {
                 if (!forceTwosAsWild && !naturalTwoUsed && isSameSeedAsRest(c, sequence)) {
                     real.add(c);
                     naturalTwoUsed = true;
@@ -274,9 +285,9 @@ public final class StraightUtils {
             final Card w = wildsCopy.remove(0);
             final int lastVal = mapValue(result.get(result.size() - 1), aceLow);
             final int firstVal = mapValue(result.get(0), aceLow);
-            if (lastVal < 14) {
+            if (lastVal < ACE_HIGH_VALUE) {
                 result.add(w);
-            } else if (firstVal > 1) {
+            } else if (firstVal > ACE_LOW_VALUE) {
                 result.add(0, w);
             } else {
                 result.add(w);
@@ -314,22 +325,22 @@ public final class StraightUtils {
             return false;
         }
         final Card c = ordered.get(index);
-        if (!"2".equals(c.getValue())) {
+        if (!TWO.equals(c.getValue())) {
             return false;
         }
 
         for (int i = 0; i < ordered.size(); i++) {
             final Card anchor = ordered.get(i);
-            if ("Jolly".equalsIgnoreCase(anchor.getValue()) || "2".equals(anchor.getValue())) {
+            if (JOLLY.equalsIgnoreCase(anchor.getValue()) || TWO.equals(anchor.getValue())) {
                 continue;
             }
-            if ("A".equals(anchor.getValue())) {
-                if (1 + (index - i) == 2 || 14 + (index - i) == 2) {
+            if (ACE.equals(anchor.getValue())) {
+                if (ACE_LOW_VALUE + (index - i) == TWO_VALUE || ACE_HIGH_VALUE + (index - i) == TWO_VALUE) {
                     return true;
                 }
                 continue;
             }
-            return anchor.getNumericalValue() + (index - i) == 2;
+            return anchor.getNumericalValue() + (index - i) == TWO_VALUE;
         }
         return false;
     }

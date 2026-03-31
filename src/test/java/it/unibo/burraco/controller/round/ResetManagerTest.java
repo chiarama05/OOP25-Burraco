@@ -1,8 +1,12 @@
 package it.unibo.burraco.controller.round;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import it.unibo.burraco.model.deck.Deck;
 import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.player.Player;
@@ -27,7 +31,6 @@ class ResetManagerTest {
     @Test
     void testResetRoundCallsAllModels() {
         resetManager.resetRound(p1, p2, deck, discardPile);
-        
         verify(p1, times(1)).resetForNewRound();
         verify(p2, times(1)).resetForNewRound();
         verify(deck, times(1)).reset();

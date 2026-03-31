@@ -58,7 +58,7 @@ public final class ControlPanelView extends JPanel {
             final JButton discardBtn, 
             final Color lightgreen) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setPreferredSize(new Dimension(180, 400));
+        this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         this.setBackground(lightgreen); 
 
         this.takeDiscardBtn = takeDiscardBtn;
