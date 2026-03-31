@@ -7,12 +7,12 @@ package it.unibo.burraco.view.score;
  */
 public interface ScoreView {
 
-    /** 
+    /**
      * Displays the scoreboard window. 
      */
     void display();
-    
-    /** 
+
+    /**
      * Closes and releases the scoreboard window resources. 
      */
     void close();

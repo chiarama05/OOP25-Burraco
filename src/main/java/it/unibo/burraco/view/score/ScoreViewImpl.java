@@ -86,8 +86,8 @@ public final class ScoreViewImpl implements ScoreView {
             final boolean matchOver) {
 
         this.scoreManager = scoreManager;
-        this.frame        = new JFrame("Burraco - Final Standings");
-        this.targetScore  = targetScore;
+        this.frame = new JFrame("Burraco - Final Standings");
+        this.targetScore = targetScore;
 
         this.setupUI(p1, p2, name1, name2, matchOver);
     }
@@ -194,7 +194,8 @@ public final class ScoreViewImpl implements ScoreView {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
 
-        final String displayName = isWinner ? "🏆 " + name.toUpperCase() + " 🏆" : name.toUpperCase();
+        final String displayName = isWinner ? "🏆 " + name.toUpperCase(Locale.ROOT) + " 🏆" 
+                                            : name.toUpperCase(Locale.ROOT);
 
         final JLabel nameLabel = new JLabel(displayName);
         nameLabel.setFont(new Font("SansSerif", Font.BOLD, NAME_FONT_SIZE));
@@ -204,21 +205,21 @@ public final class ScoreViewImpl implements ScoreView {
         panel.add(nameLabel);
         panel.add(Box.createVerticalStrut(NAME_STRUT));
 
-        final int onTable       = scoreManager.calculateOnlyCardsOnTable(p);
+        final int onTable = scoreManager.calculateOnlyCardsOnTable(p);
         final int pointBurracoC = scoreManager.countCleanBurraco(p) * scoreManager.getCleanBurracoBonusValue();
         final int pointBurracoD = scoreManager.countDirtyBurraco(p) * scoreManager.getDirtyBurracoBonusValue();
-        final int closure       = p.hasFinishedCards() ? scoreManager.getClosureBonusValue() : 0;
-        final int pot           = p.isInPot() ? 0 : scoreManager.getNoPotPenalty();
-        final int cardInHand    = scoreManager.calculateRemainingHandValue(p);
-        final int totalHand     = scoreManager.calculateFinalScore(p);
-        final int totalMatch    = p.getMatchTotalScore();
+        final int closure = p.hasFinishedCards() ? scoreManager.getClosureBonusValue() : 0;
+        final int pot = p.isInPot() ? 0 : scoreManager.getNoPotPenalty();
+        final int cardInHand = scoreManager.calculateRemainingHandValue(p);
+        final int totalHand = scoreManager.calculateFinalScore(p);
+        final int totalMatch = p.getMatchTotalScore();
 
-        panel.add(createRow("Cards on Table", String.valueOf(onTable),       false));
-        panel.add(createRow("Clean Burraco",  String.valueOf(pointBurracoC), false));
-        panel.add(createRow("Dirty Burraco",  String.valueOf(pointBurracoD), false));
-        panel.add(createRow("Closure Bonus",  String.valueOf(closure),       false));
-        panel.add(createRow("Pot Penalty",    String.valueOf(pot),           false));
-        panel.add(createRow("Cards in Hand",  "-" + cardInHand,             false));
+        panel.add(createRow("Cards on Table", String.valueOf(onTable), false));
+        panel.add(createRow("Clean Burraco", String.valueOf(pointBurracoC), false));
+        panel.add(createRow("Dirty Burraco", String.valueOf(pointBurracoD), false));
+        panel.add(createRow("Closure Bonus", String.valueOf(closure), false));
+        panel.add(createRow("Pot Penalty", String.valueOf(pot), false));
+        panel.add(createRow("Cards in Hand", "-" + cardInHand, false));
 
         panel.add(Box.createVerticalStrut(SEPARATOR_STRUT));
         final JSeparator sep = new JSeparator();
@@ -282,7 +283,7 @@ public final class ScoreViewImpl implements ScoreView {
      * Inner class that paints a vertical linear gradient as its background,
      * giving the scoreboard a polished green-felt appearance.
      */
-    private final static class BackgroundPanel extends JPanel {
+    private static final class BackgroundPanel extends JPanel {
 
         private static final long serialVersionUID = 1L;
         
