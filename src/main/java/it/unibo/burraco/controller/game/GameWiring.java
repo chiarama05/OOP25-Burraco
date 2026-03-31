@@ -151,7 +151,9 @@ public final class GameWiring {
     }
 
     /**
-     * @return the game controller instance.
+     * Returns the game controller instance.
+     * 
+     * @return the game controller
      */
     public GameController getGameController() {
         return this.gameController;
