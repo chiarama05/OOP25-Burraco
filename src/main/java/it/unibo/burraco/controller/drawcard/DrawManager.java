@@ -30,7 +30,7 @@ public class DrawManager {
      */
     public DrawResult drawFromDeck(final Player player, final Deck deck){
         // Prevent drawing if already done this turn
-        if (drawCard) {
+        if (this.drawCard) {
             return DrawResult.alreadyDrawn();
         }
 
@@ -41,7 +41,7 @@ public class DrawManager {
         }
 
         player.addCardHand(card);
-        drawCard = true;
+        this.drawCard = true;
 
         return DrawResult.success(card);
     }
@@ -53,8 +53,8 @@ public class DrawManager {
      * @param discards the current list of cards in the discard pile.
      * @return a {@link DrawResult} reflecting the outcome of the action.
      */
-    public DrawResult drawFromDiscard(Player player, List<Card> discards){
-        if (drawCard) {
+    public DrawResult drawFromDiscard(final Player player, final List<Card> discards){
+        if (this.drawCard) {
             return DrawResult.alreadyDrawn();
         }
 
@@ -64,7 +64,7 @@ public class DrawManager {
 
         player.getHand().addAll(discards);
         discards.clear();
-        drawCard = true;
+        this.drawCard = true;
 
         return DrawResult.successMultiple();
     }
@@ -73,6 +73,6 @@ public class DrawManager {
      * @return true if a draw action has already occurred in the current turn.
      */
     public boolean hasDrawn() {
-        return drawCard;
+        return this.drawCard;
     }
 }

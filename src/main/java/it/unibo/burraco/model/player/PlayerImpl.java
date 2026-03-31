@@ -10,6 +10,7 @@ import it.unibo.burraco.model.card.Card;
  */
 public final class PlayerImpl implements Player {
 
+    private static final int BURRACO_MIN_CARDS = 7;
     private final List<Card> hand = new ArrayList<>();
     private final List<Card> pot = new ArrayList<>();
     private final List<List<Card>> combinations = new ArrayList<>();
@@ -102,7 +103,7 @@ public final class PlayerImpl implements Player {
     @Override
     public int getBurracoCount() {
         return (int) combinations.stream()
-                .filter(c -> c.size() >= 7)
+                .filter(c -> c.size() >= BURRACO_MIN_CARDS)
                 .count();
     }
 
@@ -132,7 +133,7 @@ public final class PlayerImpl implements Player {
      * @return the pot cards
      */
     public List<Card> getPot() {
-        return pot;
+        return new ArrayList<>(this.pot);
     }
 
     @Override

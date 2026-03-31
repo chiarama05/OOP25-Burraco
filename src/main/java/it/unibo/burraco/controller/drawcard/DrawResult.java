@@ -13,19 +13,19 @@ public final class DrawResult {
      */
     public enum Status {
         /** Single card drawn from deck. */
-        SUCCESS,             
+        SUCCESS,   
         /** Multiple cards taken from discard pile. */
-        SUCCESS_MULTIPLE,    
+        SUCCESS_MULTIPLE, 
         /** Failed: Deck has no cards. */
-        EMPTY_DECK,          
+        EMPTY_DECK, 
         /** Failed: Discard pile is empty. */
-        EMPTY_DISCARD,       
+        EMPTY_DISCARD, 
         /** Failed: Player already drew this turn. */
         ALREADY_DRAWN
     }
 
-    final private Status status;
-    final private Card drawnCard;
+    private final Status status;
+    private final Card drawnCard;
 
     /**
      * Private constructor to maintain control over instance creation via factory methods.
