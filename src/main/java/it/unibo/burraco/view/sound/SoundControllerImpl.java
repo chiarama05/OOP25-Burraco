@@ -1,5 +1,7 @@
 package it.unibo.burraco.view.sound;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +11,8 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import it.unibo.burraco.controller.sound.SoundController;
 
@@ -44,11 +48,9 @@ public final class SoundControllerImpl implements SoundController {
         try (InputStream is = this.getClass().getResourceAsStream(path)) {
             if (is != null) {
                 this.soundCache.put(fileName, is.readAllBytes());
-            } else {
-                System.err.println("Resource not found: " + path);
             }
-        } catch (Exception e) {
-            System.err.println("Error loading sound: " + fileName);
+        } catch (final IOException e) {
+
         }
     }
 
@@ -76,13 +78,14 @@ public final class SoundControllerImpl implements SoundController {
      */
     private void playFromCache(final String fileName, final boolean blocking) {
         final byte[] soundData = soundCache.get(fileName);
-        if (soundData == null) return;
+        if (soundData == null) {
+            return;
+        }
 
         final Thread audioThread = new Thread(() -> {
-            try {
-                java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(soundData);
-                AudioInputStream stream = AudioSystem.getAudioInputStream(bais);
-                Clip clip = AudioSystem.getClip();
+            try (ByteArrayInputStream bais = new ByteArrayInputStream(soundData);
+                 AudioInputStream stream = AudioSystem.getAudioInputStream(bais);
+                 Clip clip = AudioSystem.getClip()) {
 
                 final CountDownLatch latch = new CountDownLatch(1);
                 clip.addLineListener(event -> {
@@ -94,10 +97,11 @@ public final class SoundControllerImpl implements SoundController {
                 clip.start();
                 latch.await();
 
-                clip.close();
-                stream.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (final UnsupportedAudioFileException | IOException 
+                    | LineUnavailableException | InterruptedException e) {
+                if (e instanceof InterruptedException) {
+                    Thread.currentThread().interrupt();
+                }
             }
         });
         audioThread.setDaemon(false);
@@ -106,7 +110,7 @@ public final class SoundControllerImpl implements SoundController {
         if (blocking) {
             try {
                 audioThread.join(); 
-            } catch (InterruptedException e) {
+            } catch (final InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }

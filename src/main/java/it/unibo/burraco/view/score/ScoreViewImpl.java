@@ -194,7 +194,8 @@ public final class ScoreViewImpl implements ScoreView {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
 
-        final String displayName = isWinner ? "🏆 " + name.toUpperCase() + " 🏆" : name.toUpperCase();
+        final String displayName = isWinner ? "🏆 " + name.toUpperCase(Locale.ROOT) + " 🏆" 
+                                            : name.toUpperCase(Locale.ROOT);
 
         final JLabel nameLabel = new JLabel(displayName);
         nameLabel.setFont(new Font("SansSerif", Font.BOLD, NAME_FONT_SIZE));
