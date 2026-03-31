@@ -4,7 +4,7 @@ package it.unibo.burraco.model.card;
  * Implementation of the {@link Card} interface.
  * Represents a concrete playing card with a seed and a value.
  */
-public class CardImpl implements Card{
+public final class CardImpl implements Card{
     private final String seed;
     private final String value;
     private boolean wildcard;

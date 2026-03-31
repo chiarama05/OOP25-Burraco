@@ -8,7 +8,7 @@ import it.unibo.burraco.model.card.Card;
  * Concrete implementation of the {@link DiscardPile} interface using an {@link ArrayList}.
  * Cards are managed in a LIFO (Last-In-First-Out) manner for draw operations.
  */
-public class DiscardPileImpl implements DiscardPile {
+public final class DiscardPileImpl implements DiscardPile {
 
     /** 
      * Internal list used to store the discarded cards. 

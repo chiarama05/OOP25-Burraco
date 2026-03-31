@@ -9,7 +9,7 @@ import it.unibo.burraco.model.card.Card;
  * Implementation of the Jolly interface.
  * Handles the behavior of wildcards (Jolly) and "2" cards in card games.
  */
-public class JollyImpl implements Jolly {
+public final class JollyImpl implements Jolly {
 
     private final Card card;
 

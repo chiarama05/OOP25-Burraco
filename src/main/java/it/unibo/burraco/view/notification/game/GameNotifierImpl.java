@@ -3,10 +3,18 @@ package it.unibo.burraco.view.notification.game;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+/**
+ * Implementation of {@link GameNotifier} using Swing JOptionPane.
+ */
 public final class GameNotifierImpl implements GameNotifier {
 
     private final JFrame parent;
 
+    /**
+     * Constructs a new GameNotifierImpl.
+     *
+     * @param parent the parent frame for dialogs
+     */
     public GameNotifierImpl(final JFrame parent) {
         this.parent = parent;
     }
@@ -53,14 +61,14 @@ public final class GameNotifierImpl implements GameNotifier {
 
     @Override
     public void notifyMustTakePotBeforeDiscard() {
-        JOptionPane.showMessageDialog(parent,"You have no more cards but you haven't taken your pot yet!\n"
+        JOptionPane.showMessageDialog(parent, "You have no more cards but you haven't taken your pot yet!\n"
         + "The pot has been given to you automatically – keep playing.",
         "Pot Taken Automatically", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
     public void notifyMustFormBurracoBeforeClose() {
-        JOptionPane.showMessageDialog(parent,"Your hand is empty but you don't have a Burraco yet!\n"
+        JOptionPane.showMessageDialog(parent, "Your hand is empty but you don't have a Burraco yet!\n"
         + "You must reach 7 cards in one of your combinations\n"
         + "(by attaching) before you can close the round.",
         "Burraco Required", JOptionPane.WARNING_MESSAGE);

@@ -12,7 +12,7 @@ import it.unibo.burraco.model.card.CardImpl;
  *  - Two Jokers for each set (4 Jokers total)
  * After creation, the deck is shuffled randomly.
  */
-public class DeckImpl implements Deck {
+public final class DeckImpl implements Deck {
 
     private final List<Card> cards;
 
