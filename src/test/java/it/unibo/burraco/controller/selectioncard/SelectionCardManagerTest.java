@@ -57,12 +57,10 @@ class SelectionCardManagerTest {
 
     @Test
     void testProcessCombinationEmptySelection() {
-        SelectionNotifier notifier = mock(SelectionNotifier.class);
-        Player player = mock(Player.class);
-        SelectionView view = mock(SelectionView.class);
-
+        final SelectionNotifier notifier = mock(SelectionNotifier.class);
+        final Player player = mock(Player.class);
+        final SelectionView view = mock(SelectionView.class);
         selectionManager.processCombination(player, view, true, notifier);
-
         verify(notifier).notifySelectionError("EMPTY_SELECTION");
         verifyNoInteractions(player, view);
     }
@@ -70,35 +68,27 @@ class SelectionCardManagerTest {
     @Test
     void testProcessCombinationInvalid() {
         selectionManager.toggleSelection(card1);
-        SelectionNotifier notifier = mock(SelectionNotifier.class);
-        
+        final SelectionNotifier notifier = mock(SelectionNotifier.class);
         selectionManager.processCombination(mock(Player.class), mock(SelectionView.class), true, notifier);
-
         verify(notifier).notifySelectionError("INVALID_COMBINATION");
     }
 
     @Test
     void testProcessCombinationSuccessFlow() {
-        Card c1 = new CardImpl("♥", "7");
-        Card c2 = new CardImpl("♠", "7");
-        Card c3 = new CardImpl("♦", "7");
-        
+        final Card c1 = new CardImpl("♥", "7");
+        final Card c2 = new CardImpl("♠", "7");
+        final Card c3 = new CardImpl("♦", "7");
         selectionManager.toggleSelection(c1);
         selectionManager.toggleSelection(c2);
         selectionManager.toggleSelection(c3);
-
-        Player player = mock(Player.class);
-        SelectionView view = mock(SelectionView.class);
-        SelectionNotifier notifier = mock(SelectionNotifier.class);
-
+        final Player player = mock(Player.class);
+        final SelectionView view = mock(SelectionView.class);
+        final SelectionNotifier notifier = mock(SelectionNotifier.class);
         selectionManager.processCombination(player, view, true, notifier);
-
         verify(player).removeCards(anyList());
         verify(player).addCombination(anyList());
-
         verify(view).addCombinationToPlayerPanel(anyList(), eq(true));
         verify(view).refreshHandPanel(eq(true), any());
-
         assertTrue(selectionManager.isEmpty());
     }
 }
