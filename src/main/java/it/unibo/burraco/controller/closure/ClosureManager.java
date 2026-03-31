@@ -5,15 +5,11 @@ import it.unibo.burraco.model.turn.Turn;
 import it.unibo.burraco.view.notification.game.GameNotifier;
 import it.unibo.burraco.controller.score.ScoreController;
 
-
-
 /**
  * Orchestrates the end-of-round logic triggered by a player action or discard.
- * <p>
- * Evaluates the current {@link ClosureState} of a player and reacts accordingly:
+ * Evaluates the current ClosureState of a player and reacts accordingly:
  * it may notify the user of a constraint violation, or trigger the end of the round
- * by delegating to {@link ScoreController}.
- * </p>
+ * by delegating to ScoreController.
  */
 public class ClosureManager {
 
@@ -22,7 +18,6 @@ public class ClosureManager {
     private final int targetScore;
     private final ScoreController scoreController;
     
-
     /**
     * Constructs a ClosureManager with all required collaborators.
     *
@@ -31,21 +26,24 @@ public class ClosureManager {
     * @param targetScore     the score threshold that ends the entire match
     * @param scoreController the controller invoked when the round ends
     */
-    public ClosureManager(final Turn turnModel, final GameNotifier notifier, final int targetScore, final ScoreController scoreController) { 
-        this.turnModel=turnModel;
+    public ClosureManager(
+            final Turn turnModel, 
+            final GameNotifier notifier, 
+            final int targetScore, 
+            final ScoreController scoreController) { 
+        this.turnModel = turnModel;
         this.notifier = notifier;
-        this.targetScore= targetScore;
-        this.scoreController= scoreController; 
+        this.targetScore = targetScore;
+        this.scoreController = scoreController; 
     }
 
-
     /**
-    * Evaluates the game state after a generic action (put combination or attach)
-    * and reacts to constraint violations or valid closure conditions.
-    *
-    * @param player the player who just performed the action
-    * @return {@code true} if the normal turn flow must be interrupted, {@code false} otherwise
-    */
+     * Evaluates the game state after a generic action (put combination or attach)
+     * and reacts to constraint violations or valid closure conditions.
+     *
+     * @param player the player who just performed the action
+     * @return true if the normal turn flow must be interrupted, false otherwise
+     */
     public boolean handleStateAfterAction(final Player player) {
         final ClosureState state = ClosureValidator.evaluate(player);
 
@@ -67,12 +65,12 @@ public class ClosureManager {
     }
 
     /**
-    * Evaluates the game state after a discard action and triggers the end of the
-    * round if the conditions for a valid closure are met.
-    *
-    * @param player the player who just discarded
-    * @return {@code true} if the round ended, {@code false} otherwise
-    */
+     * Evaluates the game state after a discard action and triggers the end of the
+     * round if the conditions for a valid closure are met.
+     *
+     * @param player the player who just discarded
+     * @return true if the round ended, false otherwise
+     */
     public boolean handleStateAfterDiscard(final Player player) {
         final ClosureState state = ClosureValidator.evaluateAfterDiscard(player);
 
@@ -89,15 +87,14 @@ public class ClosureManager {
     }
 
     /**
-    * Convenience method that retrieves the current player from the turn model
-    * and delegates to {@link #handleStateAfterDiscard(Player)}.
-    *Intended to be called directly from UI action handlers.
-    */
+     * Convenience method that retrieves the current player from the turn model
+     * and delegates to handleStateAfterDiscard.
+     * Intended to be called directly from UI action handlers.
+     */
     public void attemptClosure() {
-        final Player current = turnModel.getCurrentPlayer();
+        final Player current = this.turnModel.getCurrentPlayer();
         this.handleStateAfterDiscard(current);
     }
-
 
     private void triggerRoundEnd() {
         this.turnModel.setGameFinished(true);

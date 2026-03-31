@@ -35,7 +35,13 @@ public class DiscardController {
      * @param drawManager    used to verify that the player has drawn before discarding
      * @param turnModel      provides the current player reference
      */
-    public DiscardController(final DiscardManagerImpl discardManager,final TurnController turnCtrl,final PotManager potCtrl, final ClosureManager closureCtrl, final DrawManager drawManager, final Turn turnModel) {
+    public DiscardController(
+            final DiscardManagerImpl discardManager,
+            final TurnController turnCtrl,
+            final PotManager potCtrl, 
+            final ClosureManager closureCtrl, 
+            final DrawManager drawManager, 
+            final Turn turnModel) {
         this.discardManager = discardManager;
         this.turnCtrl= turnCtrl;
         this.potCtrl = potCtrl;
@@ -51,9 +57,9 @@ public class DiscardController {
      * @return a DiscardResult containing the outcome of the operation.
      */
     public DiscardResult tryDiscard(final Set<Card> selectedCards) {
-        
+
         // A player must draw from the deck or pile before discarding
-        if (!drawManager.hasDrawn()) {
+        if (!this.drawManager.hasDrawn()) {
             return DiscardResult.error("must_draw");
         }
 
@@ -62,34 +68,23 @@ public class DiscardController {
             return DiscardResult.error("select_one");
         }
 
-        final Player current = turnModel.getCurrentPlayer();
+        final Player current = this.turnModel.getCurrentPlayer();
         final Card card = selectedCards.iterator().next();
-
-        // Check if this discard will lead to the player collecting the "pot"
-        // Happens if it's the last card in hand and the player hasn't taken the pot yet
         final boolean willTakePot = (current.getHand().size() == 1 && !current.isInPot());
-
-        // Perform the actual discard on the model
         final DiscardResult result = discardManager.discard(current, card);
 
         if (!result.isValid()) {
             return result;
         }
-
-        // The discard leads to winning the round/match
         if (result.isGameWon()) {
-            closureCtrl.handleStateAfterDiscard(current);
-            return DiscardResult.success(discardManager.getDiscardPile(), current, true);
+            this.closureCtrl.handleStateAfterDiscard(current);
+            return DiscardResult.success(this.discardManager.getDiscardPile(), current, true);
         }
-
-        // Collecting the pot
         if (willTakePot) {
-            potCtrl.handlePot(true);
+            this.potCtrl.handlePot(true);
         }
+        this.turnCtrl.executeNextTurn();
 
-        // Move to the next turn if the game is not over
-        turnCtrl.executeNextTurn();
-
-        return DiscardResult.success(discardManager.getDiscardPile(), current, false);
+        return DiscardResult.success(this.discardManager.getDiscardPile(), current, false);
     }
 }
