@@ -188,7 +188,7 @@ public final class TableViewImpl implements TableView {
     }
 
     @Override
-    public void showScoreModal(final  String title, final String message) {
+    public void showScoreModal(final String title, final String message) {
         JOptionPane.showMessageDialog(this.frame, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
 

@@ -21,19 +21,20 @@ class ResetManagerTest {
 
     @BeforeEach
     void setUp() {
-        resetManager = new ResetManagerImpl();
-        p1 = mock(Player.class);
-        p2 = mock(Player.class);
-        deck = mock(Deck.class);
-        discardPile = mock(DiscardPile.class);
+        this.resetManager = new ResetManagerImpl();
+        this.p1 = mock(Player.class);
+        this.p2 = mock(Player.class);
+        this.deck = mock(Deck.class);
+        this.discardPile = mock(DiscardPile.class);
     }
 
     @Test
     void testResetRoundCallsAllModels() {
-        resetManager.resetRound(p1, p2, deck, discardPile);
-        verify(p1, times(1)).resetForNewRound();
-        verify(p2, times(1)).resetForNewRound();
-        verify(deck, times(1)).reset();
-        verify(discardPile, times(1)).reset();
+        this.resetManager.resetRound(this.p1, this.p2, this.deck, this.discardPile);
+    
+        verify(this.p1, times(1)).resetForNewRound();
+        verify(this.p2, times(1)).resetForNewRound();
+        verify(this.deck, times(1)).reset();
+        verify(this.discardPile, times(1)).reset();
     }
 }

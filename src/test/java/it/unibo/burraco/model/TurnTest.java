@@ -26,109 +26,91 @@ class TurnTest {
     void init() {
         this.player1 = new PlayerImpl(NAME_P1);
         this.player2 = new PlayerImpl(NAME_P2);
-        this.turn = new TurnImpl(player1, player2);
+        this.turn = new TurnImpl(this.player1, this.player2);
     }
 
     @Test
     void testInitialTurnIsPlayer1() {
-        assertTrue(turn.isPlayer1Turn());
-        assertEquals(player1, turn.getCurrentPlayer());
+        assertTrue(this.turn.isPlayer1Turn());
+        assertEquals(this.player1, this.turn.getCurrentPlayer());
     }
 
     @Test
     void testNextTurnSwitchesToPlayer2() {
-        turn.nextTurn();
-        assertFalse(turn.isPlayer1Turn());
-        assertEquals(player2, turn.getCurrentPlayer());
+        this.turn.nextTurn();
+        assertFalse(this.turn.isPlayer1Turn());
+        assertEquals(this.player2, this.turn.getCurrentPlayer());
     }
 
     @Test
     void testNextTurnSwitchesBack() {
-        turn.nextTurn();
-        turn.nextTurn();
-        assertTrue(turn.isPlayer1Turn());
-        assertEquals(player1, turn.getCurrentPlayer());
+        this.turn.nextTurn();
+        this.turn.nextTurn();
+        assertTrue(this.turn.isPlayer1Turn());
+        assertEquals(this.player1, this.turn.getCurrentPlayer());
     }
 
     @Test
-    void testGetPlayer1() {
-        assertEquals(player1, turn.getPlayer1());
-    }
-
-    @Test
-    void testGetPlayer2() {
-        assertEquals(player2, turn.getPlayer2());
+    void testGetPlayers() {
+        assertEquals(this.player1, this.turn.getPlayer1());
+        assertEquals(this.player2, this.turn.getPlayer2());
     }
 
     @Test
     void testInitialGameNotFinished() {
-        assertFalse(turn.isGameFinished());
+        assertFalse(this.turn.isGameFinished());
     }
 
     @Test
     void testSetGameFinished() {
-        turn.setGameFinished(true);
-        assertTrue(turn.isGameFinished());
-        turn.setGameFinished(false);
-        assertFalse(turn.isGameFinished());
+        this.turn.setGameFinished(true);
+        assertTrue(this.turn.isGameFinished());
+        this.turn.setGameFinished(false);
+        assertFalse(this.turn.isGameFinished());
     }
 
     @Test
-    void testCanCloseReturnsFalseByDefault() {
-        assertFalse(turn.canClose());
-    }
-
-    @Test
-    void testCanCloseReturnsFalseWithPotButNoBurraco() {
-        player1.setInPot(true);
-        assertFalse(turn.canClose());
-    }
-
-    @Test
-    void testCanCloseReturnsFalseWithBurracoButNoPot() {
+    void testCanCloseConditions() {
         final List<Card> burraco = List.of(
             new CardImpl("♥", "3"), new CardImpl("♥", "4"),
             new CardImpl("♥", "5"), new CardImpl("♥", "6"),
             new CardImpl("♥", "7"), new CardImpl("♥", "8"),
             new CardImpl("♥", "9")
         );
-        player1.addCombination(burraco);
-        assertFalse(turn.canClose());
-    }
 
-    @Test
-    void testCanCloseReturnsTrueWithPotAndBurraco() {
-        player1.setInPot(true);
-        final List<Card> burraco = List.of(
-            new CardImpl("♥", "3"), new CardImpl("♥", "4"),
-            new CardImpl("♥", "5"), new CardImpl("♥", "6"),
-            new CardImpl("♥", "7"), new CardImpl("♥", "8"),
-            new CardImpl("♥", "9")
-        );
-        player1.addCombination(burraco);
-        assertTrue(turn.canClose());
+        assertFalse(this.turn.canClose());
+
+        this.player1.setInPot(true);
+        assertFalse(this.turn.canClose());
+
+        this.player1.setInPot(false);
+        this.player1.addCombination(burraco);
+        assertFalse(this.turn.canClose());
+
+        this.player1.setInPot(true);
+        assertTrue(this.turn.canClose());
     }
 
     @Test
     void testCanCloseChecksCurrentPlayer() {
-        turn.nextTurn();
-        player2.setInPot(true);
+        this.turn.nextTurn(); // Now it's Bob's turn
+        this.player2.setInPot(true);
         final List<Card> burraco = List.of(
             new CardImpl("♠", "3"), new CardImpl("♠", "4"),
             new CardImpl("♠", "5"), new CardImpl("♠", "6"),
             new CardImpl("♠", "7"), new CardImpl("♠", "8"),
             new CardImpl("♠", "9")
         );
-        player2.addCombination(burraco);
-        assertTrue(turn.canClose());
+        this.player2.addCombination(burraco);
+        assertTrue(this.turn.canClose());
     }
 
     @Test
     void testResetForNewRound() {
-        turn.nextTurn();
-        turn.setGameFinished(true);
-        turn.resetForNewRound();
-        assertTrue(turn.isPlayer1Turn());
-        assertFalse(turn.isGameFinished());
+        this.turn.nextTurn();
+        this.turn.setGameFinished(true);
+        this.turn.resetForNewRound();
+        assertTrue(this.turn.isPlayer1Turn());
+        assertFalse(this.turn.isGameFinished());
     }
 }

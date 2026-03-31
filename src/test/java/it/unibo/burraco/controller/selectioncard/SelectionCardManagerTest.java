@@ -20,39 +20,40 @@ import it.unibo.burraco.view.notification.selection.SelectionNotifier;
 import it.unibo.burraco.view.selection.SelectionView;
 
 class SelectionCardManagerTest {
+
     private SelectionCardManager selectionManager;
     private Card card1;
     private Card card2;
 
     @BeforeEach
     void init() {
-        selectionManager = new SelectionCardManager();
-        card1 = mock(Card.class);
-        card2 = mock(Card.class);
+        this.selectionManager = new SelectionCardManager();
+        this.card1 = mock(Card.class);
+        this.card2 = mock(Card.class);
     }
 
     @Test
     void testToggleSelectionAddsNewCard() {
-        selectionManager.toggleSelection(card1);
-        assertTrue(selectionManager.isSelected(card1));
-        assertEquals(1, selectionManager.getSelectionSize());
+        this.selectionManager.toggleSelection(this.card1);
+        assertTrue(this.selectionManager.isSelected(this.card1), "Card should be selected");
+        assertEquals(1, this.selectionManager.getSelectionSize(), "Selection size should be 1");
     }
 
     @Test
     void testToggleSelectionRemovesExistingCard() {
-        selectionManager.toggleSelection(card1);
-        selectionManager.toggleSelection(card1); 
-        assertFalse(selectionManager.isSelected(card1));
-        assertTrue(selectionManager.isEmpty());
+        this.selectionManager.toggleSelection(this.card1);
+        this.selectionManager.toggleSelection(this.card1); 
+        assertFalse(this.selectionManager.isSelected(this.card1), "Card should be deselected");
+        assertTrue(this.selectionManager.isEmpty(), "Selection should be empty");
     }
 
     @Test
     void testClearSelection() {
-        selectionManager.toggleSelection(card1);
-        selectionManager.toggleSelection(card2);
-        selectionManager.clearSelection();
-        assertEquals(0, selectionManager.getSelectionSize());
-        assertTrue(selectionManager.isEmpty());
+        this.selectionManager.toggleSelection(this.card1);
+        this.selectionManager.toggleSelection(this.card2);
+        this.selectionManager.clearSelection();
+        assertEquals(0, this.selectionManager.getSelectionSize());
+        assertTrue(this.selectionManager.isEmpty());
     }
 
     @Test
@@ -60,35 +61,44 @@ class SelectionCardManagerTest {
         final SelectionNotifier notifier = mock(SelectionNotifier.class);
         final Player player = mock(Player.class);
         final SelectionView view = mock(SelectionView.class);
-        selectionManager.processCombination(player, view, true, notifier);
+        
+        this.selectionManager.processCombination(player, view, true, notifier);
+        
         verify(notifier).notifySelectionError("EMPTY_SELECTION");
         verifyNoInteractions(player, view);
     }
 
     @Test
     void testProcessCombinationInvalid() {
-        selectionManager.toggleSelection(card1);
+        this.selectionManager.toggleSelection(this.card1);
         final SelectionNotifier notifier = mock(SelectionNotifier.class);
-        selectionManager.processCombination(mock(Player.class), mock(SelectionView.class), true, notifier);
+        
+        this.selectionManager.processCombination(mock(Player.class), mock(SelectionView.class), true, notifier);
+        
         verify(notifier).notifySelectionError("INVALID_COMBINATION");
     }
 
     @Test
     void testProcessCombinationSuccessFlow() {
+        // Setup a valid combination (three 7s)
         final Card c1 = new CardImpl("♥", "7");
         final Card c2 = new CardImpl("♠", "7");
         final Card c3 = new CardImpl("♦", "7");
-        selectionManager.toggleSelection(c1);
-        selectionManager.toggleSelection(c2);
-        selectionManager.toggleSelection(c3);
+        this.selectionManager.toggleSelection(c1);
+        this.selectionManager.toggleSelection(c2);
+        this.selectionManager.toggleSelection(c3);
+        
         final Player player = mock(Player.class);
         final SelectionView view = mock(SelectionView.class);
         final SelectionNotifier notifier = mock(SelectionNotifier.class);
-        selectionManager.processCombination(player, view, true, notifier);
+        
+        this.selectionManager.processCombination(player, view, true, notifier);
+        
         verify(player).removeCards(anyList());
         verify(player).addCombination(anyList());
+        
         verify(view).addCombinationToPlayerPanel(anyList(), eq(true));
         verify(view).refreshHandPanel(eq(true), any());
-        assertTrue(selectionManager.isEmpty());
+        assertTrue(this.selectionManager.isEmpty());
     }
 }
