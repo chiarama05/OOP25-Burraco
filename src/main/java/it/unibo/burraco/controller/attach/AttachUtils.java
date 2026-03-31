@@ -10,14 +10,14 @@ import it.unibo.burraco.controller.combination.straight.StraightUtils;
 import it.unibo.burraco.model.card.Card;
 
 /**
- * Utility class responsible for determining whether one or more cards 
+ * Utility class responsible for determining whether one or more cards
  * can be attached to an existing combination on the table.
  */
 public final class AttachUtils {
 
     /**
      * Checks if a list of new cards can be legally added to an existing combination.
-     * 
+     *
      * @param combination the current combination of cards on the table
      * @param newCards the list of cards to attempt to attach
      * @return true if the resulting combination is valid, false otherwise
@@ -51,7 +51,7 @@ public final class AttachUtils {
 
     /**
      * Overloaded method to check if a single card can be attached to a combination.
-     * 
+     *
      * @param combination the existing combination
      * @param newCard the single card to attach
      * @return true if the card can be attached, false otherwise

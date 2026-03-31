@@ -17,7 +17,7 @@ public class ClosureManager {
     private final GameNotifier notifier;
     private final int targetScore;
     private final ScoreController scoreController;
-    
+
     /**
     * Constructs a ClosureManager with all required collaborators.
     *
@@ -27,14 +27,14 @@ public class ClosureManager {
     * @param scoreController the controller invoked when the round ends
     */
     public ClosureManager(
-            final Turn turnModel, 
-            final GameNotifier notifier, 
-            final int targetScore, 
-            final ScoreController scoreController) { 
+            final Turn turnModel,
+            final GameNotifier notifier,
+            final int targetScore,
+            final ScoreController scoreController) {
         this.turnModel = turnModel;
         this.notifier = notifier;
         this.targetScore = targetScore;
-        this.scoreController = scoreController; 
+        this.scoreController = scoreController;
     }
 
     /**
@@ -55,7 +55,7 @@ public class ClosureManager {
                 return true;
             case ZERO_CARDS_NO_BURRACO:
                 this.notifier.notifyMustFormBurracoBeforeClose();
-                return true;  
+                return true;
             case CAN_CLOSE:
                 this.triggerRoundEnd();
                 return true;

@@ -13,7 +13,7 @@ public final class SetAttachUtils {
 
     /**
      * Determines whether a new card can be legally attached to an existing Set.
-     * This method enforces the rule that a Set can contain a maximum of one wildcard 
+     * This method enforces the rule that a Set can contain a maximum of one wildcard
      * and that all natural cards must share the same face value.
      *
      * @param set the existing set of cards

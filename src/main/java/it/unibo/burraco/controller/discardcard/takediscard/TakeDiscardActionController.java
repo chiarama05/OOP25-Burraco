@@ -32,7 +32,7 @@ public class TakeDiscardActionController {
 
     /**
      * Handles the user's request to take all cards from the discard pile.
-     * 
+     *
      * @param view the view component that will receive success or error notifications.
      */
     public void handle(final TakeDiscardActionView view) {
@@ -40,7 +40,7 @@ public class TakeDiscardActionController {
 
         if (result.getStatus() == DrawResult.Status.SUCCESS_MULTIPLE) {
             final Player current = turnModel.getCurrentPlayer();
-            final boolean isP1 = turnModel.isPlayer1Turn(); 
+            final boolean isP1 = turnModel.isPlayer1Turn();
 
             // Update the view with the new hand of the current player
             view.onTakeDiscardSuccess(current, discardPile.getCards(), isP1);

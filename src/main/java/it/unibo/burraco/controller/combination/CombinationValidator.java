@@ -10,7 +10,7 @@ import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 
 /**
- * Utility class responsible for validating whether a set of cards 
+ * Utility class responsible for validating whether a set of cards
  * forms a legal game combination (Straight or Set) according to the rules.
  */
 public final class CombinationValidator {
@@ -22,13 +22,13 @@ public final class CombinationValidator {
     private CombinationValidator() { }
 
     /**
-     * Validates a combination of cards. 
-     * Checks for minimum size, type of combination (Straight/Set), 
+     * Validates a combination of cards.
+     * Checks for minimum size, type of combination (Straight/Set),
      * and the correct usage of wildcards (Jolly and 2).
-     * 
+     *
      * @param cards the list of cards to validate
      * @return true if the combination is valid, false otherwise
-     */ 
+     */
     public static boolean isValidCombination(final List<Card> cards) {
         // A combination must have at least 3 cards
         if (cards == null || cards.size() < MIN_COMBO_SIZE) {
@@ -61,7 +61,7 @@ public final class CombinationValidator {
                 final Card c = ordered.get(i);
                 if (JOLLY_LITERAL.equalsIgnoreCase(c.getValue())) {
                     effectiveWildcards++;
-                } else if (TWO_LITERAL.equals(c.getValue()) 
+                } else if (TWO_LITERAL.equals(c.getValue())
                         && !StraightUtils.isPositionallyNatural(i, ordered)) {
                     effectiveWildcards++;
                 }
@@ -81,7 +81,7 @@ public final class CombinationValidator {
 
     /**
      * Determines if a specific card is acting as a wildcard.
-     * 
+     *
      * @param c the card to check
      * @param context the combination of cards the card belongs to
      * @return true if the card is a Joker or a "2" used as a wildcard, false otherwise
@@ -97,7 +97,7 @@ public final class CombinationValidator {
         if (c instanceof CardImpl && ((CardImpl) c).isUsedAsWildcard()) {
             return true;
         }
-    
+
         // Analysis for the "2"
         final List<Card> realCards = context.stream()
             .filter(r -> !JOLLY_LITERAL.equalsIgnoreCase(r.getValue()) && !TWO_LITERAL.equals(r.getValue()))
@@ -106,7 +106,7 @@ public final class CombinationValidator {
         final boolean hasDuplicateValues = realCards.stream()
             .map(Card::getValue)
             .collect(java.util.stream.Collectors.toSet()).size() < realCards.size();
-   
+
         // In a Set a "2" is always a wildcard
         if (hasDuplicateValues || !StraightUtils.isSameSeed(context)) {
             return true;

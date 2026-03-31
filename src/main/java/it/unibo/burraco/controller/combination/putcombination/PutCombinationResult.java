@@ -49,7 +49,7 @@ public class PutCombinationResult {
 
     /**
      * Private constructor used by factory methods to create a result instance.
-     * 
+     *
      * @param status     the outcome status
      * @param combo      the processed combination of cards, or null if failed
      * @param isPlayer1  true if the action was performed by player 1
@@ -62,7 +62,7 @@ public class PutCombinationResult {
 
     /**
      * Creates an error result with the specified status.
-     * 
+     *
      * @param status the reason for failure
      * @return a result instance representing a failure
      */
@@ -72,7 +72,7 @@ public class PutCombinationResult {
 
     /**
      * Creates a success result with the relevant data.
-     * 
+     *
      * @param status    the success status type
      * @param combo     the validated and ordered combination
      * @param isPlayer1 true if the action was performed by player 1, false for player 2
@@ -86,7 +86,7 @@ public class PutCombinationResult {
 
     /**
      * Returns the status of this result.
-     * 
+     *
      * @return the outcome status
      */
     public Status getStatus() {
@@ -95,7 +95,7 @@ public class PutCombinationResult {
 
     /**
      * Returns the list of cards in the combination, or null if the action failed.
-     * 
+     *
      * @return the processed combination
      */
     public List<Card> getProcessedCombo() {
@@ -104,7 +104,7 @@ public class PutCombinationResult {
 
     /**
      * Returns whether the action was performed by player 1.
-     * 
+     *
      * @return true if the current player is player 1
      */
     public boolean isPlayer1() {

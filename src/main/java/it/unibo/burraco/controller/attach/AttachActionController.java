@@ -80,12 +80,12 @@ public class AttachActionController {
                 ATTACH_FAILED -> this.attachNotifier.notifyAttachError(result);
             case SUCCESS, SUCCESS_BURRACO -> {
                 view.updateCombinationVisuals();
-                view.onAttachSuccess(currentPlayer, isPlayer1Current); 
+                view.onAttachSuccess(currentPlayer, isPlayer1Current);
             }
             case SUCCESS_TAKE_POT -> {
                 view.updateCombinationVisuals();
                 this.potManager.handlePot(false);
-                view.onAttachTakePot(currentPlayer, isPlayer1Current); 
+                view.onAttachTakePot(currentPlayer, isPlayer1Current);
             }
             case SUCCESS_CLOSE, SUCCESS_STUCK -> {
                 view.updateCombinationVisuals();

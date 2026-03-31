@@ -11,9 +11,9 @@ import it.unibo.burraco.model.player.Player;
 public final class ResetManagerImpl implements ResetManager{
 
     @Override
-    public void resetRound(final Player p1, 
-                           final Player p2, 
-                           final Deck deck, 
+    public void resetRound(final Player p1,
+                           final Player p2,
+                           final Deck deck,
                            final DiscardPile discardPile) {
         // Clear player hands, side pots, and combinations
         p1.resetForNewRound();
