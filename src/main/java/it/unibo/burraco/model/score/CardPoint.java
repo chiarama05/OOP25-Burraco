@@ -79,7 +79,7 @@ public final class CardPoint {
     }
 
     /**
-     * Converts a card's string value to its numerical rank for sorting/sequence logic.
+     * Converts a card's string value to its numerical rank.
      *
      * @param card the card to convert.
      * @return an integer from 1 (Ace) to 13 (King).
@@ -87,19 +87,19 @@ public final class CardPoint {
      */
     public static int toInt(final Card card) {
         return switch (card.getValue()) {
-            case ACE_STR   -> RANK_ACE;
-            case TWO_STR   -> RANK_TWO;
+            case ACE_STR -> RANK_ACE;
+            case TWO_STR -> RANK_TWO;
             case THREE_STR -> RANK_THREE;
-            case FOUR_STR  -> RANK_FOUR;
-            case FIVE_STR  -> RANK_FIVE;
-            case SIX_STR   -> RANK_SIX;
+            case FOUR_STR -> RANK_FOUR;
+            case FIVE_STR -> RANK_FIVE;
+            case SIX_STR -> RANK_SIX;
             case SEVEN_STR -> RANK_SEVEN;
             case EIGHT_STR -> RANK_EIGHT;
-            case NINE_STR  -> RANK_NINE;
-            case TEN_STR   -> RANK_TEN;
-            case JACK_STR  -> RANK_JACK;
+            case NINE_STR -> RANK_NINE;
+            case TEN_STR -> RANK_TEN;
+            case JACK_STR -> RANK_JACK;
             case QUEEN_STR -> RANK_QUEEN;
-            case KING_STR  -> RANK_KING;
+            case KING_STR -> RANK_KING;
             default -> throw new IllegalArgumentException(
                 "Cannot convert to int: " + card.getValue()
             );
