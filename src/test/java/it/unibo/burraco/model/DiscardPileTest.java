@@ -30,42 +30,48 @@ class DiscardPileTest {
 
     @Test
     void testInitialState() {
-        assertTrue(discardPile.isEmpty());
-        assertEquals(0, discardPile.getCards().size());
+        assertTrue(this.discardPile.isEmpty());
+        assertEquals(0, this.discardPile.getCards().size());
     }
 
     @Test
     void testAddSingleCard() {
-        final int initialSize = discardPile.getCards().size();
-        final Card c = makeCard("♥", "A");
-        discardPile.add(c);
-        assertEquals(initialSize + 1, discardPile.getCards().size());
-        final List<Card> cards = discardPile.getCards();
+        final Card c = this.makeCard("♥", "A");
+        this.discardPile.add(c);
+        
+        final List<Card> cards = this.discardPile.getCards();
+        assertEquals(1, cards.size());
         assertEquals(c, cards.get(cards.size() - 1));
     }
 
     @Test
     void testTakeAll() {
-        discardPile.add(new CardImpl("♥", "5"));
-        discardPile.add(new CardImpl("♣", "Q"));
-        final List<Card> allCards = discardPile.getCards();
+        this.discardPile.add(new CardImpl("♥", "5"));
+        this.discardPile.add(new CardImpl("♣", "Q"));
+        
+        final List<Card> allCards = this.discardPile.getCards();
         assertEquals(2, allCards.size());
-        discardPile.reset();
-        assertTrue(discardPile.isEmpty());
+        
+        this.discardPile.reset();
+        
+        assertTrue(this.discardPile.isEmpty());
+        assertEquals(0, this.discardPile.getCards().size());
     }
 
     @Test
     void testDrawFromEmptyPile() {
-        assertNull(discardPile.drawLast());
+        assertNull(this.discardPile.drawLast());
     }
 
     @Test
     void testReset() {
-        discardPile.add(makeCard("♠", "J"));
-        discardPile.add(makeCard("♥", "10"));  
-        assertFalse(discardPile.isEmpty());
-        discardPile.reset();
-        assertTrue(discardPile.isEmpty());
-        assertEquals(0, discardPile.getCards().size());
+        this.discardPile.add(this.makeCard("♠", "J"));
+        this.discardPile.add(this.makeCard("♥", "10"));  
+        
+        assertFalse(this.discardPile.isEmpty());
+        this.discardPile.reset();
+        
+        assertTrue(this.discardPile.isEmpty());
+        assertEquals(0, this.discardPile.getCards().size());
     }
 }

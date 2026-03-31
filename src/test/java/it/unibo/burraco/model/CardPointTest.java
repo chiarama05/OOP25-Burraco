@@ -37,7 +37,7 @@ class CardPointTest {
         final String[] highValues = {"K", "Q", "J", "10", "9", "8"};
         for (final String value : highValues) {
             final Card card = new CardImpl(HEARTS, value);
-            assertEquals(10, CardPoint.getCardPoints(card), "Expected 10 for value: " + value);
+            assertEquals(10, CardPoint.getCardPoints(card), "Expected 10 points for value: " + value);
         }
     }
 
@@ -46,7 +46,7 @@ class CardPointTest {
         final String[] lowValues = {"7", "6", "5", "4", "3"};
         for (final String value : lowValues) {
             final Card card = new CardImpl(HEARTS, value);
-            assertEquals(5, CardPoint.getCardPoints(card), "Expected 5 for value: " + value);
+            assertEquals(5, CardPoint.getCardPoints(card), "Expected 5 points for value: " + value);
         }
     }
 
@@ -58,12 +58,13 @@ class CardPointTest {
 
     @Test
     void testToIntMapping() {
-        final String[] values = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
-        final int[]    expected = {  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13};
+        final String[] values = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+        final int[] expected = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
 
         for (int i = 0; i < values.length; i++) {
             final Card card = new CardImpl(HEARTS, values[i]);
-            assertEquals(expected[i], CardPoint.toInt(card), "Expected " + expected[i] + " for value: " + values[i]);
+            assertEquals(expected[i], CardPoint.toInt(card), 
+                "Rank-to-int mapping failed for value: " + values[i]);
         }
     }
 
