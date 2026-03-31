@@ -33,7 +33,7 @@ public class TakeDiscardController {
     /**
      * Attempts to transfer all cards from the discard pile to the current player's hand.
      * It relies on the DrawManager to enforce rules regarding drawing permissions.
-     * * @return a {@link DrawResult} indicating success or the specific reason for failure.
+     * * @return a DrawResult indicating success or the specific reason for failure
      */
     public DrawResult tryTakeDiscard() {
         final Player current = turnModel.getCurrentPlayer();
