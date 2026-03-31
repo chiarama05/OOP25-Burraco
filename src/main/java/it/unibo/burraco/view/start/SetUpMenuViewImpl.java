@@ -85,26 +85,26 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
      */
     private void setupUI() {
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setSize(FRAME_WIDTH, FRAME_HEIGHT); 
-        this.frame.setResizable(true); 
+        this.frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        this.frame.setResizable(true);
         this.frame.setLocationRelativeTo(null);
 
-        final JPanel panel = new JPanel(new GridBagLayout()); 
+        final JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(BACKGROUND_COLOR);
         final GridBagConstraints gbc = new GridBagConstraints();
     
-        gbc.fill = GridBagConstraints.HORIZONTAL; 
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(INSET_STD, INSET_SIDE, INSET_STD, INSET_SIDE);
     
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 2; 
+        gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.NORTHWEST;
         gbc.fill = GridBagConstraints.NONE;
 
         final RoundedGradientButton backBtn = new RoundedGradientButton("← BACK");
         backBtn.setFont(new Font(FONT_NAME, Font.BOLD, BUTTON_FONT_SIZE));
-        backBtn.setBackground(BUTTON_BG_COLOR); 
+        backBtn.setBackground(BUTTON_BG_COLOR);
         backBtn.setPreferredSize(new Dimension(BACK_BTN_WIDTH, BACK_BTN_HEIGHT));
         backBtn.addActionListener(e -> {
             this.close();
@@ -112,31 +112,31 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
         });
         panel.add(backBtn, gbc);
 
-        gbc.gridwidth = 1; 
+        gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.CENTER;
 
         gbc.gridy = 1;
         panel.add(this.createLabel("Name Player 1:"), gbc);
         gbc.gridy = 2;
         this.name1 = new JTextField("Player 1", FIELD_FONT_SIZE);
-        this.name1.setFont(new Font(FONT_NAME, Font.PLAIN, FIELD_FONT_SIZE)); 
-        this.name1.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));  
-        this.name1.setHorizontalAlignment(JTextField.LEFT); 
+        this.name1.setFont(new Font(FONT_NAME, Font.PLAIN, FIELD_FONT_SIZE));
+        this.name1.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
+        this.name1.setHorizontalAlignment(JTextField.LEFT);
         panel.add(this.name1, gbc);
 
         gbc.gridy = 3;
         panel.add(this.createLabel("Name Player 2:"), gbc);
         gbc.gridy = 4;
-        this.name2 = new JTextField("Player 2", FIELD_HEIGHT);
-        this.name2.setFont(new Font(FONT_NAME, Font.PLAIN, FIELD_HEIGHT));
-        this.name2.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));  
-        this.name2.setHorizontalAlignment(JTextField.LEFT);  
+        this.name2 = new JTextField("Player 2", FIELD_FONT_SIZE);
+        this.name2.setFont(new Font(FONT_NAME, Font.PLAIN, FIELD_FONT_SIZE));
+        this.name2.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
+        this.name2.setHorizontalAlignment(JTextField.LEFT);
         panel.add(this.name2, gbc);
 
         gbc.gridy = 5;
         panel.add(this.createLabel("Points to win:"), gbc);
         gbc.gridy = 6;
-        final JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, FLOW_GAP_H, FLOW_GAP_V)); 
+        final JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, FLOW_GAP_H, FLOW_GAP_V));
         btnPanel.setOpaque(false);
         btnPanel.add(this.createScoreBtn(SCORE_1));
         btnPanel.add(this.createScoreBtn(SCORE_2));
@@ -146,10 +146,10 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
         gbc.gridy = 7;
         gbc.insets = new Insets(INSET_LARGE, INSET_SMALL, INSET_SMALL, INSET_SMALL);
         final RoundedGradientButton playBtn = new RoundedGradientButton("PLAY");
-        playBtn.setFont(new Font(FONT_NAME, Font.BOLD, PLAY_FONT_SIZE)); 
+        playBtn.setFont(new Font(FONT_NAME, Font.BOLD, PLAY_FONT_SIZE));
         playBtn.setBackground(LABEL_COLOR);
         playBtn.setForeground(Color.BLACK);
-        playBtn.setPreferredSize(new Dimension(PLAY_BTN_WIDTH, PLAY_BTN_HEIGHT)); 
+        playBtn.setPreferredSize(new Dimension(PLAY_BTN_WIDTH, PLAY_BTN_HEIGHT));
         playBtn.addActionListener(e -> {
             if (this.selectedScore == -1) {
                 JOptionPane.showMessageDialog(this.frame, "Please select a victory score first!");
@@ -175,15 +175,15 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
         b.setOpaque(true);
         b.setBorderPainted(true);
         b.setBackground(Color.WHITE);
-        b.setFont(new Font(FONT_NAME, Font.BOLD, SCORE_FONT_SIZE)); 
-        b.setPreferredSize(new Dimension(SCORE_BTN_WIDTH, SCORE_BTN_HEIGHT)); 
+        b.setFont(new Font(FONT_NAME, Font.BOLD, SCORE_FONT_SIZE));
+        b.setPreferredSize(new Dimension(SCORE_BTN_WIDTH, SCORE_BTN_HEIGHT));
         b.addActionListener(e -> {
             this.selectedScore = score;
             for (final JButton btn : this.scoreButtons) {
                 btn.setBackground(Color.WHITE);
             }
             b.setBackground(SCORE_SELECTED_COLOR);
-        }); 
+        });
         this.scoreButtons.add(b);
         return b;
     }
@@ -198,17 +198,17 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
         final JLabel l = new JLabel(text);
         l.setForeground(LABEL_COLOR);
         l.setFont(new Font(FONT_NAME, Font.BOLD, TITLE_FONT_SIZE));
-        l.setHorizontalAlignment(JLabel.LEFT); 
+        l.setHorizontalAlignment(JLabel.LEFT);
         return l;
     }
 
     @Override 
     public void display() { 
-        this.frame.setVisible(true); 
+        this.frame.setVisible(true);
     }
 
     @Override 
     public void close() { 
-        this.frame.dispose(); 
+        this.frame.dispose();
     }
 }

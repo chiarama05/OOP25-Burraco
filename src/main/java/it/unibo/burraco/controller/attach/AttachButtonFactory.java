@@ -1,7 +1,6 @@
 package it.unibo.burraco.controller.attach;
 
 import java.util.List;
-
 import javax.swing.JFrame;
 
 import it.unibo.burraco.controller.closure.ClosureManager;
@@ -49,11 +48,19 @@ public class AttachButtonFactory {
      * @return a fully configured {@link AttachButton} ready to be added to the UI
      */
     public AttachButton create(List<Card> cards, boolean isPlayer1) {
-        final AttachButton btn = new AttachButton(cards, tableView, isPlayer1);
-        final AttachNotifier notifier = new AttachNotifierImpl(frame);
+        final AttachButton btn = new AttachButton(cards, this.tableView, isPlayer1);
+        final AttachNotifier notifier = new AttachNotifierImpl(this.frame);
+
         final AttachActionController ctrl = new AttachActionController(
-                gameController, potManager, closureManager, notifier, isPlayer1);
-        btn.setOnAttachAction((selected, self) -> ctrl.handle(selected, self.getCards(), self));
+                this.gameController, 
+                this.potManager, 
+                this.closureManager, 
+                notifier, 
+                isPlayer1
+        );
+        btn.setOnAttachAction((final List<Card> selected, final AttachButton self) -> 
+            ctrl.handle(selected, self.getCards(), self)
+        );
         return btn;
     }
 }

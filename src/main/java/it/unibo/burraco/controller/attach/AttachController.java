@@ -16,6 +16,7 @@ import it.unibo.burraco.model.player.Player;
  */
 public class AttachController {
 
+    private static final int BURRACO_SIZE = 7;
     /**
      * Default constructor for AttachController.
      */
@@ -49,11 +50,11 @@ public class AttachController {
             return AttachResult.NO_CARDS_SELECTED;
         }
 
-        // Create a hypothetical combination to validate the move
-        List<Card> hypothetical = new ArrayList<>(combinationCards);
-        hypothetical.addAll(selectedCards);
+        final List<Card> hypotheticalCards = new ArrayList<>(combinationCards);
+        hypotheticalCards.addAll(selectedCards);
+        
+        List<Card> hypothetical = hypotheticalCards;
 
-        // Sort the cards based on whether it's a straight or a set
         if (StraightUtils.isSameSeed(combinationCards)) {
             hypothetical = StraightUtils.orderStraight(hypothetical);
         } else {
@@ -64,30 +65,28 @@ public class AttachController {
             return AttachResult.INVALID_COMBINATION;
         }
 
-        // Check if the move would leave the player with no cards but unable to finish/take pot
         if (ClosureValidator.wouldGetStuckAfterAttach(currentPlayer, selectedCards, combinationCards.size())) {
             return AttachResult.WOULD_GET_STUCK;
         }
 
         final int sizeBefore = combinationCards.size();
-        final boolean success = executeAttach(currentPlayer, selectedCards, combinationCards);
+        final boolean success = this.executeAttach(currentPlayer, selectedCards, combinationCards);
 
         if (!success) {
             return AttachResult.ATTACH_FAILED;
         }
 
-        // Check for Burraco after a successful attach
-        if (sizeBefore < 7 && combinationCards.size() >= 7) {
+        if (sizeBefore < BURRACO_SIZE && combinationCards.size() >= BURRACO_SIZE) {
             return AttachResult.SUCCESS_BURRACO;
         }
         
         final ClosureState state = ClosureValidator.evaluate(currentPlayer);
 
-        if (state == ClosureState.ZERO_CARDS_NO_POT) {
+        if (ClosureState.ZERO_CARDS_NO_POT.equals(state)) {
             return AttachResult.SUCCESS_TAKE_POT;
-        } else if (state == ClosureState.CAN_CLOSE) {
+        } else if (ClosureState.CAN_CLOSE.equals(state)) {
             return AttachResult.SUCCESS_CLOSE;
-        } else if (state == ClosureState.ZERO_CARDS_NO_BURRACO) {
+        } else if (ClosureState.ZERO_CARDS_NO_BURRACO.equals(state)) {
             return AttachResult.SUCCESS_STUCK;
         } else {
             return AttachResult.SUCCESS;
@@ -110,7 +109,6 @@ public class AttachController {
             return false;
         }
 
-        // Update the cards in the table combination
         combinationCards.addAll(selectedCards);
 
         for (final List<Card> playerComb : player.getCombinations()) {

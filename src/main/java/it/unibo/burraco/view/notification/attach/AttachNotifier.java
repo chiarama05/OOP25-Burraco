@@ -6,6 +6,7 @@ import it.unibo.burraco.controller.attach.AttachResult;
  * Interface representing a notifier for card attachment actions.
  * It provides methods to alert the user when an attachment fails.
  */
+@FunctionalInterface
 public interface AttachNotifier {
 
     /**
@@ -13,6 +14,6 @@ public interface AttachNotifier {
      * 
      * @param result the result of the attachment attempt containing the error type
      */
-    void notifyAttachError(final AttachResult result);
+    void notifyAttachError(AttachResult result);
 
 }

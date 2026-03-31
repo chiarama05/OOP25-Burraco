@@ -5,6 +5,7 @@ import it.unibo.burraco.controller.drawcard.DrawResult;
 /**
  * Interface for notifying errors or issues related to drawing cards from the deck.
  */
+@FunctionalInterface
 public interface DeckNotifier {
 
     /**
@@ -12,6 +13,6 @@ public interface DeckNotifier {
      * 
      * @param result the result of the draw operation containing the error status
      */
-    void notifyDrawError(final DrawResult result);
+    void notifyDrawError(DrawResult result);
 
 }

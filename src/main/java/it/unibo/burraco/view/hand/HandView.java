@@ -40,6 +40,7 @@ public interface HandView {
     /**
      * Inner interface for handling card selection events within the HandView.
      */
+    @FunctionalInterface
     interface CardSelectionListener {
 
         /**

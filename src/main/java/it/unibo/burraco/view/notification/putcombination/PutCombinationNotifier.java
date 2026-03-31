@@ -6,6 +6,7 @@ import it.unibo.burraco.controller.combination.putcombination.PutCombinationResu
  * Interface for notifying errors or issues encountered when a player 
  * attempts to place a new combination on the table.
  */
+@FunctionalInterface
 public interface PutCombinationNotifier {
   
     /**
