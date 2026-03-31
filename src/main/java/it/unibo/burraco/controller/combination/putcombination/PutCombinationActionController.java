@@ -42,7 +42,7 @@ public class PutCombinationActionController {
      * @implNote The current player is retrieved from the game state and passed
      *           to the view callbacks to identify which player performed the action.
      */
-    public void handle(List<Card> selected, PutCombinationView view) {
+    public void handle(final List<Card> selected, final PutCombinationView view) {
         final Player current = gameController.getCurrentPlayer();
         final PutCombinationResult result = putComboController.tryPutCombination(selected);
         final PutCombinationResult.Status status = result.getStatus();
@@ -79,7 +79,7 @@ public class PutCombinationActionController {
      * @param status the status to check
      * @return true if the status is an error, false otherwise
      */
-    private boolean isError(PutCombinationResult.Status status) {
+    private boolean isError(final PutCombinationResult.Status status) {
         return status == PutCombinationResult.Status.NOT_DRAWN ||
                status == PutCombinationResult.Status.NO_CARDS_SELECTED ||
                status == PutCombinationResult.Status.WOULD_GET_STUCK ||
