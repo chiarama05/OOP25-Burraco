@@ -28,7 +28,7 @@ public final class PlayerImpl implements Player {
 
     /**
      * Constructs a PlayerImpl with the specified name.
-     * 
+     *
      * @param name the player's name
      */
     public PlayerImpl(final String name) {
@@ -129,7 +129,7 @@ public final class PlayerImpl implements Player {
 
     /**
      * Returns the current pot cards.
-     * 
+     *
      * @return the pot cards
      */
     public List<Card> getPot() {

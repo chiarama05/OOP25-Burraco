@@ -56,7 +56,7 @@ public final class ScoreImpl implements Score {
 
     /**
      * Determines if a burraco is clean (no wildcards, or 2 in natural position).
-     * 
+     *
      * @param combination the list of cards forming the burraco.
      * @return true if the burraco is clean, false otherwise.
      */
@@ -82,7 +82,7 @@ public final class ScoreImpl implements Score {
 
     /**
      * Verifies if a '2' acts as a natural card in a sequence of the same suit.
-     * 
+     *
      * @param two the card with value "2".
      * @param combination the full combination to check.
      * @return true if the '2' is in natural position, false otherwise.
@@ -142,22 +142,22 @@ public final class ScoreImpl implements Score {
     }
 
     @Override
-    public int getCleanBurracoBonusValue() { 
-        return CLEAN_BURRACO_BONUS; 
+    public int getCleanBurracoBonusValue() {
+        return CLEAN_BURRACO_BONUS;
     }
 
     @Override
-    public int getDirtyBurracoBonusValue() { 
-        return DIRTY_BURRACO_BONUS; 
+    public int getDirtyBurracoBonusValue() {
+        return DIRTY_BURRACO_BONUS;
     }
 
     @Override
-    public int getClosureBonusValue() { 
-        return CLOSURE_BONUS; 
+    public int getClosureBonusValue() {
+        return CLOSURE_BONUS;
     }
 
     @Override
-    public int getNoPotPenalty() { 
-        return NO_POT_PENALTY; 
+    public int getNoPotPenalty() {
+        return NO_POT_PENALTY;
     }
 }

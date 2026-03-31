@@ -30,20 +30,20 @@ public final class RoundControllerImpl implements RoundController {
      * @param distributionController the controller for card distribution
      * @param distributionView     the view for the distribution phase
      */
-    public RoundControllerImpl(final TableView tableView, 
+    public RoundControllerImpl(final TableView tableView,
                                final ResetManager resetManager,
-                               final Player p1, 
-                               final Player p2, 
+                               final Player p1,
+                               final Player p2,
                                final GameController gameController,
                                final InitialDistributionController distributionController,
-                               final InitialDistributionView distributionView) { 
+                               final InitialDistributionView distributionView) {
         this.tableView = tableView;
         this.resetManager = resetManager;
         this.player1 = p1;
         this.player2 = p2;
         this.gameController = gameController;
         this.distributionController = distributionController;
-        this.distributionView = distributionView; 
+        this.distributionView = distributionView;
     }
 
     @Override

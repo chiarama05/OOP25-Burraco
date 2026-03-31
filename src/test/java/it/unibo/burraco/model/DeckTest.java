@@ -31,12 +31,12 @@ class DeckTest {
 
     @Test
     void testInitialSize() {
-        assertEquals(FULL_DECK_SIZE, deck.getCards().size());
+        assertEquals(FULL_DECK_SIZE, this.deck.getCards().size());
     }
 
     @Test
     void testInitialNotEmpty() {
-        assertFalse(deck.isEmpty());
+        assertFalse(this.deck.isEmpty());
     }
 
     @Test
@@ -62,62 +62,61 @@ class DeckTest {
 
     @Test
     void testDrawReducesSize() {
-        final Card drawn = deck.draw();
-
+        final Card drawn = this.deck.draw();
         assertNotNull(drawn);
-        assertEquals(FULL_DECK_SIZE - 1, deck.getCards().size());
+        assertEquals(FULL_DECK_SIZE - 1, this.deck.getCards().size());
     }
 
     @Test
     void testDrawUntilEmpty() {
         for (int i = 0; i < FULL_DECK_SIZE; i++) {
-            assertNotNull(deck.draw());
+            assertNotNull(this.deck.draw());
         }
-        assertTrue(deck.isEmpty());
+        assertTrue(this.deck.isEmpty());
     }
 
     @Test
     void testDrawOnEmptyReturnsNull() {
         for (int i = 0; i < FULL_DECK_SIZE; i++) {
-            deck.draw();
+            this.deck.draw();
         }
-        assertNull(deck.draw());
+        assertNull(this.deck.draw());
     }
 
     @Test
     void testGetCardsIsUnmodifiable() {
-        final List<Card> cards = deck.getCards();
+        final List<Card> cards = this.deck.getCards();
         assertThrows(UnsupportedOperationException.class, () -> cards.remove(0));
     }
 
     @Test
     void testResetRestoresFullDeck() {
-        deck.draw();
-        deck.draw();
-        deck.draw();
+        this.deck.draw();
+        this.deck.draw();
+        this.deck.draw();
 
-        deck.reset();
+        this.deck.reset();
 
-        assertEquals(FULL_DECK_SIZE, deck.getCards().size());
-        assertFalse(deck.isEmpty());
+        assertEquals(FULL_DECK_SIZE, this.deck.getCards().size());
+        assertFalse(this.deck.isEmpty());
     }
 
     @Test
     void testResetOnEmptyDeck() {
         for (int i = 0; i < FULL_DECK_SIZE; i++) {
-            deck.draw();
+            this.deck.draw();
         }
-        assertTrue(deck.isEmpty());
+        assertTrue(this.deck.isEmpty());
 
-        deck.reset();
+        this.deck.reset();
 
-        assertEquals(FULL_DECK_SIZE, deck.getCards().size());
-        assertFalse(deck.isEmpty());
+        assertEquals(FULL_DECK_SIZE, this.deck.getCards().size());
+        assertFalse(this.deck.isEmpty());
     }
 
     @Test
     void testDrawnCardIsRemovedFromDeck() {
-        final Card drawn = deck.draw();
-        assertFalse(deck.getCards().contains(drawn));
+        final Card drawn = this.deck.draw();
+        assertFalse(this.deck.getCards().contains(drawn));
     }
 }

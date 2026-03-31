@@ -4,7 +4,7 @@ import it.unibo.burraco.view.discardcard.discard.DiscardActionView;
 
 /**
  * Orchestrates the interaction between the Discard View and the Discard Logic.
- * It translates user actions into requests for the controller and updates the view 
+ * It translates user actions into requests for the controller and updates the view
  * based on the result.
  */
 public class DiscardActionController {
@@ -20,7 +20,7 @@ public class DiscardActionController {
 
     /**
      * Handles the discard request from the view.
-     * 
+     *
      * @param view the view triggering the action.
      * @param isPlayer1 true if the action was performed by player 1.
      */

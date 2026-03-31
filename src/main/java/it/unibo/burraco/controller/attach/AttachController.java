@@ -23,9 +23,9 @@ public class AttachController {
     public AttachController() {}
 
     /**
-     * Attempts to attach selected cards to a combination. 
+     * Attempts to attach selected cards to a combination.
      * Validates player turn, draw status and game rules.
-     * 
+     *
      * @param currentPlayer the player performing the action
      * @param selectedCards the cards the player wants to play
      * @param combinationCards the target combination on the table
@@ -39,7 +39,7 @@ public class AttachController {
                                    final boolean hasDrawn,
                                    final boolean isCurrentPlayer) {
 
-        
+
         if (!hasDrawn) {
             return AttachResult.NOT_DRAWN;
         }
@@ -52,7 +52,7 @@ public class AttachController {
 
         final List<Card> hypotheticalCards = new ArrayList<>(combinationCards);
         hypotheticalCards.addAll(selectedCards);
-        
+
         List<Card> hypothetical = hypotheticalCards;
 
         if (StraightUtils.isSameSeed(combinationCards)) {
@@ -79,7 +79,7 @@ public class AttachController {
         if (sizeBefore < BURRACO_SIZE && combinationCards.size() >= BURRACO_SIZE) {
             return AttachResult.SUCCESS_BURRACO;
         }
-        
+
         final ClosureState state = ClosureValidator.evaluate(currentPlayer);
 
         if (ClosureState.ZERO_CARDS_NO_POT.equals(state)) {
@@ -94,9 +94,9 @@ public class AttachController {
     }
 
     /**
-     * Performs the actual update of the game state:  
+     * Performs the actual update of the game state:
      * updates the combination on the table and removes cards from the player's hand.
-     * 
+     *
      * @param player the player performing the move
      * @param selectedCards the cards to remove from hand
      * @param combinationCards the combination to update

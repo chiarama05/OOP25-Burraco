@@ -17,7 +17,7 @@ import it.unibo.burraco.view.distribution.InitialDistributionView;
 
 /**
  * Controller responsible for managing the end-of-round logic, scoring calculations,
- * and match termination. It acts as an orchestrator between the scoring model, 
+ * and match termination. It acts as an orchestrator between the scoring model,
  * the game state, and the score visualization.
  */
 public final class ScoreController {
@@ -31,7 +31,7 @@ public final class ScoreController {
     private final GameController gameController;
     private final int targetScore;
     private final SoundController soundController;
-    private final InitialDistributionView distributionView; 
+    private final InitialDistributionView distributionView;
     private final Consumer<Runnable> uiThreadRunner;
     private final ViewProvider viewProvider;
 
@@ -52,21 +52,21 @@ public final class ScoreController {
      * @param viewProvider     a factory for creating the {@link ScoreView}
      */
     public ScoreController(
-        final Score score, 
-        final Player player1, 
-        final Player player2, 
-        final String nameP1, 
-        final String nameP2, 
-        final TableView tableView, 
-        final GameController gameController, 
-        final SoundController soundController, 
-        final int targetScore, 
-        final InitialDistributionView distributionView, 
-        final Consumer<Runnable> uiThreadRunner, 
+        final Score score,
+        final Player player1,
+        final Player player2,
+        final String nameP1,
+        final String nameP2,
+        final TableView tableView,
+        final GameController gameController,
+        final SoundController soundController,
+        final int targetScore,
+        final InitialDistributionView distributionView,
+        final Consumer<Runnable> uiThreadRunner,
         final ViewProvider viewProvider
     ) {
         this.score = score;
-        this.player1 = player1; 
+        this.player1 = player1;
         this.player2 = player2;
         this.nameP1 = nameP1;
         this.nameP2 = nameP2;
@@ -98,7 +98,7 @@ public final class ScoreController {
 
         if (matchOver) {
             final Thread t = new Thread(() -> {
-                this.soundController.playVictorySound(); 
+                this.soundController.playVictorySound();
                 this.showScoreView(true);
             });
 
@@ -106,7 +106,7 @@ public final class ScoreController {
             t.start();
 
         } else {
-            this.soundController.playRoundEndSound(); 
+            this.soundController.playRoundEndSound();
             this.showScoreView(matchOver);
         }
     }
@@ -114,15 +114,15 @@ public final class ScoreController {
     /**
      * Initializes and displays the score view.
      * Sets up the callback for the "Next" action to reset the game for a new round.
-     * 
+     *
      * @param matchOver true if the entire match has concluded.
      */
     private void showScoreView(final boolean matchOver) {
         final ScoreView view = this.viewProvider.create(
-                this.player1, this.player2, this.nameP1, this.nameP2, 
+                this.player1, this.player2, this.nameP1, this.nameP2,
                 this.targetScore, this.score, this.tableView, matchOver
         );
-     
+
         view.setOnNextAction(() -> {
             view.close();
             this.gameController.getTurnModel().resetForNewRound();
@@ -142,14 +142,14 @@ public final class ScoreController {
 
     /**
      * Interface acting as a Factory for the ScoreView.
-     * This abstraction allows for easier testing by enabling the injection 
+     * This abstraction allows for easier testing by enabling the injection
      * of mock views instead of real GUI components.
      */
     public interface ViewProvider {
-        
+
         /**
          * Creates a ScoreView.
-         * 
+         *
          * @param p1 player 1
          * @param p2 player 2
          * @param n1 name 1
@@ -160,7 +160,7 @@ public final class ScoreController {
          * @param over match over flag
          * @return a new ScoreView
          */
-        ScoreView create(Player p1, Player p2, String n1, String n2, 
+        ScoreView create(Player p1, Player p2, String n1, String n2,
             int target, Score s, TableView tv, boolean over);
     }
 }

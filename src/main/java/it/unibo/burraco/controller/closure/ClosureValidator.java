@@ -9,7 +9,7 @@ import it.unibo.burraco.model.card.Card;
  * It ensures that players follow the rules for taking the pot and closing the round.
  */
 public final class ClosureValidator {
-    
+
     private static final int BURRACO_THRESHOLD = 7;
 
     private ClosureValidator() { }
@@ -69,8 +69,8 @@ public final class ClosureValidator {
      * @return true if the move would leave the player stuck, false otherwise
      */
     public static boolean wouldGetStuckAfterPutCombo(
-            final Player player, 
-            final List<Card> cardsToPlay, 
+            final Player player,
+            final List<Card> cardsToPlay,
             final int comboSize) {
 
         if (!player.isInPot()) {
@@ -78,7 +78,7 @@ public final class ClosureValidator {
         }
         final int handAfter = player.getHand().size() - cardsToPlay.size();
         if (handAfter == 0) {
-            return true; 
+            return true;
         }
         if (handAfter == 1) {
             return !(player.getBurracoCount() >= 1 || comboSize >= BURRACO_THRESHOLD);
@@ -95,8 +95,8 @@ public final class ClosureValidator {
      * @return true if the attach would leave the player stuck, false otherwise
      */
     public static boolean wouldGetStuckAfterAttach(
-            final Player player, 
-            final List<Card> cardsToAttach, 
+            final Player player,
+            final List<Card> cardsToAttach,
             final int currentComboSize) {
 
         if (!player.isInPot()) {
@@ -104,7 +104,7 @@ public final class ClosureValidator {
         }
         final int handAfter = player.getHand().size() - cardsToAttach.size();
         if (handAfter == 0) {
-            return true; 
+            return true;
         }
 
         if (handAfter == 1) {

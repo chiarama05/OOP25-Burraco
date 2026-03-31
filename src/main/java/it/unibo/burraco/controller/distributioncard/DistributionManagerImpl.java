@@ -9,7 +9,7 @@ import it.unibo.burraco.model.player.Player;
 
 /**
  * Concrete implementation of the {@link DistributionManager}.
- * Handles the sequential drawing of cards to ensure a fair and rule-compliant 
+ * Handles the sequential drawing of cards to ensure a fair and rule-compliant
  * start of a Burraco round.
  */
 public class DistributionManagerImpl implements DistributionManager{
@@ -18,9 +18,9 @@ public class DistributionManagerImpl implements DistributionManager{
     private final List<Card> discardPile = new ArrayList<>();
 
     @Override
-    public void distributeInitialCards(final Player player1, 
-                                final Player player2, 
-                                final Deck deck, 
+    public void distributeInitialCards(final Player player1,
+                                final Player player2,
+                                final Deck deck,
                                 final DiscardPile modelDiscardPile){
 
         for (int i = 0; i < INITIAL_HAND_SIZE; i++) {

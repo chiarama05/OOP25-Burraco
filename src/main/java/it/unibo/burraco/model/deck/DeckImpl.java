@@ -61,7 +61,7 @@ public final class DeckImpl implements Deck {
         }
         return null;
     }
-    
+
     @Override
     public boolean isEmpty() {
         return cards.isEmpty();

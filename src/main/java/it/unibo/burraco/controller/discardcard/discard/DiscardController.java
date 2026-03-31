@@ -21,8 +21,8 @@ public class DiscardController {
     private final TurnController turnCtrl;
     private final PotManager potCtrl;
     private final ClosureManager closureCtrl;
-    private final DrawManager drawManager;  
-    private final Turn turnModel;          
+    private final DrawManager drawManager;
+    private final Turn turnModel;
 
 
     /**
@@ -38,9 +38,9 @@ public class DiscardController {
     public DiscardController(
             final DiscardManagerImpl discardManager,
             final TurnController turnCtrl,
-            final PotManager potCtrl, 
-            final ClosureManager closureCtrl, 
-            final DrawManager drawManager, 
+            final PotManager potCtrl,
+            final ClosureManager closureCtrl,
+            final DrawManager drawManager,
             final Turn turnModel) {
         this.discardManager = discardManager;
         this.turnCtrl= turnCtrl;
@@ -52,7 +52,7 @@ public class DiscardController {
 
     /**
      * Validates and executes a discard action.
-     * 
+     *
      * @param selectedCards the card selected by the player to be discarded.
      * @return a DiscardResult containing the outcome of the operation.
      */

@@ -30,68 +30,56 @@ class JollyTest {
     }
 
     @Test
-    void testIsPureJollyTrue() {
-        final JollyImpl jolly = new JollyImpl(pureJolly);
+    void testPureJollyIdentification() {
+        final JollyImpl jolly = new JollyImpl(this.pureJolly);
         assertTrue(jolly.isPureJolly());
-    }
-
-    @Test
-    void testIsPureJollyFalseForTwo() {
-        final JollyImpl jolly = new JollyImpl(twoOfHearts);
-        assertFalse(jolly.isPureJolly());
-    }
-
-    @Test
-    void testIsPureJollyFalseForNormalCard() {
-        final JollyImpl jolly = new JollyImpl(aceOfHearts);
-        assertFalse(jolly.isPureJolly());
+        
+        final JollyImpl notAJolly = new JollyImpl(this.twoOfHearts);
+        assertFalse(notAJolly.isPureJolly());
     }
 
     @Test
     void testPureJollyIsAlwaysJollyInAnyContext() {
-        final JollyImpl jolly = new JollyImpl(pureJolly);
-        final List<Card> context = List.of(aceOfHearts, threeOfHearts);
+        final JollyImpl jolly = new JollyImpl(this.pureJolly);
+        final List<Card> context = List.of(this.aceOfHearts, this.threeOfHearts);
         assertTrue(jolly.isJolly(context));
     }
 
     @Test
-    void testIsJollyReturnsFalseOnNullContext() {
-        final JollyImpl jolly = new JollyImpl(twoOfHearts);
+    void testIsJollyEdgeCases() {
+        final JollyImpl jolly = new JollyImpl(this.twoOfHearts);
         assertFalse(jolly.isJolly(null));
-    }
-
-    @Test
-    void testIsJollyReturnsFalseOnEmptyContext() {
-        final JollyImpl jolly = new JollyImpl(twoOfHearts);
         assertFalse(jolly.isJolly(List.of()));
     }
 
     @Test
     void testTwoActsAsJollyWhenNotNaturalTwo() {
-        final JollyImpl jolly = new JollyImpl(twoOfHearts);
+        final JollyImpl jolly = new JollyImpl(this.twoOfHearts);
         final CardImpl fiveOfHearts = new CardImpl(HEARTS, "5");
         final CardImpl sevenOfHearts = new CardImpl(HEARTS, "7");
-        final List<Card> context = List.of(fiveOfHearts, twoOfHearts, sevenOfHearts);
-        assertTrue(jolly.isJolly(context));
+
+        final List<Card> context = List.of(fiveOfHearts, this.twoOfHearts, sevenOfHearts);
+        assertTrue(jolly.isJolly(context), "The '2' should act as a wildcard here.");
     }
 
     @Test
     void testTwoIsNotJollyWhenNaturalTwo() {
-        final JollyImpl jolly = new JollyImpl(twoOfHearts);
-        final List<Card> context = List.of(aceOfHearts, twoOfHearts, threeOfHearts);
+        final JollyImpl jolly = new JollyImpl(this.twoOfHearts);
+
+        final List<Card> context = List.of(this.aceOfHearts, this.twoOfHearts, this.threeOfHearts);
         assertFalse(jolly.isJolly(context));
     }
 
     @Test
-    void testNonTwoNonJollyCardIsNeverJolly() {
-        final JollyImpl jolly = new JollyImpl(aceOfHearts);
-        final List<Card> context = List.of(twoOfHearts, threeOfHearts);
-        assertFalse(jolly.isJolly(context));
+    void testNormalCardIsNeverJolly() {
+        final JollyImpl notAJolly = new JollyImpl(this.aceOfHearts);
+        final List<Card> context = List.of(this.twoOfHearts, this.threeOfHearts);
+        assertFalse(notAJolly.isJolly(context));
     }
 
     @Test
     void testGetCard() {
-        final JollyImpl jolly = new JollyImpl(twoOfHearts);
-        assertEquals(twoOfHearts, jolly.getCard());
+        final JollyImpl jolly = new JollyImpl(this.twoOfHearts);
+        assertEquals(this.twoOfHearts, jolly.getCard());
     }
 }

@@ -31,7 +31,7 @@ public class TurnController {
         this.drawManager = dm;
     }
 
-    
+
     /**
      * Registers a callback that will be invoked every time the turn changes.
      * <p>
@@ -60,7 +60,7 @@ public class TurnController {
      */
     public void executeNextTurn() {
        this.turnModel.nextTurn();
-        
+
         if (this.drawManager != null) {
             this.drawManager.resetTurn();
         }

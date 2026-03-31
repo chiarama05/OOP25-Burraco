@@ -47,6 +47,9 @@ public final class TableViewImpl implements TableView {
     private static final int BG_G = 220;
     private static final int BG_B = 180;
     private static final int RIGID_AREA_WIDTH = 5;
+    private static final int TITLE_JUSTIFICATION = 0;
+    private static final int TITLE_POSITION = 0;
+    private static final int BORDER_THICKNESS = 1;
 
     private static final String FONT_NAME = "Arial";
 
@@ -66,6 +69,7 @@ public final class TableViewImpl implements TableView {
     private final ControlPanelView sideControlPanel;
     private final BoardView boardView;
     private final PlayerAreaView playerArea;
+
     private AttachButtonFactory attachButtonFactory;
     private SelectionCardManager selectionCardManager;
 
@@ -223,7 +227,6 @@ public final class TableViewImpl implements TableView {
 
     @Override
     public void setSelectionCardManager(final SelectionCardManager manager) {
-        this.selectionCardManager = manager;
     }
 
     @Override
@@ -245,8 +248,8 @@ public final class TableViewImpl implements TableView {
     public void refreshHandPanel(final boolean isPlayer1, final List<Card> hand) {
         this.deckPanel.removeAll();
         this.deckPanel.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(Color.WHITE, 1),
-            "Hand", 0, 0,
+            BorderFactory.createLineBorder(Color.WHITE, BORDER_THICKNESS),
+            "Hand", TITLE_JUSTIFICATION, TITLE_POSITION,
             new Font(FONT_NAME, Font.BOLD, FONT_SIZE_HAND), Color.BLACK));
 
         final HandView hv = this.getHandViewForCurrentPlayer(isPlayer1);
@@ -269,6 +272,7 @@ public final class TableViewImpl implements TableView {
         return this.discardView;
     }
 
+<<<<<<< HEAD
     @Override public JPanel getDiscardPanel() {
         return this.discardPanel;
     }
@@ -286,6 +290,30 @@ public final class TableViewImpl implements TableView {
     }
 
     @Override public DeckView getDeckView() {
+=======
+    @Override
+    public JPanel getDiscardPanel() {
+        return this.discardPanel;
+    }
+
+    @Override
+    public JFrame getFrame() {
+        return this.frame;
+    }
+
+    @Override
+    public JButton getPutComboBtn() {
+        return this.putComboBtn;
+    }
+
+    @Override
+    public JButton getTakeDiscardBtn() {
+        return this.takeDiscardBtn;
+    }
+
+    @Override
+    public DeckView getDeckView() {
+>>>>>>> b6d33d15ab6196e5bf9031acf3ec39ffb395bf0f
         return this.deckView;
     }
 

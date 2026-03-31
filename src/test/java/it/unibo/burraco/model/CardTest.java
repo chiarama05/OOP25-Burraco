@@ -2,6 +2,7 @@ package it.unibo.burraco.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,11 +12,13 @@ import it.unibo.burraco.model.card.CardImpl;
 class CardTest {
 
     private static final String HEARTS = "♥";
+    private static final String SPADES = "♠";
     private static final String ACE = "A";
     private static final String KING = "K";
     private static final String TWO = "2";
     private static final String JOLLY = "Jolly";
     private static final String INVALID = "InvalidValue";
+    
     private static final int ACE_NUM = 1;
     private static final int KING_NUM = 13;
     private static final int TWO_NUM = 2;
@@ -31,10 +34,10 @@ class CardTest {
 
     @Test
     void testInitialState() {
-        assertEquals(HEARTS, aceOfHearts.getSeed());
-        assertEquals(ACE, aceOfHearts.getValue());
-        assertEquals(ACE_NUM, aceOfHearts.getNumericalValue());
-        assertFalse(aceOfHearts.isUsedAsWildcard());
+        assertEquals(HEARTS, this.aceOfHearts.getSeed());
+        assertEquals(ACE, this.aceOfHearts.getValue());
+        assertEquals(ACE_NUM, this.aceOfHearts.getNumericalValue());
+        assertFalse(this.aceOfHearts.isUsedAsWildcard());
     }
 
     @Test
@@ -52,23 +55,28 @@ class CardTest {
 
     @Test
     void testWildcardToggle() {
-        aceOfHearts.setAsWildcard(true);
-        assertTrue(aceOfHearts.isUsedAsWildcard());
-        aceOfHearts.setAsWildcard(false);
-        assertFalse(aceOfHearts.isUsedAsWildcard());
+        this.aceOfHearts.setAsWildcard(true);
+        assertTrue(this.aceOfHearts.isUsedAsWildcard());
+        this.aceOfHearts.setAsWildcard(false);
+        assertFalse(this.aceOfHearts.isUsedAsWildcard());
     }
 
     @Test
     void testToStringFormat() {
         final String expected = ACE + HEARTS;
-        assertEquals(expected, aceOfHearts.toString());
+        assertEquals(expected, this.aceOfHearts.toString());
     }
 
     @Test
     void testEqualitySameState() {
-        final CardImpl anotherAce = new CardImpl(HEARTS, ACE);
+        final CardImpl anotherAceOfHearts = new CardImpl(HEARTS, ACE);
+        final CardImpl aceOfSpades = new CardImpl(SPADES, ACE);
 
-        assertTrue(aceOfHearts != anotherAce);
+        assertEquals(this.aceOfHearts, anotherAceOfHearts);
+        assertEquals(this.aceOfHearts.hashCode(), anotherAceOfHearts.hashCode());
+        
+        assertNotEquals(this.aceOfHearts, aceOfSpades);
+       
+        assertTrue(this.aceOfHearts != anotherAceOfHearts);
     }
-
 }

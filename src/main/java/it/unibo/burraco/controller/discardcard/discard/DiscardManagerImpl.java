@@ -43,7 +43,7 @@ public class DiscardManagerImpl implements DiscardManager {
 
         if (!player.getHand().contains(card)) {
             return DiscardResult.error("NOT_IN_HAND");
-        }   
+        }
 
         player.removeCardHand(card);
         this.discardPile.add(card);

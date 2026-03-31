@@ -20,7 +20,7 @@ public final class SetUtils {
     /**
      * Validates whether a list of cards forms a legal Set.
      * The method filters out wildcards and ensures all remaining cards have an identical face value.
-     * 
+     *
      * @param cards the list of cards to be validated
      * @return true if all natural cards in the list share the same value, false if empty or mismatched
      */
@@ -41,7 +41,7 @@ public final class SetUtils {
      * Determines if a specific card can be added to an existing Set combination.
      * It checks the current wildcard count and verifies that the new card's value
      * matches the established value of the set.
-     * 
+     *
      * @param set     the existing set of cards on the table
      * @param newCard the card to attempt to attach
      * @return true if the card matches the set's value or is a valid wildcard addition

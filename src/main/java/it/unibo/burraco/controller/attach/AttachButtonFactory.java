@@ -52,13 +52,13 @@ public class AttachButtonFactory {
         final AttachNotifier notifier = new AttachNotifierImpl(this.frame);
 
         final AttachActionController ctrl = new AttachActionController(
-                this.gameController, 
-                this.potManager, 
-                this.closureManager, 
-                notifier, 
+                this.gameController,
+                this.potManager,
+                this.closureManager,
+                notifier,
                 isPlayer1
         );
-        btn.setOnAttachAction((final List<Card> selected, final AttachButton self) -> 
+        btn.setOnAttachAction((final List<Card> selected, final AttachButton self) ->
             ctrl.handle(selected, self.getCards(), self)
         );
         return btn;

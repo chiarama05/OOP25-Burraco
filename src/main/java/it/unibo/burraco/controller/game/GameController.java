@@ -17,14 +17,14 @@ import it.unibo.burraco.model.deck.DeckImpl;
 import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.discard.DiscardPileImpl;
 import it.unibo.burraco.model.turn.Turn;
-import it.unibo.burraco.model.card.*;
+import it.unibo.burraco.model.card.Card;
 
 
 /**
  * Controller that manages the main game logic and state transitions.
  */
 public final class GameController {
-    
+
     private final PlayerImpl player1;
     private final PlayerImpl player2;
     private final Deck commonDeck;
@@ -64,7 +64,9 @@ public final class GameController {
      * @param isPlayer1Owner   true if the combination belongs to Player 1
      * @return an AttachResult describing the outcome
      */
-    public AttachResult tryAttach(final List<Card> selectedCards, final List<Card> combinationCards, final boolean isPlayer1Owner) {
+    public AttachResult tryAttach(final List<Card> selectedCards,
+                                  final List<Card> combinationCards,
+                                  final boolean isPlayer1Owner) {
 
         final Player currentPlayer = turnModel.getCurrentPlayer();
         final boolean hasDrawn = drawManager.hasDrawn();
@@ -72,8 +74,8 @@ public final class GameController {
 
         final AttachResult result = this.attachController.tryAttach(
                 currentPlayer, selectedCards, combinationCards, hasDrawn, isCurrentPlayer);
-  
-        if (AttachResult.SUCCESS_BURRACO.equals(result)) {
+
+        if (result == AttachResult.SUCCESS_BURRACO) {
             this.soundController.playBurracoSound();
         }
         return result;
@@ -161,8 +163,8 @@ public final class GameController {
      *
      * @return true if the player has not yet drawn in this turn
      */
-    public boolean canDraw() { 
-        return !this.hasDrawn; 
+    public boolean canDraw() {
+        return !this.hasDrawn;
     }
 
     /**
@@ -170,8 +172,8 @@ public final class GameController {
      *
      * @param value true to mark as drawn, false to allow drawing again
      */
-    public void setHasDrawn(final boolean value) { 
-        this.hasDrawn = value; 
+    public void setHasDrawn(final boolean drawnValue) {
+        this.hasDrawn = drawnValue;
     }
 
 
@@ -180,21 +182,21 @@ public final class GameController {
      *
      * @return true if already drawn
      */
-    public boolean hasAlreadyDrawn() { 
-        return this.hasDrawn; 
+    public boolean hasAlreadyDrawn() {
+        return this.hasDrawn;
     }
 
     /**
      * @return the first player
      */
-    public PlayerImpl getPlayer1() { 
-        return this.player1; 
+    public PlayerImpl getPlayer1() {
+        return this.player1;
     }
 
     /**
      * @return the second player
      */
-    public PlayerImpl getPlayer2() { 
-        return this.player2; 
+    public PlayerImpl getPlayer2() {
+        return this.player2;
     }
 }

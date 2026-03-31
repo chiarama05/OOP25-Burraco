@@ -31,7 +31,7 @@ public class PutCombinationController {
 
     /**
      * Constructs a PutCombinationController with the necessary game components.
-     * 
+     *
      * @param gameController the main game controller for sound and general state
      * @param drawManager manages the draw status of the current turn
      * @param potManager handles the logic for taking the pot
@@ -52,9 +52,9 @@ public class PutCombinationController {
 
     /**
      * Processes the attempt to lay down a new combination of cards.
-     * Validates pre-conditions, checks combination rules, and evaluates the 
+     * Validates pre-conditions, checks combination rules, and evaluates the
      * consequences on the game state (Burraco, Pot, or Closure).
-     * 
+     *
      * @param selectedCards the list of cards selected by the player to form a new combination
      * @return a {@link PutCombinationResult} object containing the status and details of the action
      */

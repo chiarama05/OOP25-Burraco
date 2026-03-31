@@ -15,7 +15,7 @@ public class DrawManager {
     private boolean drawCard;
 
     /**
-     * Resets the draw state. 
+     * Resets the draw state.
      */
     public void resetTurn() {
         this.drawCard = false;
@@ -23,7 +23,7 @@ public class DrawManager {
 
     /**
      * Executes a draw action from the main deck.
-     * 
+     *
      * @param player the player drawing the card.
      * @param deck the game deck.
      * @return a {@link DrawResult} indicating success or the specific failure reason.
@@ -48,7 +48,7 @@ public class DrawManager {
 
     /**
      * Executes a draw action from the discard pile, taking all available cards.
-     * 
+     *
      * @param player the player taking the discards.
      * @param discards the current list of cards in the discard pile.
      * @return a {@link DrawResult} reflecting the outcome of the action.

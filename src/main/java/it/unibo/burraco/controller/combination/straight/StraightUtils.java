@@ -40,7 +40,7 @@ public final class StraightUtils {
 
     /**
      * Checks if all non-wildcard cards in the list belong to the same seed.
-     * 
+     *
      * @param cards the list of cards to check
      * @return true if all non-wildcards have the same seed, false otherwise
      */
@@ -63,7 +63,7 @@ public final class StraightUtils {
 
     /**
      * Validates if a list of cards forms a legal straight.
-     * 
+     *
      * @param cards the list of cards to validate
      * @return true if the cards form a valid sequence, false otherwise
      */
@@ -76,7 +76,7 @@ public final class StraightUtils {
 
     /**
      * Internal logic to check sequence validity.
-     * 
+     *
      * @param cards the list of cards
      * @param forceTwosAsWildcards if true, any '2' is treated as a wildcard
      * @return true if the combination is mathematically sequential
@@ -121,7 +121,7 @@ public final class StraightUtils {
 
     /**
      * Checks whether a '2' card shares the same seed as the first non-wildcard card in the list.
-     * 
+     *
      * @param two   the '2' card to evaluate
      * @param cards the full list of cards in the combination
      * @return true if the suits match or no reference card exists, false otherwise
@@ -137,7 +137,7 @@ public final class StraightUtils {
     /**
      * Determines if a '2' card is natural in a straight by checking whether
      * an Ace or a 3 of the same seed is present in the sequence.
-     * 
+     *
      * @param two      the card to evaluate
      * @param straight the straight in which the card appears
      * @return true if the 2 is natural, false otherwise
@@ -156,7 +156,7 @@ public final class StraightUtils {
 
     /**
      * Maps a card to its numeric value for sequence comparison.
-     * 
+     *
      * @param c      the card to map
      * @param aceLow if true, Ace is treated as 1 (low); if false, Ace is treated as 14 (high)
      * @return the numeric value of the card
@@ -171,7 +171,7 @@ public final class StraightUtils {
     /**
      * Checks whether a sorted list of numeric values can form a consecutive sequence
      * using the available wildcards to fill any gaps.
-     * 
+     *
      * @param values    sorted list of numeric card values
      * @param wildcards number of wildcards available to fill gaps
      * @return true if the values can be made sequential, false otherwise
@@ -198,7 +198,7 @@ public final class StraightUtils {
 
     /**
      * Orders a list of cards into a valid sequence.
-     * 
+     *
      * @param sequence the unordered list of cards
      * @return a new list sorted by rank, with wildcards in the correct placeholder positions
      */
@@ -219,7 +219,7 @@ public final class StraightUtils {
 
     /**
      * Attempts to build an ordered sequence from the given cards.
-     * 
+     *
      * @param sequence the unordered list of cards
      * @param forceTwosAsWild if true, all 2s are treated as wildcards regardless of suit
      * @return the ordered list, or null if no valid ordering exists
@@ -298,7 +298,7 @@ public final class StraightUtils {
 
     /**
      * Determines whether the Ace should be treated as low (value 1) or high (value 14).
-     * 
+     *
      * @param real the list of natural cards in the straight
      * @param wildCount the number of wildcards available
      * @return true if the Ace should be treated as 1 (low), false if 14 (high)
@@ -312,7 +312,7 @@ public final class StraightUtils {
     /**
      * Verifies if a card at a specific index in an ordered list is a natural Two
      * based on its mathematical position relative to an anchor card.
-     * 
+     *
      * @param index   the position to check
      * @param ordered the ordered list of cards
      * @return true if the '2' at that position is natural, false otherwise
