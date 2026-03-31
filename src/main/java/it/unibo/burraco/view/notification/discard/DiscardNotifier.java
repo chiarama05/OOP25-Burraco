@@ -6,6 +6,7 @@ import it.unibo.burraco.controller.discardcard.discard.DiscardResult;
  * Interface responsible for notifying the user about errors
  * that occur during the card discarding process.
  */
+@FunctionalInterface
 public interface DiscardNotifier {
 
     /**

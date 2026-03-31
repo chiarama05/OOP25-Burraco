@@ -96,7 +96,7 @@ public final class PlayerImpl implements Player {
 
     @Override
     public List<List<Card>> getCombinations() {
-        return combinations;
+        return new ArrayList<>(this.combinations);
     }
 
     @Override

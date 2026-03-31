@@ -6,6 +6,7 @@ import it.unibo.burraco.controller.drawcard.DrawResult;
  * Interface responsible for notifying the user about errors encountered 
  * when trying to pick up the entire discard pile.
  */
+@FunctionalInterface
 public interface TakeDiscardNotifier {
 
     /**
