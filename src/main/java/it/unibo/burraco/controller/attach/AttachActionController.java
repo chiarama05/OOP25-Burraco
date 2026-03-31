@@ -59,16 +59,16 @@ public class AttachActionController {
     public void handle(final List<Card> selectedCards,
                        final List<Card> combinationCards,
                        final AttachView view) {
-        final Player currentPlayer = gameController.getCurrentPlayer();
-        final boolean hasDrawn = gameController.getDrawManager().hasDrawn();
-        final boolean isPlayer1Current = gameController.isPlayer1(currentPlayer);
-        final boolean isCurrentPlayer = isPlayer1Current == isPlayer1Owner;
+        final Player currentPlayer = this.gameController.getCurrentPlayer();
+        final boolean hasDrawn = this.gameController.getDrawManager().hasDrawn();
+        final boolean isPlayer1Current = this.gameController.isPlayer1(currentPlayer);
+        final boolean isCurrentPlayer = isPlayer1Current == this.isPlayer1Owner;
 
-        final AttachResult result = attachController.tryAttach(
+        final AttachResult result = this.attachController.tryAttach(
                 currentPlayer, selectedCards, combinationCards, hasDrawn, isCurrentPlayer);
 
-        if (result == AttachResult.SUCCESS_BURRACO) {
-            gameController.getSoundController().playBurracoSound();
+        if (AttachResult.SUCCESS_BURRACO.equals(result)) {
+            this.gameController.getSoundController().playBurracoSound();
         }
 
         switch (result) {
@@ -77,24 +77,22 @@ public class AttachActionController {
                 NO_CARDS_SELECTED,
                 INVALID_COMBINATION,
                 WOULD_GET_STUCK,
-                ATTACH_FAILED -> attachNotifier.notifyAttachError(result);
-
+                ATTACH_FAILED -> this.attachNotifier.notifyAttachError(result);
             case SUCCESS, SUCCESS_BURRACO -> {
                 view.updateCombinationVisuals();
                 view.onAttachSuccess(currentPlayer, isPlayer1Current); 
             }
-
             case SUCCESS_TAKE_POT -> {
                 view.updateCombinationVisuals();
-                potManager.handlePot(false);
+                this.potManager.handlePot(false);
                 view.onAttachTakePot(currentPlayer, isPlayer1Current); 
             }
-
             case SUCCESS_CLOSE, SUCCESS_STUCK -> {
                 view.updateCombinationVisuals();
-                closureManager.handleStateAfterAction(currentPlayer);
+                this.closureManager.handleStateAfterAction(currentPlayer);
                 view.onAttachClose(currentPlayer, isPlayer1Current);
             }
+            default -> { }
         }
     }
 }
