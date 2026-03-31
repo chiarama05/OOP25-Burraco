@@ -9,8 +9,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.MouseAdapter; 
-import java.awt.event.MouseEvent;    
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Set;
 
@@ -48,7 +48,7 @@ public final class HandViewImpl extends JPanel implements HandView {
 
     /**
      * Constructs a HandViewImpl with a specific selection manager.
-     * 
+     *
      * @param selectionManager the manager responsible for tracking selected cards
      */
     public HandViewImpl(final SelectionCardManager selectionManager) {
@@ -71,8 +71,8 @@ public final class HandViewImpl extends JPanel implements HandView {
             final JButton btn = new JButton(displayField);
 
             if (isJolly) {
-                btn.setFont(new Font(JOLLY_FONT, Font.BOLD, JOLLY_FONT_SIZE)); 
-                btn.setForeground(JOLLY_COLOR); 
+                btn.setFont(new Font(JOLLY_FONT, Font.BOLD, JOLLY_FONT_SIZE));
+                btn.setForeground(JOLLY_COLOR);
             } else {
                 btn.setFont(new Font(NORMAL_FONT, Font.BOLD, NORMAL_FONT_SIZE));
                 if (displayField.contains("♥") || displayField.contains("♦")) {
@@ -89,11 +89,11 @@ public final class HandViewImpl extends JPanel implements HandView {
 
             btn.addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseEntered(final MouseEvent e) { 
+                public void mouseEntered(final MouseEvent e) {
                     if (!selectionManager.isSelected(c)) {
-                        btn.setBackground(HOVER_BG); 
+                        btn.setBackground(HOVER_BG);
                     }
-                    btn.setBorder(BorderFactory.createLineBorder(HOVER_BORDER, HOVER_BORDER_THICKNESS)); 
+                    btn.setBorder(BorderFactory.createLineBorder(HOVER_BORDER, HOVER_BORDER_THICKNESS));
                     btn.setLocation(btn.getX(), btn.getY() - HOVER_OFFSET);
                 }
 
@@ -108,7 +108,7 @@ public final class HandViewImpl extends JPanel implements HandView {
                     btn.setLocation(btn.getX(), btn.getY() + HOVER_OFFSET);
                 }
             });
-        
+
             btn.addActionListener(e -> {
                 this.selectionManager.toggleSelection(c);
                 btn.setBackground(this.selectionManager.isSelected(c) ? Color.YELLOW : Color.WHITE);
@@ -142,7 +142,7 @@ public final class HandViewImpl extends JPanel implements HandView {
 
     /**
      * Helper method to retrieve a single selected card.
-     * 
+     *
      * @return the selected {@link Card} if exactly one is selected, null otherwise
      */
     public Card getSingleSelectedCard() {
@@ -152,7 +152,7 @@ public final class HandViewImpl extends JPanel implements HandView {
 
     /**
      * Updates the hand and clears the current selection.
-     * 
+     *
      * @param hand the new list of cards to display
      */
     public void updateHand(final List<Card> hand) {

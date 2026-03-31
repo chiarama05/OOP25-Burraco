@@ -11,13 +11,13 @@ public interface SoundController {
      */
     void playBurracoSound();
 
-    /** 
-     * Plays the sound effect triggered when a player discards their last card 
+    /**
+     * Plays the sound effect triggered when a player discards their last card
      * to successfully close the current round.
      */
     void playRoundEndSound();
 
-    /** 
+    /**
      * Plays the sound effect for the final victory, when a player
      * reaches the target match score.
      */

@@ -43,7 +43,7 @@ public interface GameNotifier {
      * Notifies that the pot was taken automatically before a discard.
      */
     void notifyMustTakePotBeforeDiscard();
-    
+
     /**
      * Notifies that a Burraco is required to close the round.
      */

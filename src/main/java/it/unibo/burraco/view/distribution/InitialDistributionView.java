@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * Orchestrates the initial visual setup of the game table.
- * It manages the transition from the distribution logic to the UI by 
+ * It manages the transition from the distribution logic to the UI by
  * synchronizing both players' hands and the discard pile.
  */
 public class InitialDistributionView {
@@ -29,15 +29,15 @@ public class InitialDistributionView {
         this.handPlayer2 = new HandViewImpl(selectionManager);
     }
 
-    /** 
-     * @return the HandView interface for Player 1. 
+    /**
+     * @return the HandView interface for Player 1.
      */
     public HandView getPlayer1HandView() {
         return handPlayer1;
     }
 
-    /** 
-     * @return the HandView interface for Player 2. 
+    /**
+     * @return the HandView interface for Player 2.
      */
     public HandView getPlayer2HandView() {
         return handPlayer2;

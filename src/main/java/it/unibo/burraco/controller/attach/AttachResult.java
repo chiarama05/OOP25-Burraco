@@ -5,8 +5,8 @@ package it.unibo.burraco.controller.attach;
  */
 public enum AttachResult {
 
-    /** 
-     * Card(s) attached successfully. 
+    /**
+     * Card(s) attached successfully.
      */
     SUCCESS,
 

@@ -23,8 +23,8 @@ public class DeckActionController {
      * @param drawManager    the manager responsible for the draw logic
      * @param notifier       the notifier used to report draw errors to the user
      */
-    public DeckActionController(final GameController gameController, 
-                                final DrawManager drawManager, 
+    public DeckActionController(final GameController gameController,
+                                final DrawManager drawManager,
                                 final DeckNotifier notifier) {
         this.gameController = gameController;
         this.drawManager = drawManager;

@@ -14,7 +14,7 @@ import java.awt.Font;
 
 /**
  * Concrete implementation of {@link DiscardView} using Swing components.
- * This class handles the rendering of cards in the discard pile and manages 
+ * This class handles the rendering of cards in the discard pile and manages
  * the "Discard" button layout.
  */
 public class DiscardViewImpl implements DiscardView {
@@ -44,7 +44,7 @@ public class DiscardViewImpl implements DiscardView {
 
    /**
      * Constructs the discard view.
-     * 
+     *
      * @param discardPanel the external panel provided to display cards.
      * @param actionPanel the external panel provided to host the discard button.
      */
@@ -55,10 +55,10 @@ public class DiscardViewImpl implements DiscardView {
         // Layout and Border for the discard pile
         this.discardPanel.setLayout(new FlowLayout(FlowLayout.LEFT, GAP, GAP));
         this.discardPanel.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(Color.WHITE, 1), 
-            PILE_TITLE, 
-            0, 0, 
-            new Font(FONT_ARIAL, Font.BOLD, TITLE_FONT_SIZE), 
+            BorderFactory.createLineBorder(Color.WHITE, 1),
+            PILE_TITLE,
+            0, 0,
+            new Font(FONT_ARIAL, Font.BOLD, TITLE_FONT_SIZE),
             Color.BLACK
         ));
         this.discardPanel.setBackground(BG_COLOR);
@@ -93,8 +93,8 @@ public class DiscardViewImpl implements DiscardView {
             label.setHorizontalAlignment(JLabel.CENTER);
 
             if (isJolly) {
-                label.setFont(new Font(FONT_JOLLY, Font.BOLD, JOLLY_FONT_SIZE)); 
-                label.setForeground(JOLLY_COLOR); 
+                label.setFont(new Font(FONT_JOLLY, Font.BOLD, JOLLY_FONT_SIZE));
+                label.setForeground(JOLLY_COLOR);
             } else {
                 label.setFont(new Font(FONT_MONO, Font.BOLD, NORMAL_FONT_SIZE));
                 if (textToShow.contains("♥") || textToShow.contains("♦")) {
@@ -123,7 +123,7 @@ public class DiscardViewImpl implements DiscardView {
 
     /**
      * Provides access to the action panel for layout assembly in the main Frame.
-     * 
+     *
      * @return the JPanel containing the discard button.
      */
     public JPanel getActionPanel() {

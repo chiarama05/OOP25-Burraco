@@ -11,7 +11,7 @@ public interface DiscardNotifier {
 
     /**
      * Notifies the user of an error during discard.
-     * 
+     *
      * @param result the result object containing the error message/code
      */
     void notifyDiscardError(DiscardResult result);

@@ -5,13 +5,13 @@ package it.unibo.burraco.view.start;
  */
 public interface SetUpMenuView {
 
-    /** 
-     * Displays the configuration frame. 
+    /**
+     * Displays the configuration frame.
      */
     void display();
 
-    /** 
-     * Closes and disposes of the configuration frame. 
+    /**
+     * Closes and disposes of the configuration frame.
      */
     void close();
 }

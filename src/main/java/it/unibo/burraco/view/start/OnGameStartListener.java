@@ -5,7 +5,7 @@ package it.unibo.burraco.view.start;
  */
 @FunctionalInterface
 public interface OnGameStartListener {
-    
+
     /**
      * Triggered when the user clicks the "New Match" button.
      */

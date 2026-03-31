@@ -48,7 +48,7 @@ public final class GameWiring {
 
     /**
      * Constructs and wires the entire game logic.
-     * 
+     *
      * @param p1                player 1 model
      * @param p2                player 2 model
      * @param nameP1            name of player 1
@@ -73,7 +73,7 @@ public final class GameWiring {
         final PotManager potManager = new PotManager(turnModel, view);
 
         final Score score = new ScoreImpl();
-        final ScoreController.ViewProvider realViewProvider = (playerA, playerB, n1, n2, target, s, tv, over) -> 
+        final ScoreController.ViewProvider realViewProvider = (playerA, playerB, n1, n2, target, s, tv, over) ->
                 new ScoreViewImpl(playerA, playerB, n1, n2, target, s, tv, over);
 
         final ScoreController scoreController = new ScoreController(
@@ -93,9 +93,9 @@ public final class GameWiring {
                 view, this.gameController, closureManager, potManager, view.getFrame());
         view.setAttachButtonFactory(attachFactory);
 
-        final DiscardActionController discardActionCtrl = new DiscardActionController(discardCoreLogic); 
+        final DiscardActionController discardActionCtrl = new DiscardActionController(discardCoreLogic);
 
-        final DiscardButton discardButton = new DiscardButton(view, view.getDiscardView(), notifier); 
+        final DiscardButton discardButton = new DiscardButton(view, view.getDiscardView(), notifier);
         discardButton.setIsPlayer1(turnModel.isPlayer1Turn());
 
         discardButton.setOnDiscardAction(discardActionCtrl::handle);
@@ -120,7 +120,7 @@ public final class GameWiring {
 
         final DeckButton deckButton = new DeckButton(view.getDeckView(), view);
         deckButton.setIsPlayer1(turnModel.isPlayer1Turn());
-        deckButton.setOnDrawAction(() -> deckActionCtrl.handle(deckButton)); 
+        deckButton.setOnDrawAction(() -> deckActionCtrl.handle(deckButton));
 
         final TakeDiscardController takeDiscardCtrl = new TakeDiscardController(
                 drawManager, turnModel, this.gameController.getDiscardPile());
@@ -133,26 +133,26 @@ public final class GameWiring {
         final TakeDiscardButton takeDiscardButton = new TakeDiscardButton(
                 view.getTakeDiscardBtn(), (TakeDiscardView) view, takeDiscardNotifier);
 
-        takeDiscardButton.setOnTakeDiscardAction(() -> 
+        takeDiscardButton.setOnTakeDiscardAction(() ->
                 takeDiscardActionCtrl.handle(takeDiscardButton)
-        ); 
+        );
 
         turnCtrl.setOnTurnChangedListener(() -> {
             final boolean isP1 = turnModel.isPlayer1Turn();
             final Player current = turnModel.getCurrentPlayer();
-            
+
             view.refreshTurnLabel(isP1);
             view.switchHand(isP1);
             view.refreshHandPanel(isP1, current.getHand());
             discardButton.setIsPlayer1(isP1);
-            putCombinationView.setIsPlayer1(isP1); 
+            putCombinationView.setIsPlayer1(isP1);
             deckButton.setIsPlayer1(isP1);
         });
     }
 
     /**
      * Returns the game controller instance.
-     * 
+     *
      * @return the game controller
      */
     public GameController getGameController() {

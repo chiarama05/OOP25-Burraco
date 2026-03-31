@@ -7,7 +7,7 @@ public interface OnConfigurationCompleteListener {
 
     /**
      * Called when the user confirms the configuration.
-     * 
+     *
      * @param targetScore The score required to win the match.
      * @param name1 Name of the first player.
      * @param name2 Name of the second player.

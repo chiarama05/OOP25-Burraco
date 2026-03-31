@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * A Result Object that encapsulates the outcome of a discard attempt.
- * It carries information about the validity of the move, the state of the game, 
+ * It carries information about the validity of the move, the state of the game,
  * and data required to update the UI.
  */
 public class DiscardResult {
@@ -15,8 +15,8 @@ public class DiscardResult {
     private final boolean turnEnds;
     private final boolean gameWon;
     private final String message;
-    private final List<Card> updatedDiscardPile; 
-    private final Player currentPlayer;         
+    private final List<Card> updatedDiscardPile;
+    private final Player currentPlayer;
 
     /**
      * Private constructor to enforce the use of static factory methods.
@@ -29,7 +29,7 @@ public class DiscardResult {
      * @param currentPlayer      updated player
      */
     private DiscardResult(final boolean valid, final boolean turnEnds, final boolean gameWon,
-                          final String message, final List<Card> updatedDiscardPile, 
+                          final String message, final List<Card> updatedDiscardPile,
                           final Player currentPlayer) {
         this.valid = valid;
         this.turnEnds = turnEnds;
@@ -41,7 +41,7 @@ public class DiscardResult {
 
     /**
      * Creates a failed discard result with an error message.
-     * 
+     *
      * @param message the error key or description.
      * @return a failed DiscardResult.
      */
@@ -51,56 +51,56 @@ public class DiscardResult {
 
     /**
      * Creates a successful discard result.
-     * 
+     *
      * @param pile the updated state of the discard pile.
      * @param player the player who performed the action.
      * @param gameWon true if this discard triggers a round/match victory.
      * @return a successful DiscardResult.
      */
-    public static DiscardResult success(final List<Card> pile, final Player player, 
+    public static DiscardResult success(final List<Card> pile, final Player player,
                                         final boolean gameWon) {
         return new DiscardResult(true, true, gameWon, null, pile, player);
     }
 
-    /** 
-     * @return true if the discard move was legal. 
+    /**
+     * @return true if the discard move was legal.
      */
-    public boolean isValid() { 
-        return this.valid; 
+    public boolean isValid() {
+        return this.valid;
     }
 
     /**
-     * @return true if the current player's turn should conclude. 
+     * @return true if the current player's turn should conclude.
      */
-    public boolean isTurnEnds() { 
-        return this.turnEnds; 
+    public boolean isTurnEnds() {
+        return this.turnEnds;
     }
 
     /**
      * @return true if the move resulted in winning the round or game.
      */
-    public boolean isGameWon() { 
-        return this.gameWon; 
+    public boolean isGameWon() {
+        return this.gameWon;
     }
 
     /**
      * @return the error message if the move was invalid.
      */
-    public String getMessage() { 
-        return this.message; 
+    public String getMessage() {
+        return this.message;
     }
 
     /**
      * @return the state of the discard pile after the move.
      */
-    public List<Card> getUpdatedDiscardPile() { 
-        return this.updatedDiscardPile; 
+    public List<Card> getUpdatedDiscardPile() {
+        return this.updatedDiscardPile;
     }
 
-    /** 
-     * @return the player object with updated state. 
+    /**
+     * @return the player object with updated state.
      */
-    public Player getCurrentPlayer() { 
-        return this.currentPlayer; 
+    public Player getCurrentPlayer() {
+        return this.currentPlayer;
     }
 }

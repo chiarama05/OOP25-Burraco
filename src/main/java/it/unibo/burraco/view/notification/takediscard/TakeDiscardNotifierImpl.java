@@ -15,7 +15,7 @@ public final class TakeDiscardNotifierImpl implements TakeDiscardNotifier{
 
     /**
      * Constructs a TakeDiscardNotifierImpl.
-     * 
+     *
      * @param parent the parent {@link JFrame} used to center the dialogs
      */
     public TakeDiscardNotifierImpl(final JFrame parent) {

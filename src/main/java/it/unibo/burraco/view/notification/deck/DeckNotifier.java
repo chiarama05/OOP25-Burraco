@@ -10,7 +10,7 @@ public interface DeckNotifier {
 
     /**
      * Notifies the user of an error during the deck drawing process.
-     * 
+     *
      * @param result the result of the draw operation containing the error status
      */
     void notifyDrawError(DrawResult result);

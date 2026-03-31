@@ -15,7 +15,7 @@ public class AttachNotifierImpl implements AttachNotifier {
 
     /**
      * Creates a new AttachNotifierImpl.
-     * 
+     *
      * @param parent the parent frame used to center the notification dialogs
      */
     public AttachNotifierImpl(final JFrame parent) {

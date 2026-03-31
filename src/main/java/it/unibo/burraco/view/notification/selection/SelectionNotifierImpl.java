@@ -13,7 +13,7 @@ public final class SelectionNotifierImpl implements SelectionNotifier{
 
     /**
      * Constructs a SelectionNotifierImpl.
-     * 
+     *
      * @param parent the parent {@link JFrame} used to position the dialogs
      */
     public SelectionNotifierImpl(final JFrame parent) {

@@ -24,7 +24,7 @@ public final class RoundedGradientButton extends JButton {
     private static final Color HOVER_OUTER = new Color(255, 140, 160);
     private static final Color HOVER_INNER = new Color(255, 220, 230);
     private static final Color BORDER_COLOR = new Color(200, 130, 145);
-    
+
     private static final int ARC_SIZE = 25;
     private static final float STROKE_WIDTH = 1.5f;
     private static final float GRADIENT_RADIUS_RATIO = 1.5f;
@@ -35,7 +35,7 @@ public final class RoundedGradientButton extends JButton {
 
     /**
      * Constructs a new button with specified text and initializes transparency settings.
-     * 
+     *
      * @param text the label displayed on the button.
      */
     public RoundedGradientButton(final String text) {
@@ -49,14 +49,14 @@ public final class RoundedGradientButton extends JButton {
         // Add mouse listener to handle hover state transitions
         this.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseEntered(final MouseEvent evt) { 
+            public void mouseEntered(final MouseEvent evt) {
                 innerColor = HOVER_INNER;
                 outerColor = HOVER_OUTER;
                 repaint();
             }
 
             @Override
-            public void mouseExited(final MouseEvent evt) { 
+            public void mouseExited(final MouseEvent evt) {
                 innerColor = DEFAULT_INNER;
                 outerColor = DEFAULT_OUTER;
                 repaint();
@@ -77,8 +77,8 @@ public final class RoundedGradientButton extends JButton {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         final float radius = Math.max(this.getWidth(), this.getHeight());
-        final Color[] colors = {this.innerColor, this.outerColor}; 
-        
+        final Color[] colors = {this.innerColor, this.outerColor};
+
         // Create a radial gradient centered in the button
         final RadialGradientPaint rgp = new RadialGradientPaint(
             new Point2D.Double(this.getWidth() / 2.0, this.getHeight() / 2.0),

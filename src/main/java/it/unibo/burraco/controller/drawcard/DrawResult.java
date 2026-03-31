@@ -13,13 +13,13 @@ public final class DrawResult {
      */
     public enum Status {
         /** Single card drawn from deck. */
-        SUCCESS,   
+        SUCCESS,
         /** Multiple cards taken from discard pile. */
-        SUCCESS_MULTIPLE, 
+        SUCCESS_MULTIPLE,
         /** Failed: Deck has no cards. */
-        EMPTY_DECK, 
+        EMPTY_DECK,
         /** Failed: Discard pile is empty. */
-        EMPTY_DISCARD, 
+        EMPTY_DISCARD,
         /** Failed: Player already drew this turn. */
         ALREADY_DRAWN
     }
@@ -29,7 +29,7 @@ public final class DrawResult {
 
     /**
      * Private constructor to maintain control over instance creation via factory methods.
-     * 
+     *
      * @param status the status of the draw operation
      * @param card   the card drawn, if applicable
      */
@@ -47,7 +47,7 @@ public final class DrawResult {
     }
 
     /**
-     * @return a success result for multiple cards from discard 
+     * @return a success result for multiple cards from discard
     */
     public static DrawResult successMultiple() {
         return new DrawResult(Status.SUCCESS_MULTIPLE, null);
@@ -67,15 +67,15 @@ public final class DrawResult {
         return new DrawResult(Status.EMPTY_DISCARD, null);
     }
 
-    /** 
-     * @return an error result indicating the player already drew 
+    /**
+     * @return an error result indicating the player already drew
      */
     public static DrawResult alreadyDrawn() {
         return new DrawResult(Status.ALREADY_DRAWN, null);
     }
 
     /**
-     *  @return the status of the operation 
+     *  @return the status of the operation
      */
     public Status getStatus() {
         return status;

@@ -20,7 +20,7 @@ public final class StraightAttachUtils {
 
     /**
      * Checks if a list of new cards can be attached to an existing straight.
-     * 
+     *
      * @param straight the current straight on the table
      * @param newCards the cards the player wants to add
      * @return true if the resulting combination is valid or if a wildcard substitution occurs
@@ -41,7 +41,7 @@ public final class StraightAttachUtils {
 
     /**
      * Checks if a single card can be attached to an existing straight.
-     * 
+     *
      * @param straight the current straight on the table
      * @param newCard  the single card to add
      * @return true if the card can be attached
@@ -52,7 +52,7 @@ public final class StraightAttachUtils {
 
     /**
      * Checks if a specific card can substitute a wildcard currently positioned inside a straight.
-     * 
+     *
      * @param straight the current straight
      * @param newCard  the card that might replace the wildcard
      * @return true if the new card matches the required rank and suit to fill the gap

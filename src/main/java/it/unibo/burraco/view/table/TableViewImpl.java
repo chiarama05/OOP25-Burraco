@@ -69,7 +69,9 @@ public final class TableViewImpl implements TableView {
     private final ControlPanelView sideControlPanel;
     private final BoardView boardView;
     private final PlayerAreaView playerArea;
-    private AttachButtonFactory attachButtonFactory;    
+
+    private AttachButtonFactory attachButtonFactory;
+    private SelectionCardManager selectionCardManager;
 
     /**
      * Constructs the main game window and initialises all Swing sub-components.
@@ -249,7 +251,7 @@ public final class TableViewImpl implements TableView {
             BorderFactory.createLineBorder(Color.WHITE, BORDER_THICKNESS),
             "Hand", TITLE_JUSTIFICATION, TITLE_POSITION,
             new Font(FONT_NAME, Font.BOLD, FONT_SIZE_HAND), Color.BLACK));
- 
+
         final HandView hv = this.getHandViewForCurrentPlayer(isPlayer1);
         hv.refreshHand(hand);
 
@@ -270,6 +272,25 @@ public final class TableViewImpl implements TableView {
         return this.discardView;
     }
 
+<<<<<<< HEAD
+    @Override public JPanel getDiscardPanel() {
+        return this.discardPanel;
+    }
+
+    @Override public JFrame getFrame() {
+        return this.frame;
+    }
+
+    @Override public JButton getPutComboBtn() {
+        return this.putComboBtn;
+    }
+
+    @Override public JButton getTakeDiscardBtn() {
+        return this.takeDiscardBtn;
+    }
+
+    @Override public DeckView getDeckView() {
+=======
     @Override
     public JPanel getDiscardPanel() {
         return this.discardPanel;
@@ -292,6 +313,7 @@ public final class TableViewImpl implements TableView {
 
     @Override
     public DeckView getDeckView() {
+>>>>>>> b6d33d15ab6196e5bf9031acf3ec39ffb395bf0f
         return this.deckView;
     }
 

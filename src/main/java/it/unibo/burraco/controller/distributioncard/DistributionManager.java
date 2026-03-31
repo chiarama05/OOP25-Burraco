@@ -15,22 +15,22 @@ public interface DistributionManager {
 
     /**
      * Executes the initial setup of the match.
-     * Draws cards from the deck to fill players' hands, create side pots, 
+     * Draws cards from the deck to fill players' hands, create side pots,
      * and initialize the discard pile.
-     * 
+     *
      * @param player1 the first player.
      * @param player2 the second player.
      * @param deck the game deck to draw from.
      * @param modelDiscardPile the discard pile model to be initialized.
      */
-    void distributeInitialCards(final Player player1, 
-                                final Player player2, 
-                                final Deck deck, 
+    void distributeInitialCards(final Player player1,
+                                final Player player2,
+                                final Deck deck,
                                 final DiscardPile modelDiscardPile);
 
     /**
      * Retrieves the state of the initial discard pile after distribution.
-     * 
+     *
      * @return a list of cards representing the initial discard pile.
      */
     List<Card> getInitialDiscardPile();

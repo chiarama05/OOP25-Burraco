@@ -24,7 +24,7 @@ public class SelectionCardManager {
 
     /**
      * Adds a card to the selection if not present, or removes it if already selected.
-     * 
+     *
      * @param card the card to toggle.
      */
     public void toggleSelection(final Card card) {
@@ -35,17 +35,17 @@ public class SelectionCardManager {
         }
     }
 
-    /** 
-     * @return true if the specified card is currently in the selection set. 
+    /**
+     * @return true if the specified card is currently in the selection set.
      */
     public boolean isSelected(final Card card) {
         return this.selectedCards.contains(card);
     }
 
     /**
-     * Returns an unmodifiable view of the selected cards to prevent 
+     * Returns an unmodifiable view of the selected cards to prevent
      * external corruption of the internal state.
-     * 
+     *
      * @return a read-only Set of selected cards.
      */
     public Set<Card> getSelectedCards() {
@@ -57,15 +57,15 @@ public class SelectionCardManager {
         this.selectedCards.clear();
     }
 
-    /** 
-     * @return the total number of currently selected cards. 
+    /**
+     * @return the total number of currently selected cards.
      */
     public int getSelectionSize() {
         return this.selectedCards.size();
     }
 
-    /** 
-     * @return true if the selection buffer is empty. 
+    /**
+     * @return true if the selection buffer is empty.
      */
     public boolean isEmpty() {
         return this.selectedCards.isEmpty();
@@ -74,13 +74,13 @@ public class SelectionCardManager {
     /**
      * Validates the current selection and attempts to play it as a new combination.
      * If valid, updates the player model and synchronizes the view.
-     * 
+     *
      * @param player   the player attempting the move.
      * @param view     the view component to update on success.
      * @param isPlayer1 boolean flag to identify which UI panel to update.
      * @param notifier component to handle user feedback/errors.
      */
-    public void processCombination(final Player player, final SelectionView view, 
+    public void processCombination(final Player player, final SelectionView view,
                                    final boolean isPlayer1, final SelectionNotifier notifier) {
 
         if (this.selectedCards.isEmpty()) {
@@ -103,7 +103,7 @@ public class SelectionCardManager {
      * Internal helper to execute the move once validated.
      * Updates models and refreshes the UI.
      */
-    private void executeMove(final Player player, final SelectionView view, 
+    private void executeMove(final Player player, final SelectionView view,
                              final boolean isPlayer1, final List<Card> cardsToPut) {
         player.removeCards(cardsToPut);
         player.addCombination(cardsToPut);
