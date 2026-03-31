@@ -13,7 +13,7 @@ import it.unibo.burraco.model.card.Card;
  * Utility class responsible for determining whether one or more cards 
  * can be attached to an existing combination on the table.
  */
-public class AttachUtils {
+public final class AttachUtils {
 
     /**
      * Checks if a list of new cards can be legally added to an existing combination.
@@ -23,7 +23,9 @@ public class AttachUtils {
      * @return true if the resulting combination is valid, false otherwise
      */
     public static boolean canAttach(final List<Card> combination, final List<Card> newCards) {
-        if (combination == null || combination.isEmpty()) return false;
+        if (combination == null || combination.isEmpty()) {
+            return false;
+        }
 
         final List<Card> realCards = combination.stream()
             .filter(c -> !"Jolly".equalsIgnoreCase(c.getValue()) && !"2".equals(c.getValue()))
