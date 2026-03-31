@@ -17,7 +17,7 @@ import it.unibo.burraco.model.deck.DeckImpl;
 import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.discard.DiscardPileImpl;
 import it.unibo.burraco.model.turn.Turn;
-import it.unibo.burraco.model.card.*;
+import it.unibo.burraco.model.card.Card;
 
 
 /**
@@ -64,7 +64,9 @@ public final class GameController {
      * @param isPlayer1Owner   true if the combination belongs to Player 1
      * @return an AttachResult describing the outcome
      */
-    public AttachResult tryAttach(final List<Card> selectedCards, final List<Card> combinationCards, final boolean isPlayer1Owner) {
+    public AttachResult tryAttach(final List<Card> selectedCards, 
+                                  final List<Card> combinationCards, 
+                                  final boolean isPlayer1Owner) {
 
         final Player currentPlayer = turnModel.getCurrentPlayer();
         final boolean hasDrawn = drawManager.hasDrawn();
@@ -73,7 +75,7 @@ public final class GameController {
         final AttachResult result = this.attachController.tryAttach(
                 currentPlayer, selectedCards, combinationCards, hasDrawn, isCurrentPlayer);
   
-        if (AttachResult.SUCCESS_BURRACO.equals(result)) {
+        if (result == AttachResult.SUCCESS_BURRACO) {
             this.soundController.playBurracoSound();
         }
         return result;
@@ -170,8 +172,8 @@ public final class GameController {
      *
      * @param value true to mark as drawn, false to allow drawing again
      */
-    public void setHasDrawn(final boolean value) { 
-        this.hasDrawn = value; 
+    public void setHasDrawn(final boolean drawnValue) { 
+        this.hasDrawn = drawnValue; 
     }
 
 
