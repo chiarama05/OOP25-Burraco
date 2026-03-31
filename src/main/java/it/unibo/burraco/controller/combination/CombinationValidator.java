@@ -2,6 +2,7 @@ package it.unibo.burraco.controller.combination;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import it.unibo.burraco.controller.combination.set.SetUtils;
 import it.unibo.burraco.controller.combination.straight.StraightUtils;
@@ -14,7 +15,12 @@ import it.unibo.burraco.model.card.CardImpl;
  */
 public final class CombinationValidator {
 
+    private static final String JOLLY_LITERAL = "Jolly";
+    private static final String TWO_LITERAL = "2";
+    private static final int MIN_COMBO_SIZE = 3;
+
     private CombinationValidator() { }
+
     /**
      * Validates a combination of cards. 
      * Checks for minimum size, type of combination (Straight/Set), 
@@ -25,14 +31,14 @@ public final class CombinationValidator {
      */ 
     public static boolean isValidCombination(final List<Card> cards) {
         // A combination must have at least 3 cards
-        if (cards == null || cards.size() < 3) {
+        if (cards == null || cards.size() < MIN_COMBO_SIZE) {
             return false;
         }
 
         // Filter cards that are not wildcards
         final List<Card> realCards = cards.stream()
-            .filter(c -> !c.getValue().equalsIgnoreCase("Jolly") && !c.getValue().equals("2"))
-            .collect(java.util.stream.Collectors.toList());
+            .filter(c -> !JOLLY_LITERAL.equalsIgnoreCase(c.getValue()) && !TWO_LITERAL.equals(c.getValue()))
+            .collect(Collectors.toList());
 
         // Check if there are duplicate values
         final boolean hasDuplicateValues = realCards.stream()
@@ -40,14 +46,11 @@ public final class CombinationValidator {
             .collect(java.util.stream.Collectors.toSet()).size() < realCards.size();
 
         // Case 1: The combination is a Set
-        if (hasDuplicateValues) {
-            if (SetUtils.isValidSet(cards)) {
-                final long wildcardsInSet = cards.stream()
-                    .filter(c -> c.getValue().equalsIgnoreCase("Jolly") || c.getValue().equals("2"))
-                    .count();
-                return wildcardsInSet <= 1;
-            }
-            return false;
+        if (hasDuplicateValues && SetUtils.isValidSet(cards)) {
+            final long wildcardsInSet = cards.stream()
+                .filter(c -> JOLLY_LITERAL.equalsIgnoreCase(c.getValue()) || TWO_LITERAL.equals(c.getValue()))
+                .count();
+            return wildcardsInSet <= 1;
         }
 
         // Case 2: The combination is a Straight
@@ -56,25 +59,20 @@ public final class CombinationValidator {
             int effectiveWildcards = 0;
             for (int i = 0; i < ordered.size(); i++) {
                 final Card c = ordered.get(i);
-                if (c.getValue().equalsIgnoreCase("Jolly")) {
+                if (JOLLY_LITERAL.equalsIgnoreCase(c.getValue())) {
                     effectiveWildcards++;
-                } else if (c.getValue().equals("2")) {
-                    // A "2" is an effective wildcard only if it's not in its natural position
-                    if (!StraightUtils.isPositionallyNatural(i, ordered)) {
-                        effectiveWildcards++;
-                    }
+                } else if (TWO_LITERAL.equals(c.getValue()) 
+                        && !StraightUtils.isPositionallyNatural(i, ordered)) {
+                    effectiveWildcards++;
                 }
             }
-            if (effectiveWildcards > 1) {
-                return false;
-            } 
-            return StraightUtils.isValidStraight(cards);
+            return effectiveWildcards <= 1 && StraightUtils.isValidStraight(cards);
         }
- 
+
         // Final check for Sets without duplicate cards
         if (SetUtils.isValidSet(cards)) {
             final long wildcardsInSet = cards.stream()
-                .filter(c -> c.getValue().equalsIgnoreCase("Jolly") || c.getValue().equals("2"))
+                .filter(c -> JOLLY_LITERAL.equalsIgnoreCase(c.getValue()) || TWO_LITERAL.equals(c.getValue()))
                 .count();
             return wildcardsInSet <= 1;
         }
@@ -88,11 +86,12 @@ public final class CombinationValidator {
      * @param context the combination of cards the card belongs to
      * @return true if the card is a Joker or a "2" used as a wildcard, false otherwise
      */
-    public static boolean isWildcard(Card c, List<Card> context) {
-        if ("Jolly".equalsIgnoreCase(c.getValue())) {
+    public static boolean isWildcard(final Card c, final List<Card> context) {
+
+        if (JOLLY_LITERAL.equalsIgnoreCase(c.getValue())) {
             return true;
         }
-        if (!"2".equals(c.getValue())) {
+        if (!TWO_LITERAL.equals(c.getValue())) {
             return false;
         }
         if (c instanceof CardImpl && ((CardImpl) c).isUsedAsWildcard()) {
@@ -101,20 +100,21 @@ public final class CombinationValidator {
     
         // Analysis for the "2"
         final List<Card> realCards = context.stream()
-            .filter(r -> !r.getValue().equalsIgnoreCase("Jolly") && !r.getValue().equals("2"))
-            .collect(java.util.stream.Collectors.toList());
+            .filter(r -> !JOLLY_LITERAL.equalsIgnoreCase(r.getValue()) && !TWO_LITERAL.equals(r.getValue()))
+            .collect(Collectors.toList());
 
         final boolean hasDuplicateValues = realCards.stream()
             .map(Card::getValue)
             .collect(java.util.stream.Collectors.toSet()).size() < realCards.size();
    
         // In a Set a "2" is always a wildcard
-        if (hasDuplicateValues || !StraightUtils.isSameSeed(context)) return true;
+        if (hasDuplicateValues || !StraightUtils.isSameSeed(context)) {
+            return true;
+        }
 
         // In a Straight a "2" is a wildcard only if not in its natural sequence
         final List<Card> ordered = StraightUtils.orderStraight(new ArrayList<>(context));
         final int index = ordered.indexOf(c);
         return !StraightUtils.isPositionallyNatural(index, ordered);
     }
-
 }

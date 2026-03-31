@@ -47,6 +47,9 @@ public final class TableViewImpl implements TableView {
     private static final int BG_G = 220;
     private static final int BG_B = 180;
     private static final int RIGID_AREA_WIDTH = 5;
+    private static final int TITLE_JUSTIFICATION = 0;
+    private static final int TITLE_POSITION = 0;
+    private static final int BORDER_THICKNESS = 1;
 
     private static final String FONT_NAME = "Arial";
 
@@ -66,8 +69,7 @@ public final class TableViewImpl implements TableView {
     private final ControlPanelView sideControlPanel;
     private final BoardView boardView;
     private final PlayerAreaView playerArea;
-    private AttachButtonFactory attachButtonFactory;
-    private SelectionCardManager selectionCardManager;      
+    private AttachButtonFactory attachButtonFactory;    
 
     /**
      * Constructs the main game window and initialises all Swing sub-components.
@@ -98,7 +100,7 @@ public final class TableViewImpl implements TableView {
         this.combPanel2 = boardView.getCombPanel2();
         this.frame.add(boardView, BorderLayout.CENTER);
 
-        this.discardPanel = new JPanel();  
+        this.discardPanel = new JPanel();
         final JScrollPane discardScroll = new JScrollPane(discardPanel);
         discardScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         discardScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
@@ -152,7 +154,7 @@ public final class TableViewImpl implements TableView {
         final JComponent btn = this.attachButtonFactory.create(cards, isP1);
         btn.setAlignmentY(Component.TOP_ALIGNMENT);
         panel.add(btn);
-        panel.add(Box.createRigidArea(new Dimension(RIGID_AREA_WIDTH, 0))); 
+        panel.add(Box.createRigidArea(new Dimension(RIGID_AREA_WIDTH, 0)));
         this.frame.revalidate();
         this.frame.repaint();
     }
@@ -223,7 +225,6 @@ public final class TableViewImpl implements TableView {
 
     @Override
     public void setSelectionCardManager(final SelectionCardManager manager) {
-        this.selectionCardManager = manager;
     }
 
     @Override
@@ -245,8 +246,8 @@ public final class TableViewImpl implements TableView {
     public void refreshHandPanel(final boolean isPlayer1, final List<Card> hand) {
         this.deckPanel.removeAll();
         this.deckPanel.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(Color.WHITE, 1),
-            "Hand", 0, 0,
+            BorderFactory.createLineBorder(Color.WHITE, BORDER_THICKNESS),
+            "Hand", TITLE_JUSTIFICATION, TITLE_POSITION,
             new Font(FONT_NAME, Font.BOLD, FONT_SIZE_HAND), Color.BLACK));
  
         final HandView hv = this.getHandViewForCurrentPlayer(isPlayer1);
@@ -264,29 +265,34 @@ public final class TableViewImpl implements TableView {
         this.deckPanel.repaint();
     }
 
-    @Override 
-    public DiscardView getDiscardView() { 
-        return this.discardView; 
+    @Override
+    public DiscardView getDiscardView() {
+        return this.discardView;
     }
 
-    @Override public JPanel getDiscardPanel() { 
-        return this.discardPanel; 
+    @Override
+    public JPanel getDiscardPanel() {
+        return this.discardPanel;
     }
 
-    @Override public JFrame getFrame() { 
-        return this.frame; 
+    @Override
+    public JFrame getFrame() {
+        return this.frame;
     }
 
-    @Override public JButton getPutComboBtn() { 
-        return this.putComboBtn; 
+    @Override
+    public JButton getPutComboBtn() {
+        return this.putComboBtn;
     }
 
-    @Override public JButton getTakeDiscardBtn() { 
+    @Override
+    public JButton getTakeDiscardBtn() {
         return this.takeDiscardBtn;
     }
 
-    @Override public DeckView getDeckView() { 
-        return this.deckView; 
+    @Override
+    public DeckView getDeckView() {
+        return this.deckView;
     }
 
     /**
@@ -294,7 +300,7 @@ public final class TableViewImpl implements TableView {
      *
      * @return the initial distribution view
      */
-    public InitialDistributionView getInitDist() { 
-        return this.initDist; 
+    public InitialDistributionView getInitDist() {
+        return this.initDist;
     }
 }
