@@ -23,52 +23,58 @@ import it.unibo.burraco.view.table.TableView;
 class ScoreControllerTest {
 
     private ScoreController scoreController;
-    private Score scoreMock;
-    private Player p1Mock;
-    private Player p2Mock;
-    private SoundController soundMock;
-    private ScoreView scoreViewMock;
-    private ScoreController.ViewProvider viewProviderMock;
-    private GameController gameControllerMock;
+    private Score score;
+    private Player p1;
+    private Player p2;
+    private SoundController sound;
+    private ScoreView scoreView;
+    private ScoreController.ViewProvider viewProvider;
+    private GameController gameController;
 
     @BeforeEach
     void setUp() {
-        scoreMock = mock(Score.class);
-        p1Mock = mock(Player.class);
-        p2Mock = mock(Player.class);
-        soundMock = mock(SoundController.class);
-        scoreViewMock = mock(ScoreView.class);
-        viewProviderMock = mock(ScoreController.ViewProvider.class);
-        gameControllerMock = mock(GameController.class);
-        when(viewProviderMock.create(any(), any(), any(), any(), anyInt(), any(), any(), anyBoolean()))
-            .thenReturn(scoreViewMock);
-        scoreController = new ScoreController(
-            scoreMock, p1Mock, p2Mock, "P1", "P2",
-            mock(TableView.class), gameControllerMock, soundMock,
+        this.score = mock(Score.class);
+        this.p1 = mock(Player.class);
+        this.p2 = mock(Player.class);
+        this.sound = mock(SoundController.class);
+        this.scoreView = mock(ScoreView.class);
+        this.viewProvider = mock(ScoreController.ViewProvider.class);
+        this.gameController = mock(GameController.class);
+
+        when(this.viewProvider.create(any(), any(), any(), any(), anyInt(), any(), any(), anyBoolean()))
+            .thenReturn(this.scoreView);
+
+        this.scoreController = new ScoreController(
+            this.score, this.p1, this.p2, "P1", "P2",
+            mock(TableView.class), this.gameController, this.sound,
             2000, mock(InitialDistributionView.class),
             Runnable::run,
-            viewProviderMock
+            this.viewProvider
         );
     }
 
     @Test
     void testRoundEndWithoutVictory() {
-        when(scoreMock.calculateFinalScore(p1Mock)).thenReturn(100);
-        when(p1Mock.getMatchTotalScore()).thenReturn(100);
-        when(p2Mock.getMatchTotalScore()).thenReturn(100);
-        scoreController.onRoundEnd();
-        verify(p1Mock).addPointsToMatch(100);
-        verify(soundMock).playRoundEndSound();
-        verify(scoreViewMock).display();
-        verify(soundMock, never()).playVictorySound();
+        final int pointsEarned = 100;
+        when(this.score.calculateFinalScore(this.p1)).thenReturn(pointsEarned);
+        when(this.p1.getMatchTotalScore()).thenReturn(pointsEarned);
+        when(this.p2.getMatchTotalScore()).thenReturn(pointsEarned);
+
+        this.scoreController.onRoundEnd();
+
+        verify(this.p1).addPointsToMatch(pointsEarned);
+        verify(this.sound).playRoundEndSound();
+        verify(this.scoreView).display();
+        verify(this.sound, never()).playVictorySound();
     }
 
     @Test
-    void testRoundEndWithVictory() throws InterruptedException {
-        when(scoreMock.calculateFinalScore(p1Mock)).thenReturn(500);
-        when(p1Mock.getMatchTotalScore()).thenReturn(2005); 
-        scoreController.onRoundEnd();
-        verify(soundMock, timeout(500)).playVictorySound();
-        verify(scoreViewMock, timeout(500)).display();
+    void testRoundEndWithVictory() {
+        when(this.score.calculateFinalScore(this.p1)).thenReturn(500);
+        when(this.p1.getMatchTotalScore()).thenReturn(2005); 
+
+        this.scoreController.onRoundEnd();
+        verify(this.sound, timeout(500)).playVictorySound();
+        verify(this.scoreView, timeout(500)).display();
     }
 }

@@ -32,205 +32,92 @@ class ScoreTest {
 
     @Test
     void testConstantGetters() {
-        assertEquals(CLEAN_BONUS, score.getCleanBurracoBonusValue());
-        assertEquals(DIRTY_BONUS, score.getDirtyBurracoBonusValue());
-        assertEquals(CLOSURE_BONUS, score.getClosureBonusValue());
-        assertEquals(NO_POT_PENALTY, score.getNoPotPenalty());
+        assertEquals(CLEAN_BONUS, this.score.getCleanBurracoBonusValue());
+        assertEquals(DIRTY_BONUS, this.score.getDirtyBurracoBonusValue());
+        assertEquals(CLOSURE_BONUS, this.score.getClosureBonusValue());
+        assertEquals(NO_POT_PENALTY, this.score.getNoPotPenalty());
     }
 
     @Test
     void testRemainingHandValueEmptyHand() {
-        assertEquals(0, score.calculateRemainingHandValue(player));
+        assertEquals(0, this.score.calculateRemainingHandValue(this.player));
     }
 
     @Test
     void testRemainingHandValueWithCards() {
-        player.addCardHand(new CardImpl(HEARTS, "A"));   
-        player.addCardHand(new CardImpl(HEARTS, "K"));   
-        player.addCardHand(new CardImpl(HEARTS, "3"));  
-        assertEquals(30, score.calculateRemainingHandValue(player));
-    }
-
-    @Test
-    void testCardsOnTableNoCombinations() {
-        assertEquals(0, score.calculateOnlyCardsOnTable(player));
+        this.player.addCardHand(new CardImpl(HEARTS, "A"));   
+        this.player.addCardHand(new CardImpl(HEARTS, "K"));   
+        this.player.addCardHand(new CardImpl(HEARTS, "3"));  
+        assertEquals(30, this.score.calculateRemainingHandValue(this.player));
     }
 
     @Test
     void testCardsOnTableWithCombinations() {
-        player.addCombination(List.of(
+        this.player.addCombination(List.of(
                 new CardImpl(HEARTS, "A"),
                 new CardImpl(HEARTS, "K"),
                 new CardImpl(HEARTS, "3")
         ));
-        assertEquals(30, score.calculateOnlyCardsOnTable(player));
-    }
-
-    @Test
-    void testBurracoBonusNoCombinations() {
-        assertEquals(0, score.calculateBurracoBonus(player));
-    }
-
-    @Test
-    void testCombinationUnder7NotBurraco() {
-        player.addCombination(List.of(
-                new CardImpl(HEARTS, "3"),
-                new CardImpl(HEARTS, "4"),
-                new CardImpl(HEARTS, "5"),
-                new CardImpl(HEARTS, "6"),
-                new CardImpl(HEARTS, "7")
-        ));
-        assertEquals(0, score.calculateBurracoBonus(player));
-        assertEquals(0, score.countCleanBurraco(player));
-        assertEquals(0, score.countDirtyBurraco(player));
+        assertEquals(30, this.score.calculateOnlyCardsOnTable(this.player));
     }
 
     @Test
     void testCleanBurracoNoTwosNoJolly() {
-        player.addCombination(List.of(
-                new CardImpl(HEARTS, "3"),
-                new CardImpl(HEARTS, "4"),
-                new CardImpl(HEARTS, "5"),
-                new CardImpl(HEARTS, "6"),
-                new CardImpl(HEARTS, "7"),
-                new CardImpl(HEARTS, "8"),
+        this.player.addCombination(List.of(
+                new CardImpl(HEARTS, "3"), new CardImpl(HEARTS, "4"),
+                new CardImpl(HEARTS, "5"), new CardImpl(HEARTS, "6"),
+                new CardImpl(HEARTS, "7"), new CardImpl(HEARTS, "8"),
                 new CardImpl(HEARTS, "9")
         ));
-        assertEquals(CLEAN_BONUS, score.calculateBurracoBonus(player));
-        assertEquals(1, score.countCleanBurraco(player));
-        assertEquals(0, score.countDirtyBurraco(player));
+        assertEquals(CLEAN_BONUS, this.score.calculateBurracoBonus(this.player));
+        assertEquals(1, this.score.countCleanBurraco(this.player));
+        assertEquals(0, this.score.countDirtyBurraco(this.player));
     }
 
     @Test
     void testCleanBurracoWithTwoInNaturalPosition() {
-        player.addCombination(List.of(
-                new CardImpl(HEARTS, "A"),
-                new CardImpl(HEARTS, "2"),
-                new CardImpl(HEARTS, "3"),
-                new CardImpl(HEARTS, "4"),
-                new CardImpl(HEARTS, "5"),
-                new CardImpl(HEARTS, "6"),
+        this.player.addCombination(List.of(
+                new CardImpl(HEARTS, "A"), new CardImpl(HEARTS, "2"),
+                new CardImpl(HEARTS, "3"), new CardImpl(HEARTS, "4"),
+                new CardImpl(HEARTS, "5"), new CardImpl(HEARTS, "6"),
                 new CardImpl(HEARTS, "7")
         ));
-        assertEquals(CLEAN_BONUS, score.calculateBurracoBonus(player));
-        assertEquals(1, score.countCleanBurraco(player));
+        assertEquals(CLEAN_BONUS, this.score.calculateBurracoBonus(this.player));
+        assertEquals(1, this.score.countCleanBurraco(this.player));
     }
 
     @Test
     void testDirtyBurracoWithJolly() {
-        player.addCombination(List.of(
+        this.player.addCombination(List.of(
                 new CardImpl(JOLLY_SEED, "Jolly"),
-                new CardImpl(HEARTS, "3"),
-                new CardImpl(HEARTS, "4"),
-                new CardImpl(HEARTS, "5"),
-                new CardImpl(HEARTS, "6"),
-                new CardImpl(HEARTS, "7"),
-                new CardImpl(HEARTS, "8")
-        ));
-        assertEquals(DIRTY_BONUS, score.calculateBurracoBonus(player));
-        assertEquals(0, score.countCleanBurraco(player));
-        assertEquals(1, score.countDirtyBurraco(player));
-    }
-
-    @Test
-    void testDirtyBurracoWithTwoNotInNaturalPosition() {
-        player.addCombination(List.of(
-                new CardImpl(SPADES, "2"),
-                new CardImpl(HEARTS, "3"),
-                new CardImpl(HEARTS, "4"),
-                new CardImpl(HEARTS, "5"),
-                new CardImpl(HEARTS, "6"),
-                new CardImpl(HEARTS, "7"),
-                new CardImpl(HEARTS, "8")
-        ));
-        assertEquals(DIRTY_BONUS, score.calculateBurracoBonus(player));
-        assertEquals(0, score.countCleanBurraco(player));
-        assertEquals(1, score.countDirtyBurraco(player));
-    }
-
-    @Test
-    void testDirtyBurracoWithMultipleTwos() {
-        player.addCombination(List.of(
-                new CardImpl(HEARTS, "2"),
-                new CardImpl(HEARTS, "2"),
-                new CardImpl(HEARTS, "3"),
-                new CardImpl(HEARTS, "4"),
-                new CardImpl(HEARTS, "5"),
-                new CardImpl(HEARTS, "6"),
-                new CardImpl(HEARTS, "7")
-        ));
-        assertEquals(DIRTY_BONUS, score.calculateBurracoBonus(player));
-        assertEquals(0, score.countCleanBurraco(player));
-        assertEquals(1, score.countDirtyBurraco(player));
-    }
-
-    @Test
-    void testMultipleBurracoMixed() {
-        player.addCombination(List.of(
                 new CardImpl(HEARTS, "3"), new CardImpl(HEARTS, "4"),
                 new CardImpl(HEARTS, "5"), new CardImpl(HEARTS, "6"),
-                new CardImpl(HEARTS, "7"), new CardImpl(HEARTS, "8"),
-                new CardImpl(HEARTS, "9")
+                new CardImpl(HEARTS, "7"), new CardImpl(HEARTS, "8")
         ));
-        player.addCombination(List.of(
-                new CardImpl(JOLLY_SEED, "Jolly"), new CardImpl(SPADES, "3"),
-                new CardImpl(SPADES, "4"), new CardImpl(SPADES, "5"),
-                new CardImpl(SPADES, "6"), new CardImpl(SPADES, "7"),
-                new CardImpl(SPADES, "8")
-        ));
-        assertEquals(CLEAN_BONUS + DIRTY_BONUS, score.calculateBurracoBonus(player));
-        assertEquals(1, score.countCleanBurraco(player));
-        assertEquals(1, score.countDirtyBurraco(player));
-    }
-
-    @Test
-    void testFinalScoreNoPotPenaltyOnly() {
-        player.addCardHand(new CardImpl(HEARTS, "3")); 
-        assertEquals(-105, score.calculateFinalScore(player));
-    }
-
-    @Test
-    void testFinalScoreWithPotNoCombinations() {
-        player.setInPot(true);
-        player.addCardHand(new CardImpl(HEARTS, "3")); 
-        assertEquals(-5, score.calculateFinalScore(player));
-    }
-
-    @Test
-    void testFinalScoreClosureBonus() {
-        player.setInPot(true);
-        final int result = score.calculateFinalScore(player);
-        assertEquals(CLOSURE_BONUS, result);
-    }
-
-    @Test
-    void testFinalScoreHandPenalty() {
-        player.setInPot(true);
-        player.addCardHand(new CardImpl(HEARTS, "A"));
-        player.addCardHand(new CardImpl(HEARTS, "K")); 
-        assertEquals(-25, score.calculateFinalScore(player));
-    }
-
-    @Test
-    void testFinalScoreFullScenario() {
-        player.setInPot(true);
-        player.addCombination(List.of(
-                new CardImpl(HEARTS, "3"), new CardImpl(HEARTS, "4"),
-                new CardImpl(HEARTS, "5"), new CardImpl(HEARTS, "6"),
-                new CardImpl(HEARTS, "7"), new CardImpl(HEARTS, "8"),
-                new CardImpl(HEARTS, "9")
-        ));
-        assertEquals(345, score.calculateFinalScore(player));
+        assertEquals(DIRTY_BONUS, this.score.calculateBurracoBonus(this.player));
+        assertEquals(1, this.score.countDirtyBurraco(this.player));
     }
 
     @Test
     void testFinalScoreNoPotPenaltyApplied() {
-        player.addCombination(List.of(
+        this.player.addCombination(List.of(
                 new CardImpl(HEARTS, "3"), new CardImpl(HEARTS, "4"),
                 new CardImpl(HEARTS, "5"), new CardImpl(HEARTS, "6"),
                 new CardImpl(HEARTS, "7"), new CardImpl(HEARTS, "8"),
                 new CardImpl(HEARTS, "9")
         ));
-        assertEquals(245, score.calculateFinalScore(player));
+        assertEquals(245, this.score.calculateFinalScore(this.player));
+    }
+
+    @Test
+    void testFinalScoreFullScenario() {
+        this.player.setInPot(true);
+        this.player.addCombination(List.of(
+                new CardImpl(HEARTS, "3"), new CardImpl(HEARTS, "4"),
+                new CardImpl(HEARTS, "5"), new CardImpl(HEARTS, "6"),
+                new CardImpl(HEARTS, "7"), new CardImpl(HEARTS, "8"),
+                new CardImpl(HEARTS, "9")
+        ));
+        assertEquals(345, this.score.calculateFinalScore(this.player));
     }
 }

@@ -66,32 +66,40 @@ class DrawManagerTest {
         final Card c2 = mock(Card.class);
         discardPile.add(c1);
         discardPile.add(c2);
+        
         final List<Card> hand = new ArrayList<>();
-        when(player.getHand()).thenReturn(hand);
-        final DrawResult result = drawManager.drawFromDiscard(player, discardPile);
+        when(this.player.getHand()).thenReturn(hand);
+        
+        final DrawResult result = this.drawManager.drawFromDiscard(this.player, discardPile);
+        
         assertEquals(DrawResult.Status.SUCCESS_MULTIPLE, result.getStatus());
         assertTrue(hand.contains(c1));
         assertTrue(hand.contains(c2));
         assertTrue(discardPile.isEmpty());
-        assertTrue(drawManager.hasDrawn());
+        assertTrue(this.drawManager.hasDrawn());
     }
 
     @Test
     void testDrawFromEmptyDiscard() {
         final List<Card> emptyDiscard = new ArrayList<>();
-        final DrawResult result = drawManager.drawFromDiscard(player, emptyDiscard);
+        
+        final DrawResult result = this.drawManager.drawFromDiscard(this.player, emptyDiscard);
+        
         assertEquals(DrawResult.Status.EMPTY_DISCARD, result.getStatus());
-        assertFalse(drawManager.hasDrawn());
+        assertFalse(this.drawManager.hasDrawn());
     }
 
     @Test
     void testResetTurn() {
-        when(deck.draw()).thenReturn(mock(Card.class));
-        drawManager.drawFromDeck(player, deck);
-        assertTrue(drawManager.hasDrawn());
-        drawManager.resetTurn();
-        assertFalse(drawManager.hasDrawn());
-        final DrawResult result = drawManager.drawFromDeck(player, deck);
+        when(this.deck.draw()).thenReturn(mock(Card.class));
+        
+        this.drawManager.drawFromDeck(this.player, this.deck);
+        assertTrue(this.drawManager.hasDrawn());
+        
+        this.drawManager.resetTurn();
+        assertFalse(this.drawManager.hasDrawn());
+        
+        final DrawResult result = this.drawManager.drawFromDeck(this.player, this.deck);
         assertEquals(DrawResult.Status.SUCCESS, result.getStatus());
     }
 }

@@ -27,10 +27,10 @@ class TakeDiscardControllerTest {
 
     @BeforeEach
     void init() {
-        drawManager = mock(DrawManager.class);
-        turnModel = mock(Turn.class);
-        discardPile = mock(DiscardPile.class);
-        controller = new TakeDiscardController(drawManager, turnModel, discardPile);
+        this.drawManager = mock(DrawManager.class);
+        this.turnModel = mock(Turn.class);
+        this.discardPile = mock(DiscardPile.class);
+        this.controller = new TakeDiscardController(this.drawManager, this.turnModel, this.discardPile);
     }
 
     @Test
@@ -38,11 +38,16 @@ class TakeDiscardControllerTest {
         final Player mockPlayer = mock(Player.class);
         final List<Card> mockCards = List.of(mock(Card.class));
         final DrawResult mockResult = mock(DrawResult.class);
-        when(turnModel.getCurrentPlayer()).thenReturn(mockPlayer);
-        when(discardPile.getCards()).thenReturn(mockCards);
-        when(drawManager.drawFromDiscard(mockPlayer, mockCards)).thenReturn(mockResult);
-        final DrawResult result = controller.tryTakeDiscard();
+
+        when(this.turnModel.getCurrentPlayer()).thenReturn(mockPlayer);
+        when(this.discardPile.getCards()).thenReturn(mockCards);
+        when(this.drawManager.drawFromDiscard(mockPlayer, mockCards)).thenReturn(mockResult);
+
+        final DrawResult result = this.controller.tryTakeDiscard();
+
         assertEquals(mockResult, result);
-        verify(drawManager).drawFromDiscard(mockPlayer, mockCards);
+        verify(this.drawManager).drawFromDiscard(mockPlayer, mockCards);
+        verify(this.turnModel).getCurrentPlayer();
+        verify(this.discardPile).getCards();
     }
 }
