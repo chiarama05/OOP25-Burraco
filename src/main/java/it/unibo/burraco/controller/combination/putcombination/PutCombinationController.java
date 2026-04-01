@@ -24,6 +24,7 @@ import it.unibo.burraco.model.turn.Turn;
 public class PutCombinationController {
 
     private static final int BURRACO_THRESHOLD = 7;
+    private static final int MIN_COMBO_SIZE = 3;
 
     private final GameController gameController;
     private final DrawManager drawManager;
@@ -73,7 +74,7 @@ public class PutCombinationController {
         if (ClosureValidator.wouldGetStuckAfterPutCombo(current, selectedCards, selectedCards.size())) {
             return PutCombinationResult.error(PutCombinationResult.Status.WOULD_GET_STUCK);
         }
-        if (selectedCards.size() < 3 || !CombinationValidator.isValidCombination(selectedCards)) {
+        if (selectedCards.size() < MIN_COMBO_SIZE || !CombinationValidator.isValidCombination(selectedCards)) {
             return PutCombinationResult.error(PutCombinationResult.Status.INVALID_COMBINATION);
         }
 

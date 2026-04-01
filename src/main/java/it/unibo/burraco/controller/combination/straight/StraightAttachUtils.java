@@ -35,10 +35,7 @@ public final class StraightAttachUtils {
             return true;
         }
 
-        if (newCards.size() == 1) {
-            return canSubstituteInternalWildcard(straight, newCards.get(0));
-        }
-        return false;
+        return newCards.size() == 1 && canSubstituteInternalWildcard(straight, newCards.get(0));
     }
 
     /**
@@ -79,11 +76,11 @@ public final class StraightAttachUtils {
             }
 
             final int vPrev = prev.getNumericalValue();
-            final int vNew = newCard.getNumericalValue();
 
             if (vPrev == MAX_STRAIGHT_VALUE && "A".equals(next.getValue()) && "K".equals(newCard.getValue())) {
                 return true;
             }
+            final int vNew = newCard.getNumericalValue();
             if (vNew == vPrev + 1) {
                 return true;
             }

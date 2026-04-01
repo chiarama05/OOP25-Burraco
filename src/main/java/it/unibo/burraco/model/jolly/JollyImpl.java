@@ -32,10 +32,8 @@ public final class JollyImpl implements Jolly {
         if (context == null || context.isEmpty()) {
             return false;
         }
-        if (isPureJolly()) {
-            return true;
-        }
-        return "2".equals(card.getValue()) && !StraightUtils.isNaturalTwo(card, context);
+        return isPureJolly() 
+            || "2".equals(card.getValue()) && !StraightUtils.isNaturalTwo(card, context);
     }
 
     /**
