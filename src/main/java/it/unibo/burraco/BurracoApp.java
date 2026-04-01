@@ -1,6 +1,6 @@
 package it.unibo.burraco;
-import javax.swing.SwingUtilities;
 
+import javax.swing.SwingUtilities;
 import it.unibo.burraco.controller.distributioncard.DistributionManagerImpl;
 import it.unibo.burraco.controller.distributioncard.InitialDistributionController;
 import it.unibo.burraco.controller.game.GameController;
@@ -15,6 +15,9 @@ import it.unibo.burraco.view.start.StartMenuView;
 import it.unibo.burraco.view.start.StartMenuViewImpl;
 import it.unibo.burraco.view.table.TableViewImpl;
 
+/** 
+ * Main application class. 
+ */
 public final class BurracoApp {
 
     private BurracoApp() {
@@ -50,7 +53,8 @@ public final class BurracoApp {
                 final SelectionCardManager selectionManager = new SelectionCardManager();
                 final TableViewImpl view = new TableViewImpl(nameP1, nameP2, selectionManager);
 
-                final GameWiring wiring = new GameWiring(p1, p2, nameP1, nameP2, turnManager, view, sound, targetScore,view.getInitDist());
+                final GameWiring wiring = new GameWiring(p1, p2, nameP1, nameP2, 
+                    turnManager, view, sound, targetScore,view.getInitDist());
                 final GameController gc = wiring.getGameController();
 
                 final InitialDistributionController distController =

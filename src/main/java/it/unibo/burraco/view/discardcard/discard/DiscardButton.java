@@ -19,7 +19,7 @@ public final class DiscardButton implements DiscardActionView {
     private final TableView view;
     private final DiscardView discardView;
     private final GameNotifier notifier;
-    private boolean isPlayer1;
+    private boolean isP1;
     private BiConsumer<DiscardButton, Boolean> onDiscardAction;
 
     /**
@@ -37,7 +37,7 @@ public final class DiscardButton implements DiscardActionView {
         // Register a listener on the UI component to trigger the action callback
         this.discardView.setDiscardListener(finalEvent -> {
             if (this.onDiscardAction != null) {
-                this.onDiscardAction.accept(this, this.isPlayer1);
+                this.onDiscardAction.accept(this, this.isP1);
             }
         });
     }
@@ -45,10 +45,10 @@ public final class DiscardButton implements DiscardActionView {
     /**
      * Sets the player context.
      *
-     * @param isP1 true if the current player is Player 1.
+     * @param player1Flag true if the current player is Player 1.
      */
-    public void setIsPlayer1(final boolean isP1) {
-        this.isPlayer1 = isP1;
+    public void setIsPlayer1(final boolean player1Flag) {
+        this.isP1 = player1Flag;
     }
 
     /**
@@ -60,15 +60,27 @@ public final class DiscardButton implements DiscardActionView {
         this.onDiscardAction = handler;
     }
 
+    /**
+     * Retrieves the selected cards.
+     * 
+     * @param player1Flag true if it's player 1
+     * @return the set of selected cards
+     */
     @Override
-    public Set<Card> getSelectedCards(final boolean isPlayer1) {
-        return this.view.getHandViewForCurrentPlayer(isPlayer1).getSelectedCards();
+    public Set<Card> getSelectedCards(final boolean player1Flag) {
+        return this.view.getHandViewForCurrentPlayer(player1Flag).getSelectedCards();
     }
 
+    /**
+     * Handles success.
+     * 
+     * @param player current player
+     * @param updatedPile updated pile
+     * @param player1Flag true if player 1
+     */
     @Override
-    public void onDiscardSuccess(final Player player, final List<Card> updatedPile, final boolean isPlayer1) {
-        // Clear selection and refresh the pile graphics
-        this.view.getHandViewForCurrentPlayer(isPlayer1).clearSelection();
+    public void onDiscardSuccess(final Player player, final List<Card> updatedPile, final boolean player1Flag) {
+        this.view.getHandViewForCurrentPlayer(player1Flag).clearSelection();
         this.discardView.updateDiscardPile(updatedPile);
     }
 

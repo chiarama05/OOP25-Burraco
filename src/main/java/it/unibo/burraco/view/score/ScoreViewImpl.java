@@ -28,9 +28,7 @@ import it.unibo.burraco.view.table.TableView;
 
 /**
  * Swing implementation of the ScoreView interface.
- * Displays a detailed scoreboard window at the end of each round or match,
- * featuring gradient backgrounds, per-player statistics, and action buttons
- * for either advancing to the next round or concluding the game.
+ * Displays a detailed scoreboard window at the end of each round or match.
  */
 public final class ScoreViewImpl implements ScoreView {
 
@@ -106,7 +104,7 @@ public final class ScoreViewImpl implements ScoreView {
      * Builds and arranges all UI components inside the scoreboard window.
      * Includes the title bar, the two side-by-side player stat panels,
      * and the bottom action button (either "Next Round" or "Finish Game").
-     * 
+     *
      * @param p1 The first player.
      * @param p2 The second player.
      * @param name1 Display name of the first player.
@@ -150,7 +148,8 @@ public final class ScoreViewImpl implements ScoreView {
         final RoundedGradientButton actionBtn;
         if (matchOver) {
             final String winnerName = p1.getMatchTotalScore() > p2.getMatchTotalScore() ? name1 : name2;
-            final String btnText = "CHAMPION: " + winnerName.toUpperCase(Locale.ROOT) + " (FINISH GAME)";
+            final String btnText = "CHAMPION: " + winnerName.toUpperCase(Locale.ROOT) 
+                                 + " (FINISH GAME)";
             actionBtn = new RoundedGradientButton(btnText);
             actionBtn.addActionListener(e -> this.frame.dispose());
         } else {
@@ -264,17 +263,11 @@ public final class ScoreViewImpl implements ScoreView {
         return row;
     }
 
-    /**
-     * Makes the scoreboard window visible to the user.
-     */
     @Override
     public void display() {
         this.frame.setVisible(true);
     }
 
-    /**
-     * Disposes of the scoreboard window and releases its resources.
-     */
     @Override
     public void close() {
         this.frame.dispose();
@@ -287,12 +280,7 @@ public final class ScoreViewImpl implements ScoreView {
     private static final class BackgroundPanel extends JPanel {
 
         private static final long serialVersionUID = 1L;
-        
-        /**
-         * Overrides the default painting to fill the panel with a top-to-bottom gradient.
-         *
-         * @param g The {@link Graphics} context provided by Swing.
-         */
+
         @Override
         protected void paintComponent(final Graphics g) {
             super.paintComponent(g);

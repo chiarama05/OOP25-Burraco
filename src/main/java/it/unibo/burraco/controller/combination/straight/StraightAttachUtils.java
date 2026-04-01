@@ -13,6 +13,8 @@ import it.unibo.burraco.model.card.Card;
  */
 public final class StraightAttachUtils {
 
+    private static final int MAX_STRAIGHT_VALUE = 12;
+
     /**
      * Private constructor to prevent instantiation of this utility class.
      */
@@ -79,7 +81,7 @@ public final class StraightAttachUtils {
             final int vPrev = prev.getNumericalValue();
             final int vNew = newCard.getNumericalValue();
 
-            if (vPrev == 12 && "A".equals(next.getValue()) && "K".equals(newCard.getValue())) {
+            if (vPrev == MAX_STRAIGHT_VALUE && "A".equals(next.getValue()) && "K".equals(newCard.getValue())) {
                 return true;
             }
             if (vNew == vPrev + 1) {

@@ -207,11 +207,11 @@ public final class StraightUtils {
             return Collections.emptyList();
         }
         final List<Card> lowAttempt = buildOrdering(sequence, false);
-        if (lowAttempt != null) {
+        if (!lowAttempt.isEmpty()) {
             return lowAttempt;
         }
         final List<Card> highAttempt = buildOrdering(sequence, true);
-        if (highAttempt != null) {
+        if (!highAttempt.isEmpty()) {
             return highAttempt;
         }
         return new ArrayList<>(sequence);
@@ -250,7 +250,7 @@ public final class StraightUtils {
 
         final String suit = real.get(0).getSeed();
         if (!real.stream().allMatch(c -> c.getSeed().equals(suit))) {
-            return null;
+            return Collections.emptyList();
         }
 
         final boolean aceLow = decideIfAceIsLow(real, wilds.size());
@@ -260,12 +260,12 @@ public final class StraightUtils {
         for (int i = 0; i < real.size() - 1; i++) {
             final int gap = mapValue(real.get(i + 1), aceLow) - mapValue(real.get(i), aceLow) - 1;
             if (gap < 0) {
-                return null;
+                return Collections.emptyList();
             }
             totalGap += gap;
         }
         if (totalGap > wilds.size()) {
-            return null;
+            return Collections.emptyList();
         }
 
         final List<Card> wildsCopy = new ArrayList<>(wilds);

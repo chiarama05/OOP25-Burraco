@@ -1,6 +1,6 @@
 package it.unibo.burraco.model.deck;
 
-import java.util.*;
+import java.util.List;
 import it.unibo.burraco.model.card.Card;
 
 /**

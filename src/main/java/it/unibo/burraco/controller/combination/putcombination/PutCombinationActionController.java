@@ -80,9 +80,9 @@ public class PutCombinationActionController {
      * @return true if the status is an error, false otherwise
      */
     private boolean isError(final PutCombinationResult.Status status) {
-        return status == PutCombinationResult.Status.NOT_DRAWN ||
-               status == PutCombinationResult.Status.NO_CARDS_SELECTED ||
-               status == PutCombinationResult.Status.WOULD_GET_STUCK ||
-               status == PutCombinationResult.Status.INVALID_COMBINATION;
+        return status == PutCombinationResult.Status.NOT_DRAWN 
+        || status == PutCombinationResult.Status.NO_CARDS_SELECTED 
+        || status == PutCombinationResult.Status.WOULD_GET_STUCK 
+        || status == PutCombinationResult.Status.INVALID_COMBINATION;
     }
 }

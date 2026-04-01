@@ -3,12 +3,9 @@ package it.unibo.burraco.controller.closure;
 /**
  * Represents every possible state the game can be in
  * with respect to the definitive closure.
- *
- * This enum is the single source of truth consumed by both
- * the controller layer (ClosureManager) and the view layer
- * (GameNotifier), keeping decision logic out of the UI.
  */
 public enum ClosureState {
+
     /**
      * Everything is fine – the player can keep playing normally.
      */

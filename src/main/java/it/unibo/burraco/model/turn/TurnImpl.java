@@ -55,14 +55,11 @@ public final class TurnImpl implements Turn {
 
 
     /**
-     * Checks whether the current player meets the minimum conditions to close the round.
-     * <p>
-     * Both conditions must hold: the player must have collected the pot
-     * ({@link Player#isInPot()}) and must have formed at least one burraco.
-     * This method does <em>not</em> check whether the hand is empty.
-     * </p>
+     * Checks whether the current player meets the minimum conditions to close.
      *
-     * @return {@code true} if the current player can attempt to close
+     * Conditions: player collected the pot and has at least one burraco.
+     *
+     * @return true if the current player can attempt to close
      */
     @Override
     public boolean canClose() {

@@ -92,7 +92,8 @@ public final class ScoreController {
         this.player2.addPointsToMatch(roundS2);
 
         // Check if any player has reached or exceeded the target match score
-        final boolean matchOver = this.player1.getMatchTotalScore() >= this.targetScore || this.player2.getMatchTotalScore() >= this.targetScore;
+        final boolean matchOver = this.player1.getMatchTotalScore() >= this.targetScore 
+        || this.player2.getMatchTotalScore() >= this.targetScore;
 
         if (matchOver) {
             final Thread t = new Thread(() -> {

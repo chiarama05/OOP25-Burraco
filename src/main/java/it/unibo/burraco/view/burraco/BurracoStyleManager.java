@@ -7,6 +7,9 @@ import java.util.List;
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;
 
+/** 
+ * Manager for Burraco styles. 
+ */
 public final class BurracoStyleManager {
 
     private static final Color BURRACO_GREEN = new Color(50, 205, 50);

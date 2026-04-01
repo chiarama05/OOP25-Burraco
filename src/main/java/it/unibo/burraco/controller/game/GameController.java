@@ -19,7 +19,6 @@ import it.unibo.burraco.model.discard.DiscardPileImpl;
 import it.unibo.burraco.model.turn.Turn;
 import it.unibo.burraco.model.card.Card;
 
-
 /**
  * Controller that manages the main game logic and state transitions.
  */
@@ -170,16 +169,14 @@ public final class GameController {
     /**
      * Sets the legacy draw flag.
      *
-     * @param value true to mark as drawn, false to allow drawing again
+     * @param drawnValue true to mark as drawn, false to allow drawing again
      */
     public void setHasDrawn(final boolean drawnValue) {
         this.hasDrawn = drawnValue;
     }
 
-
     /**
      * Returns true if the player has already drawn in this turn.
-     *
      * @return true if already drawn
      */
     public boolean hasAlreadyDrawn() {

@@ -15,7 +15,7 @@ import it.unibo.burraco.view.notification.attach.AttachNotifier;
  * Orchestrates attach logic, sound, pot, and closure management
  * based on the result returned by {@link AttachController}.
  */
-public class AttachActionController {
+public final class AttachActionController {
 
     private final GameController gameController;
     private final AttachController attachController;
@@ -67,7 +67,7 @@ public class AttachActionController {
         final AttachResult result = this.attachController.tryAttach(
                 currentPlayer, selectedCards, combinationCards, hasDrawn, isCurrentPlayer);
 
-        if (AttachResult.SUCCESS_BURRACO.equals(result)) {
+        if (AttachResult.SUCCESS_BURRACO == result) {
             this.gameController.getSoundController().playBurracoSound();
         }
 
@@ -92,7 +92,7 @@ public class AttachActionController {
                 this.closureManager.handleStateAfterAction(currentPlayer);
                 view.onAttachClose(currentPlayer, isPlayer1Current);
             }
-            default -> { }
+            default -> throw new IllegalStateException("Unexpected result: " + result);
         }
     }
 }
