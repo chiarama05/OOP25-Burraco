@@ -21,7 +21,9 @@ public class AttachController {
     /**
      * Default constructor for AttachController.
      */
-    public AttachController() { }
+    public AttachController() {
+        /* Default constructor. */
+    }
 
     /**
      * Attempts to attach selected cards to a combination.

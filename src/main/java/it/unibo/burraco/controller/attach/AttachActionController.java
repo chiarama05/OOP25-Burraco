@@ -72,27 +72,32 @@ public final class AttachActionController {
         }
 
         switch (result) {
-            case NOT_DRAWN,
-                WRONG_PLAYER,
-                NO_CARDS_SELECTED,
-                INVALID_COMBINATION,
-                WOULD_GET_STUCK,
-                ATTACH_FAILED -> this.attachNotifier.notifyAttachError(result);
-            case SUCCESS, SUCCESS_BURRACO -> {
+            case NOT_DRAWN:
+            case WRONG_PLAYER:
+            case NO_CARDS_SELECTED:
+            case INVALID_COMBINATION:
+            case WOULD_GET_STUCK:
+            case ATTACH_FAILED:
+                this.attachNotifier.notifyAttachError(result);
+                break;
+            case SUCCESS:
+            case SUCCESS_BURRACO:
                 view.updateCombinationVisuals();
                 view.onAttachSuccess(currentPlayer, isPlayer1Current);
-            }
-            case SUCCESS_TAKE_POT -> {
+                break;
+            case SUCCESS_TAKE_POT:
                 view.updateCombinationVisuals();
                 this.potManager.handlePot(false);
                 view.onAttachTakePot(currentPlayer, isPlayer1Current);
-            }
-            case SUCCESS_CLOSE, SUCCESS_STUCK -> {
+                break;
+            case SUCCESS_CLOSE:
+            case SUCCESS_STUCK:
                 view.updateCombinationVisuals();
                 this.closureManager.handleStateAfterAction(currentPlayer);
                 view.onAttachClose(currentPlayer, isPlayer1Current);
-            }
-            default -> throw new IllegalStateException("Unexpected result: " + result);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected result: " + result);
         }
     }
 }
