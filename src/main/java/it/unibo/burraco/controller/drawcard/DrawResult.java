@@ -48,13 +48,13 @@ public final class DrawResult {
 
     /**
      * @return a success result for multiple cards from discard
-    */
+     */
     public static DrawResult successMultiple() {
         return new DrawResult(Status.SUCCESS_MULTIPLE, null);
     }
 
     /**
-     *  @return an error result indicating the deck is empty
+     * @return an error result indicating the deck is empty
      */
     public static DrawResult emptyDeck() {
         return new DrawResult(Status.EMPTY_DECK, null);
@@ -75,7 +75,7 @@ public final class DrawResult {
     }
 
     /**
-     *  @return the status of the operation
+     * @return the status of the operation
      */
     public Status getStatus() {
         return status;

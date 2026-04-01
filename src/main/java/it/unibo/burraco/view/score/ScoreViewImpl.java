@@ -287,6 +287,7 @@ public final class ScoreViewImpl implements ScoreView {
     private static final class BackgroundPanel extends JPanel {
 
         private static final long serialVersionUID = 1L;
+        
         /**
          * Overrides the default painting to fill the panel with a top-to-bottom gradient.
          *

@@ -3,7 +3,6 @@ package it.unibo.burraco.view.pot;
 import it.unibo.burraco.model.card.Card;
 import java.util.List;
 
-
 /**
  * View contract for pot-related UI updates.
  */
