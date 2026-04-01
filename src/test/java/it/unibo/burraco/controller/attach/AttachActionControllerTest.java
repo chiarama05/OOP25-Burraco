@@ -1,5 +1,7 @@
 package it.unibo.burraco.controller.attach;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.mock;
@@ -27,14 +29,12 @@ import it.unibo.burraco.view.notification.attach.AttachNotifier;
  */
 class AttachActionControllerTest {
 
-    private GameController gameController;
     private AttachController attachController;
     private PotManager potManager;
     private ClosureManager closureManager;
     private AttachNotifier attachNotifier;
     private AttachView view;
     private Player player;
-    private DrawManager drawManager;
     private SoundController soundController;
 
     private List<Card> selectedCards;
@@ -44,14 +44,14 @@ class AttachActionControllerTest {
 
     @BeforeEach
     void setUp() {
-        gameController = mock(GameController.class);
+        final GameController gameController = mock(GameController.class); // aggiunto final/tipo
         attachController = mock(AttachController.class);
         potManager = mock(PotManager.class);
         closureManager = mock(ClosureManager.class);
         attachNotifier = mock(AttachNotifier.class);
         view = mock(AttachView.class);
         player = mock(Player.class);
-        drawManager = mock(DrawManager.class);
+        final DrawManager drawManager = mock(DrawManager.class); // aggiunto final/tipo
         soundController = mock(SoundController.class);
 
         selectedCards = List.of(mock(Card.class));
