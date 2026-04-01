@@ -17,10 +17,11 @@ import it.unibo.burraco.model.player.Player;
 public class AttachController {
 
     private static final int BURRACO_SIZE = 7;
+
     /**
      * Default constructor for AttachController.
      */
-    public AttachController() {}
+    public AttachController() { }
 
     /**
      * Attempts to attach selected cards to a combination.
@@ -38,7 +39,6 @@ public class AttachController {
                                    final List<Card> combinationCards,
                                    final boolean hasDrawn,
                                    final boolean isCurrentPlayer) {
-
 
         if (!hasDrawn) {
             return AttachResult.NOT_DRAWN;
@@ -82,11 +82,11 @@ public class AttachController {
 
         final ClosureState state = ClosureValidator.evaluate(currentPlayer);
 
-        if (ClosureState.ZERO_CARDS_NO_POT.equals(state)) {
+        if (state == ClosureState.ZERO_CARDS_NO_POT) {
             return AttachResult.SUCCESS_TAKE_POT;
-        } else if (ClosureState.CAN_CLOSE.equals(state)) {
+        } else if (state == ClosureState.CAN_CLOSE) {
             return AttachResult.SUCCESS_CLOSE;
-        } else if (ClosureState.ZERO_CARDS_NO_BURRACO.equals(state)) {
+        } else if (state == ClosureState.ZERO_CARDS_NO_BURRACO) {
             return AttachResult.SUCCESS_STUCK;
         } else {
             return AttachResult.SUCCESS;
