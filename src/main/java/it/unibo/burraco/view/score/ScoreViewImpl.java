@@ -106,6 +106,7 @@ public final class ScoreViewImpl implements ScoreView {
      * Builds and arranges all UI components inside the scoreboard window.
      * Includes the title bar, the two side-by-side player stat panels,
      * and the bottom action button (either "Next Round" or "Finish Game").
+     * 
      * @param p1 The first player.
      * @param p2 The second player.
      * @param name1 Display name of the first player.
@@ -149,8 +150,9 @@ public final class ScoreViewImpl implements ScoreView {
         final RoundedGradientButton actionBtn;
         if (matchOver) {
             final String winnerName = p1.getMatchTotalScore() > p2.getMatchTotalScore() ? name1 : name2;
-            actionBtn = new RoundedGradientButton("CHAMPION: " + winnerName.toUpperCase(Locale.ROOT) + " (FINISH GAME)");
-            actionBtn.addActionListener(e -> System.exit(0));
+            final String btnText = "CHAMPION: " + winnerName.toUpperCase(Locale.ROOT) + " (FINISH GAME)";
+            actionBtn = new RoundedGradientButton(btnText);
+            actionBtn.addActionListener(e -> this.frame.dispose());
         } else {
             actionBtn = new RoundedGradientButton("NEXT ROUND (Target: " + targetScore + " pts)");
             actionBtn.addActionListener(e -> {

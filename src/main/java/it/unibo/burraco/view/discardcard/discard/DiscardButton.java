@@ -14,7 +14,7 @@ import java.util.function.BiConsumer;
  * It wraps the physical button logic and maps controller results
  * to visual updates and notifications.
  */
-public class DiscardButton implements DiscardActionView {
+public final class DiscardButton implements DiscardActionView {
 
     private final TableView view;
     private final DiscardView discardView;
