@@ -79,11 +79,11 @@ public final class TurnImpl implements Turn {
 
     @Override
     public Player getPlayer1() {
-        return this.player1;
+        return player1;
     }
 
     @Override
     public Player getPlayer2() {
-        return this.player2;
+        return player2;
     }
 }

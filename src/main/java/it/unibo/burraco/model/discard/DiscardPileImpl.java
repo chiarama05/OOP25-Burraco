@@ -37,7 +37,7 @@ public final class DiscardPileImpl implements DiscardPile {
     @Override
     public List<Card> getCards() {
         // Returns the reference to the internal list of cards
-        return cards;
+        return new ArrayList<>(this.cards);
     }
 
     @Override
