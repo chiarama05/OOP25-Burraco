@@ -13,7 +13,6 @@ import it.unibo.burraco.model.card.Card;
 /**
  * Utility class that provides helper methods to validate and order
  * straight (sequence) combinations in card games.
- *
  * This class handles:
  * - Checking if a sequence has all cards of the same seed.
  * - Validating a straight including wildcards (jolly/2).

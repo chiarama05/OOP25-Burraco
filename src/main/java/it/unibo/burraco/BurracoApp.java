@@ -30,11 +30,11 @@ public final class BurracoApp {
      * @param args command line arguments
      */
     public static void main(final String[] args) {
-        SwingUtilities.invokeLater(() -> showStartMenu());
+        SwingUtilities.invokeLater(BurracoApp::showStartMenu);
     }
 
     private static void showStartMenu() {
-        final StartMenuView startMenu = new StartMenuViewImpl(() -> showSetupMenu());
+        final StartMenuView startMenu = new StartMenuViewImpl(BurracoApp::showSetupMenu);
         startMenu.display();
     }
 
@@ -48,13 +48,14 @@ public final class BurracoApp {
                 final PlayerImpl p2 = new PlayerImpl(nameP2);
                 final TurnImpl turnManager = new TurnImpl(p1, p2);
 
-                final it.unibo.burraco.controller.sound.SoundController sound = new it.unibo.burraco.view.sound.SoundControllerImpl();
+                final it.unibo.burraco.controller.sound.SoundController sound = 
+                new it.unibo.burraco.view.sound.SoundControllerImpl();
 
                 final SelectionCardManager selectionManager = new SelectionCardManager();
                 final TableViewImpl view = new TableViewImpl(nameP1, nameP2, selectionManager);
 
                 final GameWiring wiring = new GameWiring(p1, p2, nameP1, nameP2, 
-                    turnManager, view, sound, targetScore,view.getInitDist());
+                    turnManager, view, sound, targetScore, view.getInitDist());
                 final GameController gc = wiring.getGameController();
 
                 final InitialDistributionController distController =

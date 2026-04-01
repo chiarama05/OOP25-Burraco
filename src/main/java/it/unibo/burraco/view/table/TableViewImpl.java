@@ -82,6 +82,7 @@ public final class TableViewImpl implements TableView {
     public TableViewImpl(final String n1,
             final String n2,
             final SelectionCardManager selectionManager) {
+        this.attachButtonFactory = null;
         this.nameP1 = (n1 == null || n1.isEmpty()) ? "Player 1" : n1;
         this.nameP2 = (n2 == null || n2.isEmpty()) ? "Player 2" : n2;
 

@@ -169,7 +169,7 @@ public final class GameController {
     /**
      * Sets the legacy draw flag.
      *
-     * @param drawnValue true to mark as drawn, false to allow drawing again
+     * @param drawnValue true to mark as drawn
      */
     public void setHasDrawn(final boolean drawnValue) {
         this.hasDrawn = drawnValue;
@@ -177,6 +177,7 @@ public final class GameController {
 
     /**
      * Returns true if the player has already drawn in this turn.
+     * 
      * @return true if already drawn
      */
     public boolean hasAlreadyDrawn() {

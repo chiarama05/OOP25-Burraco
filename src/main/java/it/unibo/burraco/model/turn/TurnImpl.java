@@ -3,7 +3,7 @@ package it.unibo.burraco.model.turn;
 import it.unibo.burraco.model.player.Player;
 
 /**
- * Implementation of the {@link Turn} interface.
+ * Implementation of the Turn interface.
  * Manages turn alternation and game state for two players.
  */
 public final class TurnImpl implements Turn {
@@ -15,7 +15,7 @@ public final class TurnImpl implements Turn {
 
     /**
      * Constructs a TurnImpl with the two players.
-     *
+     * 
      * @param p1 the first player.
      * @param p2 the second player.
      */
@@ -26,7 +26,6 @@ public final class TurnImpl implements Turn {
         this.gameFinished = false;
     }
 
-
     /**
      * Alternates the active player by toggling the {@code isPlayer1Turn} flag.
      * After this call, {@link #getCurrentPlayer()} will return the other player.
@@ -35,7 +34,6 @@ public final class TurnImpl implements Turn {
     public void nextTurn() {
         this.isPlayer1Turn = !this.isPlayer1Turn;
     }
-
 
     /**
      * Resets the turn state for a new round.
@@ -47,18 +45,15 @@ public final class TurnImpl implements Turn {
         this.gameFinished = false;
     }
 
-
     @Override
     public Player getCurrentPlayer() {
         return isPlayer1Turn ? player1 : player2;
     }
 
-
     /**
      * Checks whether the current player meets the minimum conditions to close.
-     *
      * Conditions: player collected the pot and has at least one burraco.
-     *
+     * 
      * @return true if the current player can attempt to close
      */
     @Override

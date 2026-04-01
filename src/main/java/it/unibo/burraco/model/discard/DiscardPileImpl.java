@@ -45,7 +45,6 @@ public final class DiscardPileImpl implements DiscardPile {
         return cards.isEmpty();
     }
 
-
     @Override
     public void reset() {
         this.cards.clear();

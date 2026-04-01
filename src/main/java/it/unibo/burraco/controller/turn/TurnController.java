@@ -15,9 +15,8 @@ public final class TurnController {
     /**
      * Constructs a TurnController.
      *
-     * @param turnModel   the model that tracks whose turn it is
-     * @param dm  the draw manager whose state must be reset at the start of each turn;
-     * may be {@code null} if no draw-state reset is needed
+     * @param turnModel the turn model to manage
+     * @param dm the draw manager to reset each turn
      */
     public TurnController(final Turn turnModel, final DrawManager dm) {
         this.turnModel = turnModel;
@@ -25,10 +24,9 @@ public final class TurnController {
     }
 
     /**
-     * Registers a callback that will be invoked every time the turn changes.
+     * Registers a callback for turn changes.
      *
-     * @param listener the {@link Runnable} to execute after each turn transition;
-     * pass {@code null} to remove the current listener
+     * @param listener the runnable to execute after turn transition
      */
     public void setOnTurnChangedListener(final Runnable listener) {
         this.onTurnChanged = listener;

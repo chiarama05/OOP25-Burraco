@@ -23,6 +23,8 @@ import it.unibo.burraco.model.turn.Turn;
  */
 public class PutCombinationController {
 
+    private static final int BURRACO_THRESHOLD = 7;
+
     private final GameController gameController;
     private final DrawManager drawManager;
     private final PotManager potManager;
@@ -86,7 +88,7 @@ public class PutCombinationController {
         current.removeCards(selectedCards);
 
         // Visual and audio feedback for Burraco
-        if (processedCombo.size() >= 7) {
+        if (processedCombo.size() >= BURRACO_THRESHOLD) {
             gameController.getSoundController().playBurracoSound();
         }
 
