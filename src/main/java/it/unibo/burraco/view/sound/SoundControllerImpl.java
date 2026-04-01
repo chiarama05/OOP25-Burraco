@@ -49,7 +49,7 @@ public final class SoundControllerImpl implements SoundController {
             if (is != null) {
                 this.soundCache.put(fileName, is.readAllBytes());
             }
-        } catch (final IOException e) {
+        } catch (final IOException ignored) {
             // Sound loading failed
         }
     }
@@ -99,7 +99,7 @@ public final class SoundControllerImpl implements SoundController {
 
             } catch (final InterruptedException e) {
                 Thread.currentThread().interrupt();
-            } catch (final UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            } catch (final UnsupportedAudioFileException | IOException | LineUnavailableException ignored) {
                 // Playback failed
             }
         });
