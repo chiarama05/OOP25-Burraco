@@ -15,6 +15,7 @@ public class ClosureManager {
 
     private final Turn turnModel;
     private final GameNotifier notifier;
+    @SuppressWarnings("unused")
     private final int targetScore;
     private final ScoreController scoreController;
 
