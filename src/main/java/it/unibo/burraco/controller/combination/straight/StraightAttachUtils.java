@@ -18,7 +18,9 @@ public final class StraightAttachUtils {
     /**
      * Private constructor to prevent instantiation of this utility class.
      */
-    private StraightAttachUtils() { }
+    private StraightAttachUtils() {
+        /* Utility class constructor */
+    }
 
     /**
      * Checks if a list of new cards can be attached to an existing straight.
@@ -31,11 +33,8 @@ public final class StraightAttachUtils {
         final List<Card> potentialStraight = new ArrayList<>(straight);
         potentialStraight.addAll(newCards);
 
-        if (CombinationValidator.isValidCombination(potentialStraight)) {
-            return true;
-        }
-
-        return newCards.size() == 1 && canSubstituteInternalWildcard(straight, newCards.get(0));
+        return CombinationValidator.isValidCombination(potentialStraight)
+                || newCards.size() == 1 && canSubstituteInternalWildcard(straight, newCards.get(0));
     }
 
     /**
