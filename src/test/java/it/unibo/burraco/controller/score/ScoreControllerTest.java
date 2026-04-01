@@ -22,14 +22,17 @@ import it.unibo.burraco.view.table.TableView;
 
 class ScoreControllerTest {
 
+    private static final int TARGET_SCORE = 2005;
+    private static final int WINNING_SCORE = 2010;
+    private static final int POINTS_TO_WIN = 500;
+    private static final int TIMEOUT_MS = 500;
+
     private ScoreController scoreController;
     private Score score;
     private Player p1;
     private Player p2;
     private SoundController sound;
     private ScoreView scoreView;
-    private ScoreController.ViewProvider viewProvider;
-    private GameController gameController;
 
     @BeforeEach
     void setUp() {
@@ -38,18 +41,18 @@ class ScoreControllerTest {
         this.p2 = mock(Player.class);
         this.sound = mock(SoundController.class);
         this.scoreView = mock(ScoreView.class);
-        this.viewProvider = mock(ScoreController.ViewProvider.class);
-        this.gameController = mock(GameController.class);
+        final ScoreController.ViewProvider viewProvider = mock(ScoreController.ViewProvider.class);
+        final GameController gameController = mock(GameController.class);
 
-        when(this.viewProvider.create(any(), any(), any(), any(), anyInt(), any(), any(), anyBoolean()))
+        when(viewProvider.create(any(), any(), any(), any(), anyInt(), any(), any(), anyBoolean()))
             .thenReturn(this.scoreView);
 
         this.scoreController = new ScoreController(
             this.score, this.p1, this.p2, "P1", "P2",
-            mock(TableView.class), this.gameController, this.sound,
-            2000, mock(InitialDistributionView.class),
+            mock(TableView.class), gameController, this.sound,
+            TARGET_SCORE, mock(InitialDistributionView.class),
             Runnable::run,
-            this.viewProvider
+            viewProvider
         );
     }
 
@@ -70,11 +73,12 @@ class ScoreControllerTest {
 
     @Test
     void testRoundEndWithVictory() {
-        when(this.score.calculateFinalScore(this.p1)).thenReturn(500);
-        when(this.p1.getMatchTotalScore()).thenReturn(2005);
+        when(this.score.calculateFinalScore(this.p1)).thenReturn(POINTS_TO_WIN);
+        when(this.p1.getMatchTotalScore()).thenReturn(WINNING_SCORE);
+        when(this.p2.getMatchTotalScore()).thenReturn(0);
 
         this.scoreController.onRoundEnd();
-        verify(this.sound, timeout(500)).playVictorySound();
-        verify(this.scoreView, timeout(500)).display();
+        verify(this.sound, timeout(TIMEOUT_MS)).playVictorySound();
+        verify(this.scoreView, timeout(TIMEOUT_MS)).display();
     }
 }
