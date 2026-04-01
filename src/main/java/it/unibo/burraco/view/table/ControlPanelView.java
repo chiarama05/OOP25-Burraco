@@ -49,7 +49,7 @@ public final class ControlPanelView extends JPanel {
      * @param takeDiscardBtn the button to take the discard pile
      * @param putComboBtn    the button to place a combination
      * @param discardBtn     the button to discard a card
-     * @param backgroundColor the background color of the panel
+     * @param lightgreen the background color of the panel
      */
     public ControlPanelView(
             final JButton takeDiscardBtn,

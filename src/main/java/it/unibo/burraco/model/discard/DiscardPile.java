@@ -16,14 +16,12 @@ public interface DiscardPile {
      */
     void add(Card card);
 
-
     /**
      * Adds a collection of cards to the discard pile.
      *
      * @param cards the list of cards to add.
      */
     void addAll(List<Card> cards);
-
 
     /**
      * Removes and returns the last card added to the pile (the top card).
@@ -32,7 +30,6 @@ public interface DiscardPile {
      */
     Card drawLast();
 
-
     /**
      * Provides the list of cards currently in the discard pile.
      *
@@ -40,14 +37,12 @@ public interface DiscardPile {
      */
     List<Card> getCards();
 
-
     /**
      * Checks whether the discard pile contains any cards.
      *
      * @return true if the pile is empty, false otherwise.
      */
     boolean isEmpty();
-
 
     /**
      * Resets the discard pile by removing all cards,

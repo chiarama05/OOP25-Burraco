@@ -45,10 +45,10 @@ public final class DiscardButton implements DiscardActionView {
     /**
      * Sets the player context.
      *
-     * @param isPlayer1 true if the current player is Player 1.
+     * @param isP1 true if the current player is Player 1.
      */
-    public void setIsPlayer1(final boolean isPlayer1) {
-        this.isPlayer1 = isPlayer1;
+    public void setIsPlayer1(final boolean isP1) {
+        this.isPlayer1 = isP1;
     }
 
     /**
