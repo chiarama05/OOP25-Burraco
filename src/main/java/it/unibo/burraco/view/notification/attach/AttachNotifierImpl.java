@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
  * Swing-based implementation of {@link AttachNotifier}.
  * Displays error messages using {@link JOptionPane} dialogs.
  */
-public class AttachNotifierImpl implements AttachNotifier {
+public final class AttachNotifierImpl implements AttachNotifier {
 
     private final JFrame parent;
 

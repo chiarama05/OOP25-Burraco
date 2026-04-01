@@ -69,11 +69,11 @@ public final class GameController {
                                   final boolean isPlayer1Owner) {
 
         final Player currentPlayer = turnModel.getCurrentPlayer();
-        final boolean hasDrawn = drawManager.hasDrawn();
+        final boolean drawingStatus = drawManager.hasDrawn();
         final boolean isCurrentPlayer = isPlayer1(currentPlayer) == isPlayer1Owner;
 
         final AttachResult result = this.attachController.tryAttach(
-                currentPlayer, selectedCards, combinationCards, hasDrawn, isCurrentPlayer);
+                currentPlayer, selectedCards, combinationCards, drawingStatus, isCurrentPlayer);
 
         if (result == AttachResult.SUCCESS_BURRACO) {
             this.soundController.playBurracoSound();

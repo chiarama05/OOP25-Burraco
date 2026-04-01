@@ -12,7 +12,7 @@ import java.util.List;
  * Concrete implementation that links the physical JButton to the "Take Discard" action logic.
  * It coordinates the refresh of the table panels upon success.
  */
-public class TakeDiscardButton implements TakeDiscardActionView {
+public final class TakeDiscardButton implements TakeDiscardActionView {
 
     private final TakeDiscardView view;
     private final TakeDiscardNotifier notifier;
