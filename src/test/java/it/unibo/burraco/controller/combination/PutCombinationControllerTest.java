@@ -25,23 +25,26 @@ import it.unibo.burraco.model.turn.Turn;
 
 class PutCombinationControllerTest {
 
+    private static final String FIVE = "5";
+    private static final String HEARTS = "♥";
+    private static final String SPADES = "♠";
+    private static final String DIAMONDS = "♦";
+
     private PutCombinationController controller;
     private DrawManager drawManager;
     private Player player;
-    private Turn turn;
-    private GameController gameController;
 
     @BeforeEach
     void init() {
-        gameController = mock(GameController.class, RETURNS_DEEP_STUBS);
-        drawManager = mock(DrawManager.class);
-        turn = mock(Turn.class);
-        player = spy(new PlayerImpl("TestPlayer"));
-        when(turn.getCurrentPlayer()).thenReturn(player);
+        final GameController gameController = mock(GameController.class, RETURNS_DEEP_STUBS);
+        final Turn turn = mock(Turn.class);
+        this.drawManager = mock(DrawManager.class);
+        this.player = spy(new PlayerImpl("TestPlayer"));
+        when(turn.getCurrentPlayer()).thenReturn(this.player);
 
-        controller = new PutCombinationController(
+        this.controller = new PutCombinationController(
             gameController,
-            drawManager,
+            this.drawManager,
             mock(PotManager.class),
             mock(ClosureManager.class),
             turn
@@ -50,23 +53,23 @@ class PutCombinationControllerTest {
 
     @Test
     void testErrorIfNotDrawn() {
-        when(drawManager.hasDrawn()).thenReturn(false);
-        final PutCombinationResult result = controller.tryPutCombination(List.of(mock(Card.class)));
+        when(this.drawManager.hasDrawn()).thenReturn(false);
+        final PutCombinationResult result = this.controller.tryPutCombination(List.of(mock(Card.class)));
         assertEquals(PutCombinationResult.Status.NOT_DRAWN, result.getStatus());
     }
 
     @Test
     void testSuccessTakePot() {
-        when(drawManager.hasDrawn()).thenReturn(true);
-        final Card c1 = new CardImpl("♥","5");
-        final Card c2 = new CardImpl("♠","5");
-        final Card c3 = new CardImpl("♦","5");
-        player.addCardHand(c1);
-        player.addCardHand(c2);
-        player.addCardHand(c3);
+        when(this.drawManager.hasDrawn()).thenReturn(true);
+        final Card c1 = new CardImpl(HEARTS, FIVE);
+        final Card c2 = new CardImpl(SPADES, FIVE);
+        final Card c3 = new CardImpl(DIAMONDS, FIVE);
+        this.player.addCardHand(c1);
+        this.player.addCardHand(c2);
+        this.player.addCardHand(c3);
         final List<Card> cardsToPut = List.of(c1, c2, c3);
-        player.setInPot(false);
-        final PutCombinationResult result = controller.tryPutCombination(cardsToPut);
+        this.player.setInPot(false);
+        final PutCombinationResult result = this.controller.tryPutCombination(cardsToPut);
         assertEquals(PutCombinationResult.Status.SUCCESS_TAKE_POT, result.getStatus());
     }
 }

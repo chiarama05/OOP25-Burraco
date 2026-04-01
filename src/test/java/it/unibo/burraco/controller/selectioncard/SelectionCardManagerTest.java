@@ -21,6 +21,11 @@ import it.unibo.burraco.view.selection.SelectionView;
 
 class SelectionCardManagerTest {
 
+    private static final String SEVEN = "7";
+    private static final String HEARTS = "♥";
+    private static final String SPADES = "♠";
+    private static final String DIAMONDS = "♦";
+
     private SelectionCardManager selectionManager;
     private Card card1;
     private Card card2;
@@ -80,10 +85,9 @@ class SelectionCardManagerTest {
 
     @Test
     void testProcessCombinationSuccessFlow() {
-        // Setup a valid combination (three 7s)
-        final Card c1 = new CardImpl("♥", "7");
-        final Card c2 = new CardImpl("♠", "7");
-        final Card c3 = new CardImpl("♦", "7");
+        final Card c1 = new CardImpl(HEARTS, SEVEN);
+        final Card c2 = new CardImpl(SPADES, SEVEN);
+        final Card c3 = new CardImpl(DIAMONDS, SEVEN);
         this.selectionManager.toggleSelection(c1);
         this.selectionManager.toggleSelection(c2);
         this.selectionManager.toggleSelection(c3);
@@ -96,7 +100,6 @@ class SelectionCardManagerTest {
 
         verify(player).removeCards(anyList());
         verify(player).addCombination(anyList());
-
         verify(view).addCombinationToPlayerPanel(anyList(), eq(true));
         verify(view).refreshHandPanel(eq(true), any());
         assertTrue(this.selectionManager.isEmpty());

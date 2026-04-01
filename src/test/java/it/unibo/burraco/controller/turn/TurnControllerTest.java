@@ -22,21 +22,22 @@ import it.unibo.burraco.model.turn.TurnImpl;
 
 class TurnControllerTest {
 
+    private static final String HEARTS = "♥";
+    private static final List<Card> BURRACO = List.of(
+        new CardImpl(HEARTS, "3"),
+        new CardImpl(HEARTS, "4"),
+        new CardImpl(HEARTS, "5"),
+        new CardImpl(HEARTS, "6"),
+        new CardImpl(HEARTS, "7"),
+        new CardImpl(HEARTS, "8"),
+        new CardImpl(HEARTS, "9")
+    );
+
     private Player player1;
     private Player player2;
     private Turn turnModel;
     private DrawManager drawManager;
     private TurnController turnController;
-
-    private static final List<Card> BURRACO = List.of(
-        new CardImpl("♥", "3"),
-        new CardImpl("♥", "4"),
-        new CardImpl("♥", "5"),
-        new CardImpl("♥", "6"),
-        new CardImpl("♥", "7"),
-        new CardImpl("♥", "8"),
-        new CardImpl("♥", "9")
-    );
 
     @BeforeEach
     void setUp() {
@@ -98,7 +99,7 @@ class TurnControllerTest {
 
     @Test
     void testReplacingListenerCallsOnlyNewOne() {
-        final AtomicBoolean firstCalled  = new AtomicBoolean(false);
+        final AtomicBoolean firstCalled = new AtomicBoolean(false);
         final AtomicBoolean secondCalled = new AtomicBoolean(false);
 
         this.turnController.setOnTurnChangedListener(() -> firstCalled.set(true));
@@ -111,13 +112,13 @@ class TurnControllerTest {
 
     @Test
     void testNoListenerDoesNotThrow() {
-        assertDoesNotThrow(() -> this.turnController.executeNextTurn());
+        assertDoesNotThrow(this.turnController::executeNextTurn);
     }
 
     @Test
     void testNullDrawManagerDoesNotThrow() {
         final TurnController ctrl = new TurnController(this.turnModel, null);
-        assertDoesNotThrow(() -> ctrl.executeNextTurn());
+        assertDoesNotThrow(ctrl::executeNextTurn);
     }
 
     @Test

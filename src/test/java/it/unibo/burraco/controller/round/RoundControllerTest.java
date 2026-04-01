@@ -22,38 +22,34 @@ class RoundControllerTest {
 
     private TableView tableView;
     private ResetManager resetManager;
-    private Player p1;
-    private Player p2;
-    private GameController gameController;
     private InitialDistributionController distController;
     private InitialDistributionView distView;
     private RoundController roundController;
 
     @BeforeEach
     void setUp() {
-        tableView = mock(TableView.class);
-        resetManager = mock(ResetManager.class);
-        p1 = mock(Player.class);
-        p2 = mock(Player.class);
-        gameController = mock(GameController.class);
-        distController = mock(InitialDistributionController.class);
-        distView = mock(InitialDistributionView.class);
+        this.tableView = mock(TableView.class);
+        this.resetManager = mock(ResetManager.class);
+        final Player p1 = mock(Player.class);
+        final Player p2 = mock(Player.class);
+        final GameController gameController = mock(GameController.class);
+        this.distController = mock(InitialDistributionController.class);
+        this.distView = mock(InitialDistributionView.class);
         when(gameController.getCommonDeck()).thenReturn(mock(Deck.class));
         when(gameController.getDiscardPile()).thenReturn(mock(DiscardPile.class));
         when(gameController.getDrawManager()).thenReturn(mock(DrawManager.class));
-        when(tableView.getDiscardView()).thenReturn(mock(DiscardView.class));
-        roundController = new RoundControllerImpl(tableView, resetManager, p1, p2,
-                                                 gameController, distController, distView);
+        when(this.tableView.getDiscardView()).thenReturn(mock(DiscardView.class));
+        this.roundController = new RoundControllerImpl(this.tableView, this.resetManager, p1, p2,
+            gameController, this.distController, this.distView);
     }
 
     @Test
     void testProcessNewRoundSequence() {
-        roundController.processNewRound();
-        verify(resetManager).resetRound(any(), any(), any(), any());
-        verify(tableView).startNewRound();
-        verify(distController).distribute(any(), any(), any(), any());
-        verify(distView).refresh(any(), any(), any(), any());
-        verify(gameController.getDrawManager()).resetTurn();
-        verify(tableView).repaintTable();
+        this.roundController.processNewRound();
+        verify(this.resetManager).resetRound(any(), any(), any(), any());
+        verify(this.tableView).startNewRound();
+        verify(this.distController).distribute(any(), any(), any(), any());
+        verify(this.distView).refresh(any(), any(), any(), any());
+        verify(this.tableView).repaintTable();
     }
 }

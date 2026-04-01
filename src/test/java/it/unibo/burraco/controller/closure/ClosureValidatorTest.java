@@ -21,21 +21,25 @@ class ClosureValidatorTest {
     private static final String JOLLY_SEED = "♕";
     private static final String JOLLY_VAL = "Jolly";
     private static final String FIVE = "5";
+    private static final String SIX = "6";
+    private static final String SEVEN = "7";
+    private static final String ACE = "A";
+    private static final String KING = "K";
     private static final String PLAYER_NAME = "TestPlayer";
-    
+
     private static final int BURRACO_SIZE = 7;
     private static final int SMALL_COMBO = 3;
     private static final int ATTACH_SIZE = 5;
 
     private static final List<Card> CLEAN_BURRACO = List.of(
-        new CardImpl(HEARTS, "3"), new CardImpl(HEARTS, "4"), new CardImpl(HEARTS, "5"),
-        new CardImpl(HEARTS, "6"), new CardImpl(HEARTS, "7"), new CardImpl(HEARTS, "8"),
+        new CardImpl(HEARTS, "3"), new CardImpl(HEARTS, "4"), new CardImpl(HEARTS, FIVE),
+        new CardImpl(HEARTS, SIX), new CardImpl(HEARTS, SEVEN), new CardImpl(HEARTS, "8"),
         new CardImpl(HEARTS, "9")
     );
 
     private static final List<Card> DIRTY_BURRACO = List.of(
-        new CardImpl(HEARTS, "3"), new CardImpl(HEARTS, "4"), new CardImpl(HEARTS, "5"),
-        new CardImpl(HEARTS, "6"), new CardImpl(HEARTS, "7"), new CardImpl(HEARTS, "8"),
+        new CardImpl(HEARTS, "3"), new CardImpl(HEARTS, "4"), new CardImpl(HEARTS, FIVE),
+        new CardImpl(HEARTS, SIX), new CardImpl(HEARTS, SEVEN), new CardImpl(HEARTS, "8"),
         new CardImpl(JOLLY_SEED, JOLLY_VAL)
     );
 
@@ -79,7 +83,7 @@ class ClosureValidatorTest {
 
     @Test
     void testEvaluateAfterDiscardOkWhenHandNotEmpty() {
-        this.player.addCardHand(new CardImpl(SPADES, "K"));
+        this.player.addCardHand(new CardImpl(SPADES, KING));
         this.player.setInPot(true);
         assertEquals(ClosureState.OK, ClosureValidator.evaluateAfterDiscard(this.player));
     }
@@ -106,7 +110,7 @@ class ClosureValidatorTest {
     void testCanCloseByDiscardingTrueAllConditionsMet() {
         this.player.setInPot(true);
         this.player.addCombination(CLEAN_BURRACO);
-        this.player.addCardHand(new CardImpl(SPADES, "A"));
+        this.player.addCardHand(new CardImpl(SPADES, ACE));
         assertTrue(ClosureValidator.canCloseByDiscarding(this.player));
     }
 
@@ -114,22 +118,22 @@ class ClosureValidatorTest {
     void testCanCloseByDiscardingFalseMoreThanOneCard() {
         this.player.setInPot(true);
         this.player.addCombination(CLEAN_BURRACO);
-        this.player.addCardHand(new CardImpl(SPADES, "A"));
-        this.player.addCardHand(new CardImpl(SPADES, "K"));
+        this.player.addCardHand(new CardImpl(SPADES, ACE));
+        this.player.addCardHand(new CardImpl(SPADES, KING));
         assertFalse(ClosureValidator.canCloseByDiscarding(this.player));
     }
 
     @Test
     void testCanCloseByDiscardingFalsePotNotTaken() {
         this.player.addCombination(CLEAN_BURRACO);
-        this.player.addCardHand(new CardImpl(SPADES, "A"));
+        this.player.addCardHand(new CardImpl(SPADES, ACE));
         assertFalse(ClosureValidator.canCloseByDiscarding(this.player));
     }
 
     @Test
     void testCanCloseByDiscardingFalseNoBurraco() {
         this.player.setInPot(true);
-        this.player.addCardHand(new CardImpl(SPADES, "A"));
+        this.player.addCardHand(new CardImpl(SPADES, ACE));
         assertFalse(ClosureValidator.canCloseByDiscarding(this.player));
     }
 
@@ -151,8 +155,8 @@ class ClosureValidatorTest {
         this.player.setInPot(true);
         this.player.addCombination(CLEAN_BURRACO);
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
-        this.player.addCardHand(new CardImpl(SPADES, "6"));
-        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(this.player, 
+        this.player.addCardHand(new CardImpl(SPADES, SIX));
+        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(this.player,
             List.of(this.player.getHand().get(0)), SMALL_COMBO));
     }
 
@@ -160,8 +164,8 @@ class ClosureValidatorTest {
     void testPutComboBlockedWhenOneCardRemainsNoBurracoComboNotBurraco() {
         this.player.setInPot(true);
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
-        this.player.addCardHand(new CardImpl(SPADES, "6"));
-        assertTrue(ClosureValidator.wouldGetStuckAfterPutCombo(this.player, 
+        this.player.addCardHand(new CardImpl(SPADES, SIX));
+        assertTrue(ClosureValidator.wouldGetStuckAfterPutCombo(this.player,
             List.of(this.player.getHand().get(0)), SMALL_COMBO));
     }
 
@@ -169,8 +173,8 @@ class ClosureValidatorTest {
     void testPutComboAllowedWhenNewComboIsBurracoAndOneCardRemains() {
         this.player.setInPot(true);
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
-        this.player.addCardHand(new CardImpl(SPADES, "6"));
-        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(this.player, 
+        this.player.addCardHand(new CardImpl(SPADES, SIX));
+        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(this.player,
             List.of(this.player.getHand().get(0)), BURRACO_SIZE));
     }
 
@@ -178,16 +182,16 @@ class ClosureValidatorTest {
     void testPutComboNotBlockedWhenMoreThanOneCardRemains() {
         this.player.setInPot(true);
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
-        this.player.addCardHand(new CardImpl(SPADES, "6"));
-        this.player.addCardHand(new CardImpl(SPADES, "7"));
-        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(this.player, 
+        this.player.addCardHand(new CardImpl(SPADES, SIX));
+        this.player.addCardHand(new CardImpl(SPADES, SEVEN));
+        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(this.player,
             List.of(this.player.getHand().get(0)), SMALL_COMBO));
     }
 
     @Test
     void testAttachNeverBlockedIfPotNotTaken() {
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
-        assertFalse(ClosureValidator.wouldGetStuckAfterAttach(this.player, 
+        assertFalse(ClosureValidator.wouldGetStuckAfterAttach(this.player,
             this.player.getHand(), ATTACH_SIZE));
     }
 
@@ -195,7 +199,7 @@ class ClosureValidatorTest {
     void testAttachBlockedWhenHandGoesToZeroWithPot() {
         this.player.setInPot(true);
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
-        assertTrue(ClosureValidator.wouldGetStuckAfterAttach(this.player, 
+        assertTrue(ClosureValidator.wouldGetStuckAfterAttach(this.player,
             this.player.getHand(), ATTACH_SIZE));
     }
 
@@ -203,8 +207,8 @@ class ClosureValidatorTest {
     void testAttachAllowedWhenItCompletesBurracoAndOneCardRemains() {
         this.player.setInPot(true);
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
-        this.player.addCardHand(new CardImpl(SPADES, "6"));
-        this.player.addCardHand(new CardImpl(SPADES, "7"));
+        this.player.addCardHand(new CardImpl(SPADES, SIX));
+        this.player.addCardHand(new CardImpl(SPADES, SEVEN));
         final List<Card> attach = List.of(this.player.getHand().get(0), this.player.getHand().get(1));
         assertFalse(ClosureValidator.wouldGetStuckAfterAttach(this.player, attach, ATTACH_SIZE));
     }
@@ -213,7 +217,7 @@ class ClosureValidatorTest {
     void testAttachBlockedWhenOneCardRemainsNoBurracoAttachDoesNotComplete() {
         this.player.setInPot(true);
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
-        this.player.addCardHand(new CardImpl(SPADES, "6"));
+        this.player.addCardHand(new CardImpl(SPADES, SIX));
         final List<Card> attach = List.of(this.player.getHand().get(0));
         assertTrue(ClosureValidator.wouldGetStuckAfterAttach(this.player, attach, SMALL_COMBO));
     }
@@ -223,7 +227,7 @@ class ClosureValidatorTest {
         this.player.setInPot(true);
         this.player.addCombination(CLEAN_BURRACO);
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
-        this.player.addCardHand(new CardImpl(SPADES, "6"));
+        this.player.addCardHand(new CardImpl(SPADES, SIX));
         final List<Card> attach = List.of(this.player.getHand().get(0));
         assertFalse(ClosureValidator.wouldGetStuckAfterAttach(this.player, attach, SMALL_COMBO));
     }

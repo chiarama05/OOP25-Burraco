@@ -23,7 +23,6 @@ import it.unibo.burraco.view.notification.putcombination.PutCombinationNotifier;
 
 class PutCombinationActionControllerTest {
 
-    private GameController gameController;
     private PutCombinationController putComboController;
     private PutCombinationNotifier notifier;
     private PutCombinationView view;
@@ -32,13 +31,13 @@ class PutCombinationActionControllerTest {
 
     @BeforeEach
     void setUp() {
-        gameController = mock(GameController.class);
-        putComboController = mock(PutCombinationController.class);
-        notifier = mock(PutCombinationNotifier.class);
-        view = mock(PutCombinationView.class);
-        mockPlayer = mock(Player.class);
-        actionController = new PutCombinationActionController(gameController, putComboController, notifier);
-        when(gameController.getCurrentPlayer()).thenReturn(mockPlayer);
+        final GameController gameController = mock(GameController.class);
+        this.putComboController = mock(PutCombinationController.class);
+        this.notifier = mock(PutCombinationNotifier.class);
+        this.view = mock(PutCombinationView.class);
+        this.mockPlayer = mock(Player.class);
+        this.actionController = new PutCombinationActionController(gameController, this.putComboController, this.notifier);
+        when(gameController.getCurrentPlayer()).thenReturn(this.mockPlayer);
     }
 
     @Test
@@ -46,10 +45,10 @@ class PutCombinationActionControllerTest {
         final List<Card> selected = List.of();
         final PutCombinationResult errorResult = mock(PutCombinationResult.class);
         when(errorResult.getStatus()).thenReturn(PutCombinationResult.Status.NO_CARDS_SELECTED);
-        when(putComboController.tryPutCombination(selected)).thenReturn(errorResult);
-        actionController.handle(selected, view);
-        verify(notifier).notifyCombinationError(errorResult);
-        verifyNoInteractions(view);
+        when(this.putComboController.tryPutCombination(selected)).thenReturn(errorResult);
+        this.actionController.handle(selected, this.view);
+        verify(this.notifier).notifyCombinationError(errorResult);
+        verifyNoInteractions(this.view);
     }
 
     @Test
@@ -59,10 +58,10 @@ class PutCombinationActionControllerTest {
         when(potResult.getStatus()).thenReturn(PutCombinationResult.Status.SUCCESS_TAKE_POT);
         when(potResult.getProcessedCombo()).thenReturn(List.of());
         when(potResult.isPlayer1()).thenReturn(true);
-        when(putComboController.tryPutCombination(selected)).thenReturn(potResult);
+        when(this.putComboController.tryPutCombination(selected)).thenReturn(potResult);
 
-        actionController.handle(selected, view);
-        verify(view).onCombinationTakePot(anyList(), eq(true), eq(mockPlayer));
-        verifyNoInteractions(notifier);
+        this.actionController.handle(selected, this.view);
+        verify(this.view).onCombinationTakePot(anyList(), eq(true), eq(this.mockPlayer));
+        verifyNoInteractions(this.notifier);
     }
 }
