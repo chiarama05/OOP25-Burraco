@@ -94,7 +94,7 @@ public final class RoundedGradientButton extends JButton {
         // Draw the border with a darker shade
         g2.setColor(BORDER_COLOR);
         g2.setStroke(new BasicStroke(STROKE_WIDTH));
-        g2.drawRoundRect(0, 0, this.getWidth() - 1,this.getHeight() - 1, ARC_SIZE, ARC_SIZE);
+        g2.drawRoundRect(0, 0, this.getWidth() - 1, this.getHeight() - 1, ARC_SIZE, ARC_SIZE);
 
         g2.dispose();
 
