@@ -149,7 +149,7 @@ public final class AttachButton extends JButton implements AttachView {
             this.cards.addAll(ordered);
         } else {
             final String baseValue = cards.stream()
-                .filter(c -> !c.getValue().equalsIgnoreCase(JOLLY_VALUE))
+                .filter(c -> !JOLLY_VALUE.equalsIgnoreCase(c.getValue()))
                 .map(Card::getValue)
                 .findFirst()
                 .orElse(null);
@@ -201,9 +201,12 @@ public final class AttachButton extends JButton implements AttachView {
             label.setForeground(new Color(COLOR_JOLLY_R, COLOR_JOLLY_G, COLOR_JOLLY_B));
         } else {
             label.setFont(new Font("Monospaced", Font.BOLD, FONT_SIZE_NORMAL));
-            label.setForeground(
-                c.toString().contains("♥") || c.toString().contains("♦")
-                        ? Color.RED : Color.BLACK);
+            final String cardStr = c.toString();
+            if (cardStr.contains("♥") || cardStr.contains("♦")) {
+                label.setForeground(Color.RED);
+            } else {
+                label.setForeground(Color.BLACK);
+            }
         }
 
         label.setAlignmentX(CENTER_ALIGNMENT);
