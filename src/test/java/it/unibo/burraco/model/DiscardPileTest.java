@@ -17,6 +17,8 @@ import it.unibo.burraco.model.discard.DiscardPileImpl;
 
 class DiscardPileTest {
 
+    private static final String HEARTS = "♥";
+
     private DiscardPile discardPile;
 
     private Card makeCard(final String seed, final String value) {
@@ -36,7 +38,7 @@ class DiscardPileTest {
 
     @Test
     void testAddSingleCard() {
-        final Card c = this.makeCard("♥", "A");
+        final Card c = this.makeCard(HEARTS, "A");
         this.discardPile.add(c);
 
         final List<Card> cards = this.discardPile.getCards();
@@ -46,7 +48,7 @@ class DiscardPileTest {
 
     @Test
     void testTakeAll() {
-        this.discardPile.add(new CardImpl("♥", "5"));
+        this.discardPile.add(new CardImpl(HEARTS, "5"));
         this.discardPile.add(new CardImpl("♣", "Q"));
 
         final List<Card> allCards = this.discardPile.getCards();
@@ -66,7 +68,7 @@ class DiscardPileTest {
     @Test
     void testReset() {
         this.discardPile.add(this.makeCard("♠", "J"));
-        this.discardPile.add(this.makeCard("♥", "10"));
+        this.discardPile.add(this.makeCard(HEARTS, "10"));
 
         assertFalse(this.discardPile.isEmpty());
         this.discardPile.reset();

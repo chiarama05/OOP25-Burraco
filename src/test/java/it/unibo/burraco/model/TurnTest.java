@@ -17,6 +17,8 @@ import it.unibo.burraco.model.turn.TurnImpl;
 class TurnTest {
     private static final String NAME_P1 = "Alice";
     private static final String NAME_P2 = "Bob";
+    private static final String HEARTS = "♥";
+    private static final String SPADES = "♠";
 
     private PlayerImpl player1;
     private PlayerImpl player2;
@@ -72,10 +74,10 @@ class TurnTest {
     @Test
     void testCanCloseConditions() {
         final List<Card> burraco = List.of(
-            new CardImpl("♥", "3"), new CardImpl("♥", "4"),
-            new CardImpl("♥", "5"), new CardImpl("♥", "6"),
-            new CardImpl("♥", "7"), new CardImpl("♥", "8"),
-            new CardImpl("♥", "9")
+            new CardImpl(HEARTS, "3"), new CardImpl(HEARTS, "4"),
+            new CardImpl(HEARTS, "5"), new CardImpl(HEARTS, "6"),
+            new CardImpl(HEARTS, "7"), new CardImpl(HEARTS, "8"),
+            new CardImpl(HEARTS, "9")
         );
 
         assertFalse(this.turn.canClose());
@@ -93,13 +95,13 @@ class TurnTest {
 
     @Test
     void testCanCloseChecksCurrentPlayer() {
-        this.turn.nextTurn(); // Now it's Bob's turn
+        this.turn.nextTurn();
         this.player2.setInPot(true);
         final List<Card> burraco = List.of(
-            new CardImpl("♠", "3"), new CardImpl("♠", "4"),
-            new CardImpl("♠", "5"), new CardImpl("♠", "6"),
-            new CardImpl("♠", "7"), new CardImpl("♠", "8"),
-            new CardImpl("♠", "9")
+            new CardImpl(SPADES, "3"), new CardImpl(SPADES, "4"),
+            new CardImpl(SPADES, "5"), new CardImpl(SPADES, "6"),
+            new CardImpl(SPADES, "7"), new CardImpl(SPADES, "8"),
+            new CardImpl(SPADES, "9")
         );
         this.player2.addCombination(burraco);
         assertTrue(this.turn.canClose());

@@ -29,7 +29,6 @@ class DiscardControllerTest {
 
     private DiscardController controller;
     private DrawManager drawManager;
-    private Turn turnModel;
     private DiscardPile discardPile;
     private Player currentPlayer;
 
@@ -37,10 +36,10 @@ class DiscardControllerTest {
     void init() {
         this.discardPile = mock(DiscardPile.class);
         this.drawManager = mock(DrawManager.class);
-        this.turnModel = mock(Turn.class);
+        final Turn turnModel = mock(Turn.class);
         this.currentPlayer = mock(Player.class);
 
-        when(this.turnModel.getCurrentPlayer()).thenReturn(this.currentPlayer);
+        when(turnModel.getCurrentPlayer()).thenReturn(this.currentPlayer);
 
         final DiscardManagerImpl discardManager = new DiscardManagerImpl(this.discardPile);
         this.controller = new DiscardController(
@@ -49,7 +48,7 @@ class DiscardControllerTest {
             mock(PotManager.class),
             mock(ClosureManager.class),
             this.drawManager,
-            this.turnModel
+            turnModel
         );
     }
 

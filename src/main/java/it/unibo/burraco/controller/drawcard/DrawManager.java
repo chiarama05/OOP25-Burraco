@@ -28,7 +28,7 @@ public class DrawManager {
      * @param deck the game deck.
      * @return a {@link DrawResult} indicating success or the specific failure reason.
      */
-    public DrawResult drawFromDeck(final Player player, final Deck deck){
+    public DrawResult drawFromDeck(final Player player, final Deck deck) {
         // Prevent drawing if already done this turn
         if (this.drawCard) {
             return DrawResult.alreadyDrawn();
