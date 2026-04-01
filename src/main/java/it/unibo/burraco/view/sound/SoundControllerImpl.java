@@ -50,10 +50,7 @@ public final class SoundControllerImpl implements SoundController {
                 this.soundCache.put(fileName, is.readAllBytes());
             }
         } catch (final IOException e) {
-            /*
-             * Sound loading failed. We ignore it to satisfy PMD (no System.out)
-             * and Checkstyle (block is not empty thanks to this comment).
-             */
+            // Sound loading failed
         }
     }
 
@@ -103,10 +100,7 @@ public final class SoundControllerImpl implements SoundController {
             } catch (final InterruptedException e) {
                 Thread.currentThread().interrupt();
             } catch (final UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-                /*
-                 * Playback failed. We ignore the error to satisfy PMD (no System.out)
-                 * and Checkstyle (block is not empty thanks to this comment).
-                 */
+                // Playback failed
             }
         });
         audioThread.setDaemon(false);

@@ -95,9 +95,6 @@ public final class AttachActionController {
                 view.updateCombinationVisuals();
                 this.closureManager.handleStateAfterAction(currentPlayer);
                 view.onAttachClose(currentPlayer, isPlayer1Current);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected result: " + result);
         }
     }
 }

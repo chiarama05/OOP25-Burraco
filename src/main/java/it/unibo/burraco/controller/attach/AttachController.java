@@ -22,7 +22,7 @@ public class AttachController {
      * Default constructor for AttachController.
      */
     public AttachController() {
-        /* Default constructor. */
+        // Default constructor
     }
 
     /**
