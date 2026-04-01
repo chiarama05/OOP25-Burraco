@@ -18,8 +18,8 @@ public final class PlayerAreaView extends JPanel {
      *
      * @param discardComponent the component displaying the discard pile
      * @param deckView         the component displaying the deck
-     * @param handContainer    the panel that will contain the player's hand
-     * @param backgroundColor  the background color for the panels
+     * @param deckPanel        the panel that will contain the player's hand
+     * @param lightgreen       the background color for the panels
      */
     public PlayerAreaView(
             final JComponent discardComponent,

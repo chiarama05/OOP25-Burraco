@@ -12,7 +12,7 @@ import it.unibo.burraco.model.player.Player;
  * Handles the sequential drawing of cards to ensure a fair and rule-compliant
  * start of a Burraco round.
  */
-public class DistributionManagerImpl implements DistributionManager{
+public final class DistributionManagerImpl implements DistributionManager{
 
     private static final int INITIAL_HAND_SIZE = 11;
     private final List<Card> discardPile = new ArrayList<>();

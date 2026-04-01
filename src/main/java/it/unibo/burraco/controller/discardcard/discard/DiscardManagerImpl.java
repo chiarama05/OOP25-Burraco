@@ -12,7 +12,7 @@ import java.util.List;
  * Manages the transition of a card from a player's hand to the discard pile
  * and evaluates the win conditions (Closure) for the current round.
  */
-public class DiscardManagerImpl implements DiscardManager {
+public final class DiscardManagerImpl implements DiscardManager {
 
     private final DiscardPile discardPile;
 
