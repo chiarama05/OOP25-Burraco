@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
  * Swing-based implementation of {@link SelectionNotifier}.
  * Uses {@link JOptionPane} to show alerts regarding selection mistakes.
  */
-public final class SelectionNotifierImpl implements SelectionNotifier{
+public final class SelectionNotifierImpl implements SelectionNotifier {
 
     private final JFrame parent;
 

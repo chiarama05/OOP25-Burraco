@@ -77,10 +77,8 @@ public final class ClosureValidator {
             return false;
         }
         final int handAfter = player.getHand().size() - cardsToPlay.size();
-        if (handAfter == 0) {
-            return true;
-        }
-        return handAfter == 1 && !(player.getBurracoCount() >= 1 || comboSize >= BURRACO_THRESHOLD);
+        return handAfter == 0
+            || (handAfter == 1 && !(player.getBurracoCount() >= 1 || comboSize >= BURRACO_THRESHOLD));
     }
 
     /**
@@ -100,12 +98,9 @@ public final class ClosureValidator {
             return false;
         }
         final int handAfter = player.getHand().size() - cardsToAttach.size();
-        if (handAfter == 0) {
-            return true;
-        }
-
-        return handAfter == 1
+        return handAfter == 0
+            || (handAfter == 1
             && !(player.getBurracoCount() >= 1
-            || (currentComboSize + cardsToAttach.size()) >= BURRACO_THRESHOLD);
+            || (currentComboSize + cardsToAttach.size()) >= BURRACO_THRESHOLD));
     }
 }
