@@ -1,7 +1,6 @@
 package it.unibo.burraco.view.table;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
@@ -53,7 +52,7 @@ public final class BoardView extends JPanel {
     private JPanel createSection(final String title) {
         final JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
-        p.setAlignmentY(Component.TOP_ALIGNMENT);
+        p.setAlignmentY(TOP_ALIGNMENT);
         p.setBackground(new Color(0, SECTION_BG_G, SECTION_BG_B));
         p.setBorder(BorderFactory.createTitledBorder(
             BorderFactory.createLineBorder(Color.WHITE),
