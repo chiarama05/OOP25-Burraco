@@ -15,6 +15,8 @@ import it.unibo.burraco.model.card.Card;
  */
 public final class AttachUtils {
 
+    private AttachUtils() { }
+
     /**
      * Checks if a list of new cards can be legally added to an existing combination.
      *
@@ -38,11 +40,8 @@ public final class AttachUtils {
         final List<Card> hypothetical = new ArrayList<>(combination);
         hypothetical.addAll(newCards);
 
-        if (hasDuplicateValues || SetUtils.isValidSet(combination)) {
-            return CombinationValidator.isValidCombination(hypothetical);
-        }
-
-        if (StraightUtils.isSameSeed(combination)) {
+        if (hasDuplicateValues || SetUtils.isValidSet(combination)
+            || StraightUtils.isSameSeed(combination)) {
             return CombinationValidator.isValidCombination(hypothetical);
         }
 

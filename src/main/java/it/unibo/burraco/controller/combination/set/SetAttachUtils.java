@@ -11,6 +11,8 @@ import it.unibo.burraco.model.card.Card;
  */
 public final class SetAttachUtils {
 
+    private SetAttachUtils() { }
+
     /**
      * Determines whether a new card can be legally attached to an existing Set.
      * This method enforces the rule that a Set can contain a maximum of one wildcard
