@@ -26,14 +26,14 @@ public final class BoardView extends JPanel {
     private final JPanel combPanel1;
     private final JPanel combPanel2;
 
-     /**
+    /**
      * Constructs the board view with combination panels for both players.
      *
      * @param nameP1     the display name for Player 1
      * @param nameP2     the display name for Player 2
      * @param lightgreen the background color for the board
      */
-    public BoardView(final String nameP1, final  String nameP2, final Color lightgreen) {
+    public BoardView(final String nameP1, final String nameP2, final Color lightgreen) {
         this.setLayout(new GridLayout(1, 2, GRID_HGAP, GRID_VGAP));
         this.setBackground(lightgreen);
 

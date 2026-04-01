@@ -32,7 +32,6 @@ public final class ScoreController {
     private final int targetScore;
     private final SoundController soundController;
     private final InitialDistributionView distributionView;
-    private final Consumer<Runnable> uiThreadRunner;
     private final ViewProvider viewProvider;
 
     /**
@@ -75,7 +74,6 @@ public final class ScoreController {
         this.soundController = soundController;
         this.targetScore = targetScore;
         this.distributionView = distributionView;
-        this.uiThreadRunner = uiThreadRunner;
         this.viewProvider = viewProvider;
     }
 
@@ -145,6 +143,7 @@ public final class ScoreController {
      * This abstraction allows for easier testing by enabling the injection
      * of mock views instead of real GUI components.
      */
+    @FunctionalInterface
     public interface ViewProvider {
 
         /**

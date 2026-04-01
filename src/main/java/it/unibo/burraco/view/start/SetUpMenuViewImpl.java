@@ -58,6 +58,14 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
     private static final int FLOW_GAP_H = 20;
     private static final int FLOW_GAP_V = 10;
 
+    private static final int GRID_Y_PLAYER1_LABEL = 1;
+    private static final int GRID_Y_PLAYER1_FIELD = 2;
+    private static final int GRID_Y_PLAYER2_LABEL = 3;
+    private static final int GRID_Y_PLAYER2_FIELD = 4;
+    private static final int GRID_Y_POINTS_LABEL = 5;
+    private static final int GRID_Y_POINTS_PANEL = 6;
+    private static final int GRID_Y_PLAY_BTN = 7;
+
     private static final int SCORE_1 = 1005;
     private static final int SCORE_2 = 1505;
     private static final int SCORE_3 = 2005;
@@ -115,27 +123,27 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        gbc.gridy = 1;
+        gbc.gridy = GRID_Y_PLAYER1_LABEL;
         panel.add(this.createLabel("Name Player 1:"), gbc);
-        gbc.gridy = 2;
+        gbc.gridy = GRID_Y_PLAYER1_FIELD;
         this.name1 = new JTextField("Player 1", FIELD_FONT_SIZE);
         this.name1.setFont(new Font(FONT_NAME, Font.PLAIN, FIELD_FONT_SIZE));
         this.name1.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
         this.name1.setHorizontalAlignment(JTextField.LEFT);
         panel.add(this.name1, gbc);
 
-        gbc.gridy = 3;
+        gbc.gridy = GRID_Y_PLAYER2_LABEL;
         panel.add(this.createLabel("Name Player 2:"), gbc);
-        gbc.gridy = 4;
+        gbc.gridy = GRID_Y_PLAYER2_FIELD;
         this.name2 = new JTextField("Player 2", FIELD_FONT_SIZE);
         this.name2.setFont(new Font(FONT_NAME, Font.PLAIN, FIELD_FONT_SIZE));
         this.name2.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
         this.name2.setHorizontalAlignment(JTextField.LEFT);
         panel.add(this.name2, gbc);
 
-        gbc.gridy = 5;
+        gbc.gridy = GRID_Y_POINTS_LABEL;
         panel.add(this.createLabel("Points to win:"), gbc);
-        gbc.gridy = 6;
+        gbc.gridy = GRID_Y_POINTS_PANEL;
         final JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, FLOW_GAP_H, FLOW_GAP_V));
         btnPanel.setOpaque(false);
         btnPanel.add(this.createScoreBtn(SCORE_1));
@@ -143,7 +151,7 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
         btnPanel.add(this.createScoreBtn(SCORE_3));
         panel.add(btnPanel, gbc);
 
-        gbc.gridy = 7;
+        gbc.gridy = GRID_Y_PLAY_BTN;
         gbc.insets = new Insets(INSET_LARGE, INSET_SMALL, INSET_SMALL, INSET_SMALL);
         final RoundedGradientButton playBtn = new RoundedGradientButton("PLAY");
         playBtn.setFont(new Font(FONT_NAME, Font.BOLD, PLAY_FONT_SIZE));

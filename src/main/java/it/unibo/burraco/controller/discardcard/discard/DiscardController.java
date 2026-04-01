@@ -24,7 +24,6 @@ public class DiscardController {
     private final DrawManager drawManager;
     private final Turn turnModel;
 
-
     /**
      * Constructs a DiscardController with all its required collaborators.
      *
@@ -43,9 +42,9 @@ public class DiscardController {
             final DrawManager drawManager,
             final Turn turnModel) {
         this.discardManager = discardManager;
-        this.turnCtrl= turnCtrl;
+        this.turnCtrl = turnCtrl;
         this.potCtrl = potCtrl;
-        this.closureCtrl =closureCtrl;
+        this.closureCtrl = closureCtrl;
         this.drawManager = drawManager;
         this.turnModel = turnModel;
     }
@@ -70,7 +69,7 @@ public class DiscardController {
 
         final Player current = this.turnModel.getCurrentPlayer();
         final Card card = selectedCards.iterator().next();
-        final boolean willTakePot = (current.getHand().size() == 1 && !current.isInPot());
+        final boolean willTakePot = current.getHand().size() == 1 && !current.isInPot();
         final DiscardResult result = discardManager.discard(current, card);
 
         if (!result.isValid()) {

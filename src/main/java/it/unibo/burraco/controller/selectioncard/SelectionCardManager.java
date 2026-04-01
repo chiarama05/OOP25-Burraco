@@ -36,6 +36,8 @@ public class SelectionCardManager {
     }
 
     /**
+     * @param card the card to check.
+     * 
      * @return true if the specified card is currently in the selection set.
      */
     public boolean isSelected(final Card card) {
@@ -88,7 +90,6 @@ public class SelectionCardManager {
             return;
         }
 
-        // Convert set to list for validation and processing
         final List<Card> cardsToPut = new ArrayList<>(selectedCards);
 
         // Delegation to specialized validator
@@ -102,6 +103,11 @@ public class SelectionCardManager {
     /**
      * Internal helper to execute the move once validated.
      * Updates models and refreshes the UI.
+     *
+     * @param player     the player whose hand and combinations are updated.
+     * @param view       the view to refresh after the move.
+     * @param isPlayer1  flag identifying which player's panel to update.
+     * @param cardsToPut the validated list of cards to play as a combination.
      */
     private void executeMove(final Player player, final SelectionView view,
                              final boolean isPlayer1, final List<Card> cardsToPut) {

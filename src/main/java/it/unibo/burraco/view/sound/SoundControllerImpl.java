@@ -50,7 +50,7 @@ public final class SoundControllerImpl implements SoundController {
                 this.soundCache.put(fileName, is.readAllBytes());
             }
         } catch (final IOException e) {
-
+            System.err.println("Error pre-loading sound: " + fileName);
         }
     }
 
@@ -97,11 +97,10 @@ public final class SoundControllerImpl implements SoundController {
                 clip.start();
                 latch.await();
 
-            } catch (final UnsupportedAudioFileException | IOException
-                    | LineUnavailableException | InterruptedException e) {
-                if (e instanceof InterruptedException) {
-                    Thread.currentThread().interrupt();
-                }
+            } catch (final InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } catch (final UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                System.err.println("Audio playback error for: " + fileName);
             }
         });
         audioThread.setDaemon(false);

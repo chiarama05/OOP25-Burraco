@@ -14,6 +14,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Window;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -69,9 +70,7 @@ public final class TableViewImpl implements TableView {
     private final ControlPanelView sideControlPanel;
     private final BoardView boardView;
     private final PlayerAreaView playerArea;
-
     private AttachButtonFactory attachButtonFactory;
-    private SelectionCardManager selectionCardManager;
 
     /**
      * Constructs the main game window and initialises all Swing sub-components.
@@ -153,7 +152,7 @@ public final class TableViewImpl implements TableView {
     @Override
     public void addCombinationToPlayerPanel(final List<Card> cards, final boolean isP1) {
         final JPanel panel = isP1 ? this.combPanel1 : this.combPanel2;
-        final JComponent btn = this.attachButtonFactory.create(cards, isP1);
+        final JComponent btn = this.attachButtonFactory.create(new ArrayList<>(cards), isP1);
         btn.setAlignmentY(Component.TOP_ALIGNMENT);
         panel.add(btn);
         panel.add(Box.createRigidArea(new Dimension(RIGID_AREA_WIDTH, 0)));
@@ -222,7 +221,7 @@ public final class TableViewImpl implements TableView {
 
     @Override
     public void updateDiscardPile(final List<Card> cards) {
-        this.discardView.updateDiscardPile(cards);
+        this.discardView.updateDiscardPile(new ArrayList<>(cards));
     }
 
     @Override
@@ -253,7 +252,7 @@ public final class TableViewImpl implements TableView {
             new Font(FONT_NAME, Font.BOLD, FONT_SIZE_HAND), Color.BLACK));
 
         final HandView hv = this.getHandViewForCurrentPlayer(isPlayer1);
-        hv.refreshHand(hand);
+        hv.refreshHand(new ArrayList<>(hand));
 
         final JScrollPane handScroll = new JScrollPane((JComponent) hv);
         handScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

@@ -13,7 +13,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -159,8 +158,8 @@ public final class AttachButton extends JButton implements AttachView {
             final List<Card> wildcards = new ArrayList<>();
 
             for (final Card c : this.cards) {
-                final boolean isWild = c.getValue().equalsIgnoreCase(JOLLY_VALUE)
-                || c.getValue().equals(TWO_VALUE) && !TWO_VALUE.equals(baseValue);
+                final boolean isWild = JOLLY_VALUE.equalsIgnoreCase(c.getValue())
+                    || TWO_VALUE.equals(c.getValue()) && !TWO_VALUE.equals(baseValue);
                 if (isWild) {
                     wildcards.add(c);
                 } else {
@@ -194,7 +193,7 @@ public final class AttachButton extends JButton implements AttachView {
      * @param c the card to render
      */
     private void renderCardLabel(final Card c) {
-        final boolean isJolly = c.getValue().equalsIgnoreCase(JOLLY_VALUE);
+        final boolean isJolly = JOLLY_VALUE.equalsIgnoreCase(c.getValue());
         final JLabel label = new JLabel(isJolly ? c.getSeed() : c.toString());
 
         if (isJolly) {
@@ -203,11 +202,11 @@ public final class AttachButton extends JButton implements AttachView {
         } else {
             label.setFont(new Font("Monospaced", Font.BOLD, FONT_SIZE_NORMAL));
             label.setForeground(
-                    c.toString().contains("♥") || c.toString().contains("♦")
-                            ? Color.RED : Color.BLACK);
+                c.toString().contains("♥") || c.toString().contains("♦")
+                        ? Color.RED : Color.BLACK);
         }
 
-        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setAlignmentX(CENTER_ALIGNMENT);
         this.add(label);
         this.add(Box.createVerticalStrut(VERTICAL_STRUT_SIZE));
     }

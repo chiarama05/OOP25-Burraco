@@ -55,7 +55,7 @@ public final class ClosureValidator {
      */
     public static ClosureState evaluateAfterDiscard(final Player player) {
         if (player.getHand().isEmpty() && player.isInPot()) {
-            return player.getBurracoCount()>=1 ? ClosureState.ROUND_WON : ClosureState.CANNOT_CLOSE_NO_BURRACO;
+            return player.getBurracoCount() >= 1 ? ClosureState.ROUND_WON : ClosureState.CANNOT_CLOSE_NO_BURRACO;
         }
         return ClosureState.OK;
     }
@@ -80,10 +80,7 @@ public final class ClosureValidator {
         if (handAfter == 0) {
             return true;
         }
-        if (handAfter == 1) {
-            return !(player.getBurracoCount() >= 1 || comboSize >= BURRACO_THRESHOLD);
-        }
-        return false;
+        return handAfter == 1 && !(player.getBurracoCount() >= 1 || comboSize >= BURRACO_THRESHOLD);
     }
 
     /**
@@ -107,9 +104,8 @@ public final class ClosureValidator {
             return true;
         }
 
-        if (handAfter == 1) {
-            return !(player.getBurracoCount() >= 1 || (currentComboSize + cardsToAttach.size()) >= BURRACO_THRESHOLD);
-        }
-        return false;
+        return handAfter == 1
+            && !(player.getBurracoCount() >= 1
+            || (currentComboSize + cardsToAttach.size()) >= BURRACO_THRESHOLD);
     }
 }

@@ -79,7 +79,7 @@ public final class StartMenuViewImpl implements StartMenuView {
      *
      * @param listener callback handler for game start events.
      */
-    public StartMenuViewImpl (final OnGameStartListener listener) {
+    public StartMenuViewImpl(final OnGameStartListener listener) {
         this.listener = listener;
         this.frame = new JFrame("Burraco Game - Home");
         this.setupUI();

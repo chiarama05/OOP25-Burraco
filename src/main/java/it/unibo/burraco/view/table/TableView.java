@@ -34,6 +34,7 @@ public interface TableView extends TakeDiscardView, PotView, SelectionView {
      *
      * @param isP1 true if Player 1 took the pot, false for Player 2
      */
+    @Override
     void markPotTaken(boolean isP1);
 
     /**
@@ -42,6 +43,7 @@ public interface TableView extends TakeDiscardView, PotView, SelectionView {
      * @param cards the cards forming the combination to display
      * @param isP1  true to add to Player 1's panel, false for Player 2's
      */
+    @Override
     void addCombinationToPlayerPanel(List<Card> cards, boolean isP1);
 
     /**
@@ -97,6 +99,7 @@ public interface TableView extends TakeDiscardView, PotView, SelectionView {
      * @param isPlayer1 true if refreshing Player 1's hand
      * @param hand      the list of cards to display
      */
+    @Override
     void refreshHandPanel(boolean isPlayer1, List<Card> hand);
 
     /**
