@@ -23,11 +23,13 @@ import it.unibo.burraco.view.notification.game.GameNotifier;
 
 class ClosureManagerTest {
 
+    private static final String HEARTS = "♥";
+    private static final String SPADES = "♠";
     private static final int TARGET_SCORE = 2005;
     private static final List<Card> BURRACO = List.of(
-        new CardImpl("♥", "3"), new CardImpl("♥", "4"), new CardImpl("♥", "5"),
-        new CardImpl("♥", "6"), new CardImpl("♥", "7"), new CardImpl("♥", "8"),
-        new CardImpl("♥", "9")
+        new CardImpl(HEARTS, "3"), new CardImpl(HEARTS, "4"), new CardImpl(HEARTS, "5"),
+        new CardImpl(HEARTS, "6"), new CardImpl(HEARTS, "7"), new CardImpl(HEARTS, "8"),
+        new CardImpl(HEARTS, "9")
     );
 
     private Turn turnModel;
@@ -48,7 +50,7 @@ class ClosureManagerTest {
 
     @Test
     void testHandleStateAfterActionOkWhenHandNotEmpty() {
-        this.player.addCardHand(new CardImpl("♠", "5"));
+        this.player.addCardHand(new CardImpl(SPADES, "5"));
 
         final boolean result = this.manager.handleStateAfterAction(this.player);
 
@@ -129,7 +131,7 @@ class ClosureManagerTest {
     void testHandleStateAfterDiscardOkWhenHandNotEmpty() {
         this.player.setInPot(true);
         this.player.addCombination(new ArrayList<>(BURRACO));
-        this.player.addCardHand(new CardImpl("♠", "K"));
+        this.player.addCardHand(new CardImpl(SPADES, "K"));
 
         final boolean result = this.manager.handleStateAfterDiscard(this.player);
 

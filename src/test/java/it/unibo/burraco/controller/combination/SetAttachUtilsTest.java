@@ -13,25 +13,31 @@ import it.unibo.burraco.model.card.CardImpl;
 
 class SetAttachUtilsTest {
 
+    private static final String TEN = "10";
+    private static final String HEARTS = "♥";
+    private static final String SPADES = "♠";
+    private static final String DIAMONDS = "♦";
+    private static final String CLUBS = "♣";
+
     @Test
     void testCanAttachSameValue() {
         final List<Card> set = new ArrayList<>(List.of(
-            new CardImpl("♥", "10"),
-            new CardImpl("♠", "10"),
-            new CardImpl("♦", "10")
+            new CardImpl(HEARTS, TEN),
+            new CardImpl(SPADES, TEN),
+            new CardImpl(DIAMONDS, TEN)
         ));
-        final Card newTen = new CardImpl("♣", "10");
+        final Card newTen = new CardImpl(CLUBS, TEN);
         assertTrue(SetAttachUtils.canAttachToSet(set, newTen));
     }
 
     @Test
     void testCannotAttachSecondWildcard() {
         final List<Card> set = new ArrayList<>(List.of(
-            new CardImpl("♥", "10"),
-            new CardImpl("♠", "10"),
+            new CardImpl(HEARTS, TEN),
+            new CardImpl(SPADES, TEN),
             new CardImpl("Jolly", "Jolly")
         ));
-        final Card two = new CardImpl("♦", "2");
+        final Card two = new CardImpl(DIAMONDS, "2");
         assertFalse(SetAttachUtils.canAttachToSet(set, two));
     }
 }
