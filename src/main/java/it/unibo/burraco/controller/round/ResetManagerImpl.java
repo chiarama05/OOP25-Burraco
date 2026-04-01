@@ -8,7 +8,7 @@ import it.unibo.burraco.model.player.Player;
  * Concrete implementation of {@link ResetManager}.
  * It coordinates the reset sequence across the domain models.
  */
-public final class ResetManagerImpl implements ResetManager{
+public final class ResetManagerImpl implements ResetManager {
 
     @Override
     public void resetRound(final Player p1,
