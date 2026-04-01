@@ -44,8 +44,8 @@ public final class AttachButton extends JButton implements AttachView {
     private static final String JOLLY_VALUE = "Jolly";
     private static final String TWO_VALUE = "2";
 
-    private final List<Card> cards;
-    private final TableView tableView;
+    private final transient List<Card> cards;
+    private final transient TableView tableView;
     private final boolean isPlayer1Owner;
     private transient BiConsumer<List<Card>, AttachButton> onAttachAction;
 
@@ -220,7 +220,7 @@ public final class AttachButton extends JButton implements AttachView {
      * @return the list of cards
      */
     public List<Card> getCards() {
-        return this.cards;
+        return Collections.unmodifiableList(this.cards);
     }
 
     /**
