@@ -43,7 +43,7 @@ public final class CombinationValidator {
         // Check if there are duplicate values
         final boolean hasDuplicateValues = realCards.stream()
             .map(Card::getValue)
-            .collect(java.util.stream.Collectors.toSet()).size() < realCards.size();
+            .collect(Collectors.toSet()).size() < realCards.size();
 
         // Case 1: The combination is a Set
         if (hasDuplicateValues && SetUtils.isValidSet(cards)) {
@@ -105,7 +105,7 @@ public final class CombinationValidator {
 
         final boolean hasDuplicateValues = realCards.stream()
             .map(Card::getValue)
-            .collect(java.util.stream.Collectors.toSet()).size() < realCards.size();
+            .collect(Collectors.toSet()).size() < realCards.size();
 
         // In a Set a "2" is always a wildcard
         if (hasDuplicateValues || !StraightUtils.isSameSeed(context)) {

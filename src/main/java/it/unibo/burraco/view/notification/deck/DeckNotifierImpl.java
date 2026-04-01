@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
  * Swing-based implementation of {@link DeckNotifier}.
  * Uses {@link JOptionPane} to display warning messages to the player.
  */
-public class DeckNotifierImpl implements DeckNotifier{
+public final class DeckNotifierImpl implements DeckNotifier {
 
     private final JFrame parent;
 

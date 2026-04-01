@@ -9,7 +9,7 @@ import it.unibo.burraco.controller.discardcard.discard.DiscardResult;
  * Swing-based implementation of {@link DiscardNotifier}.
  * It translates internal error codes into human-readable messages displayed via JOptionPane.
  */
-public class DiscardNotifierImpl implements DiscardNotifier{
+public final class DiscardNotifierImpl implements DiscardNotifier {
 
     private final JFrame parent;
 

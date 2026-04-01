@@ -2,7 +2,7 @@ package it.unibo.burraco.controller.distributioncard;
 
 import java.util.ArrayList;
 import java.util.List;
-import it.unibo.burraco.model.card.*;
+import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.deck.Deck;
 import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.player.Player;
@@ -12,7 +12,7 @@ import it.unibo.burraco.model.player.Player;
  * Handles the sequential drawing of cards to ensure a fair and rule-compliant
  * start of a Burraco round.
  */
-public final class DistributionManagerImpl implements DistributionManager{
+public final class DistributionManagerImpl implements DistributionManager {
 
     private static final int INITIAL_HAND_SIZE = 11;
     private final List<Card> discardPile = new ArrayList<>();
@@ -21,7 +21,7 @@ public final class DistributionManagerImpl implements DistributionManager{
     public void distributeInitialCards(final Player player1,
                                 final Player player2,
                                 final Deck deck,
-                                final DiscardPile modelDiscardPile){
+                                final DiscardPile modelDiscardPile) {
 
         for (int i = 0; i < INITIAL_HAND_SIZE; i++) {
             player1.addCardHand(deck.draw());

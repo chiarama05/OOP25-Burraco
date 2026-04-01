@@ -9,7 +9,7 @@ import it.unibo.burraco.controller.drawcard.DrawResult;
  * Swing-based implementation of {@link TakeDiscardNotifier}.
  * Provides visual feedback via {@link JOptionPane} dialogs.
  */
-public final class TakeDiscardNotifierImpl implements TakeDiscardNotifier{
+public final class TakeDiscardNotifierImpl implements TakeDiscardNotifier {
 
     private final JFrame parent;
 

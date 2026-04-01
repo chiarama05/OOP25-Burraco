@@ -19,13 +19,13 @@ public class ClosureManager {
     private final ScoreController scoreController;
 
     /**
-    * Constructs a ClosureManager with all required collaborators.
-    *
-    * @param turnModel       the model tracking the current turn and game state
-    * @param notifier        the notifier used to display game messages to the players
-    * @param targetScore     the score threshold that ends the entire match
-    * @param scoreController the controller invoked when the round ends
-    */
+     * Constructs a ClosureManager with all required collaborators.
+     *
+     * @param turnModel       the model tracking the current turn and game state
+     * @param notifier        the notifier used to display game messages to the players
+     * @param targetScore     the score threshold that ends the entire match
+     * @param scoreController the controller invoked when the round ends
+     */
     public ClosureManager(
             final Turn turnModel,
             final GameNotifier notifier,
