@@ -2,14 +2,14 @@ package it.unibo.burraco.controller.distributioncard;
 
 import java.util.List;
 
+import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.deck.Deck;
 import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.model.card.*;
 
 /**
  * Interface defining the contract for the initial card distribution.
- * It manages the setup of players' hands, side pots (pozzetti), and the starting discard pile.
+ * It manages the setup of players' hands, side pots, and the starting discard pile.
  */
 public interface DistributionManager {
 

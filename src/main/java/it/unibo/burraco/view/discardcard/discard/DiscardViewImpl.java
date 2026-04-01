@@ -42,7 +42,7 @@ public class DiscardViewImpl implements DiscardView {
     private final JPanel actionPanel;
     private final JButton discardButton;
 
-   /**
+    /**
      * Constructs the discard view.
      *
      * @param discardPanel the external panel provided to display cards.
@@ -83,7 +83,7 @@ public class DiscardViewImpl implements DiscardView {
         this.discardPanel.setPreferredSize(new Dimension(width, PANEL_HEIGHT));
 
         for (final Card c : discardPile) {
-            final boolean isJolly = c.getValue().equalsIgnoreCase("Jolly");
+            final boolean isJolly = "Jolly".equalsIgnoreCase(c.getValue());
             final String textToShow = isJolly ? c.getSeed() : c.toString();
 
             final JLabel label = new JLabel(textToShow);
@@ -109,7 +109,6 @@ public class DiscardViewImpl implements DiscardView {
         this.discardPanel.revalidate();
         this.discardPanel.repaint();
     }
-
 
     /**
      * Attaches a listener to the discard button.
