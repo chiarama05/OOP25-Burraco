@@ -38,7 +38,7 @@ class DiscardPileTest {
     void testAddSingleCard() {
         final Card c = this.makeCard("♥", "A");
         this.discardPile.add(c);
-        
+
         final List<Card> cards = this.discardPile.getCards();
         assertEquals(1, cards.size());
         assertEquals(c, cards.get(cards.size() - 1));
@@ -48,12 +48,12 @@ class DiscardPileTest {
     void testTakeAll() {
         this.discardPile.add(new CardImpl("♥", "5"));
         this.discardPile.add(new CardImpl("♣", "Q"));
-        
+
         final List<Card> allCards = this.discardPile.getCards();
         assertEquals(2, allCards.size());
-        
+
         this.discardPile.reset();
-        
+
         assertTrue(this.discardPile.isEmpty());
         assertEquals(0, this.discardPile.getCards().size());
     }
@@ -66,11 +66,11 @@ class DiscardPileTest {
     @Test
     void testReset() {
         this.discardPile.add(this.makeCard("♠", "J"));
-        this.discardPile.add(this.makeCard("♥", "10"));  
-        
+        this.discardPile.add(this.makeCard("♥", "10"));
+
         assertFalse(this.discardPile.isEmpty());
         this.discardPile.reset();
-        
+
         assertTrue(this.discardPile.isEmpty());
         assertEquals(0, this.discardPile.getCards().size());
     }

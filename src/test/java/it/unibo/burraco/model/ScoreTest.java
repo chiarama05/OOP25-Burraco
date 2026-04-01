@@ -45,9 +45,9 @@ class ScoreTest {
 
     @Test
     void testRemainingHandValueWithCards() {
-        this.player.addCardHand(new CardImpl(HEARTS, "A"));   
-        this.player.addCardHand(new CardImpl(HEARTS, "K"));   
-        this.player.addCardHand(new CardImpl(HEARTS, "3"));  
+        this.player.addCardHand(new CardImpl(HEARTS, "A"));
+        this.player.addCardHand(new CardImpl(HEARTS, "K"));
+        this.player.addCardHand(new CardImpl(HEARTS, "3"));
         assertEquals(30, this.score.calculateRemainingHandValue(this.player));
     }
 

@@ -17,5 +17,5 @@ public interface DiscardManager {
      * @param card the card to be moved from hand to discard pile.
      * @return a {@link DiscardResult} describing the outcome and potential win state.
      */
-    DiscardResult discard(final Player player,final Card card);
+    DiscardResult discard(Player player, Card card);
 }

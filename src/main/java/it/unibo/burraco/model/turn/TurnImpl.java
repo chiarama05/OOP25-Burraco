@@ -15,7 +15,7 @@ public final class TurnImpl implements Turn {
 
     /**
      * Constructs a TurnImpl with the two players.
-     * 
+     *
      * @param p1 the first player.
      * @param p2 the second player.
      */
@@ -46,7 +46,7 @@ public final class TurnImpl implements Turn {
         this.isPlayer1Turn = true;
         this.gameFinished = false;
     }
-    
+
 
     @Override
     public Player getCurrentPlayer() {

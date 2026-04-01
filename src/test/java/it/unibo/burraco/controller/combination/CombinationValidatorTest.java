@@ -9,7 +9,7 @@ import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 
 class CombinationValidatorTest {
-    
+
     @Test
     void testInvalidShortCombination() {
         final List<Card> cards = List.of(new CardImpl("♥", "7"), new CardImpl("♠", "7"));

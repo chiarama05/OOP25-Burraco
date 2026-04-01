@@ -38,11 +38,11 @@ class DeckActionControllerTest {
         this.view = mock(DeckDrawView.class);
         this.player = mock(Player.class);
         this.deck = mock(DeckImpl.class);
-        
+
         when(this.gameController.getCurrentPlayer()).thenReturn(this.player);
         when(this.gameController.getCommonDeck()).thenReturn(this.deck);
         when(this.player.getHand()).thenReturn(List.of(mock(Card.class)));
-        
+
         this.controller = new DeckActionController(this.gameController, this.drawManager, this.notifier);
     }
 
@@ -50,16 +50,16 @@ class DeckActionControllerTest {
     void testHandleWhenDrawSucceedsThenViewIsNotified() {
         final DrawResult success = DrawResult.success(mock(Card.class));
         when(this.drawManager.drawFromDeck(this.player, this.deck)).thenReturn(success);
-        
+
         this.controller.handle(this.view);
-        
+
         verify(this.view).onDrawSuccess(this.player, this.player.getHand());
         verify(this.notifier, never()).notifyDrawError(any());
     }
 
     @Test
     void testHandleWhenDrawFailsThenNotifierIsCalled() {
-        final DrawResult failure = DrawResult.alreadyDrawn(); 
+        final DrawResult failure = DrawResult.alreadyDrawn();
         when(this.drawManager.drawFromDeck(this.player, this.deck)).thenReturn(failure);
 
         this.controller.handle(this.view);

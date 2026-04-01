@@ -14,6 +14,6 @@ public interface TakeDiscardNotifier {
      *
      * @param result the {@link DrawResult} containing the error status
      */
-    void notifyTakeDiscardError(final DrawResult result);
+    void notifyTakeDiscardError(DrawResult result);
 
 }

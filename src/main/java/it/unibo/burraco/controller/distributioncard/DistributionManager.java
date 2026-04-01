@@ -23,10 +23,10 @@ public interface DistributionManager {
      * @param deck the game deck to draw from.
      * @param modelDiscardPile the discard pile model to be initialized.
      */
-    void distributeInitialCards(final Player player1,
-                                final Player player2,
-                                final Deck deck,
-                                final DiscardPile modelDiscardPile);
+    void distributeInitialCards(Player player1,
+                                Player player2,
+                                Deck deck,
+                                DiscardPile modelDiscardPile);
 
     /**
      * Retrieves the state of the initial discard pile after distribution.

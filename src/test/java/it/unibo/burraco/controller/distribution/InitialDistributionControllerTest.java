@@ -23,7 +23,7 @@ class InitialDistributionControllerTest {
         final DiscardPile discard = mock(DiscardPile.class);
 
         controller.distribute(p1, p2, deck, discard);
-        
+
         verify(mockManager).distributeInitialCards(p1, p2, deck, discard);
     }
 }

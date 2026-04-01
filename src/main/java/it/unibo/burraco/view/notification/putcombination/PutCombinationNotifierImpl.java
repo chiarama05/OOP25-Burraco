@@ -25,7 +25,7 @@ public final class PutCombinationNotifierImpl implements PutCombinationNotifier 
     @Override
     public void notifyCombinationError(final PutCombinationResult result) {
 
-        PutCombinationResult.Status status = result.getStatus();
+        final PutCombinationResult.Status status = result.getStatus();
 
         final String message = switch (status) {
             case NOT_DRAWN -> "Draw a card first!";

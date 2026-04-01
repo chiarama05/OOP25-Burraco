@@ -32,19 +32,19 @@ class DiscardControllerTest {
     private Turn turnModel;
     private DiscardPile discardPile;
     private Player currentPlayer;
-    
+
     @BeforeEach
     void init() {
         this.discardPile = mock(DiscardPile.class);
         this.drawManager = mock(DrawManager.class);
         this.turnModel = mock(Turn.class);
         this.currentPlayer = mock(Player.class);
-       
+
         when(this.turnModel.getCurrentPlayer()).thenReturn(this.currentPlayer);
-        
+
         final DiscardManagerImpl discardManager = new DiscardManagerImpl(this.discardPile);
         this.controller = new DiscardController(
-            discardManager, 
+            discardManager,
             mock(TurnController.class),
             mock(PotManager.class),
             mock(ClosureManager.class),
@@ -56,9 +56,9 @@ class DiscardControllerTest {
     @Test
     void testTryDiscardFailsWhenNotDrawn() {
         when(this.drawManager.hasDrawn()).thenReturn(false);
-        
+
         final DiscardResult result = this.controller.tryDiscard(Set.of(mock(Card.class)));
-        
+
         assertFalse(result.isValid(), "Discard should be invalid if player hasn't drawn");
         assertEquals("must_draw", result.getMessage());
     }
@@ -66,10 +66,10 @@ class DiscardControllerTest {
     @Test
     void testTryDiscardFailsWithMultipleCards() {
         when(this.drawManager.hasDrawn()).thenReturn(true);
-        
+
         final Set<Card> multipleCards = Set.of(mock(Card.class), mock(Card.class));
         final DiscardResult result = this.controller.tryDiscard(multipleCards);
-        
+
         assertFalse(result.isValid(), "Discard should be invalid if multiple cards are selected");
         assertEquals("select_one", result.getMessage());
     }
@@ -79,10 +79,10 @@ class DiscardControllerTest {
         when(this.drawManager.hasDrawn()).thenReturn(true);
         final Card cardToDiscard = mock(Card.class);
         when(this.currentPlayer.getHand()).thenReturn(List.of(cardToDiscard));
-        
+
         final DiscardResult result = this.controller.tryDiscard(Set.of(cardToDiscard));
-        
+
         assertTrue(result.isValid(), "Discard should be valid");
-        verify(this.discardPile).add(cardToDiscard); 
+        verify(this.discardPile).add(cardToDiscard);
     }
 }

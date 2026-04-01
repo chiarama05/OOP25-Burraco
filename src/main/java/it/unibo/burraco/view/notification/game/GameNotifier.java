@@ -25,7 +25,7 @@ public interface GameNotifier {
      *
      * @param winnerName the name of the winner.
      */
-    void notifyVictory(final String winnerName);
+    void notifyVictory(String winnerName);
 
     /**
      * Notifies that a draw action is required before discarding.
@@ -37,7 +37,7 @@ public interface GameNotifier {
      *
      * @param message the error message to display.
      */
-    void notifySelectionError(final String message);
+    void notifySelectionError(String message);
 
     /**
      * Notifies that the pot was taken automatically before a discard.

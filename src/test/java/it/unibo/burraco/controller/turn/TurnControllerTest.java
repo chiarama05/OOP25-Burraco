@@ -88,10 +88,10 @@ class TurnControllerTest {
     void testListenerNotificationCounts() {
         final AtomicInteger count = new AtomicInteger(0);
         this.turnController.setOnTurnChangedListener(count::incrementAndGet);
-        
+
         this.turnController.executeNextTurn();
         assertEquals(1, count.get());
-        
+
         this.turnController.executeNextTurn();
         assertEquals(2, count.get());
     }
@@ -100,11 +100,11 @@ class TurnControllerTest {
     void testReplacingListenerCallsOnlyNewOne() {
         final AtomicBoolean firstCalled  = new AtomicBoolean(false);
         final AtomicBoolean secondCalled = new AtomicBoolean(false);
-        
+
         this.turnController.setOnTurnChangedListener(() -> firstCalled.set(true));
         this.turnController.setOnTurnChangedListener(() -> secondCalled.set(true));
         this.turnController.executeNextTurn();
-        
+
         assertFalse(firstCalled.get(), "Old listener must NOT be called");
         assertTrue(secondCalled.get(), "New listener must be called");
     }
@@ -131,7 +131,7 @@ class TurnControllerTest {
     void testCanCloseReflectsCurrentPlayerAfterTurnChange() {
         this.player2.setInPot(true);
         this.player2.addCombination(BURRACO);
-        
+
         assertFalse(this.turnModel.canClose());
         this.turnController.executeNextTurn();
         assertTrue(this.turnModel.canClose());

@@ -9,7 +9,7 @@ import java.util.List;
  * It carries information about the validity of the move, the state of the game,
  * and data required to update the UI.
  */
-public class DiscardResult {
+public final class DiscardResult {
 
     private final boolean valid;
     private final boolean turnEnds;

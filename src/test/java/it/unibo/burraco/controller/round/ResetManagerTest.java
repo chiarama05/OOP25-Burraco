@@ -31,7 +31,7 @@ class ResetManagerTest {
     @Test
     void testResetRoundCallsAllModels() {
         this.resetManager.resetRound(this.p1, this.p2, this.deck, this.discardPile);
-    
+
         verify(this.p1, times(1)).resetForNewRound();
         verify(this.p2, times(1)).resetForNewRound();
         verify(this.deck, times(1)).reset();

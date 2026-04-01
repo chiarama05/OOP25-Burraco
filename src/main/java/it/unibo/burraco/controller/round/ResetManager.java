@@ -19,8 +19,8 @@ public interface ResetManager {
      * @param deck the game deck.
      * @param discardPile the discard pile.
      */
-    void resetRound(final Player p1,
-                    final Player p2,
-                    final Deck deck,
-                    final DiscardPile discardPile);
+    void resetRound(Player p1,
+                    Player p2,
+                    Deck deck,
+                    DiscardPile discardPile);
 }

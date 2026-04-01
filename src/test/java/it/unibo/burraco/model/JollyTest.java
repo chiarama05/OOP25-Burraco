@@ -33,7 +33,7 @@ class JollyTest {
     void testPureJollyIdentification() {
         final JollyImpl jolly = new JollyImpl(this.pureJolly);
         assertTrue(jolly.isPureJolly());
-        
+
         final JollyImpl notAJolly = new JollyImpl(this.twoOfHearts);
         assertFalse(notAJolly.isPureJolly());
     }

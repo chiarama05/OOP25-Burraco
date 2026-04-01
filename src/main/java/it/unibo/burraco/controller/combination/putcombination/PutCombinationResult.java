@@ -9,7 +9,7 @@ import it.unibo.burraco.model.card.Card;
  * This class follows a result pattern to carry both the status and the data
  * required by the UI to update the game board.
  */
-public class PutCombinationResult {
+public final class PutCombinationResult {
 
     /**
      * Enumeration of all possible outcomes for a "put combination" action.

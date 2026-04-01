@@ -52,7 +52,7 @@ public class AttachNotifierImpl implements AttachNotifier {
                 throw new IllegalArgumentException("Not an error result: " + result);
         };
 
-        String title = switch (result) {
+        final String title = switch (result) {
             case INVALID_COMBINATION, WOULD_GET_STUCK -> "Move Not Allowed";
             default -> "Error";
         };

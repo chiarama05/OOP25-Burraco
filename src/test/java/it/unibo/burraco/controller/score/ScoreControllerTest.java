@@ -71,7 +71,7 @@ class ScoreControllerTest {
     @Test
     void testRoundEndWithVictory() {
         when(this.score.calculateFinalScore(this.p1)).thenReturn(500);
-        when(this.p1.getMatchTotalScore()).thenReturn(2005); 
+        when(this.p1.getMatchTotalScore()).thenReturn(2005);
 
         this.scoreController.onRoundEnd();
         verify(this.sound, timeout(500)).playVictorySound();

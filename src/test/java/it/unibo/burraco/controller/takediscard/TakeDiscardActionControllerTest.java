@@ -40,7 +40,7 @@ class TakeDiscardActionControllerTest {
     void testHandleSuccessInformsView() {
         final DrawResult successResult = mock(DrawResult.class);
         final Player mockPlayer = mock(Player.class);
-        
+
         when(successResult.getStatus()).thenReturn(DrawResult.Status.SUCCESS_MULTIPLE);
         when(this.logicController.tryTakeDiscard()).thenReturn(successResult);
         when(this.turnModel.getCurrentPlayer()).thenReturn(mockPlayer);
@@ -56,7 +56,7 @@ class TakeDiscardActionControllerTest {
     @Test
     void testHandleFailureInformsViewOfError() {
         final DrawResult errorResult = mock(DrawResult.class);
-        
+
         when(errorResult.getStatus()).thenReturn(DrawResult.Status.ALREADY_DRAWN);
         when(this.logicController.tryTakeDiscard()).thenReturn(errorResult);
 

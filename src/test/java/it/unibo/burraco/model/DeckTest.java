@@ -119,9 +119,9 @@ class DeckTest {
         final int initialSize = this.deck.getCards().size();
         final Card drawn = this.deck.draw();
         final List<Card> currentCards = this.deck.getCards();
-        
+
         assertEquals(initialSize - 1, currentCards.size());
-        assertFalse(currentCards.stream().anyMatch(c -> c == drawn), 
+        assertFalse(currentCards.stream().anyMatch(c -> c == drawn),
             "The specific object instance should not be in the deck anymore");
     }
 }

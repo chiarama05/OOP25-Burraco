@@ -56,7 +56,7 @@ class DrawManagerTest {
         drawManager.drawFromDeck(player, deck);
         final DrawResult result = drawManager.drawFromDeck(player, deck);
         assertEquals(DrawResult.Status.ALREADY_DRAWN, result.getStatus());
-        verify(deck, times(1)).draw(); 
+        verify(deck, times(1)).draw();
     }
 
     @Test
@@ -66,12 +66,12 @@ class DrawManagerTest {
         final Card c2 = mock(Card.class);
         discardPile.add(c1);
         discardPile.add(c2);
-        
+
         final List<Card> hand = new ArrayList<>();
         when(this.player.getHand()).thenReturn(hand);
-        
+
         final DrawResult result = this.drawManager.drawFromDiscard(this.player, discardPile);
-        
+
         assertEquals(DrawResult.Status.SUCCESS_MULTIPLE, result.getStatus());
         assertTrue(hand.contains(c1));
         assertTrue(hand.contains(c2));
@@ -82,9 +82,9 @@ class DrawManagerTest {
     @Test
     void testDrawFromEmptyDiscard() {
         final List<Card> emptyDiscard = new ArrayList<>();
-        
+
         final DrawResult result = this.drawManager.drawFromDiscard(this.player, emptyDiscard);
-        
+
         assertEquals(DrawResult.Status.EMPTY_DISCARD, result.getStatus());
         assertFalse(this.drawManager.hasDrawn());
     }
@@ -92,13 +92,13 @@ class DrawManagerTest {
     @Test
     void testResetTurn() {
         when(this.deck.draw()).thenReturn(mock(Card.class));
-        
+
         this.drawManager.drawFromDeck(this.player, this.deck);
         assertTrue(this.drawManager.hasDrawn());
-        
+
         this.drawManager.resetTurn();
         assertFalse(this.drawManager.hasDrawn());
-        
+
         final DrawResult result = this.drawManager.drawFromDeck(this.player, this.deck);
         assertEquals(DrawResult.Status.SUCCESS, result.getStatus());
     }

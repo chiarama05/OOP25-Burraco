@@ -12,7 +12,7 @@ import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 
 class SetAttachUtilsTest {
-    
+
     @Test
     void testCanAttachSameValue() {
         final List<Card> set = new ArrayList<>(List.of(
@@ -31,7 +31,7 @@ class SetAttachUtilsTest {
             new CardImpl("♠", "10"),
             new CardImpl("Jolly", "Jolly")
         ));
-        final Card two = new CardImpl("♦", "2"); 
+        final Card two = new CardImpl("♦", "2");
         assertFalse(SetAttachUtils.canAttachToSet(set, two));
     }
 }

@@ -65,7 +65,7 @@ class PlayerTest {
     void testPotInteraction() {
         final List<Card> potCards = List.of(this.aceOfHearts, this.kingOfHearts);
         this.player.addToPot(potCards);
-        
+
         assertEquals(2, this.player.getPot().size());
         this.player.drawPot();
 

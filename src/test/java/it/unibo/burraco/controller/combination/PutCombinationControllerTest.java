@@ -24,7 +24,7 @@ import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.turn.Turn;
 
 class PutCombinationControllerTest {
-    
+
     private PutCombinationController controller;
     private DrawManager drawManager;
     private Player player;
@@ -36,14 +36,14 @@ class PutCombinationControllerTest {
         gameController = mock(GameController.class, RETURNS_DEEP_STUBS);
         drawManager = mock(DrawManager.class);
         turn = mock(Turn.class);
-        player = spy(new PlayerImpl("TestPlayer")); 
+        player = spy(new PlayerImpl("TestPlayer"));
         when(turn.getCurrentPlayer()).thenReturn(player);
-    
+
         controller = new PutCombinationController(
-            gameController, 
-            drawManager, 
-            mock(PotManager.class), 
-            mock(ClosureManager.class), 
+            gameController,
+            drawManager,
+            mock(PotManager.class),
+            mock(ClosureManager.class),
             turn
         );
     }
@@ -65,7 +65,7 @@ class PutCombinationControllerTest {
         player.addCardHand(c2);
         player.addCardHand(c3);
         final List<Card> cardsToPut = List.of(c1, c2, c3);
-        player.setInPot(false); 
+        player.setInPot(false);
         final PutCombinationResult result = controller.tryPutCombination(cardsToPut);
         assertEquals(PutCombinationResult.Status.SUCCESS_TAKE_POT, result.getStatus());
     }

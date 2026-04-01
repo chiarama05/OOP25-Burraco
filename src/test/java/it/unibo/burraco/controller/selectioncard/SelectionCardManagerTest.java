@@ -42,7 +42,7 @@ class SelectionCardManagerTest {
     @Test
     void testToggleSelectionRemovesExistingCard() {
         this.selectionManager.toggleSelection(this.card1);
-        this.selectionManager.toggleSelection(this.card1); 
+        this.selectionManager.toggleSelection(this.card1);
         assertFalse(this.selectionManager.isSelected(this.card1), "Card should be deselected");
         assertTrue(this.selectionManager.isEmpty(), "Selection should be empty");
     }
@@ -61,9 +61,9 @@ class SelectionCardManagerTest {
         final SelectionNotifier notifier = mock(SelectionNotifier.class);
         final Player player = mock(Player.class);
         final SelectionView view = mock(SelectionView.class);
-        
+
         this.selectionManager.processCombination(player, view, true, notifier);
-        
+
         verify(notifier).notifySelectionError("EMPTY_SELECTION");
         verifyNoInteractions(player, view);
     }
@@ -72,9 +72,9 @@ class SelectionCardManagerTest {
     void testProcessCombinationInvalid() {
         this.selectionManager.toggleSelection(this.card1);
         final SelectionNotifier notifier = mock(SelectionNotifier.class);
-        
+
         this.selectionManager.processCombination(mock(Player.class), mock(SelectionView.class), true, notifier);
-        
+
         verify(notifier).notifySelectionError("INVALID_COMBINATION");
     }
 
@@ -87,16 +87,16 @@ class SelectionCardManagerTest {
         this.selectionManager.toggleSelection(c1);
         this.selectionManager.toggleSelection(c2);
         this.selectionManager.toggleSelection(c3);
-        
+
         final Player player = mock(Player.class);
         final SelectionView view = mock(SelectionView.class);
         final SelectionNotifier notifier = mock(SelectionNotifier.class);
-        
+
         this.selectionManager.processCombination(player, view, true, notifier);
-        
+
         verify(player).removeCards(anyList());
         verify(player).addCombination(anyList());
-        
+
         verify(view).addCombinationToPlayerPanel(anyList(), eq(true));
         verify(view).refreshHandPanel(eq(true), any());
         assertTrue(this.selectionManager.isEmpty());

@@ -23,7 +23,7 @@ public final class BurracoApp {
 
     /**
      * Main entry point of the application.
-     * 
+     *
      * @param args command line arguments
      */
     public static void main(final String[] args) {

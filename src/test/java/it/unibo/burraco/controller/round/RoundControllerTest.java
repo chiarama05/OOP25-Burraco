@@ -42,7 +42,7 @@ class RoundControllerTest {
         when(gameController.getDiscardPile()).thenReturn(mock(DiscardPile.class));
         when(gameController.getDrawManager()).thenReturn(mock(DrawManager.class));
         when(tableView.getDiscardView()).thenReturn(mock(DiscardView.class));
-        roundController = new RoundControllerImpl(tableView, resetManager, p1, p2, 
+        roundController = new RoundControllerImpl(tableView, resetManager, p1, p2,
                                                  gameController, distController, distView);
     }
 

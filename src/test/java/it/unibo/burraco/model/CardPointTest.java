@@ -63,7 +63,7 @@ class CardPointTest {
 
         for (int i = 0; i < values.length; i++) {
             final Card card = new CardImpl(HEARTS, values[i]);
-            assertEquals(expected[i], CardPoint.toInt(card), 
+            assertEquals(expected[i], CardPoint.toInt(card),
                 "Rank-to-int mapping failed for value: " + values[i]);
         }
     }

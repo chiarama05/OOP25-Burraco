@@ -42,7 +42,7 @@ class ClosureManagerTest {
         this.notifier = mock(GameNotifier.class);
         this.scoreController = mock(ScoreController.class);
         this.player = new PlayerImpl("Player1");
-        
+
         this.manager = new ClosureManager(this.turnModel, this.notifier, TARGET_SCORE, this.scoreController);
     }
 
@@ -67,7 +67,7 @@ class ClosureManagerTest {
         verify(this.notifier).notifyMustTakePotBeforeDiscard();
         verify(this.turnModel, never()).setGameFinished(true);
     }
-    
+
     @Test
     void testHandleStateAfterActionNoBurracoWhenPotTaken() {
         this.player.setInPot(true);
@@ -129,7 +129,7 @@ class ClosureManagerTest {
     void testHandleStateAfterDiscardOkWhenHandNotEmpty() {
         this.player.setInPot(true);
         this.player.addCombination(new ArrayList<>(BURRACO));
-        this.player.addCardHand(new CardImpl("♠", "K")); 
+        this.player.addCardHand(new CardImpl("♠", "K"));
 
         final boolean result = this.manager.handleStateAfterDiscard(this.player);
 
@@ -137,7 +137,7 @@ class ClosureManagerTest {
         verify(this.turnModel, never()).setGameFinished(true);
         verify(this.notifier, never()).notifyInvalidClosure();
     }
-    
+
     @Test
     void testAttemptClosureTriggersRoundEndWhenCurrentPlayerCanClose() {
         final Player closingPlayer = new PlayerImpl("Closer");
@@ -155,7 +155,7 @@ class ClosureManagerTest {
     @Test
     void testAttemptClosureNotifiesInvalidClosureWhenNoBurraco() {
         final Player noBurracoPlayer = new PlayerImpl("NoBurraco");
-        noBurracoPlayer.setInPot(true); 
+        noBurracoPlayer.setInPot(true);
 
         when(this.turnModel.getCurrentPlayer()).thenReturn(noBurracoPlayer);
 
