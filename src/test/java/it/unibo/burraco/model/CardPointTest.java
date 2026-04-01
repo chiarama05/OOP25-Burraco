@@ -13,23 +13,29 @@ import it.unibo.burraco.model.score.CardPoint;
 class CardPointTest {
     private static final String HEARTS = "♥";
     private static final String JOLLY_SEED = "♕";
+    private static final int JOLLY_POINTS = 30;
+    private static final int TWO_POINTS = 20;
+    private static final int ACE_POINTS = 15;
+    private static final int HIGH_CARD_POINTS = 10;
+    private static final int LOW_CARD_POINTS = 5;
+    private static final int CONSTRUCTOR_COUNT = 1;
 
     @Test
     void testJollyWorth30() {
         final Card jolly = new CardImpl(JOLLY_SEED, "Jolly");
-        assertEquals(30, CardPoint.getCardPoints(jolly));
+        assertEquals(JOLLY_POINTS, CardPoint.getCardPoints(jolly));
     }
 
     @Test
     void testTwoWorth20() {
         final Card two = new CardImpl(HEARTS, "2");
-        assertEquals(20, CardPoint.getCardPoints(two));
+        assertEquals(TWO_POINTS, CardPoint.getCardPoints(two));
     }
 
     @Test
     void testAceWorth15() {
         final Card ace = new CardImpl(HEARTS, "A");
-        assertEquals(15, CardPoint.getCardPoints(ace));
+        assertEquals(ACE_POINTS, CardPoint.getCardPoints(ace));
     }
 
     @Test
@@ -37,7 +43,7 @@ class CardPointTest {
         final String[] highValues = {"K", "Q", "J", "10", "9", "8"};
         for (final String value : highValues) {
             final Card card = new CardImpl(HEARTS, value);
-            assertEquals(10, CardPoint.getCardPoints(card), "Expected 10 points for value: " + value);
+            assertEquals(HIGH_CARD_POINTS, CardPoint.getCardPoints(card), "Expected 10 points for value: " + value);
         }
     }
 
@@ -46,7 +52,7 @@ class CardPointTest {
         final String[] lowValues = {"7", "6", "5", "4", "3"};
         for (final String value : lowValues) {
             final Card card = new CardImpl(HEARTS, value);
-            assertEquals(5, CardPoint.getCardPoints(card), "Expected 5 points for value: " + value);
+            assertEquals(LOW_CARD_POINTS, CardPoint.getCardPoints(card), "Expected 5 points for value: " + value);
         }
     }
 
@@ -83,7 +89,7 @@ class CardPointTest {
     @Test
     void testPrivateConstructor() {
         final var constructors = CardPoint.class.getDeclaredConstructors();
-        assertEquals(1, constructors.length);
+        assertEquals(CONSTRUCTOR_COUNT, constructors.length);
         assertFalse(constructors[0].canAccess(null));
     }
 }

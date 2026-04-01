@@ -18,6 +18,10 @@ import it.unibo.burraco.model.player.Player;
 
 class DistributionManagerImplTest {
 
+    private static final int HAND_SIZE = 11;
+    private static final int POT_SIZE = 11;
+    private static final int TOTAL_DRAWS = 45;
+
     private DistributionManagerImpl distManager;
     private Player p1;
     private Player p2;
@@ -37,11 +41,11 @@ class DistributionManagerImplTest {
     @Test
     void testDistributeInitialCards() {
         this.distManager.distributeInitialCards(this.p1, this.p2, this.deck, this.discardPile);
-        verify(this.p1, times(11)).addCardHand(any(Card.class));
-        verify(this.p2, times(11)).addCardHand(any(Card.class));
-        verify(this.p1).addToPot(argThat(list -> list.size() == 11));
-        verify(this.p2).addToPot(argThat(list -> list.size() == 11));
+        verify(this.p1, times(HAND_SIZE)).addCardHand(any(Card.class));
+        verify(this.p2, times(HAND_SIZE)).addCardHand(any(Card.class));
+        verify(this.p1).addToPot(argThat(list -> list.size() == POT_SIZE));
+        verify(this.p2).addToPot(argThat(list -> list.size() == POT_SIZE));
         verify(this.discardPile).add(any(Card.class));
-        verify(this.deck, times(45)).draw();
+        verify(this.deck, times(TOTAL_DRAWS)).draw();
     }
 }

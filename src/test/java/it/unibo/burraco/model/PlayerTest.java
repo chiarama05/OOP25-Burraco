@@ -19,6 +19,12 @@ class PlayerTest {
     private static final String DEFAULT_NAME = "Player";
     private static final String HEARTS = "♥";
     private static final String SPADES = "♠";
+    private static final int SCORE_FIRST = 10;
+    private static final int SCORE_SECOND = 25;
+    private static final int SCORE_TOTAL = 35;
+    private static final int SCORE_ROUND = 100;
+    private static final int POT_SIZE = 2;
+    private static final int COMBO_SIZE = 2;
 
     private PlayerImpl player;
     private CardImpl aceOfHearts;
@@ -66,12 +72,12 @@ class PlayerTest {
         final List<Card> potCards = List.of(this.aceOfHearts, this.kingOfHearts);
         this.player.addToPot(potCards);
 
-        assertEquals(2, this.player.getPot().size());
+        assertEquals(POT_SIZE, this.player.getPot().size());
         this.player.drawPot();
 
         assertTrue(this.player.getPot().isEmpty());
         assertTrue(this.player.isInPot());
-        assertEquals(2, this.player.getHand().size());
+        assertEquals(POT_SIZE, this.player.getHand().size());
     }
 
     @Test
@@ -80,26 +86,26 @@ class PlayerTest {
         this.player.addCombination(comb);
 
         comb.add(this.twoOfSpades);
-        assertEquals(2, this.player.getCombinations().get(0).size());
+        assertEquals(COMBO_SIZE, this.player.getCombinations().get(0).size());
     }
 
     @Test
     void testScorePersistence() {
-        this.player.addPointsToMatch(10);
-        this.player.addPointsToMatch(25);
-        assertEquals(35, this.player.getMatchTotalScore());
+        this.player.addPointsToMatch(SCORE_FIRST);
+        this.player.addPointsToMatch(SCORE_SECOND);
+        assertEquals(SCORE_TOTAL, this.player.getMatchTotalScore());
     }
 
     @Test
     void testResetForNewRound() {
         this.player.addCardHand(this.aceOfHearts);
         this.player.setInPot(true);
-        this.player.addPointsToMatch(100);
+        this.player.addPointsToMatch(SCORE_ROUND);
 
         this.player.resetForNewRound();
 
         assertTrue(this.player.getHand().isEmpty());
         assertFalse(this.player.isInPot());
-        assertEquals(100, this.player.getMatchTotalScore());
+        assertEquals(SCORE_ROUND, this.player.getMatchTotalScore());
     }
 }
