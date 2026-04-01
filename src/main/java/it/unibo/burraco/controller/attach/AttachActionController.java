@@ -67,7 +67,7 @@ public final class AttachActionController {
         final AttachResult result = this.attachController.tryAttach(
                 currentPlayer, selectedCards, combinationCards, hasDrawn, isCurrentPlayer);
 
-        if (AttachResult.SUCCESS_BURRACO == result) {
+        if (AttachResult.SUCCESS_BURRACO == result) { 
             this.gameController.getSoundController().playBurracoSound();
         }
 
