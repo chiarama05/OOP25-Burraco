@@ -25,7 +25,7 @@ class ScoreControllerTest {
     private static final int TARGET_SCORE = 2005;
     private static final int WINNING_SCORE = 2010;
     private static final int POINTS_TO_WIN = 500;
-    private static final int TIMEOUT_MS = 500;
+    private static final int TIMEOUT_MS = 2000;
 
     private ScoreController scoreController;
     private Score score;

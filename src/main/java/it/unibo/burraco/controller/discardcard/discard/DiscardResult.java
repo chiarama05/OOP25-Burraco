@@ -2,6 +2,8 @@ package it.unibo.burraco.controller.discardcard.discard;
 
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
+
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -94,7 +96,10 @@ public final class DiscardResult {
      * @return the state of the discard pile after the move.
      */
     public List<Card> getUpdatedDiscardPile() {
-        return this.updatedDiscardPile;
+        if (this.updatedDiscardPile == null) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(this.updatedDiscardPile);
     }
 
     /**

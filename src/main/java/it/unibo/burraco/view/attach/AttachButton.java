@@ -44,7 +44,7 @@ public final class AttachButton extends JButton implements AttachView {
     private static final String JOLLY_VALUE = "Jolly";
     private static final String TWO_VALUE = "2";
 
-    private final transient List<Card> cards;
+    private final List<Card> cards;
     private final transient TableView tableView;
     private final boolean isPlayer1Owner;
     private transient BiConsumer<List<Card>, AttachButton> onAttachAction;
@@ -57,7 +57,7 @@ public final class AttachButton extends JButton implements AttachView {
      * @param isPlayer1Owner true if this combination belongs to Player 1
      */
     public AttachButton(final List<Card> initialCards, final TableView tableView, final boolean isPlayer1Owner) {
-        this.cards = initialCards;
+        this.cards = new ArrayList<>(initialCards);
         this.tableView = tableView;
         this.isPlayer1Owner = isPlayer1Owner;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
