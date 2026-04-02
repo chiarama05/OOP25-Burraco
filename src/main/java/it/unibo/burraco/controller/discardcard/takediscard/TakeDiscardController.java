@@ -1,10 +1,13 @@
 package it.unibo.burraco.controller.discardcard.takediscard;
 
+import java.util.List;
+
 import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.controller.drawcard.DrawResult;
 import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.turn.Turn;
+import it.unibo.burraco.model.card.Card;
 
 /**
  * Pure logic controller for the "Take Discard" action.
@@ -37,6 +40,11 @@ public class TakeDiscardController {
      */
     public DrawResult tryTakeDiscard() {
         final Player current = turnModel.getCurrentPlayer();
-        return drawManager.drawFromDiscard(current, discardPile.getCards());
+        final List<Card> cards = discardPile.getCards();
+        final DrawResult result = drawManager.drawFromDiscard(current, cards);
+        if (result.getStatus() == DrawResult.Status.SUCCESS_MULTIPLE) {
+            discardPile.reset();
+        }
+        return result;
     }
 }

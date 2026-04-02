@@ -222,7 +222,10 @@ public final class TableViewImpl implements TableView {
 
     @Override
     public void updateDiscardPile(final List<Card> cards) {
+        this.discardPanel.removeAll();
         this.discardView.updateDiscardPile(new ArrayList<>(cards));
+        this.discardPanel.revalidate();
+        this.discardPanel.repaint();
     }
 
     @Override

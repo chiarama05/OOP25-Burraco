@@ -6,6 +6,8 @@ import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.notification.takediscard.TakeDiscardNotifier;
 
 import javax.swing.JButton;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,8 +50,8 @@ public final class TakeDiscardButton implements TakeDiscardActionView {
 
     @Override
     public void onTakeDiscardSuccess(final Player current, final List<Card> updatedPile, final boolean isPlayer1) {
-        this.view.refreshHandPanel(isPlayer1, current.getHand());
-        this.view.updateDiscardPile(updatedPile);
+        this.view.updateDiscardPile(new ArrayList<>(updatedPile));
+        this.view.refreshHandPanel(isPlayer1, new ArrayList<>(current.getHand()));
     }
 
     @Override

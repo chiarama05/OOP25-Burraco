@@ -62,8 +62,9 @@ public class DrawManager {
             return DrawResult.emptyDiscard();
         }
 
-        player.getHand().addAll(discards);
-        discards.clear();
+        for (final Card c : discards) {
+            player.addCardHand(c);
+        }
         this.drawCard = true;
 
         return DrawResult.successMultiple();

@@ -73,9 +73,8 @@ class DrawManagerTest {
         final DrawResult result = this.drawManager.drawFromDiscard(this.player, discardPile);
 
         assertEquals(DrawResult.Status.SUCCESS_MULTIPLE, result.getStatus());
-        assertTrue(hand.contains(c1));
-        assertTrue(hand.contains(c2));
-        assertTrue(discardPile.isEmpty());
+        verify(this.player).addCardHand(c1);
+        verify(this.player).addCardHand(c2);
         assertTrue(this.drawManager.hasDrawn());
     }
 

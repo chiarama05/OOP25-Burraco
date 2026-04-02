@@ -11,6 +11,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -61,7 +63,8 @@ public final class HandViewImpl extends JPanel implements HandView {
     public void refreshHand(final List<Card> hand) {
         this.removeAll();
 
-        final int preferredWidth = (hand.size() * PREF_CARD_STEP) + PREF_WIDTH_OFFSET;
+        final List<Card> cardsToRender = new ArrayList<>(hand);
+        final int preferredWidth = (cardsToRender.size() * PREF_CARD_STEP) + PREF_WIDTH_OFFSET;
         this.setPreferredSize(new Dimension(preferredWidth, PANEL_HEIGHT));
 
         for (final Card c : hand) {
@@ -125,7 +128,7 @@ public final class HandViewImpl extends JPanel implements HandView {
 
     @Override
     public Set<Card> getSelectedCards() {
-        return this.selectionManager.getSelectedCards();
+        return new HashSet<>(this.selectionManager.getSelectedCards());
     }
 
     @Override
