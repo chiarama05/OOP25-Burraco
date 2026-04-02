@@ -23,7 +23,7 @@ public interface HandView {
      *
      * @return a {@link Set} of selected {@link Card} objects
      */
-    Set<Card> getSelectedCards();
+    List<Card> getSelectedCards();
 
     /**
      * Resets the selection status, deselecting all cards currently in the hand.

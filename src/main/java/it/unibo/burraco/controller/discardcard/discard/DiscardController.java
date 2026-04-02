@@ -7,8 +7,7 @@ import it.unibo.burraco.controller.turn.TurnController;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.turn.Turn;
-
-import java.util.Set;
+import java.util.List;
 
 /**
  * Main logic controller for the discard action.
@@ -55,7 +54,7 @@ public class DiscardController {
      * @param selectedCards the card selected by the player to be discarded.
      * @return a DiscardResult containing the outcome of the operation.
      */
-    public DiscardResult tryDiscard(final Set<Card> selectedCards) {
+    public DiscardResult tryDiscard(final List<Card> selectedCards) {
 
         // A player must draw from the deck or pile before discarding
         if (!this.drawManager.hasDrawn()) {

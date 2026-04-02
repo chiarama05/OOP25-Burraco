@@ -5,8 +5,8 @@ import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.notification.game.GameNotifier;
 import it.unibo.burraco.view.table.TableView;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.function.BiConsumer;
 
 /**
@@ -67,8 +67,8 @@ public final class DiscardButton implements DiscardActionView {
      * @return the set of selected cards
      */
     @Override
-    public Set<Card> getSelectedCards(final boolean player1Flag) {
-        return this.view.getHandViewForCurrentPlayer(player1Flag).getSelectedCards();
+    public List<Card> getSelectedCards(final boolean player1Flag) {
+        return new ArrayList<>(this.view.getHandViewForCurrentPlayer(player1Flag).getSelectedCards());
     }
 
     /**

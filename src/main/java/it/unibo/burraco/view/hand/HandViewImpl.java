@@ -12,9 +12,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Implementation of {@link HandView}.
@@ -127,9 +125,9 @@ public final class HandViewImpl extends JPanel implements HandView {
     }
 
     @Override
-    public Set<Card> getSelectedCards() {
-        return new HashSet<>(this.selectionManager.getSelectedCards());
-    }
+    public List<Card> getSelectedCards() {
+    return new ArrayList<>(this.selectionManager.getSelectedCards());
+}
 
     @Override
     public void clearSelection() {
@@ -149,8 +147,8 @@ public final class HandViewImpl extends JPanel implements HandView {
      * @return the selected {@link Card} if exactly one is selected, null otherwise
      */
     public Card getSingleSelectedCard() {
-        final Set<Card> selected = this.getSelectedCards();
-        return selected.size() == 1 ? selected.iterator().next() : null;
+        final List<Card> selected = this.getSelectedCards();
+        return selected.size() == 1 ? selected.get(0) : null;
     }
 
     /**

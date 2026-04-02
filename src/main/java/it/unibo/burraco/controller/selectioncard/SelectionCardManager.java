@@ -2,9 +2,7 @@ package it.unibo.burraco.controller.selectioncard;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import it.unibo.burraco.controller.combination.CombinationValidator;
 import it.unibo.burraco.model.card.Card;
@@ -19,8 +17,8 @@ import it.unibo.burraco.view.selection.SelectionView;
  */
 public class SelectionCardManager {
 
-    /** Internal storage for selected cards, ensuring uniqueness via HashSet. */
-    private final Set<Card> selectedCards = new HashSet<>();
+    /** Internal storage for selected cards, ensuring uniqueness via ArrayList. */
+    private final List<Card> selectedCards = new ArrayList<>();
 
     /**
      * Adds a card to the selection if not present, or removes it if already selected.
@@ -28,9 +26,9 @@ public class SelectionCardManager {
      * @param card the card to toggle.
      */
     public void toggleSelection(final Card card) {
-        if (this.selectedCards.contains(card)) {
-            this.selectedCards.remove(card);
-        } else {
+        final boolean removed = this.selectedCards.removeIf(c -> 
+            System.identityHashCode(c) == System.identityHashCode(card));
+        if (!removed) {
             this.selectedCards.add(card);
         }
     }
@@ -41,7 +39,8 @@ public class SelectionCardManager {
      * @return true if the specified card is currently in the selection set.
      */
     public boolean isSelected(final Card card) {
-        return this.selectedCards.contains(card);
+        return this.selectedCards.stream().anyMatch(c -> 
+            System.identityHashCode(c) == System.identityHashCode(card));
     }
 
     /**
@@ -50,8 +49,8 @@ public class SelectionCardManager {
      *
      * @return a read-only Set of selected cards.
      */
-    public Set<Card> getSelectedCards() {
-        return Collections.unmodifiableSet(this.selectedCards);
+    public List<Card> getSelectedCards() {
+        return Collections.unmodifiableList(selectedCards);
     }
 
     /** Clears all currently selected cards. */

@@ -44,7 +44,6 @@ public final class AttachUtils {
             || StraightUtils.isSameSeed(combination)) {
             return CombinationValidator.isValidCombination(hypothetical);
         }
-
         return false;
     }
 

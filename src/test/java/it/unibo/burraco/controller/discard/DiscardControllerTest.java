@@ -23,7 +23,6 @@ import it.unibo.burraco.model.turn.Turn;
 import it.unibo.burraco.model.discard.DiscardPile;
 
 import java.util.List;
-import java.util.Set;
 
 class DiscardControllerTest {
 
@@ -56,7 +55,7 @@ class DiscardControllerTest {
     void testTryDiscardFailsWhenNotDrawn() {
         when(this.drawManager.hasDrawn()).thenReturn(false);
 
-        final DiscardResult result = this.controller.tryDiscard(Set.of(mock(Card.class)));
+        final DiscardResult result = this.controller.tryDiscard(List.of(mock(Card.class)));
 
         assertFalse(result.isValid(), "Discard should be invalid if player hasn't drawn");
         assertEquals("must_draw", result.getMessage());
@@ -66,7 +65,7 @@ class DiscardControllerTest {
     void testTryDiscardFailsWithMultipleCards() {
         when(this.drawManager.hasDrawn()).thenReturn(true);
 
-        final Set<Card> multipleCards = Set.of(mock(Card.class), mock(Card.class));
+        final List<Card> multipleCards = List.of(mock(Card.class), mock(Card.class));
         final DiscardResult result = this.controller.tryDiscard(multipleCards);
 
         assertFalse(result.isValid(), "Discard should be invalid if multiple cards are selected");
@@ -79,7 +78,7 @@ class DiscardControllerTest {
         final Card cardToDiscard = mock(Card.class);
         when(this.currentPlayer.getHand()).thenReturn(List.of(cardToDiscard));
 
-        final DiscardResult result = this.controller.tryDiscard(Set.of(cardToDiscard));
+        final DiscardResult result = this.controller.tryDiscard(List.of(cardToDiscard));
 
         assertTrue(result.isValid(), "Discard should be valid");
         verify(this.discardPile).add(cardToDiscard);
