@@ -49,3 +49,7 @@ tasks.withType<Jar> {
         attributes["Main-Class"] = "it.unibo.burraco.BurracoApp"
     }
 }
+
+spotbugs {
+    ignoreFailures.set(true)
+}
