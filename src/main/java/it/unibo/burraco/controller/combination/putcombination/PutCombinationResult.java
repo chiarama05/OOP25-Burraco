@@ -1,5 +1,6 @@
 package it.unibo.burraco.controller.combination.putcombination;
 
+import java.util.Collections;
 import java.util.List;
 
 import it.unibo.burraco.model.card.Card;
@@ -99,7 +100,10 @@ public final class PutCombinationResult {
      * @return the processed combination
      */
     public List<Card> getProcessedCombo() {
-        return processedCombo;
+        if (this.processedCombo == null) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(this.processedCombo);
     }
 
     /**

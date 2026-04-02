@@ -46,7 +46,7 @@ public final class HandViewImpl extends JPanel implements HandView {
     private static final String NORMAL_FONT = "Monospaced";
 
     private final transient SelectionCardManager selectionManager;
-    private CardSelectionListener cardSelectionListener;
+    private transient CardSelectionListener cardSelectionListener;
 
     /**
      * Constructs a HandViewImpl with a specific selection manager.

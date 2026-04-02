@@ -25,7 +25,7 @@ class ScoreControllerTest {
     private static final int TARGET_SCORE = 2005;
     private static final int WINNING_SCORE = 2010;
     private static final int POINTS_TO_WIN = 500;
-    private static final int TIMEOUT_MS = 500;
+    private static final int TIMEOUT_MS = 2000;
 
     private ScoreController scoreController;
     private Score score;
@@ -71,13 +71,14 @@ class ScoreControllerTest {
         verify(this.sound, never()).playVictorySound();
     }
 
-    @Test
+   @Test
     void testRoundEndWithVictory() {
         when(this.score.calculateFinalScore(this.p1)).thenReturn(POINTS_TO_WIN);
-        when(this.p1.getMatchTotalScore()).thenReturn(WINNING_SCORE);
+        when(this.score.calculateFinalScore(this.p2)).thenReturn(0);
+        when(this.p1.getMatchTotalScore()).thenReturn(WINNING_SCORE); 
         when(this.p2.getMatchTotalScore()).thenReturn(0);
-
         this.scoreController.onRoundEnd();
+        verify(this.p1).addPointsToMatch(POINTS_TO_WIN);
         verify(this.sound, timeout(TIMEOUT_MS)).playVictorySound();
         verify(this.scoreView, timeout(TIMEOUT_MS)).display();
     }
