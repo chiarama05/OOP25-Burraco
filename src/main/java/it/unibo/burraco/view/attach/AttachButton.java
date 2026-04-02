@@ -220,7 +220,7 @@ public final class AttachButton extends JButton implements AttachView {
      * @return the list of cards
      */
     public List<Card> getCards() {
-        return Collections.unmodifiableList(this.cards);
+        return this.cards;
     }
 
     /**

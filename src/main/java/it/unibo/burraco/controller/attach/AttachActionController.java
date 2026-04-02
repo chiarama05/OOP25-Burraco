@@ -63,7 +63,6 @@ public final class AttachActionController {
         final boolean hasDrawn = this.gameController.getDrawManager().hasDrawn();
         final boolean isPlayer1Current = this.gameController.isPlayer1(currentPlayer);
         final boolean isCurrentPlayer = isPlayer1Current == this.isPlayer1Owner;
-
         final AttachResult result = this.attachController.tryAttach(
                 currentPlayer, selectedCards, combinationCards, hasDrawn, isCurrentPlayer);
 

@@ -73,7 +73,6 @@ public class AttachController {
 
         final int sizeBefore = combinationCards.size();
         final boolean success = this.executeAttach(currentPlayer, selectedCards, combinationCards);
-
         if (!success) {
             return AttachResult.ATTACH_FAILED;
         }
