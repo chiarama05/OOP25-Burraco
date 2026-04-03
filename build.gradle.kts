@@ -25,6 +25,8 @@ dependencies {
 
     testImplementation("org.mockito:mockito-core:5.11.0")
     testImplementation("org.mockito:mockito-junit-jupiter:5.11.0")
+    
+    compileOnly("com.github.spotbugs:spotbugs-annotations:4.8.3")
 }
 
 application {
