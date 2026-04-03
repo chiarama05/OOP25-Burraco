@@ -44,7 +44,7 @@ public final class AttachButton extends JButton implements AttachView {
     private static final String JOLLY_VALUE = "Jolly";
     private static final String TWO_VALUE = "2";
 
-    private final List<Card> cards;
+    private final transient List<Card> cards;
     private final transient TableView tableView;
     private final boolean isPlayer1Owner;
     private transient BiConsumer<List<Card>, AttachButton> onAttachAction;
@@ -142,14 +142,15 @@ public final class AttachButton extends JButton implements AttachView {
     public void updateVisuals() {
         this.removeAll();
 
-        if (StraightUtils.isSameSeed(cards)) {
+        if (StraightUtils.isSameSeed(cards) && StraightUtils.isValidStraight(new ArrayList<>(cards))) {
             final List<Card> ordered = StraightUtils.orderStraight(new ArrayList<>(this.cards));
             Collections.reverse(ordered);
             this.cards.clear();
             this.cards.addAll(ordered);
         } else {
             final String baseValue = cards.stream()
-                .filter(c -> !JOLLY_VALUE.equalsIgnoreCase(c.getValue()))
+                .filter(c -> !JOLLY_VALUE.equalsIgnoreCase(c.getValue()) 
+                        && !TWO_VALUE.equals(c.getValue()))
                 .map(Card::getValue)
                 .findFirst()
                 .orElse(null);
