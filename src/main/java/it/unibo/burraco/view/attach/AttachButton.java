@@ -1,5 +1,7 @@
 package it.unibo.burraco.view.attach;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import it.unibo.burraco.controller.combination.straight.StraightUtils;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
@@ -26,6 +28,7 @@ import java.util.function.BiConsumer;
  * when the player clicks the button with selected cards.
  * Implements {@link AttachView} to react to attach outcomes from the controller.
  */
+@SuppressFBWarnings("Se")
 public final class AttachButton extends JButton implements AttachView {
 
     private static final long serialVersionUID = 1L;
