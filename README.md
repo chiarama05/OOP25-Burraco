@@ -15,6 +15,7 @@ Il gioco prevede due giocatori, entrambi gestiti direttamente dall’utente. Ogn
 pesca una carta dal mazzo o dagli scarti, crea combinazioni valide (scale o tris), può attaccare carte alle combinazioni esistenti, 
 scartare una carta e cercare di chiudere la partita nel rispetto delle regole del Burraco.
 
+
 Funzionalità minimali ritenute obbligatorie (realizzabili in circa 60-70% del tempo a disposizione):
 
 • Gestione delle carte (mazzo, distribuzione, pesca, scarti, attacco)
@@ -28,6 +29,7 @@ Funzionalità minimali ritenute obbligatorie (realizzabili in circa 60-70% del t
 • Gestione chiusura
 
 
+
 Funzionalità opzionali (a completamento del 100% del tempo a disposizione):
 
 • Gestione dei pozzetti
@@ -37,6 +39,7 @@ Funzionalità opzionali (a completamento del 100% del tempo a disposizione):
 • Ordinamento automatico delle scale
 
 • Gestione completa dei jolly e dei 2 nelle combinazioni
+
 
 
 "Challenge" principali:
