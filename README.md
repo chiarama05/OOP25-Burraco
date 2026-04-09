@@ -1,9 +1,13 @@
-<img width="1264" height="842" alt="Burraco" src="https://github.com/user-attachments/assets/80a56522-71ac-4903-bc4b-db1e17e0edfd" />
+<img width="1167" height="758" alt="Burraco" src="https://github.com/user-attachments/assets/fc3c4640-50b8-4e2f-af77-fdabb2ee5961" />
 E-mail dei componenti:
 sofia.mascioli2@studio.unibo.it
+
 beatrice.esposto@studio.unibo.it
+
 chiara.mazzoli9@studio.unibo.it
+
 giorgia.ceccaroni@studio.unibo.it
+
 
 Il gruppo si pone come obiettivo la realizzazione di una replica del noto gioco di carte “Burraco”.
 Il gioco prevede due giocatori, entrambi gestiti direttamente dall’utente. Ogni giocatore, a turno, 
