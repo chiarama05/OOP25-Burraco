@@ -39,8 +39,8 @@ public final class StartMenuViewImpl implements StartMenuView {
     private static final int BTN_WIDTH = 200;
     private static final int BTN_HEIGHT = 60;
 
-    private static final int RULES_WIDTH = 600;
-    private static final int RULES_HEIGHT = 650;
+    private static final int RULES_WIDTH = 700;
+    private static final int RULES_HEIGHT = 750;
     private static final int RULES_FONT_SIZE = 14;
     private static final int RULES_MARGIN = 20;
 
@@ -53,23 +53,61 @@ public final class StartMenuViewImpl implements StartMenuView {
 
     private static final String RULES_TEXT =
         "BURRACO GAME RULES\n\n"
-        + "1. TURN STEPS\n"
-        + "• Drawing: Take a card from the Deck or all cards from the Discard Pile.\n"
-        + "• Melding: Open new Straight/Set or attach cards to existing ones.\n"
-        + "• Discarding: Discard one card to end your turn.\n\n"
-        + "2. OPENING RUNS\n"
-        + "• Straight: 3+ cards of the same suit in order.\n"
-        + "• Set: 3+ cards of the same rank.\n"
-        + "• You can attach cards only to your own Runs.\n\n"
-        + "3. WILD CARDS\n"
-        + "• You can use one Joker or one 'Pinella' (any 2) per Run.\n"
-        + "• Replacing a wild card moves it to a new position in the same sequence.\n\n"
-        + "4. BURRACO\n"
-        + "A sequence of at least 7 cards. Clean (no wild cards) or Dirty.\n\n"
+        + "1. SETUP\n"
+        + "• Each player enters an optional name and chooses a target score to play up to.\n"
+        + "• Player 1 is the one who takes the first turn.\n"
+        + "• The player who reaches the target score first wins the game.\n\n"
+        + "2. YOUR TURN\n"
+        + "Each turn has three phases, in order:\n\n"
+        + "  A) DRAW\n"
+        + "     • Tap 'Draw' to take the top card from the Deck, OR\n"
+        + "     • Tap 'Take Discard' to take all cards from the Discard Pile.\n\n"
+        + "  B) MELD (optional)\n"
+        + "     • To lay down a new Run: select 3 or more cards from your hand,\n"
+        + "       then tap 'Put Combination'.\n"
+        + "     • To extend an existing Run: select the cards you want to add,\n"
+        + "       then tap on the Run you want to attach them to.\n"
+        + "     • You may meld multiple times per turn.\n\n"
+        + "  C) DISCARD (mandatory)\n"
+        + "     • Select one card from your hand and tap 'Discard' to end your turn.\n\n"
+        + "3. RUNS & WILD CARDS\n"
+        + "STRAIGHT:\n"
+        + "  • three or more cards of the same seed in consecutive order.\n"
+        + "  • Can include one wild card (a Jolly or a 2).\n"
+        + "  • A wild card is placed in the exact position of the card it replaces.\n"
+        + "  • It can only be replaced by that specific natural card.\n"
+        + "  • Once replaced, the wild card moves to the first free position at the top of the Straight.\n"
+        + "  • A 2 can also be used as a natural card if placed next to an Ace or a 3 of the same seed.\n\n"
+        + "SET:\n"
+        + "  • three or more cards of the same rank.\n"
+        + "  • Can include one wild card.\n\n"
+        + "GENERAL RULE:\n"
+        + "  • You can only attach cards to your own Runs, not your opponent's.\n\n"
         + "5. THE POT\n"
-        + "Taking the 11 extra cards is mandatory to close the round.\n\n"
-        + "6. CLOSING\n"
-        + "Requires a Burraco, taking the Pot, and discarding a final natural card.";
+        + "• Each player has a Pot of 11 extra cards, taken once their initial hand runs out.\n"
+        + "• You must take the Pot before you are allowed to close the round.\n"
+        + "• However, you do not need to have a Burraco yet in order to take the Pot.\n"
+        + "• If your hand runs out before discarding, you take the Pot on fly\n"
+        + "  and continue your turn right away.\n"
+        + "• If your hand runs out after discarding, you will receive the Pot\n"
+        + "  at your next turn.\n\n"
+        + "4. BURRACO & CLOSING\n"
+        + "• The goal is to score as many points as possible and close the round.\n"
+        + "• To close, you must have at least one Burraco, have taken the Pot,\n"
+        + "  and discard your final card.\n\n"
+        + "  BURRACO:\n"
+        + "  • A Run of at least 7 cards.\n"
+        + "  • Clean Burraco (no wild cards): +200 points.\n"
+        + "  • Dirty Burraco: +100 points.\n\n"
+        + "  SCORING:\n"
+        + "  • +100 points for closing the round.\n"
+        + "  • -100 points if you never took the Pot.\n"
+        + "  • Cards left in hand are subtracted; cards melded on the table are added:\n"
+        + "      2:        +20 pts\n"
+        + "      Ace:      +15 pts\n"
+        + "      8 to K:   +10 pts\n"
+        + "      1 to 7:    +5 pts\n"
+        + "      Joker:    +30 pts\n";
 
     private final JFrame frame;
     private final OnGameStartListener listener;
