@@ -11,7 +11,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.util.Locale;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -59,6 +58,7 @@ public final class ScoreViewImpl implements ScoreView {
     private static final Color ACCENT_COLOR = new Color(219, 112, 147);
 
     private final JFrame frame;
+    private final JFrame tableFrame;
     private final Score scoreManager;
     private final int targetScore;
     private Runnable nextAction;
@@ -86,6 +86,7 @@ public final class ScoreViewImpl implements ScoreView {
         this.scoreManager = scoreManager;
         this.frame = new JFrame("Burraco - Final Standings");
         this.targetScore = targetScore;
+        this.tableFrame = tableView.getFrame();
 
         this.setupUI(p1, p2, name1, name2, matchOver);
     }
@@ -151,7 +152,10 @@ public final class ScoreViewImpl implements ScoreView {
             final String btnText = "CHAMPION: " + winnerName.toUpperCase(Locale.ROOT) 
                                  + " (FINISH GAME)";
             actionBtn = new RoundedGradientButton(btnText);
-            actionBtn.addActionListener(e -> this.frame.dispose());
+            actionBtn.addActionListener(e -> {
+                this.tableFrame.dispose();
+                this.frame.dispose();
+            });
         } else {
             actionBtn = new RoundedGradientButton("NEXT ROUND (Target: " + targetScore + " pts)");
             actionBtn.addActionListener(e -> {
