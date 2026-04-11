@@ -45,9 +45,7 @@ public final class AttachNotifierImpl implements AttachNotifier {
 
                 You need at least one Burraco before you can reduce
                 your hand to 1 card.
-                """;
-            case ATTACH_FAILED ->
-                "These cards cannot be attached!";
+                """; 
             default ->
                 throw new IllegalArgumentException("Not an error result: " + result);
         };

@@ -24,8 +24,7 @@ public final class SelectionNotifierImpl implements SelectionNotifier {
     public void notifySelectionError(final String errorCode) {
         final String message = switch (errorCode) {
             case "EMPTY_SELECTION" -> "Select card from your hand first!";
-            case "INVALID_COMBINATION" -> "Combination not valid!";
-            default -> "Error.";
+            default -> null;
         };
 
         JOptionPane.showMessageDialog(parent, message, "Selection error", JOptionPane.WARNING_MESSAGE);
