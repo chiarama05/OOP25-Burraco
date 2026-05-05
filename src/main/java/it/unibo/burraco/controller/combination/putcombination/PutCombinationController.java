@@ -65,19 +65,19 @@ public class PutCombinationController {
      */
     public PutCombinationResult tryPutCombination(final List<Card> selectedCards) {
         if (!drawManager.hasDrawn()) {
-            return PutCombinationResult.error(PutCombinationResult.Status.NOT_DRAWN);
+            return new PutCombinationResult(PutCombinationResult.Status.NOT_DRAWN);
         }
         if (selectedCards.isEmpty()) {
-            return PutCombinationResult.error(PutCombinationResult.Status.NO_CARDS_SELECTED);
+            return new PutCombinationResult(PutCombinationResult.Status.NO_CARDS_SELECTED);
         }
 
         final Player current = turnModel.getCurrentPlayer();
 
         if (this.closureValidator.wouldGetStuckAfterPutCombo(current, selectedCards, selectedCards.size())) {
-            return PutCombinationResult.error(PutCombinationResult.Status.WOULD_GET_STUCK);
+            return new PutCombinationResult(PutCombinationResult.Status.WOULD_GET_STUCK);
         }
         if (selectedCards.size() < MIN_COMBO_SIZE || !CombinationValidator.isValidCombination(selectedCards)) {
-            return PutCombinationResult.error(PutCombinationResult.Status.INVALID_COMBINATION);
+            return new PutCombinationResult(PutCombinationResult.Status.INVALID_COMBINATION);
         }
 
         // Sort the cards if the combination is a Straight
@@ -100,17 +100,17 @@ public class PutCombinationController {
 
         if (state == ClosureState.ZERO_CARDS_NO_POT) {
             potManager.handlePot(false);
-            return PutCombinationResult.success(PutCombinationResult.Status.SUCCESS_TAKE_POT, processedCombo, isPlayer1);
+            return new PutCombinationResult(PutCombinationResult.Status.SUCCESS_TAKE_POT, processedCombo, isPlayer1);
         }
         if (state == ClosureState.CAN_CLOSE) {
             closureManager.handleStateAfterAction(current);
-            return PutCombinationResult.success(PutCombinationResult.Status.SUCCESS_CLOSE, processedCombo, isPlayer1);
+            return new PutCombinationResult(PutCombinationResult.Status.SUCCESS_CLOSE, processedCombo, isPlayer1);
         }
         if (state == ClosureState.ZERO_CARDS_NO_BURRACO) {
             closureManager.handleStateAfterAction(current);
-            return PutCombinationResult.success(PutCombinationResult.Status.SUCCESS_STUCK, processedCombo, isPlayer1);
+            return new PutCombinationResult(PutCombinationResult.Status.SUCCESS_STUCK, processedCombo, isPlayer1);
         }
 
-        return PutCombinationResult.success(PutCombinationResult.Status.SUCCESS, processedCombo, isPlayer1);
+        return new PutCombinationResult(PutCombinationResult.Status.SUCCESS, processedCombo, isPlayer1);
     }
 }

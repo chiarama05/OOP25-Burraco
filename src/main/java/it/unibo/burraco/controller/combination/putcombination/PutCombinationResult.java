@@ -55,7 +55,7 @@ public final class PutCombinationResult {
      * @param combo      the processed combination of cards, or null if failed
      * @param isPlayer1  true if the action was performed by player 1
      */
-    private PutCombinationResult(final Status status, final List<Card> combo, final boolean isPlayer1) {
+    public PutCombinationResult(final Status status, final List<Card> combo, final boolean isPlayer1) {
         this.status = status;
         this.processedCombo = combo;
         this.isPlayer1 = isPlayer1;
@@ -67,22 +67,8 @@ public final class PutCombinationResult {
      * @param status the reason for failure
      * @return a result instance representing a failure
      */
-    public static PutCombinationResult error(final Status status) {
-        return new PutCombinationResult(status, null, false);
-    }
-
-    /**
-     * Creates a success result with the relevant data.
-     *
-     * @param status    the success status type
-     * @param combo     the validated and ordered combination
-     * @param isPlayer1 true if the action was performed by player 1, false for player 2
-     * @return a result instance representing a successful move
-     */
-    public static PutCombinationResult success(final Status status,
-                                                final List<Card> combo,
-                                                final boolean isPlayer1) {
-        return new PutCombinationResult(status, combo, isPlayer1);
+    public PutCombinationResult(final Status status) {
+        this(status, null, false);
     }
 
     /**

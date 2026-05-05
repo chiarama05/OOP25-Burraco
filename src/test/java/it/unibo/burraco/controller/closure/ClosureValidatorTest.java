@@ -44,66 +44,68 @@ class ClosureValidatorTest {
     );
 
     private Player player;
+    private ClosureValidator validator;
 
     @BeforeEach
     void setUp() {
         this.player = new PlayerImpl(PLAYER_NAME);
+        this.validator = new ClosureValidator();
     }
 
     @Test
     void testEvaluateOkWhenHandNotEmpty() {
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
-        assertEquals(ClosureState.OK, ClosureValidator.evaluate(this.player));
+        assertEquals(ClosureState.OK, validator.evaluate(this.player));
     }
 
     @Test
     void testEvaluateZeroCardsNoPotWhenHandEmptyAndPotNotTaken() {
-        assertEquals(ClosureState.ZERO_CARDS_NO_POT, ClosureValidator.evaluate(this.player));
+        assertEquals(ClosureState.ZERO_CARDS_NO_POT, validator.evaluate(this.player));
     }
 
     @Test
     void testEvaluateZeroCardsNoBurracoWhenPotTakenNoBurraco() {
         this.player.setInPot(true);
-        assertEquals(ClosureState.ZERO_CARDS_NO_BURRACO, ClosureValidator.evaluate(this.player));
+        assertEquals(ClosureState.ZERO_CARDS_NO_BURRACO, validator.evaluate(this.player));
     }
 
     @Test
     void testEvaluateCanCloseWhenPotTakenAndBurracoPresent() {
         this.player.setInPot(true);
         this.player.addCombination(CLEAN_BURRACO);
-        assertEquals(ClosureState.CAN_CLOSE, ClosureValidator.evaluate(this.player));
+        assertEquals(ClosureState.CAN_CLOSE, validator.evaluate(this.player));
     }
 
     @Test
     void testEvaluateCanCloseWithDirtyBurraco() {
         this.player.setInPot(true);
         this.player.addCombination(DIRTY_BURRACO);
-        assertEquals(ClosureState.CAN_CLOSE, ClosureValidator.evaluate(this.player));
+        assertEquals(ClosureState.CAN_CLOSE, validator.evaluate(this.player));
     }
 
     @Test
     void testEvaluateAfterDiscardOkWhenHandNotEmpty() {
         this.player.addCardHand(new CardImpl(SPADES, KING));
         this.player.setInPot(true);
-        assertEquals(ClosureState.OK, ClosureValidator.evaluateAfterDiscard(this.player));
+        assertEquals(ClosureState.OK, validator.evaluateAfterDiscard(this.player));
     }
 
     @Test
     void testEvaluateAfterDiscardRoundWonWithPotAndBurraco() {
         this.player.setInPot(true);
         this.player.addCombination(CLEAN_BURRACO);
-        assertEquals(ClosureState.ROUND_WON, ClosureValidator.evaluateAfterDiscard(this.player));
+        assertEquals(ClosureState.ROUND_WON, validator.evaluateAfterDiscard(this.player));
     }
 
     @Test
     void testEvaluateAfterDiscardCannotCloseNoBurraco() {
         this.player.setInPot(true);
-        assertEquals(ClosureState.CANNOT_CLOSE_NO_BURRACO, ClosureValidator.evaluateAfterDiscard(this.player));
+        assertEquals(ClosureState.CANNOT_CLOSE_NO_BURRACO, validator.evaluateAfterDiscard(this.player));
     }
 
     @Test
     void testEvaluateAfterDiscardOkWhenPotNotTaken() {
-        assertEquals(ClosureState.OK, ClosureValidator.evaluateAfterDiscard(this.player));
+        assertEquals(ClosureState.OK, validator.evaluateAfterDiscard(this.player));
     }
 
     @Test
@@ -111,7 +113,7 @@ class ClosureValidatorTest {
         this.player.setInPot(true);
         this.player.addCombination(CLEAN_BURRACO);
         this.player.addCardHand(new CardImpl(SPADES, ACE));
-        assertTrue(ClosureValidator.canCloseByDiscarding(this.player));
+        assertTrue(validator.canCloseByDiscarding(this.player));
     }
 
     @Test
@@ -120,34 +122,34 @@ class ClosureValidatorTest {
         this.player.addCombination(CLEAN_BURRACO);
         this.player.addCardHand(new CardImpl(SPADES, ACE));
         this.player.addCardHand(new CardImpl(SPADES, KING));
-        assertFalse(ClosureValidator.canCloseByDiscarding(this.player));
+        assertFalse(validator.canCloseByDiscarding(this.player));
     }
 
     @Test
     void testCanCloseByDiscardingFalsePotNotTaken() {
         this.player.addCombination(CLEAN_BURRACO);
         this.player.addCardHand(new CardImpl(SPADES, ACE));
-        assertFalse(ClosureValidator.canCloseByDiscarding(this.player));
+        assertFalse(validator.canCloseByDiscarding(this.player));
     }
 
     @Test
     void testCanCloseByDiscardingFalseNoBurraco() {
         this.player.setInPot(true);
         this.player.addCardHand(new CardImpl(SPADES, ACE));
-        assertFalse(ClosureValidator.canCloseByDiscarding(this.player));
+        assertFalse(validator.canCloseByDiscarding(this.player));
     }
 
     @Test
     void testPutComboNeverBlockedIfPotNotTaken() {
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
-        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(this.player, this.player.getHand(), 1));
+        assertFalse(validator.wouldGetStuckAfterPutCombo(this.player, this.player.getHand(), 1));
     }
 
     @Test
     void testPutComboBlockedWhenHandGoesToZeroWithPot() {
         this.player.setInPot(true);
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
-        assertTrue(ClosureValidator.wouldGetStuckAfterPutCombo(this.player, this.player.getHand(), 1));
+        assertTrue(validator.wouldGetStuckAfterPutCombo(this.player, this.player.getHand(), 1));
     }
 
     @Test
@@ -156,7 +158,7 @@ class ClosureValidatorTest {
         this.player.addCombination(CLEAN_BURRACO);
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
         this.player.addCardHand(new CardImpl(SPADES, SIX));
-        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(this.player,
+        assertFalse(validator.wouldGetStuckAfterPutCombo(this.player,
             List.of(this.player.getHand().get(0)), SMALL_COMBO));
     }
 
@@ -165,7 +167,7 @@ class ClosureValidatorTest {
         this.player.setInPot(true);
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
         this.player.addCardHand(new CardImpl(SPADES, SIX));
-        assertTrue(ClosureValidator.wouldGetStuckAfterPutCombo(this.player,
+        assertTrue(validator.wouldGetStuckAfterPutCombo(this.player,
             List.of(this.player.getHand().get(0)), SMALL_COMBO));
     }
 
@@ -174,7 +176,7 @@ class ClosureValidatorTest {
         this.player.setInPot(true);
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
         this.player.addCardHand(new CardImpl(SPADES, SIX));
-        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(this.player,
+        assertFalse(validator.wouldGetStuckAfterPutCombo(this.player,
             List.of(this.player.getHand().get(0)), BURRACO_SIZE));
     }
 
@@ -184,14 +186,14 @@ class ClosureValidatorTest {
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
         this.player.addCardHand(new CardImpl(SPADES, SIX));
         this.player.addCardHand(new CardImpl(SPADES, SEVEN));
-        assertFalse(ClosureValidator.wouldGetStuckAfterPutCombo(this.player,
+        assertFalse(validator.wouldGetStuckAfterPutCombo(this.player,
             List.of(this.player.getHand().get(0)), SMALL_COMBO));
     }
 
     @Test
     void testAttachNeverBlockedIfPotNotTaken() {
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
-        assertFalse(ClosureValidator.wouldGetStuckAfterAttach(this.player,
+        assertFalse(validator.wouldGetStuckAfterAttach(this.player,
             this.player.getHand(), ATTACH_SIZE));
     }
 
@@ -199,7 +201,7 @@ class ClosureValidatorTest {
     void testAttachBlockedWhenHandGoesToZeroWithPot() {
         this.player.setInPot(true);
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
-        assertTrue(ClosureValidator.wouldGetStuckAfterAttach(this.player,
+        assertTrue(validator.wouldGetStuckAfterAttach(this.player,
             this.player.getHand(), ATTACH_SIZE));
     }
 
@@ -210,7 +212,7 @@ class ClosureValidatorTest {
         this.player.addCardHand(new CardImpl(SPADES, SIX));
         this.player.addCardHand(new CardImpl(SPADES, SEVEN));
         final List<Card> attach = List.of(this.player.getHand().get(0), this.player.getHand().get(1));
-        assertFalse(ClosureValidator.wouldGetStuckAfterAttach(this.player, attach, ATTACH_SIZE));
+        assertFalse(validator.wouldGetStuckAfterAttach(this.player, attach, ATTACH_SIZE));
     }
 
     @Test
@@ -219,7 +221,7 @@ class ClosureValidatorTest {
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
         this.player.addCardHand(new CardImpl(SPADES, SIX));
         final List<Card> attach = List.of(this.player.getHand().get(0));
-        assertTrue(ClosureValidator.wouldGetStuckAfterAttach(this.player, attach, SMALL_COMBO));
+        assertTrue(validator.wouldGetStuckAfterAttach(this.player, attach, SMALL_COMBO));
     }
 
     @Test
@@ -229,6 +231,6 @@ class ClosureValidatorTest {
         this.player.addCardHand(new CardImpl(SPADES, FIVE));
         this.player.addCardHand(new CardImpl(SPADES, SIX));
         final List<Card> attach = List.of(this.player.getHand().get(0));
-        assertFalse(ClosureValidator.wouldGetStuckAfterAttach(this.player, attach, SMALL_COMBO));
+        assertFalse(validator.wouldGetStuckAfterAttach(this.player, attach, SMALL_COMBO));
     }
 }
