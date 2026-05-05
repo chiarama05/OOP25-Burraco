@@ -5,19 +5,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import it.unibo.burraco.controller.combination.set.SetAttachUtils;
+import it.unibo.burraco.controller.combination.set.SetHandler;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 
-class SetAttachUtilsTest {
+class SetHandlerTest {
 
     private static final String TEN = "10";
     private static final String HEARTS = "♥";
     private static final String SPADES = "♠";
     private static final String DIAMONDS = "♦";
     private static final String CLUBS = "♣";
+
+    private SetHandler setHandler;
+
+    @BeforeEach
+    void setUp() {
+        this.setHandler = new SetHandler();
+    }
 
     @Test
     void testCanAttachSameValue() {
@@ -27,7 +35,7 @@ class SetAttachUtilsTest {
             new CardImpl(DIAMONDS, TEN)
         ));
         final Card newTen = new CardImpl(CLUBS, TEN);
-        assertTrue(SetAttachUtils.canAttachToSet(set, newTen));
+        assertTrue(setHandler.canAttach(set, newTen));
     }
 
     @Test
@@ -38,6 +46,6 @@ class SetAttachUtilsTest {
             new CardImpl("Jolly", "Jolly")
         ));
         final Card two = new CardImpl(DIAMONDS, "2");
-        assertFalse(SetAttachUtils.canAttachToSet(set, two));
+        assertFalse(setHandler.canAttach(set, two));
     }
 }

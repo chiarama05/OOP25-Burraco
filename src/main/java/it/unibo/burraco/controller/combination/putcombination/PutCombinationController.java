@@ -7,7 +7,7 @@ import it.unibo.burraco.controller.closure.ClosureManager;
 import it.unibo.burraco.controller.closure.ClosureState;
 import it.unibo.burraco.controller.closure.ClosureValidator;
 import it.unibo.burraco.controller.combination.CombinationValidator;
-import it.unibo.burraco.controller.combination.set.SetUtils;
+import it.unibo.burraco.controller.combination.set.SetHandler;
 import it.unibo.burraco.controller.combination.straight.StraightUtils;
 import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.controller.game.GameController;
@@ -32,6 +32,8 @@ public class PutCombinationController {
     private final ClosureManager closureManager;
     private final Turn turnModel;
     private final ClosureValidator closureValidator;
+    private final CombinationValidator combinationValidator;
+    private final SetHandler setHandler;
 
     /**
      * Constructs a PutCombinationController with the necessary game components.
@@ -53,6 +55,8 @@ public class PutCombinationController {
         this.closureManager = closureManager;
         this.turnModel = turnModel;
         this.closureValidator = new ClosureValidator();
+        this.combinationValidator = new CombinationValidator();
+        this.setHandler = new SetHandler();
     }
 
     /**
@@ -76,13 +80,13 @@ public class PutCombinationController {
         if (this.closureValidator.wouldGetStuckAfterPutCombo(current, selectedCards, selectedCards.size())) {
             return new PutCombinationResult(PutCombinationResult.Status.WOULD_GET_STUCK);
         }
-        if (selectedCards.size() < MIN_COMBO_SIZE || !CombinationValidator.isValidCombination(selectedCards)) {
+        if (selectedCards.size() < MIN_COMBO_SIZE || !this.combinationValidator.isValidCombination(selectedCards)) {
             return new PutCombinationResult(PutCombinationResult.Status.INVALID_COMBINATION);
         }
 
         // Sort the cards if the combination is a Straight
         List<Card> processedCombo = new ArrayList<>(selectedCards);
-        if (StraightUtils.isSameSeed(processedCombo) && !SetUtils.isValidSet(processedCombo)) {
+        if (StraightUtils.isSameSeed(processedCombo) && !this.setHandler.isValid(processedCombo)) {
             processedCombo = StraightUtils.orderStraight(processedCombo);
         }
 

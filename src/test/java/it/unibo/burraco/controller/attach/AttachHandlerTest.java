@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 
-class AttachHandelrTest {
+class AttachHandlerTest {
     private AttachHandler handler;
 
     private static final String HEARTS = "♥";

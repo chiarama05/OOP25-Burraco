@@ -19,6 +19,11 @@ public class SelectionCardManager {
 
     /** Internal storage for selected cards, ensuring uniqueness via ArrayList. */
     private final List<Card> selectedCards = new ArrayList<>();
+    private final CombinationValidator combinationValidator;
+
+    public SelectionCardManager() {
+        this.combinationValidator = new CombinationValidator();
+    }
 
     /**
      * Adds a card to the selection if not present, or removes it if already selected.
@@ -92,7 +97,7 @@ public class SelectionCardManager {
         final List<Card> cardsToPut = new ArrayList<>(selectedCards);
 
         // Delegation to specialized validator
-        if (CombinationValidator.isValidCombination(cardsToPut)) {
+        if (this.combinationValidator.isValidCombination(cardsToPut)) {
             this.executeMove(player, view, isPlayer1, cardsToPut);
         } else {
             notifier.notifySelectionError("INVALID_COMBINATION");
