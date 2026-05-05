@@ -20,6 +20,7 @@ public class AttachController {
 
     private final AttachHandler attachHandler;
     private final ClosureValidator closureValidator;
+    private final CombinationValidator combinationValidator;
 
     /**
      * Default constructor for AttachController.
@@ -27,6 +28,7 @@ public class AttachController {
     public AttachController() {
         this.attachHandler = new AttachHandler();
         this.closureValidator = new ClosureValidator();
+        this.combinationValidator = new CombinationValidator();
     }
 
     /**
@@ -67,7 +69,7 @@ public class AttachController {
             hypothetical.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
         }
 
-        if (!CombinationValidator.isValidCombination(hypothetical)) {
+        if (!this.combinationValidator.isValidCombination(hypothetical)) {
             return AttachResult.INVALID_COMBINATION;
         }
 

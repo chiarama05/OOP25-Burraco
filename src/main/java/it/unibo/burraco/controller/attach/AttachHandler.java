@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import it.unibo.burraco.controller.combination.CombinationValidator;
-import it.unibo.burraco.controller.combination.set.SetUtils;
+import it.unibo.burraco.controller.combination.set.SetHandler;
 import it.unibo.burraco.controller.combination.straight.StraightUtils;
 import it.unibo.burraco.model.card.Card;
 
@@ -15,6 +15,13 @@ import it.unibo.burraco.model.card.Card;
  */
 public final class AttachHandler {
 
+    private final SetHandler setHandler;
+    private final CombinationValidator combinationValidator;
+
+    public AttachHandler() {
+        this.setHandler = new SetHandler();
+        this.combinationValidator = new CombinationValidator();
+    }
 
     /**
      * Checks if a list of new cards can be legally added to an existing combination.
@@ -39,9 +46,9 @@ public final class AttachHandler {
         final List<Card> hypothetical = new ArrayList<>(combination);
         hypothetical.addAll(newCards);
 
-        if (hasDuplicateValues || SetUtils.isValidSet(combination)
+        if (hasDuplicateValues || setHandler.isValid(combination)
             || StraightUtils.isSameSeed(combination)) {
-            return CombinationValidator.isValidCombination(hypothetical);
+            return this.combinationValidator.isValidCombination(hypothetical);
         }
         return false;
     }

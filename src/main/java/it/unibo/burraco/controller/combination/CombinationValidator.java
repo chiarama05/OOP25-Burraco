@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import it.unibo.burraco.controller.combination.set.SetUtils;
+import it.unibo.burraco.controller.combination.set.SetHandler;
 import it.unibo.burraco.controller.combination.straight.StraightUtils;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
@@ -18,8 +18,11 @@ public final class CombinationValidator {
     private static final String JOLLY_LITERAL = "Jolly";
     private static final String TWO_LITERAL = "2";
     private static final int MIN_COMBO_SIZE = 3;
+    private final SetHandler setHandler;
 
-    private CombinationValidator() { }
+    public CombinationValidator() {
+        this.setHandler = new SetHandler();
+    }
 
     /**
      * Validates a combination of cards.
@@ -29,7 +32,7 @@ public final class CombinationValidator {
      * @param cards the list of cards to validate
      * @return true if the combination is valid, false otherwise
      */
-    public static boolean isValidCombination(final List<Card> cards) {
+    public boolean isValidCombination(final List<Card> cards) {
         // A combination must have at least 3 cards
         if (cards == null || cards.size() < MIN_COMBO_SIZE) {
             return false;
@@ -46,7 +49,7 @@ public final class CombinationValidator {
             .collect(Collectors.toSet()).size() < realCards.size();
 
         // Case 1: The combination is a Set
-        if (hasDuplicateValues && SetUtils.isValidSet(cards)) {
+        if (hasDuplicateValues && this.setHandler.isValid(cards)) {
             final long wildcardsInSet = cards.stream()
                 .filter(c -> JOLLY_LITERAL.equalsIgnoreCase(c.getValue()) || TWO_LITERAL.equals(c.getValue()))
                 .count();
@@ -70,7 +73,7 @@ public final class CombinationValidator {
         }
 
         // Final check for Sets without duplicate cards
-        if (SetUtils.isValidSet(cards)) {
+        if (this.setHandler.isValid(cards)) {
             final long wildcardsInSet = cards.stream()
                 .filter(c -> JOLLY_LITERAL.equalsIgnoreCase(c.getValue()) || TWO_LITERAL.equals(c.getValue()))
                 .count();
@@ -86,7 +89,7 @@ public final class CombinationValidator {
      * @param context the combination of cards the card belongs to
      * @return true if the card is a Joker or a "2" used as a wildcard, false otherwise
      */
-    public static boolean isWildcard(final Card c, final List<Card> context) {
+    public boolean isWildcard(final Card c, final List<Card> context) {
 
         if (JOLLY_LITERAL.equalsIgnoreCase(c.getValue())) {
             return true;
