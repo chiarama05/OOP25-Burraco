@@ -31,6 +31,7 @@ public class PutCombinationController {
     private final PotManager potManager;
     private final ClosureManager closureManager;
     private final Turn turnModel;
+    private final ClosureValidator closureValidator;
 
     /**
      * Constructs a PutCombinationController with the necessary game components.
@@ -51,6 +52,7 @@ public class PutCombinationController {
         this.potManager = potManager;
         this.closureManager = closureManager;
         this.turnModel = turnModel;
+        this.closureValidator = new ClosureValidator();
     }
 
     /**
@@ -71,7 +73,7 @@ public class PutCombinationController {
 
         final Player current = turnModel.getCurrentPlayer();
 
-        if (ClosureValidator.wouldGetStuckAfterPutCombo(current, selectedCards, selectedCards.size())) {
+        if (this.closureValidator.wouldGetStuckAfterPutCombo(current, selectedCards, selectedCards.size())) {
             return PutCombinationResult.error(PutCombinationResult.Status.WOULD_GET_STUCK);
         }
         if (selectedCards.size() < MIN_COMBO_SIZE || !CombinationValidator.isValidCombination(selectedCards)) {
@@ -94,7 +96,7 @@ public class PutCombinationController {
         }
 
         final boolean isPlayer1 = gameController.isPlayer1(current);
-        final ClosureState state = ClosureValidator.evaluate(current);
+        final ClosureState state = this.closureValidator.evaluate(current);
 
         if (state == ClosureState.ZERO_CARDS_NO_POT) {
             potManager.handlePot(false);

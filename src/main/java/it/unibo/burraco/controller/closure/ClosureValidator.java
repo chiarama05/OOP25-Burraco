@@ -12,7 +12,7 @@ public final class ClosureValidator {
 
     private static final int BURRACO_THRESHOLD = 7;
 
-    private ClosureValidator() { }
+    public ClosureValidator() { }
 
     /**
      * Evaluates the full closure state of a player after any action.
@@ -22,7 +22,7 @@ public final class ClosureValidator {
      * @param player the player to evaluate
      * @return the appropriate ClosureState
      */
-    public static ClosureState evaluate(final Player player) {
+    public ClosureState evaluate(final Player player) {
         final boolean handEmpty = player.getHand().isEmpty();
         if (!handEmpty) {
             return ClosureState.OK;
@@ -43,7 +43,7 @@ public final class ClosureValidator {
      * @param player the player to check
      * @return true if the player is allowed to discard their last card and close
      */
-    public static boolean canCloseByDiscarding(final Player player) {
+    public boolean canCloseByDiscarding(final Player player) {
         return player.isInPot() && player.getBurracoCount() >= 1 && player.getHand().size() == 1;
     }
 
@@ -53,7 +53,7 @@ public final class ClosureValidator {
      * @param player the player who just discarded
      * @return the appropriate ClosureState
      */
-    public static ClosureState evaluateAfterDiscard(final Player player) {
+    public ClosureState evaluateAfterDiscard(final Player player) {
         if (player.getHand().isEmpty() && player.isInPot()) {
             return player.getBurracoCount() >= 1 ? ClosureState.ROUND_WON : ClosureState.CANNOT_CLOSE_NO_BURRACO;
         }
@@ -68,7 +68,7 @@ public final class ClosureValidator {
      * @param comboSize   the total number of cards in the new combination
      * @return true if the move would leave the player stuck, false otherwise
      */
-    public static boolean wouldGetStuckAfterPutCombo(
+    public boolean wouldGetStuckAfterPutCombo(
             final Player player,
             final List<Card> cardsToPlay,
             final int comboSize) {
@@ -89,7 +89,7 @@ public final class ClosureValidator {
      * @param currentComboSize the current number of cards in the target combination
      * @return true if the attach would leave the player stuck, false otherwise
      */
-    public static boolean wouldGetStuckAfterAttach(
+    public boolean wouldGetStuckAfterAttach(
             final Player player,
             final List<Card> cardsToAttach,
             final int currentComboSize) {

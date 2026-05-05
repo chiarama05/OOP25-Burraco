@@ -16,6 +16,7 @@ public class ClosureManager {
     private final Turn turnModel;
     private final GameNotifier notifier;
     private final ScoreController scoreController;
+    private final ClosureValidator validator;
 
     /**
      * Constructs a ClosureManager with all required collaborators.
@@ -33,6 +34,7 @@ public class ClosureManager {
         this.turnModel = turnModel;
         this.notifier = notifier;
         this.scoreController = scoreController;
+        this.validator = new ClosureValidator();
     }
 
     /**
@@ -43,7 +45,7 @@ public class ClosureManager {
      * @return true if the normal turn flow must be interrupted, false otherwise
      */
     public boolean handleStateAfterAction(final Player player) {
-        final ClosureState state = ClosureValidator.evaluate(player);
+        final ClosureState state = this.validator.evaluate(player);
 
         switch (state) {
             case OK:
@@ -70,7 +72,7 @@ public class ClosureManager {
      * @return true if the round ended, false otherwise
      */
     public boolean handleStateAfterDiscard(final Player player) {
-        final ClosureState state = ClosureValidator.evaluateAfterDiscard(player);
+        final ClosureState state = this.validator.evaluateAfterDiscard(player);
 
         switch (state) {
             case ROUND_WON:

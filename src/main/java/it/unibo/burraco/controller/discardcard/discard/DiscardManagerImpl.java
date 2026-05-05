@@ -15,6 +15,7 @@ import java.util.List;
 public final class DiscardManagerImpl implements DiscardManager {
 
     private final DiscardPile discardPile;
+    private final ClosureValidator closureValidator;
 
     /**
      * Constructs a DiscardManagerImpl.
@@ -23,6 +24,7 @@ public final class DiscardManagerImpl implements DiscardManager {
      */
     public DiscardManagerImpl(final DiscardPile discardPile) {
         this.discardPile = discardPile;
+        this.closureValidator = new ClosureValidator();
     }
 
     /**
@@ -48,7 +50,7 @@ public final class DiscardManagerImpl implements DiscardManager {
         player.removeCardHand(card);
         this.discardPile.add(card);
 
-        final ClosureState state = ClosureValidator.evaluateAfterDiscard(player);
+        final ClosureState state = this.closureValidator.evaluateAfterDiscard(player);
 
         switch (state) {
             case ROUND_WON:
