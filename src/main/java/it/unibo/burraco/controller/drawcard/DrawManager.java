@@ -31,19 +31,19 @@ public class DrawManager {
     public DrawResult drawFromDeck(final Player player, final Deck deck) {
         // Prevent drawing if already done this turn
         if (this.drawCard) {
-            return DrawResult.alreadyDrawn();
+            return new DrawResult(DrawResult.Status.ALREADY_DRAWN);
         }
 
         final Card card = deck.draw();
 
         if (card == null) {
-            return DrawResult.emptyDeck();
+            return new DrawResult(DrawResult.Status.EMPTY_DECK);
         }
 
         player.addCardHand(card);
         this.drawCard = true;
 
-        return DrawResult.success(card);
+        return new DrawResult(card);
     }
 
     /**
@@ -55,11 +55,11 @@ public class DrawManager {
      */
     public DrawResult drawFromDiscard(final Player player, final List<Card> discards) {
         if (this.drawCard) {
-            return DrawResult.alreadyDrawn();
+            return new DrawResult(DrawResult.Status.ALREADY_DRAWN);
         }
 
         if (discards.isEmpty()) {
-            return DrawResult.emptyDiscard();
+            return new DrawResult(DrawResult.Status.EMPTY_DISCARD);
         }
 
         for (final Card c : discards) {
@@ -67,7 +67,7 @@ public class DrawManager {
         }
         this.drawCard = true;
 
-        return DrawResult.successMultiple();
+        return new DrawResult(DrawResult.Status.SUCCESS_MULTIPLE);
     }
 
     /**
