@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
@@ -17,10 +18,17 @@ class CombinationValidatorTest {
     private static final String TWO = "2";
     private static final String JOLLY = "Jolly";
 
+    private CombinationValidator validator;
+
+    @BeforeEach
+    void setUp() {
+        this.validator = new CombinationValidator();
+    }
+
     @Test
     void testInvalidShortCombination() {
         final List<Card> cards = List.of(new CardImpl(HEARTS, SEVEN), new CardImpl(SPADES, SEVEN));
-        assertFalse(CombinationValidator.isValidCombination(cards));
+        assertFalse(validator.isValidCombination(cards));
     }
 
     @Test
@@ -30,7 +38,7 @@ class CombinationValidatorTest {
             new CardImpl(SPADES, SEVEN),
             new CardImpl(DIAMONDS, TWO)
         );
-        assertTrue(CombinationValidator.isValidCombination(cards));
+        assertTrue(validator.isValidCombination(cards));
     }
 
     @Test
@@ -40,7 +48,7 @@ class CombinationValidatorTest {
             new CardImpl(JOLLY, JOLLY),
             new CardImpl(DIAMONDS, TWO)
         );
-        assertFalse(CombinationValidator.isValidCombination(cards));
+        assertFalse(validator.isValidCombination(cards));
     }
 
     @Test
@@ -50,6 +58,6 @@ class CombinationValidatorTest {
             new CardImpl(HEARTS, TWO),
             new CardImpl(HEARTS, "3")
         );
-        assertTrue(CombinationValidator.isValidCombination(cards));
+        assertTrue(validator.isValidCombination(cards));
     }
 }

@@ -48,7 +48,7 @@ class DeckActionControllerTest {
 
     @Test
     void testHandleWhenDrawSucceedsThenViewIsNotified() {
-        final DrawResult success = DrawResult.success(mock(Card.class));
+        final DrawResult success = new DrawResult(mock(Card.class));
         when(this.drawManager.drawFromDeck(this.player, this.deck)).thenReturn(success);
 
         this.controller.handle(this.view);
@@ -59,7 +59,7 @@ class DeckActionControllerTest {
 
     @Test
     void testHandleWhenDrawFailsThenNotifierIsCalled() {
-        final DrawResult failure = DrawResult.alreadyDrawn();
+        final DrawResult failure = new DrawResult(DrawResult.Status.ALREADY_DRAWN);
         when(this.drawManager.drawFromDeck(this.player, this.deck)).thenReturn(failure);
 
         this.controller.handle(this.view);
@@ -70,8 +70,7 @@ class DeckActionControllerTest {
 
     @Test
     void testHandleAlwaysGetsDataFromGameController() {
-        // Setup a dummy result to allow the execution
-        final DrawResult dummyResult = DrawResult.success(mock(Card.class));
+        final DrawResult dummyResult = new DrawResult(mock(Card.class));
         when(this.drawManager.drawFromDeck(any(), any())).thenReturn(dummyResult);
 
         this.controller.handle(this.view);
