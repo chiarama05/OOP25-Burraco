@@ -58,12 +58,12 @@ public class DiscardController {
 
         // A player must draw from the deck or pile before discarding
         if (!this.drawManager.hasDrawn()) {
-            return DiscardResult.error("must_draw");
+            return new DiscardResult("must_draw");
         }
 
         // Exactly one card must be discarded
         if (selectedCards.size() != 1) {
-            return DiscardResult.error("select_one");
+            return new DiscardResult("select_one");
         }
 
         final Player current = this.turnModel.getCurrentPlayer();
@@ -76,13 +76,13 @@ public class DiscardController {
         }
         if (result.isGameWon()) {
             this.closureCtrl.handleStateAfterDiscard(current);
-            return DiscardResult.success(this.discardManager.getDiscardPile(), current, true);
+            return new DiscardResult(this.discardManager.getDiscardPile(), current, true);
         }
         if (willTakePot) {
             this.potCtrl.handlePot(true);
         }
         this.turnCtrl.executeNextTurn();
 
-        return DiscardResult.success(this.discardManager.getDiscardPile(), current, false);
+        return new DiscardResult(this.discardManager.getDiscardPile(), current, false);
     }
 }
