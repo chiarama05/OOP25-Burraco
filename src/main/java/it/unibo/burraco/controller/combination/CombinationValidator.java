@@ -19,9 +19,11 @@ public final class CombinationValidator {
     private static final String TWO_LITERAL = "2";
     private static final int MIN_COMBO_SIZE = 3;
     private final SetHandler setHandler;
+    private final StraightUtils straightUtils;
 
     public CombinationValidator() {
         this.setHandler = new SetHandler();
+        this.straightUtils = new StraightUtils();
     }
 
     /**
@@ -57,19 +59,19 @@ public final class CombinationValidator {
         }
 
         // Case 2: The combination is a Straight
-        if (StraightUtils.isSameSeed(cards)) {
-            final List<Card> ordered = StraightUtils.orderStraight(new ArrayList<>(cards));
+        if (this.straightUtils.isSameSeed(cards)) {
+            final List<Card> ordered = this.straightUtils.orderStraight(new ArrayList<>(cards));
             int effectiveWildcards = 0;
             for (int i = 0; i < ordered.size(); i++) {
                 final Card c = ordered.get(i);
                 if (JOLLY_LITERAL.equalsIgnoreCase(c.getValue())) {
                     effectiveWildcards++;
                 } else if (TWO_LITERAL.equals(c.getValue())
-                        && !StraightUtils.isPositionallyNatural(i, ordered)) {
+                        && !this.straightUtils.isPositionallyNatural(i, ordered)) {
                     effectiveWildcards++;
                 }
             }
-            return effectiveWildcards <= 1 && StraightUtils.isValidStraight(cards);
+            return effectiveWildcards <= 1 && this.straightUtils.isValidStraight(cards);
         }
 
         // Final check for Sets without duplicate cards
@@ -111,13 +113,13 @@ public final class CombinationValidator {
             .collect(Collectors.toSet()).size() < realCards.size();
 
         // In a Set a "2" is always a wildcard
-        if (hasDuplicateValues || !StraightUtils.isSameSeed(context)) {
+        if (hasDuplicateValues || !this.straightUtils.isSameSeed(context)) {
             return true;
         }
 
         // In a Straight a "2" is a wildcard only if not in its natural sequence
-        final List<Card> ordered = StraightUtils.orderStraight(new ArrayList<>(context));
+        final List<Card> ordered = this.straightUtils.orderStraight(new ArrayList<>(context));
         final int index = ordered.indexOf(c);
-        return !StraightUtils.isPositionallyNatural(index, ordered);
+        return !this.straightUtils.isPositionallyNatural(index, ordered);
     }
 }

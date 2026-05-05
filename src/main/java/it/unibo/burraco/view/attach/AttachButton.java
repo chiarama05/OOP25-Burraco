@@ -52,6 +52,8 @@ public final class AttachButton extends JButton implements AttachView {
     private final boolean isPlayer1Owner;
     private transient BiConsumer<List<Card>, AttachButton> onAttachAction;
 
+    private final transient StraightUtils straightUtils;
+
     /**
      * Constructs the button, initializes its layout and triggers the first visual render.
      *
@@ -63,6 +65,7 @@ public final class AttachButton extends JButton implements AttachView {
         this.cards = new ArrayList<>(initialCards);
         this.tableView = tableView;
         this.isPlayer1Owner = isPlayer1Owner;
+        this.straightUtils = new StraightUtils();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.WHITE);
         this.setBorder(BorderFactory.createCompoundBorder(
@@ -145,8 +148,8 @@ public final class AttachButton extends JButton implements AttachView {
     public void updateVisuals() {
         this.removeAll();
 
-        if (StraightUtils.isSameSeed(cards) && StraightUtils.isValidStraight(new ArrayList<>(cards))) {
-            final List<Card> ordered = StraightUtils.orderStraight(new ArrayList<>(this.cards));
+        if (this.straightUtils.isSameSeed(cards) && this.straightUtils.isValidStraight(new ArrayList<>(cards))) {
+            final List<Card> ordered = this.straightUtils.orderStraight(new ArrayList<>(this.cards));
             Collections.reverse(ordered);
             this.cards.clear();
             this.cards.addAll(ordered);

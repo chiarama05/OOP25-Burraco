@@ -35,7 +35,7 @@ public final class StraightUtils {
     /**
      * Private constructor to prevent instantiation of this utility class.
      */
-    private StraightUtils() { }
+    public StraightUtils() { }
 
     /**
      * Checks if all non-wildcard cards in the list belong to the same seed.
@@ -43,7 +43,7 @@ public final class StraightUtils {
      * @param cards the list of cards to check
      * @return true if all non-wildcards have the same seed, false otherwise
      */
-    public static boolean isSameSeed(final List<Card> cards) {
+    public boolean isSameSeed(final List<Card> cards) {
         if (cards == null || cards.isEmpty()) {
             return false;
         }
@@ -66,7 +66,7 @@ public final class StraightUtils {
      * @param cards the list of cards to validate
      * @return true if the cards form a valid sequence, false otherwise
      */
-    public static boolean isValidStraight(final List<Card> cards) {
+    public boolean isValidStraight(final List<Card> cards) {
         if (cards == null || cards.size() < MIN_STRAIGHT_SIZE) {
             return false;
         }
@@ -80,7 +80,7 @@ public final class StraightUtils {
      * @param forceTwosAsWildcards if true, any '2' is treated as a wildcard
      * @return true if the combination is mathematically sequential
      */
-    private static boolean checkLogic(final List<Card> cards, final boolean forceTwosAsWildcards) {
+    private boolean checkLogic(final List<Card> cards, final boolean forceTwosAsWildcards) {
         final List<Card> real = new ArrayList<>();
         int wildcards = 0;
         boolean naturalTwoUsed = false;
@@ -125,7 +125,7 @@ public final class StraightUtils {
      * @param cards the full list of cards in the combination
      * @return true if the suits match or no reference card exists, false otherwise
      */
-    private static boolean isSameSeedAsRest(final Card two, final List<Card> cards) {
+    private boolean isSameSeedAsRest(final Card two, final List<Card> cards) {
         return cards.stream()
                 .filter(c -> !JOLLY.equals(c.getValue()) && !TWO.equals(c.getValue()))
                 .findFirst()
@@ -141,7 +141,7 @@ public final class StraightUtils {
      * @param straight the straight in which the card appears
      * @return true if the 2 is natural, false otherwise
      */
-    public static boolean isNaturalTwo(final Card two, final List<Card> straight) {
+    public boolean isNaturalTwo(final Card two, final List<Card> straight) {
         if (!TWO.equals(two.getValue())) {
             return false;
         }
@@ -160,7 +160,7 @@ public final class StraightUtils {
      * @param aceLow if true, Ace is treated as 1 (low); if false, Ace is treated as 14 (high)
      * @return the numeric value of the card
      */
-    private static int mapValue(final Card c, final boolean aceLow) {
+    private int mapValue(final Card c, final boolean aceLow) {
         if (ACE.equals(c.getValue())) {
             return aceLow ? ACE_LOW_VALUE : ACE_HIGH_VALUE;
         }
@@ -175,7 +175,7 @@ public final class StraightUtils {
      * @param wildcards number of wildcards available to fill gaps
      * @return true if the values can be made sequential, false otherwise
      */
-    private static boolean canBeSequential(final List<Integer> values, final long wildcards) {
+    private boolean canBeSequential(final List<Integer> values, final long wildcards) {
         if (values.size() < 2) {
             return true;
         }
@@ -201,7 +201,7 @@ public final class StraightUtils {
      * @param sequence the unordered list of cards
      * @return a new list sorted by rank, with wildcards in the correct placeholder positions
      */
-    public static List<Card> orderStraight(final List<Card> sequence) {
+    public List<Card> orderStraight(final List<Card> sequence) {
         if (sequence == null || sequence.isEmpty()) {
             return Collections.emptyList();
         }
@@ -223,7 +223,7 @@ public final class StraightUtils {
      * @param forceTwosAsWild if true, all 2s are treated as wildcards regardless of suit
      * @return the ordered list, or null if no valid ordering exists
      */
-    private static List<Card> buildOrdering(final List<Card> sequence, final boolean forceTwosAsWild) {
+    private List<Card> buildOrdering(final List<Card> sequence, final boolean forceTwosAsWild) {
         final List<Card> wilds = new ArrayList<>();
         final List<Card> real = new ArrayList<>();
         boolean naturalTwoUsed = false;
@@ -302,7 +302,7 @@ public final class StraightUtils {
      * @param wildCount the number of wildcards available
      * @return true if the Ace should be treated as 1 (low), false if 14 (high)
      */
-    private static boolean decideIfAceIsLow(final List<Card> real, final int wildCount) {
+    private boolean decideIfAceIsLow(final List<Card> real, final int wildCount) {
         final List<Integer> lowVals = real.stream()
                 .map((final Card c) -> mapValue(c, true)).sorted().collect(Collectors.toList());
         return canBeSequential(lowVals, wildCount) && real.stream().noneMatch(c -> "K".equals(c.getValue()));
@@ -316,7 +316,7 @@ public final class StraightUtils {
      * @param ordered the ordered list of cards
      * @return true if the '2' at that position is natural, false otherwise
      */
-    public static boolean isPositionallyNatural(final int index, final List<Card> ordered) {
+    public boolean isPositionallyNatural(final int index, final List<Card> ordered) {
         if (index < 0 || index >= ordered.size()) {
             return false;
         }

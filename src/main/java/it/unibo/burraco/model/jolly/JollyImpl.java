@@ -13,6 +13,8 @@ public final class JollyImpl implements Jolly {
 
     private final Card card;
 
+    private final transient StraightUtils straightUtils;
+
     /**
      * Constructor that initializes the Jolly with a specific card.
      *
@@ -20,6 +22,7 @@ public final class JollyImpl implements Jolly {
      */
     public JollyImpl(final Card card) {
         this.card = card;
+        this.straightUtils = new StraightUtils();
     }
 
     @Override
@@ -33,7 +36,7 @@ public final class JollyImpl implements Jolly {
             return false;
         }
         return isPureJolly() 
-            || "2".equals(card.getValue()) && !StraightUtils.isNaturalTwo(card, context);
+            || "2".equals(card.getValue()) && !this.straightUtils.isNaturalTwo(card, context);
     }
 
     /**

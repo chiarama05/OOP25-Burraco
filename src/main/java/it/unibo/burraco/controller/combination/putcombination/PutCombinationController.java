@@ -34,6 +34,7 @@ public class PutCombinationController {
     private final ClosureValidator closureValidator;
     private final CombinationValidator combinationValidator;
     private final SetHandler setHandler;
+    private final StraightUtils straightUtils;
 
     /**
      * Constructs a PutCombinationController with the necessary game components.
@@ -57,6 +58,7 @@ public class PutCombinationController {
         this.closureValidator = new ClosureValidator();
         this.combinationValidator = new CombinationValidator();
         this.setHandler = new SetHandler();
+        this.straightUtils = new StraightUtils();
     }
 
     /**
@@ -86,8 +88,8 @@ public class PutCombinationController {
 
         // Sort the cards if the combination is a Straight
         List<Card> processedCombo = new ArrayList<>(selectedCards);
-        if (StraightUtils.isSameSeed(processedCombo) && !this.setHandler.isValid(processedCombo)) {
-            processedCombo = StraightUtils.orderStraight(processedCombo);
+        if (this.straightUtils.isSameSeed(processedCombo) && !this.setHandler.isValid(processedCombo)) {
+            processedCombo = this.straightUtils.orderStraight(processedCombo);
         }
 
         // Execute the move: update player combinations and hand

@@ -17,10 +17,12 @@ public final class AttachHandler {
 
     private final SetHandler setHandler;
     private final CombinationValidator combinationValidator;
+    private final StraightUtils straightUtils;
 
     public AttachHandler() {
         this.setHandler = new SetHandler();
         this.combinationValidator = new CombinationValidator();
+        this.straightUtils = new StraightUtils();
     }
 
     /**
@@ -47,7 +49,7 @@ public final class AttachHandler {
         hypothetical.addAll(newCards);
 
         if (hasDuplicateValues || setHandler.isValid(combination)
-            || StraightUtils.isSameSeed(combination)) {
+            || this.straightUtils.isSameSeed(combination)) {
             return this.combinationValidator.isValidCombination(hypothetical);
         }
         return false;

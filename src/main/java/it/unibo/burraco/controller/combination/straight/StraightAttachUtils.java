@@ -14,12 +14,15 @@ import it.unibo.burraco.model.card.Card;
 public final class StraightAttachUtils {
 
     private static final int MAX_STRAIGHT_VALUE = 12;
+    private final CombinationValidator validator;
+    private final StraightUtils straightUtils;
 
     /**
      * Private constructor to prevent instantiation of this utility class.
      */
-    private StraightAttachUtils() {
-        /* Utility class constructor */
+    public StraightAttachUtils() {
+        this.validator = new CombinationValidator();
+        this.straightUtils = new StraightUtils();
     }
 
     /**
@@ -29,11 +32,11 @@ public final class StraightAttachUtils {
      * @param newCards the cards the player wants to add
      * @return true if the resulting combination is valid or if a wildcard substitution occurs
      */
-    public static boolean canAttachToStraight(final List<Card> straight, final List<Card> newCards) {
+    public boolean canAttachToStraight(final List<Card> straight, final List<Card> newCards) {
         final List<Card> potentialStraight = new ArrayList<>(straight);
         potentialStraight.addAll(newCards);
 
-        return CombinationValidator.isValidCombination(potentialStraight)
+        return validator.isValidCombination(potentialStraight)
                 || newCards.size() == 1 && canSubstituteInternalWildcard(straight, newCards.get(0));
     }
 
@@ -44,7 +47,7 @@ public final class StraightAttachUtils {
      * @param newCard  the single card to add
      * @return true if the card can be attached
      */
-    public static boolean canAttachToStraight(final List<Card> straight, final Card newCard) {
+    public boolean canAttachToStraight(final List<Card> straight, final Card newCard) {
         return canAttachToStraight(straight, List.of(newCard));
     }
 
@@ -55,19 +58,19 @@ public final class StraightAttachUtils {
      * @param newCard  the card that might replace the wildcard
      * @return true if the new card matches the required rank and suit to fill the gap
      */
-    private static boolean canSubstituteInternalWildcard(final List<Card> straight, final Card newCard) {
-        final List<Card> ord = StraightUtils.orderStraight(straight);
+    private boolean canSubstituteInternalWildcard(final List<Card> straight, final Card newCard) {
+        final List<Card> ord = straightUtils.orderStraight(straight);
 
         for (int i = 1; i < ord.size() - 1; i++) {
             final Card current = ord.get(i);
-            if (!CombinationValidator.isWildcard(current, straight)) {
+            if (!validator.isWildcard(current, straight)) {
                 continue;
             }
             final Card prev = ord.get(i - 1);
             final Card next = ord.get(i + 1);
 
-            if (CombinationValidator.isWildcard(prev, straight)
-                    || CombinationValidator.isWildcard(next, straight)) {
+            if (validator.isWildcard(prev, straight)
+                    || validator.isWildcard(next, straight)) {
                 continue;
             }
             if (!newCard.getSeed().equals(prev.getSeed())) {

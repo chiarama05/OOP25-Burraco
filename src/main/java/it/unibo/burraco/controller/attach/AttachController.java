@@ -21,6 +21,7 @@ public class AttachController {
     private final AttachHandler attachHandler;
     private final ClosureValidator closureValidator;
     private final CombinationValidator combinationValidator;
+    private final StraightUtils straightUtils;
 
     /**
      * Default constructor for AttachController.
@@ -29,6 +30,7 @@ public class AttachController {
         this.attachHandler = new AttachHandler();
         this.closureValidator = new ClosureValidator();
         this.combinationValidator = new CombinationValidator();
+        this.straightUtils = new StraightUtils();
     }
 
     /**
@@ -63,8 +65,8 @@ public class AttachController {
 
         List<Card> hypothetical = hypotheticalCards;
 
-        if (StraightUtils.isSameSeed(combinationCards)) {
-            hypothetical = StraightUtils.orderStraight(hypothetical);
+        if (this.straightUtils.isSameSeed(combinationCards)) {
+            hypothetical = this.straightUtils.orderStraight(hypothetical);
         } else {
             hypothetical.sort((c1, c2) -> Integer.compare(c2.getNumericalValue(), c1.getNumericalValue()));
         }
