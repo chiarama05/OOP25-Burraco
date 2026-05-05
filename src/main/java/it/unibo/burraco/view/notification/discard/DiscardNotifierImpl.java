@@ -33,8 +33,7 @@ public final class DiscardNotifierImpl implements DiscardNotifier {
                 "The selected card is not in your hand.";
             case "NO_BURRACO_ERROR" ->
                 "You need at least one Burraco to close the round!";
-            default ->
-                "An error occurred during discard.";
+            default -> null;
         };
 
     JOptionPane.showMessageDialog(parent, userMessage, "Discard Error", JOptionPane.ERROR_MESSAGE);

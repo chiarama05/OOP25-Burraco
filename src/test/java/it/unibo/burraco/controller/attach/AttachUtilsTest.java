@@ -5,13 +5,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 
-class AttachUtilsTest {
+class AttachHandelrTest {
+    private AttachHandler handler;
+
     private static final String HEARTS = "♥";
     private static final String SPADES = "♠";
     private static final String CLUBS = "♣";
@@ -24,10 +26,15 @@ class AttachUtilsTest {
     private static final String FIVE = "5";
     private static final String SIX = "6";
 
+    @BeforeEach
+    void setUp() {
+        this.handler = new AttachHandler();
+    }
+
     @Test
     void testNullCombinationReturnsFalse() {
         final Card card = new CardImpl(HEARTS, FIVE);
-        assertFalse(AttachUtils.canAttach(null, card));
+        assertFalse(handler.canAttach(null, card));
     }
 
     @Test
@@ -38,7 +45,7 @@ class AttachUtilsTest {
                 new CardImpl(CLUBS, SEVEN)
         );
         final Card newCard = new CardImpl(DIAMONDS, SEVEN);
-        assertTrue(AttachUtils.canAttach(set, newCard));
+        assertTrue(handler.canAttach(set, newCard));
     }
 
     @Test
@@ -49,7 +56,7 @@ class AttachUtilsTest {
                 new CardImpl(CLUBS, SEVEN)
         );
         final Card newCard = new CardImpl(DIAMONDS, "8");
-        assertFalse(AttachUtils.canAttach(set, newCard));
+        assertFalse(handler.canAttach(set, newCard));
     }
 
     @Test
@@ -60,7 +67,7 @@ class AttachUtilsTest {
                 new CardImpl(CLUBS, SEVEN)
         );
         final Card jolly = new CardImpl(JOLLY_SEED, JOLLY_VALUE);
-        assertTrue(AttachUtils.canAttach(set, jolly));
+        assertTrue(handler.canAttach(set, jolly));
     }
 
     @Test
@@ -71,7 +78,7 @@ class AttachUtilsTest {
                 new CardImpl(JOLLY_SEED, JOLLY_VALUE)
         );
         final Card jolly2 = new CardImpl(JOLLY_SEED, JOLLY_VALUE);
-        assertFalse(AttachUtils.canAttach(set, jolly2));
+        assertFalse(handler.canAttach(set, jolly2));
     }
 
     @Test
@@ -82,7 +89,7 @@ class AttachUtilsTest {
                 new CardImpl(JOLLY_SEED, JOLLY_VALUE)
         );
         final Card newCard = new CardImpl(DIAMONDS, SEVEN);
-        assertTrue(AttachUtils.canAttach(set, newCard));
+        assertTrue(handler.canAttach(set, newCard));
     }
 
     @Test
@@ -93,7 +100,7 @@ class AttachUtilsTest {
                 new CardImpl(HEARTS, FIVE)
         ));
         final Card newCard = new CardImpl(HEARTS, SIX);
-        assertTrue(AttachUtils.canAttach(straight, newCard));
+        assertTrue(handler.canAttach(straight, newCard));
     }
 
     @Test
@@ -104,7 +111,7 @@ class AttachUtilsTest {
                 new CardImpl(HEARTS, SIX)
         ));
         final Card newCard = new CardImpl(HEARTS, THREE);
-        assertTrue(AttachUtils.canAttach(straight, newCard));
+        assertTrue(handler.canAttach(straight, newCard));
     }
 
     @Test
@@ -115,7 +122,7 @@ class AttachUtilsTest {
                 new CardImpl(HEARTS, FIVE)
         ));
         final Card newCard = new CardImpl(HEARTS, "9");
-        assertFalse(AttachUtils.canAttach(straight, newCard));
+        assertFalse(handler.canAttach(straight, newCard));
     }
 
     @Test
@@ -126,7 +133,7 @@ class AttachUtilsTest {
                 new CardImpl(HEARTS, FIVE)
         ));
         final Card newCard = new CardImpl(SPADES, SIX);
-        assertFalse(AttachUtils.canAttach(straight, newCard));
+        assertFalse(handler.canAttach(straight, newCard));
     }
 
     @Test
@@ -137,7 +144,7 @@ class AttachUtilsTest {
                 new CardImpl(HEARTS, FIVE)
         ));
         final Card jolly = new CardImpl(JOLLY_SEED, JOLLY_VALUE);
-        assertTrue(AttachUtils.canAttach(straight, jolly));
+        assertTrue(handler.canAttach(straight, jolly));
     }
 
     @Test
@@ -148,6 +155,6 @@ class AttachUtilsTest {
                 new CardImpl(HEARTS, FIVE)
         ));
         final Card jolly2 = new CardImpl(JOLLY_SEED, JOLLY_VALUE);
-        assertFalse(AttachUtils.canAttach(straight, jolly2));
+        assertFalse(handler.canAttach(straight, jolly2));
     }
 }

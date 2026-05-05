@@ -20,20 +20,6 @@ public final class GameNotifierImpl implements GameNotifier {
     }
 
     @Override
-    public void notifyPotTakenNextTurn() {
-        JOptionPane.showMessageDialog(parent,
-            "You have taken your pot! You can play it in the NEXT turn!",
-            "Pot", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    @Override
-    public void notifyPotTakenFly() {
-        JOptionPane.showMessageDialog(parent,
-            "You close your hand on 'fly', you can continue to play in this same turn!",
-            "Pot", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    @Override
     public void notifyInvalidClosure() {
         JOptionPane.showMessageDialog(parent,
             "You can't close without a Burraco!\nKeep playing to form one!",

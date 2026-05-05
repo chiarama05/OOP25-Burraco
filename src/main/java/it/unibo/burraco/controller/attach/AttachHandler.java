@@ -13,9 +13,8 @@ import it.unibo.burraco.model.card.Card;
  * Utility class responsible for determining whether one or more cards
  * can be attached to an existing combination on the table.
  */
-public final class AttachUtils {
+public final class AttachHandler {
 
-    private AttachUtils() { }
 
     /**
      * Checks if a list of new cards can be legally added to an existing combination.
@@ -24,7 +23,7 @@ public final class AttachUtils {
      * @param newCards the list of cards to attempt to attach
      * @return true if the resulting combination is valid, false otherwise
      */
-    public static boolean canAttach(final List<Card> combination, final List<Card> newCards) {
+    public boolean canAttach(final List<Card> combination, final List<Card> newCards) {
         if (combination == null || combination.isEmpty()) {
             return false;
         }
@@ -54,7 +53,7 @@ public final class AttachUtils {
      * @param newCard the single card to attach
      * @return true if the card can be attached, false otherwise
      */
-    public static boolean canAttach(final List<Card> combination, final Card newCard) {
-        return canAttach(combination, List.of(newCard));
+    public boolean canAttach(final List<Card> combination, final Card newCard) {
+        return this.canAttach(combination, List.of(newCard));
     }
 }

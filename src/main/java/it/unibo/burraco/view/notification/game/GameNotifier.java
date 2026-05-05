@@ -6,16 +6,6 @@ package it.unibo.burraco.view.notification.game;
 public interface GameNotifier {
 
     /**
-     * Notifies that the pot was taken and can be used in the next turn.
-     */
-    void notifyPotTakenNextTurn();
-
-    /**
-     * Notifies that the pot was taken 'on the fly' and can be used immediately.
-     */
-    void notifyPotTakenFly();
-
-    /**
      * Notifies that the closure attempt was invalid.
      */
     void notifyInvalidClosure();
