@@ -18,11 +18,13 @@ public class AttachController {
 
     private static final int BURRACO_SIZE = 7;
 
+    private final AttachHandler attachHandler;
+
     /**
      * Default constructor for AttachController.
      */
     public AttachController() {
-        // Default constructor
+        this.attachHandler = new AttachHandler();
     }
 
     /**
@@ -106,7 +108,7 @@ public class AttachController {
     private boolean executeAttach(final Player player,
                                    final List<Card> selectedCards,
                                    final List<Card> combinationCards) {
-        if (!AttachUtils.canAttach(combinationCards, selectedCards)) {
+        if (!this.attachHandler.canAttach(combinationCards, selectedCards)) {
             return false;
         }
 
