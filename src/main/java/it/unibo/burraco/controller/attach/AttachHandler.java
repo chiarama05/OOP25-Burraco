@@ -19,6 +19,9 @@ public final class AttachHandler {
     private final CombinationValidator combinationValidator;
     private final StraightUtils straightUtils;
 
+    /**
+     * Constructs a new AttachHandler and initializes its sub-validators.
+     */
     public AttachHandler() {
         this.setHandler = new SetHandler();
         this.combinationValidator = new CombinationValidator();

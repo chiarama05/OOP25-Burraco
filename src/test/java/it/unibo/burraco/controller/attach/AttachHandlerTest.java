@@ -12,7 +12,6 @@ import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.card.CardImpl;
 
 class AttachHandlerTest {
-    private AttachHandler handler;
 
     private static final String HEARTS = "♥";
     private static final String SPADES = "♠";
@@ -25,6 +24,8 @@ class AttachHandlerTest {
     private static final String FOUR = "4";
     private static final String FIVE = "5";
     private static final String SIX = "6";
+
+    private AttachHandler handler;
 
     @BeforeEach
     void setUp() {

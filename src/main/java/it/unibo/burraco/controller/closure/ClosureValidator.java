@@ -12,7 +12,12 @@ public final class ClosureValidator {
 
     private static final int BURRACO_THRESHOLD = 7;
 
-    public ClosureValidator() { }
+    /**
+     * Constructs a new ClosureValidator.
+     */
+    public ClosureValidator() {
+        // Default constructor
+    }
 
     /**
      * Evaluates the full closure state of a player after any action.

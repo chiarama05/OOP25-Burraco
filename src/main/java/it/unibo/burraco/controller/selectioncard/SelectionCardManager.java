@@ -21,6 +21,9 @@ public class SelectionCardManager {
     private final List<Card> selectedCards = new ArrayList<>();
     private final CombinationValidator combinationValidator;
 
+    /**
+     * Constructs a new SelectionCardManager and initializes its validator.
+     */
     public SelectionCardManager() {
         this.combinationValidator = new CombinationValidator();
     }

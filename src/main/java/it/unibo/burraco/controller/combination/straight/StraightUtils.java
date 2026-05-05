@@ -35,7 +35,9 @@ public final class StraightUtils {
     /**
      * Private constructor to prevent instantiation of this utility class.
      */
-    public StraightUtils() { }
+    public StraightUtils() {
+        // Default constructor for instantiation
+    }
 
     /**
      * Checks if all non-wildcard cards in the list belong to the same seed.

@@ -65,7 +65,6 @@ public final class PutCombinationResult {
      * Creates an error result with the specified status.
      *
      * @param status the reason for failure
-     * @return a result instance representing a failure
      */
     public PutCombinationResult(final Status status) {
         this(status, null, false);

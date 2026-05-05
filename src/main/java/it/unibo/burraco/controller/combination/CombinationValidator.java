@@ -21,6 +21,9 @@ public final class CombinationValidator {
     private final SetHandler setHandler;
     private final StraightUtils straightUtils;
 
+    /**
+     * Constructs a new CombinationValidator and initializes its internal handlers.
+     */
     public CombinationValidator() {
         this.setHandler = new SetHandler();
         this.straightUtils = new StraightUtils();
