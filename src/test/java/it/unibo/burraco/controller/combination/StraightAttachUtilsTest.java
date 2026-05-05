@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import it.unibo.burraco.controller.combination.straight.StraightAttachUtils;
@@ -32,6 +33,14 @@ class StraightAttachUtilsTest {
     private static final String KING = "K";
     private static final String ACE = "A";
 
+    private StraightAttachUtils attachUtils;
+
+    @BeforeEach
+    void setUp() {
+        // Inizializziamo l'istanza prima di ogni test
+        this.attachUtils = new StraightAttachUtils();
+    }
+
     private Card card(final String seed, final String value) {
         return new CardImpl(seed, value);
     }
@@ -41,7 +50,7 @@ class StraightAttachUtilsTest {
         final List<Card> straight = new ArrayList<>(List.of(
             card(HEARTS, THREE), card(HEARTS, FOUR), card(HEARTS, FIVE)
         ));
-        assertTrue(StraightAttachUtils.canAttachToStraight(straight, card(HEARTS, SIX)));
+        assertTrue(attachUtils.canAttachToStraight(straight, card(HEARTS, SIX)));
     }
 
     @Test
@@ -49,7 +58,7 @@ class StraightAttachUtilsTest {
         final List<Card> straight = new ArrayList<>(List.of(
             card(HEARTS, THREE), card(HEARTS, FOUR), card(HEARTS, FIVE)
         ));
-        assertTrue(StraightAttachUtils.canAttachToStraight(straight, card(HEARTS, TWO)));
+        assertTrue(attachUtils.canAttachToStraight(straight, card(HEARTS, TWO)));
     }
 
     @Test
@@ -57,7 +66,7 @@ class StraightAttachUtilsTest {
         final List<Card> straight = new ArrayList<>(List.of(
             card(HEARTS, JACK), card(HEARTS, QUEEN), card(HEARTS, KING)
         ));
-        assertTrue(StraightAttachUtils.canAttachToStraight(straight, card(HEARTS, ACE)));
+        assertTrue(attachUtils.canAttachToStraight(straight, card(HEARTS, ACE)));
     }
 
     @Test
@@ -66,7 +75,7 @@ class StraightAttachUtilsTest {
             card(DIAMONDS, THREE), card(DIAMONDS, FOUR), card(DIAMONDS, FIVE)
         ));
         final List<Card> newCards = List.of(card(DIAMONDS, SIX), card(DIAMONDS, SEVEN));
-        assertTrue(StraightAttachUtils.canAttachToStraight(straight, newCards));
+        assertTrue(attachUtils.canAttachToStraight(straight, newCards));
     }
 
     @Test
@@ -74,7 +83,7 @@ class StraightAttachUtilsTest {
         final List<Card> straight = new ArrayList<>(List.of(
             card(HEARTS, THREE), card(HEARTS, FOUR), card(JOLLY, JOLLY)
         ));
-        assertTrue(StraightAttachUtils.canAttachToStraight(straight, card(HEARTS, FIVE)));
+        assertTrue(attachUtils.canAttachToStraight(straight, card(HEARTS, FIVE)));
     }
 
     @Test
@@ -82,7 +91,7 @@ class StraightAttachUtilsTest {
         final List<Card> straight = new ArrayList<>(List.of(
             card(JOLLY, JOLLY), card(HEARTS, FOUR), card(HEARTS, FIVE)
         ));
-        assertTrue(StraightAttachUtils.canAttachToStraight(straight, card(HEARTS, THREE)));
+        assertTrue(attachUtils.canAttachToStraight(straight, card(HEARTS, THREE)));
     }
 
     @Test
@@ -90,7 +99,7 @@ class StraightAttachUtilsTest {
         final List<Card> straight = new ArrayList<>(List.of(
             card(HEARTS, THREE), card(HEARTS, FOUR), card(SPADES, TWO)
         ));
-        assertTrue(StraightAttachUtils.canAttachToStraight(straight, card(HEARTS, FIVE)));
+        assertTrue(attachUtils.canAttachToStraight(straight, card(HEARTS, FIVE)));
     }
 
     @Test
@@ -98,7 +107,7 @@ class StraightAttachUtilsTest {
         final List<Card> straight = new ArrayList<>(List.of(
             card(SPADES, FIVE), card(JOLLY, JOLLY), card(SPADES, SEVEN)
         ));
-        assertTrue(StraightAttachUtils.canAttachToStraight(straight, card(SPADES, SIX)));
+        assertTrue(attachUtils.canAttachToStraight(straight, card(SPADES, SIX)));
     }
 
     @Test
@@ -106,7 +115,7 @@ class StraightAttachUtilsTest {
         final List<Card> straight = new ArrayList<>(List.of(
             card(SPADES, NINE), card(HEARTS, TWO), card(SPADES, JACK)
         ));
-        assertTrue(StraightAttachUtils.canAttachToStraight(straight, card(SPADES, TEN)));
+        assertTrue(attachUtils.canAttachToStraight(straight, card(SPADES, TEN)));
     }
 
     @Test
@@ -114,7 +123,7 @@ class StraightAttachUtilsTest {
         final List<Card> straight = new ArrayList<>(List.of(
             card(CLUBS, QUEEN), card(JOLLY, JOLLY), card(CLUBS, ACE)
         ));
-        assertTrue(StraightAttachUtils.canAttachToStraight(straight, card(CLUBS, KING)));
+        assertTrue(attachUtils.canAttachToStraight(straight, card(CLUBS, KING)));
     }
 
     @Test
@@ -122,38 +131,38 @@ class StraightAttachUtilsTest {
         final List<Card> straight = new ArrayList<>(List.of(
             card(HEARTS, THREE), card(JOLLY, JOLLY), card(HEARTS, FIVE)
         ));
-        assertTrue(StraightAttachUtils.canAttachToStraight(straight, card(HEARTS, SIX)));
+        assertTrue(attachUtils.canAttachToStraight(straight, card(HEARTS, SIX)));
     }
 
     @Test
     void testWrongSeed() {
         final List<Card> straight = List.of(card(HEARTS, THREE), card(HEARTS, FOUR));
-        assertFalse(StraightAttachUtils.canAttachToStraight(straight, card(SPADES, FIVE)));
+        assertFalse(attachUtils.canAttachToStraight(straight, card(SPADES, FIVE)));
     }
 
     @Test
     void testGap() {
         final List<Card> straight = List.of(card(HEARTS, THREE), card(HEARTS, FOUR));
-        assertFalse(StraightAttachUtils.canAttachToStraight(straight, card(HEARTS, SEVEN)));
+        assertFalse(attachUtils.canAttachToStraight(straight, card(HEARTS, SEVEN)));
     }
 
     @Test
     void testSubstitutionWrongSeed() {
         final List<Card> straight = List.of(
             card(DIAMONDS, FIVE), card(JOLLY, JOLLY), card(DIAMONDS, SEVEN));
-        assertFalse(StraightAttachUtils.canAttachToStraight(straight, card(HEARTS, SIX)));
+        assertFalse(attachUtils.canAttachToStraight(straight, card(HEARTS, SIX)));
     }
 
     @Test
     void testAceLow() {
         final List<Card> straight = List.of(
             card(HEARTS, ACE), card(HEARTS, TWO), card(HEARTS, THREE));
-        assertTrue(StraightAttachUtils.canAttachToStraight(straight, card(HEARTS, FOUR)));
+        assertTrue(attachUtils.canAttachToStraight(straight, card(HEARTS, FOUR)));
     }
 
     @Test
     void testEmptyList() {
         final List<Card> straight = List.of(card(HEARTS, THREE), card(HEARTS, FOUR));
-        assertFalse(StraightAttachUtils.canAttachToStraight(straight, new ArrayList<>()));
+        assertFalse(attachUtils.canAttachToStraight(straight, new ArrayList<>()));
     }
 }
