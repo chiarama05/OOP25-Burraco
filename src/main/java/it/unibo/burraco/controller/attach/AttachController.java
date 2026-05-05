@@ -19,12 +19,14 @@ public class AttachController {
     private static final int BURRACO_SIZE = 7;
 
     private final AttachHandler attachHandler;
+    private final ClosureValidator closureValidator;
 
     /**
      * Default constructor for AttachController.
      */
     public AttachController() {
         this.attachHandler = new AttachHandler();
+        this.closureValidator = new ClosureValidator();
     }
 
     /**
@@ -69,7 +71,7 @@ public class AttachController {
             return AttachResult.INVALID_COMBINATION;
         }
 
-        if (ClosureValidator.wouldGetStuckAfterAttach(currentPlayer, selectedCards, combinationCards.size())) {
+        if (this.closureValidator.wouldGetStuckAfterAttach(currentPlayer, selectedCards, combinationCards.size())) {
             return AttachResult.WOULD_GET_STUCK;
         }
 
@@ -83,7 +85,7 @@ public class AttachController {
             return AttachResult.SUCCESS_BURRACO;
         }
 
-        final ClosureState state = ClosureValidator.evaluate(currentPlayer);
+        final ClosureState state = this.closureValidator.evaluate(currentPlayer);
 
         if (state == ClosureState.ZERO_CARDS_NO_POT) {
             return AttachResult.SUCCESS_TAKE_POT;
