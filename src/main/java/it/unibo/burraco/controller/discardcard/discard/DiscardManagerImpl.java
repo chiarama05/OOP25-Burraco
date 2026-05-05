@@ -40,11 +40,11 @@ public final class DiscardManagerImpl implements DiscardManager {
     public DiscardResult discard(final Player player, final Card card) {
         // Card selection check
         if (card == null) {
-            return DiscardResult.error("NOT_SELECTED");
+            return new DiscardResult("NOT_SELECTED");
         }
 
         if (!player.getHand().contains(card)) {
-            return DiscardResult.error("NOT_IN_HAND");
+            return new DiscardResult("NOT_IN_HAND");
         }
 
         player.removeCardHand(card);
@@ -54,14 +54,14 @@ public final class DiscardManagerImpl implements DiscardManager {
 
         switch (state) {
             case ROUND_WON:
-                return DiscardResult.success(this.discardPile.getCards(), player, true);
+                return new DiscardResult(this.discardPile.getCards(), player, true);
             case CANNOT_CLOSE_NO_BURRACO:
                 this.discardPile.drawLast();
                 player.addCardHand(card);
-                return DiscardResult.error("NO_BURRACO_ERROR");
+                return new DiscardResult("NO_BURRACO_ERROR");
             case OK:
             default:
-                return DiscardResult.success(this.discardPile.getCards(), player, false);
+                return new DiscardResult(this.discardPile.getCards(), player, false);
         }
     }
 }

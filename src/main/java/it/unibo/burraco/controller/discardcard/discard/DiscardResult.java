@@ -21,47 +21,33 @@ public final class DiscardResult {
     private final Player currentPlayer;
 
     /**
-     * Private constructor to enforce the use of static factory methods.
+     * Constructor for a failed discard attempt.
      *
-     * @param valid              if the move is valid
-     * @param turnEnds           if the turn is finished
-     * @param gameWon            if the game is won
-     * @param message            error message
-     * @param updatedDiscardPile updated pile
-     * @param currentPlayer      updated player
+     * @param message the error message or reason for failure.
      */
-    private DiscardResult(final boolean valid, final boolean turnEnds, final boolean gameWon,
-                          final String message, final List<Card> updatedDiscardPile,
-                          final Player currentPlayer) {
-        this.valid = valid;
-        this.turnEnds = turnEnds;
-        this.gameWon = gameWon;
+    public DiscardResult(final String message) {
+        this.valid = false;
+        this.turnEnds = false;
+        this.gameWon = false;
         this.message = message;
-        this.updatedDiscardPile = updatedDiscardPile;
-        this.currentPlayer = currentPlayer;
+        this.updatedDiscardPile = null;
+        this.currentPlayer = null;
     }
 
     /**
-     * Creates a failed discard result with an error message.
-     *
-     * @param message the error key or description.
-     * @return a failed DiscardResult.
-     */
-    public static DiscardResult error(final String message) {
-        return new DiscardResult(false, false, false, message, null, null);
-    }
-
-    /**
-     * Creates a successful discard result.
+     * Constructor for a successful discard attempt.
      *
      * @param pile the updated state of the discard pile.
      * @param player the player who performed the action.
-     * @param gameWon true if this discard triggers a round/match victory.
-     * @return a successful DiscardResult.
+     * @param gameWon true if this discard triggers a round or match victory.
      */
-    public static DiscardResult success(final List<Card> pile, final Player player,
-                                        final boolean gameWon) {
-        return new DiscardResult(true, true, gameWon, null, pile, player);
+    public DiscardResult(final List<Card> pile, final Player player, final boolean gameWon) {
+        this.valid = true;
+        this.turnEnds = true;
+        this.gameWon = gameWon;
+        this.message = null;
+        this.updatedDiscardPile = pile;
+        this.currentPlayer = player;
     }
 
     /**
