@@ -39,8 +39,8 @@ class DeckActionControllerTest {
         this.player = mock(Player.class);
         this.deck = mock(DeckImpl.class);
 
-        when(this.gameController.getCurrentPlayer()).thenReturn(this.player);
-        when(this.gameController.getCommonDeck()).thenReturn(this.deck);
+        when(this.gameController.getModel().getCurrentPlayer()).thenReturn(this.player);
+        when(this.gameController.getModel().getCommonDeck()).thenReturn(this.deck);
         when(this.player.getHand()).thenReturn(List.of(mock(Card.class)));
 
         this.controller = new DeckActionController(this.gameController, this.drawManager, this.notifier);
@@ -75,8 +75,8 @@ class DeckActionControllerTest {
 
         this.controller.handle(this.view);
 
-        verify(this.gameController).getCurrentPlayer();
-        verify(this.gameController).getCommonDeck();
+        verify(this.gameController).getModel().getCurrentPlayer();
+        verify(this.gameController).getModel().getCommonDeck();
         verify(this.drawManager).drawFromDeck(this.player, this.deck);
     }
 }

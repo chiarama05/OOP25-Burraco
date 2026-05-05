@@ -55,11 +55,11 @@ class AttachActionControllerTest {
         selectedCards = List.of(mock(Card.class));
         combinationCards = List.of(mock(Card.class));
 
-        when(gameController.getCurrentPlayer()).thenReturn(player);
+        when(gameController.getModel().getCurrentPlayer()).thenReturn(player);
         when(gameController.getDrawManager()).thenReturn(drawManager);
         when(gameController.getAttachController()).thenReturn(attachController);
         when(gameController.getSoundController()).thenReturn(soundController);
-        when(gameController.isPlayer1(player)).thenReturn(true);
+        when(gameController.getModel().isPlayer1(player)).thenReturn(true);
         when(drawManager.hasDrawn()).thenReturn(true);
         controller = new AttachActionController(
                 gameController, potManager, closureManager, attachNotifier, true);

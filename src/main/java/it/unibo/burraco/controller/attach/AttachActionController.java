@@ -59,9 +59,9 @@ public final class AttachActionController {
     public void handle(final List<Card> selectedCards,
                        final List<Card> combinationCards,
                        final AttachView view) {
-        final Player currentPlayer = this.gameController.getCurrentPlayer();
+        final Player currentPlayer = this.gameController.getModel().getCurrentPlayer();
         final boolean hasDrawn = this.gameController.getDrawManager().hasDrawn();
-        final boolean isPlayer1Current = this.gameController.isPlayer1(currentPlayer);
+        final boolean isPlayer1Current = this.gameController.getModel().isPlayer1(currentPlayer);
         final boolean isCurrentPlayer = isPlayer1Current == this.isPlayer1Owner;
         final AttachResult result = this.attachController.tryAttach(
                 currentPlayer, selectedCards, combinationCards, hasDrawn, isCurrentPlayer);

@@ -22,6 +22,15 @@ public class DrawManager {
     }
 
     /**
+     * Explicitly sets the draw state.
+     * 
+     * @param drawnValue true if the player has drawn.
+     */
+    public void setHasDrawn(final boolean drawnValue) {
+        this.drawCard = drawnValue;
+    }
+
+    /**
      * Executes a draw action from the main deck.
      *
      * @param player the player drawing the card.

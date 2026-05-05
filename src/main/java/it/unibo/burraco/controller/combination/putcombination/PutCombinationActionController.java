@@ -43,7 +43,7 @@ public class PutCombinationActionController {
      *           to the view callbacks to identify which player performed the action.
      */
     public void handle(final List<Card> selected, final PutCombinationView view) {
-        final Player current = gameController.getCurrentPlayer();
+        final Player current = gameController.getModel().getCurrentPlayer();
         final PutCombinationResult result = putComboController.tryPutCombination(selected);
         final PutCombinationResult.Status status = result.getStatus();
 

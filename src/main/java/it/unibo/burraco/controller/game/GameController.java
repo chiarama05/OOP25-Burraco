@@ -1,7 +1,6 @@
 package it.unibo.burraco.controller.game;
 
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.model.player.PlayerImpl;
 
 import java.util.List;
 
@@ -12,11 +11,8 @@ import it.unibo.burraco.controller.distributioncard.InitialDistributionControlle
 import it.unibo.burraco.controller.drawcard.DrawManager;
 import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
 import it.unibo.burraco.controller.sound.SoundController;
-import it.unibo.burraco.model.deck.Deck;
-import it.unibo.burraco.model.deck.DeckImpl;
 import it.unibo.burraco.model.discard.DiscardPile;
-import it.unibo.burraco.model.discard.DiscardPileImpl;
-import it.unibo.burraco.model.turn.Turn;
+import it.unibo.burraco.model.GameModel;
 import it.unibo.burraco.model.card.Card;
 
 /**
@@ -24,13 +20,8 @@ import it.unibo.burraco.model.card.Card;
  */
 public final class GameController {
 
-    private final PlayerImpl player1;
-    private final PlayerImpl player2;
-    private final Deck commonDeck;
-    private final Turn turnModel;
+    private final GameModel model;
     private final SoundController soundController;
-    private final DiscardPile discardPile;
-    private boolean hasDrawn;
     private final SelectionCardManager selectionManager = new SelectionCardManager();
     private final DrawManager drawManager = new DrawManager();
     private final AttachController attachController;
@@ -44,14 +35,10 @@ public final class GameController {
      * @param turnModel the turn model tracking whose turn it is
      * @param sc        the sound controller for audio feedback
      */
-    public GameController(final PlayerImpl p1, final PlayerImpl p2, final Turn turnModel, final SoundController sc) {
-        this.player1 = p1;
-        this.player2 = p2;
-        this.turnModel = turnModel;
-        this.discardPile = new DiscardPileImpl();
-        this.commonDeck = new DeckImpl();
-        this.attachController = new AttachController();
+    public GameController(final GameModel model, final SoundController sc) {
+        this.model = model;
         this.soundController = sc;
+        this.attachController = new AttachController();
         this.distributionController = new InitialDistributionController(new DistributionManagerImpl());
     }
 
@@ -67,9 +54,9 @@ public final class GameController {
                                   final List<Card> combinationCards,
                                   final boolean isPlayer1Owner) {
 
-        final Player currentPlayer = turnModel.getCurrentPlayer();
+        final Player currentPlayer = model.getCurrentPlayer();
         final boolean drawingStatus = drawManager.hasDrawn();
-        final boolean isCurrentPlayer = isPlayer1(currentPlayer) == isPlayer1Owner;
+        final boolean isCurrentPlayer = model.isPlayer1(currentPlayer) == isPlayer1Owner;
 
         final AttachResult result = this.attachController.tryAttach(
                 currentPlayer, selectedCards, combinationCards, drawingStatus, isCurrentPlayer);
@@ -90,36 +77,10 @@ public final class GameController {
     }
 
     /**
-     * Checks whether the given player is Player 1.
-     *
-     * @param p the player to test
-     * @return true if p is the same object as Player 1
-     */
-    public boolean isPlayer1(final Player p) {
-        return this.player1.equals(p);
-    }
-
-    /**
-     * Returns the player whose turn it currently is.
-     *
-     * @return the current Player
-     */
-    public Player getCurrentPlayer() {
-        return this.turnModel.getCurrentPlayer();
-    }
-
-    /**
      * @return the AttachController
      */
     public AttachController getAttachController() {
         return this.attachController;
-    }
-
-    /**
-     * @return the shared Deck
-     */
-    public Deck getCommonDeck() {
-        return this.commonDeck;
     }
 
     /**
@@ -143,18 +104,8 @@ public final class GameController {
         return this.drawManager;
     }
 
-    /**
-     * @return the shared DiscardPile
-     */
     public DiscardPile getDiscardPile() {
-        return this.discardPile;
-    }
-
-    /**
-     * @return the Turn model
-     */
-    public Turn getTurnModel() {
-        return this.turnModel;
+        return this.model.getDiscardPile();
     }
 
     /**
@@ -163,7 +114,7 @@ public final class GameController {
      * @return true if the player has not yet drawn in this turn
      */
     public boolean canDraw() {
-        return !this.hasDrawn;
+        return !this.drawManager.hasDrawn();
     }
 
     /**
@@ -172,7 +123,7 @@ public final class GameController {
      * @param drawnValue true to mark as drawn
      */
     public void setHasDrawn(final boolean drawnValue) {
-        this.hasDrawn = drawnValue;
+        this.drawManager.setHasDrawn(drawnValue);
     }
 
     /**
@@ -181,20 +132,10 @@ public final class GameController {
      * @return true if already drawn
      */
     public boolean hasAlreadyDrawn() {
-        return this.hasDrawn;
+        return this.drawManager.hasDrawn();
     }
 
-    /**
-     * @return the first player
-     */
-    public PlayerImpl getPlayer1() {
-        return this.player1;
-    }
-
-    /**
-     * @return the second player
-     */
-    public PlayerImpl getPlayer2() {
-        return this.player2;
+    public GameModel getModel() {
+        return this.model;
     }
 }

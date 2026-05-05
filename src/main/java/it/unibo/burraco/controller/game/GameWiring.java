@@ -17,8 +17,9 @@ import it.unibo.burraco.controller.pot.PotManager;
 import it.unibo.burraco.controller.score.ScoreController;
 import it.unibo.burraco.controller.sound.SoundController;
 import it.unibo.burraco.controller.turn.TurnController;
+import it.unibo.burraco.model.GameModel;
+import it.unibo.burraco.model.GameModelImpl;
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.score.Score;
 import it.unibo.burraco.model.score.ScoreImpl;
 import it.unibo.burraco.model.turn.Turn;
@@ -49,24 +50,26 @@ public final class GameWiring {
     /**
      * Constructs and wires the entire game logic.
      *
-     * @param p1                player 1 model
-     * @param p2                player 2 model
      * @param nameP1            name of player 1
      * @param nameP2            name of player 2
-     * @param turnModel         the turn model
      * @param view              the main table view
      * @param soundController   the sound controller
      * @param targetScore       points needed to win the match
      * @param distributionView  the initial distribution view
      */
     public GameWiring(
-            final PlayerImpl p1, final PlayerImpl p2, final String nameP1, final String nameP2,
-            final Turn turnModel, final TableView view, final SoundController soundController,
+            final String nameP1, final String nameP2,
+            final TableView view, final SoundController soundController,
             final int targetScore, final InitialDistributionView distributionView) {
 
+        final GameModel gameModel = new GameModelImpl(nameP1, nameP2);
         final GameNotifier notifier = new GameNotifierImpl(view.getFrame());
 
-        this.gameController = new GameController(p1, p2, turnModel, soundController);
+        this.gameController = new GameController(gameModel, soundController);
+
+        final Turn turnModel = gameModel.getTurn();
+        final Player p1 = gameModel.getPlayer1();
+        final Player p2 = gameModel.getPlayer2();
         final DrawManager drawManager = this.gameController.getDrawManager();
 
         final TurnController turnCtrl = new TurnController(turnModel, drawManager);
@@ -86,7 +89,7 @@ public final class GameWiring {
                 turnModel, notifier, targetScore, scoreController);
 
         final DiscardController discardCoreLogic = new DiscardController(
-                new DiscardManagerImpl(this.gameController.getDiscardPile()),
+                new DiscardManagerImpl(gameModel.getDiscardPile()),
                 turnCtrl, potManager, closureManager, drawManager, turnModel);
 
         final AttachButtonFactory attachFactory = new AttachButtonFactory(
@@ -123,7 +126,7 @@ public final class GameWiring {
         deckButton.setOnDrawAction(() -> deckActionCtrl.handle(deckButton));
 
         final TakeDiscardController takeDiscardCtrl = new TakeDiscardController(
-                drawManager, turnModel, this.gameController.getDiscardPile());
+                drawManager, turnModel, gameModel.getDiscardPile());
 
         final TakeDiscardActionController takeDiscardActionCtrl = new TakeDiscardActionController(
                 takeDiscardCtrl, turnModel, this.gameController.getDiscardPile());

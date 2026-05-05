@@ -37,7 +37,7 @@ class PutCombinationActionControllerTest {
         this.view = mock(PutCombinationView.class);
         this.mockPlayer = mock(Player.class);
         this.actionController = new PutCombinationActionController(gameController, this.putComboController, this.notifier);
-        when(gameController.getCurrentPlayer()).thenReturn(this.mockPlayer);
+        when(gameController.getModel().getCurrentPlayer()).thenReturn(this.mockPlayer);
     }
 
     @Test

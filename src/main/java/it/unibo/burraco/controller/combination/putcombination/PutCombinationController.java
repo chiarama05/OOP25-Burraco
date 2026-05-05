@@ -77,7 +77,7 @@ public class PutCombinationController {
             return new PutCombinationResult(PutCombinationResult.Status.NO_CARDS_SELECTED);
         }
 
-        final Player current = turnModel.getCurrentPlayer();
+        final Player current = gameController.getModel().getCurrentPlayer();
 
         if (this.closureValidator.wouldGetStuckAfterPutCombo(current, selectedCards, selectedCards.size())) {
             return new PutCombinationResult(PutCombinationResult.Status.WOULD_GET_STUCK);
@@ -101,7 +101,7 @@ public class PutCombinationController {
             gameController.getSoundController().playBurracoSound();
         }
 
-        final boolean isPlayer1 = gameController.isPlayer1(current);
+        final boolean isPlayer1 = gameController.getModel().isPlayer1(current);
         final ClosureState state = this.closureValidator.evaluate(current);
 
         if (state == ClosureState.ZERO_CARDS_NO_POT) {

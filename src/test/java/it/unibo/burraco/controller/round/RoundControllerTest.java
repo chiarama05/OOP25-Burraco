@@ -35,7 +35,7 @@ class RoundControllerTest {
         final GameController gameController = mock(GameController.class);
         this.distController = mock(InitialDistributionController.class);
         this.distView = mock(InitialDistributionView.class);
-        when(gameController.getCommonDeck()).thenReturn(mock(Deck.class));
+        when(gameController.getModel().getCommonDeck()).thenReturn(mock(Deck.class));
         when(gameController.getDiscardPile()).thenReturn(mock(DiscardPile.class));
         when(gameController.getDrawManager()).thenReturn(mock(DrawManager.class));
         when(this.tableView.getDiscardView()).thenReturn(mock(DiscardView.class));

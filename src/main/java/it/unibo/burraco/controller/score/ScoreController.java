@@ -124,7 +124,7 @@ public final class ScoreController {
 
         view.setOnNextAction(() -> {
             view.close();
-            this.gameController.getTurnModel().resetForNewRound();
+            this.gameController.getModel().getTurn().resetForNewRound();
 
             final RoundController roundController = new RoundControllerImpl(
                 this.tableView, new ResetManagerImpl(), this.player1, this.player2,

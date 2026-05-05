@@ -48,10 +48,12 @@ public final class RoundControllerImpl implements RoundController {
 
     @Override
     public void processNewRound() {
+
+        final it.unibo.burraco.model.GameModel model = this.gameController.getModel();
         // Clean the state of all domain entities
         this.resetManager.resetRound(this.player1, this.player2,
-            this.gameController.getCommonDeck(),
-            this.gameController.getDiscardPile());
+            model.getCommonDeck(),
+            model.getDiscardPile());
 
         // Prepare the UI for the fresh start
         this.tableView.startNewRound();
@@ -59,15 +61,15 @@ public final class RoundControllerImpl implements RoundController {
         // Execute the card distribution logic (Hands, Pots, and first Discard)
         this.distributionController.distribute(
             this.player1, this.player2,
-            this.gameController.getCommonDeck(),
-            this.gameController.getDiscardPile());
+            model.getCommonDeck(),
+            model.getDiscardPile());
 
         // Update the high-level distribution view
         this.distributionView.refresh(
             this.player1.getHand(),
             this.player2.getHand(),
             this.tableView.getDiscardView(),
-            this.gameController.getDiscardPile().getCards());
+            model.getDiscardPile().getCards());
 
         // Reset turn-specific constraints (drawing flags)
         this.gameController.getDrawManager().resetTurn();

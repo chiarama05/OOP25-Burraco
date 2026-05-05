@@ -39,8 +39,9 @@ public class DeckActionController {
      * @param view the view that initiated the draw action and will be updated on success
      */
     public void handle(final DeckDrawView view) {
-        final var currentPlayer = gameController.getCurrentPlayer();
-        final var deck = gameController.getCommonDeck();
+        final var model = gameController.getModel();
+        final var currentPlayer = model.getCurrentPlayer();
+        final var deck = model.getCommonDeck();
 
         final DrawResult result = drawManager.drawFromDeck(currentPlayer, deck);
 
