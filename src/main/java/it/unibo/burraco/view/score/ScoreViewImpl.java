@@ -31,7 +31,6 @@ import it.unibo.burraco.view.table.TableView;
  */
 public final class ScoreViewImpl implements ScoreView {
 
-    private static final long serialVersionUID = 1L;
     private static final int FRAME_WIDTH = 650;
     private static final int FRAME_HEIGHT = 750;
     private static final int BORDER_PADDING = 20;
