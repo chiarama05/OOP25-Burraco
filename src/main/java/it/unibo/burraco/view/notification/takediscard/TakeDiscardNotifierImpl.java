@@ -27,7 +27,9 @@ public final class TakeDiscardNotifierImpl implements TakeDiscardNotifier {
         final String message = switch (result.getStatus()) {
             case ALREADY_DRAWN -> "You have already drawn a card this turn!";
             case EMPTY_DECK -> "The discard pile is empty!";
-            default -> null;
+            default ->
+                throw new IllegalArgumentException(
+                    "Unexpected take discard error status: " + result.getStatus());
         };
 
         JOptionPane.showMessageDialog(parent, message, "Take Discard Error", JOptionPane.WARNING_MESSAGE);

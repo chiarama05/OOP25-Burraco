@@ -208,28 +208,11 @@ public final class TableViewImpl implements TableView {
     }
 
     @Override
-    public void showPotMessage(final String playerName, final boolean isDiscard) {
-        final String msg = isDiscard
-            ? playerName + " You took the pot! You'll see the new cards next turn."
-            : playerName + " You took the pot on fly! Keep playing.";
-        JOptionPane.showMessageDialog(this.frame, msg, "Pot", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    @Override
-    public void showSelectionError(final String message) {
-        JOptionPane.showMessageDialog(this.frame, message, "Selection", JOptionPane.WARNING_MESSAGE);
-    }
-
-    @Override
     public void updateDiscardPile(final List<Card> cards) {
         this.discardPanel.removeAll();
         this.discardView.updateDiscardPile(new ArrayList<>(cards));
         this.discardPanel.revalidate();
         this.discardPanel.repaint();
-    }
-
-    @Override
-    public void setSelectionCardManager(final SelectionCardManager manager) {
     }
 
     @Override

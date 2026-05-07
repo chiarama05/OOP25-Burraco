@@ -150,11 +150,4 @@ public interface TableView extends TakeDiscardView, PotView, SelectionView {
      * @param factory the factory instance to use
      */
     void setAttachButtonFactory(AttachButtonFactory factory);
-
-    /**
-     * Injects the manager for card selection.
-     *
-     * @param manager the selection manager instance to use
-     */
-    void setSelectionCardManager(SelectionCardManager manager);
 }

@@ -30,9 +30,7 @@ public interface DiscardActionView {
     void onDiscardSuccess(Player player, List<Card> updatedPile, boolean isPlayer1);
 
     /**
-     * Notifies the user about an error during the discard attempt.
-     *
-     * @param errorCode a string representing the specific rule violation.
-     */
+ * @param status the status describing why the discard failed.
+ */
     void onDiscardError(DiscardResult.Status status);
 }

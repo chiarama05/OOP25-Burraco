@@ -12,14 +12,6 @@ import java.util.List;
 public interface SelectionView {
 
     /**
-     * Displays an error message to the user when a selection or
-     * combination move is invalid.
-     *
-     * @param message the descriptive error message to show.
-     */
-    void showSelectionError(String message);
-
-    /**
      * Updates the player's table area by adding a new valid combination of cards.
      *
      * @param cards the list of cards forming the combination.
