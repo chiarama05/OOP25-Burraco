@@ -18,12 +18,14 @@ import it.unibo.burraco.model.card.CardImpl;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.turn.Turn;
+import it.unibo.burraco.view.notification.pot.PotNotifier;
 import it.unibo.burraco.view.pot.PotView;
 
 class PotManagerTest {
 
     private Turn turnModel;
     private PotView potView;
+    private PotNotifier potNotifier;
     private PotManager potManager;
     private Player player;
 
@@ -31,7 +33,8 @@ class PotManagerTest {
     void setUp() {
         this.turnModel = mock(Turn.class);
         this.potView = mock(PotView.class);
-        this.potManager = new PotManager(this.turnModel, this.potView);
+        this.potNotifier = mock(PotNotifier.class);
+        this.potManager = new PotManager(this.turnModel, this.potView, this.potNotifier);
 
         this.player = new PlayerImpl("TestPlayer");
 
@@ -46,7 +49,7 @@ class PotManagerTest {
         assertTrue(result, "Must return true when pot is taken");
         assertTrue(this.player.isInPot(), "Player must be marked as having taken the pot");
 
-        verify(this.potView).showPotMessage(eq(this.player.getName()), eq(false));
+        verify(this.potNotifier).notifyPotTaken(eq(this.player.getName()), eq(false));
         verify(this.potView).markPotTaken(eq(true));
         verify(this.potView).refreshHandPanel(eq(true), anyList());
     }
@@ -58,7 +61,7 @@ class PotManagerTest {
         assertTrue(result, "Must return true when pot is taken");
         assertTrue(this.player.isInPot());
 
-        verify(this.potView).showPotMessage(eq(this.player.getName()), eq(true));
+        verify(this.potNotifier).notifyPotTaken(eq(this.player.getName()), eq(true));
         verify(this.potView).markPotTaken(anyBoolean());
         verify(this.potView, never()).refreshHandPanel(anyBoolean(), anyList());
     }
@@ -72,7 +75,7 @@ class PotManagerTest {
         assertFalse(result, "Must return false when hand is not empty");
         assertFalse(this.player.isInPot(), "Player must not be marked as in-pot");
 
-        verify(this.potView, never()).showPotMessage(anyString(), anyBoolean());
+        verify(this.potNotifier, never()).notifyPotTaken(anyString(), anyBoolean());
         verify(this.potView, never()).markPotTaken(anyBoolean());
         verify(this.potView, never()).refreshHandPanel(anyBoolean(), anyList());
     }
@@ -85,7 +88,7 @@ class PotManagerTest {
 
         assertFalse(result, "Must return false when pot already taken");
 
-        verify(this.potView, never()).showPotMessage(anyString(), anyBoolean());
+        verify(this.potNotifier, never()).notifyPotTaken(anyString(), anyBoolean());
         verify(this.potView, never()).markPotTaken(anyBoolean());
         verify(this.potView, never()).refreshHandPanel(anyBoolean(), anyList());
     }
@@ -101,12 +104,12 @@ class PotManagerTest {
     }
 
     @Test
-    void testHandlePotForwardsIsDiscardFlagToShowPotMessage() {
+    void testHandlePotForwardsIsDiscardFlagToNotifier() {
         this.potManager.handlePot(true);
-        verify(this.potView).showPotMessage(this.player.getName(), true);
+        verify(this.potNotifier).notifyPotTaken(this.player.getName(), true);
 
         this.player.setInPot(false);
         this.potManager.handlePot(false);
-        verify(this.potView).showPotMessage(this.player.getName(), false);
+        verify(this.potNotifier).notifyPotTaken(this.player.getName(), false);
     }
 }

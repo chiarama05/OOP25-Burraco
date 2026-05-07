@@ -40,6 +40,8 @@ import it.unibo.burraco.view.notification.takediscard.TakeDiscardNotifierImpl;
 import it.unibo.burraco.view.score.ScoreViewImpl;
 import it.unibo.burraco.view.distribution.InitialDistributionView;
 import it.unibo.burraco.view.table.TableView;
+import it.unibo.burraco.view.notification.pot.PotNotifier;
+import it.unibo.burraco.view.notification.pot.PotNotifierImpl;
 
 /**
  * Wires the game components together.
@@ -74,7 +76,8 @@ public final class GameWiring {
         final DrawManager drawManager = this.gameController.getDrawManager();
 
         final TurnController turnCtrl = new TurnController(turnModel, drawManager);
-        final PotManager potManager = new PotManager(turnModel, view);
+        final PotNotifier potNotifier = new PotNotifierImpl(view.getFrame());
+        final PotManager potManager = new PotManager(turnModel, view, potNotifier);
 
         final Score score = new ScoreImpl();
         final ScoreController.ViewProvider realViewProvider = (playerA, playerB, n1, n2, target, s, tv, over) ->

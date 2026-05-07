@@ -33,6 +33,6 @@ public final class DeckNotifierImpl implements DeckNotifier {
                     "Unexpected draw error status: " + result.getStatus());
         };
 
-    JOptionPane.showMessageDialog(parent, message, "Draw Error", JOptionPane.WARNING_MESSAGE);
-}
+        JOptionPane.showMessageDialog(parent, message, "Draw Error", JOptionPane.WARNING_MESSAGE);
+    }
 }

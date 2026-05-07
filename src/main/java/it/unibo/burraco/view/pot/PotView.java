@@ -9,14 +9,6 @@ import java.util.List;
 public interface PotView {
 
     /**
-     * Displays a message informing the player that they have drawn their pot.
-     *
-     * @param playerName the name of the player who took the pot
-     * @param isDiscard  true if the pot was triggered by a discard action
-     */
-    void showPotMessage(String playerName, boolean isDiscard);
-
-    /**
      * Updates the visual indicator on the player's combination panel.
      *
      * @param isP1 true to update Player 1's panel, false for Player 2's
