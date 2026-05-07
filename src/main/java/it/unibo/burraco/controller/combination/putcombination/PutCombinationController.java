@@ -30,7 +30,6 @@ public class PutCombinationController {
     private final DrawManager drawManager;
     private final PotManager potManager;
     private final ClosureManager closureManager;
-    private final Turn turnModel;
     private final ClosureValidator closureValidator;
     private final CombinationValidator combinationValidator;
     private final SetHandler setHandler;
@@ -54,7 +53,6 @@ public class PutCombinationController {
         this.drawManager = drawManager;
         this.potManager = potManager;
         this.closureManager = closureManager;
-        this.turnModel = turnModel;
         this.closureValidator = new ClosureValidator();
         this.combinationValidator = new CombinationValidator();
         this.setHandler = new SetHandler();
@@ -96,11 +94,6 @@ public class PutCombinationController {
         current.addCombination(processedCombo);
         current.removeCards(selectedCards);
 
-        // Visual and audio feedback for Burraco
-        if (processedCombo.size() >= BURRACO_THRESHOLD) {
-            gameController.getSoundController().playBurracoSound();
-        }
-
         final boolean isPlayer1 = gameController.getModel().isPlayer1(current);
         final ClosureState state = this.closureValidator.evaluate(current);
 
@@ -117,6 +110,9 @@ public class PutCombinationController {
             return new PutCombinationResult(PutCombinationResult.Status.SUCCESS_STUCK, processedCombo, isPlayer1);
         }
 
-        return new PutCombinationResult(PutCombinationResult.Status.SUCCESS, processedCombo, isPlayer1);
-    }
+        if (processedCombo.size() >= BURRACO_THRESHOLD) {
+            return new PutCombinationResult(PutCombinationResult.Status.SUCCESS_BURRACO, processedCombo, isPlayer1);
+        }
+            return new PutCombinationResult(PutCombinationResult.Status.SUCCESS, processedCombo, isPlayer1);
+        }
 }

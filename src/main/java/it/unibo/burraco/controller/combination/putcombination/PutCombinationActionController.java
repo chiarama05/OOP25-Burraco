@@ -53,6 +53,10 @@ public class PutCombinationActionController {
             return;
         }
 
+        if (status == PutCombinationResult.Status.SUCCESS_BURRACO) {
+            gameController.getSoundController().playBurracoSound();
+        }
+
         // Handle success scenarios by triggering the appropriate view update
         switch (status) {
             case SUCCESS, SUCCESS_BURRACO ->
@@ -68,7 +72,6 @@ public class PutCombinationActionController {
                 view.onCombinationClose(result.getProcessedCombo(), result.isPlayer1(), current);
 
             default -> {
-
             }
         }
     }

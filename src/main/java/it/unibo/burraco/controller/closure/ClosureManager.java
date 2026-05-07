@@ -2,7 +2,7 @@ package it.unibo.burraco.controller.closure;
 
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.turn.Turn;
-import it.unibo.burraco.view.notification.game.GameNotifier;
+import it.unibo.burraco.view.notification.closure.ClosureNotifier;
 import it.unibo.burraco.controller.score.ScoreController;
 
 /**
@@ -14,7 +14,7 @@ import it.unibo.burraco.controller.score.ScoreController;
 public class ClosureManager {
 
     private final Turn turnModel;
-    private final GameNotifier notifier;
+    private final ClosureNotifier notifier;
     private final ScoreController scoreController;
     private final ClosureValidator validator;
 
@@ -28,7 +28,7 @@ public class ClosureManager {
      */
     public ClosureManager(
             final Turn turnModel,
-            final GameNotifier notifier,
+            final ClosureNotifier notifier,
             final int targetScore,
             final ScoreController scoreController) {
         this.turnModel = turnModel;

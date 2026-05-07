@@ -19,7 +19,7 @@ import it.unibo.burraco.model.card.CardImpl;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.turn.Turn;
-import it.unibo.burraco.view.notification.game.GameNotifier;
+import it.unibo.burraco.view.notification.closure.ClosureNotifier;
 
 class ClosureManagerTest {
 
@@ -33,7 +33,7 @@ class ClosureManagerTest {
     );
 
     private Turn turnModel;
-    private GameNotifier notifier;
+    private ClosureNotifier notifier;
     private ScoreController scoreController;
     private Player player;
     private ClosureManager manager;
@@ -41,7 +41,7 @@ class ClosureManagerTest {
     @BeforeEach
     void setUp() {
         this.turnModel = mock(Turn.class);
-        this.notifier = mock(GameNotifier.class);
+        this.notifier = mock(ClosureNotifier.class);
         this.scoreController = mock(ScoreController.class);
         this.player = new PlayerImpl("Player1");
 
