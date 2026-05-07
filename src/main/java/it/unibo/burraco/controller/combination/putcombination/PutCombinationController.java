@@ -14,7 +14,6 @@ import it.unibo.burraco.controller.game.GameController;
 import it.unibo.burraco.controller.pot.PotManager;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.model.turn.Turn;
 
 /**
  * Controller responsible for managing the logic of placing a new combination on the table.
@@ -30,7 +29,6 @@ public class PutCombinationController {
     private final DrawManager drawManager;
     private final PotManager potManager;
     private final ClosureManager closureManager;
-    private final Turn turnModel;
     private final ClosureValidator closureValidator;
     private final CombinationValidator combinationValidator;
     private final SetHandler setHandler;
@@ -48,13 +46,11 @@ public class PutCombinationController {
     public PutCombinationController(final GameController gameController,
                                      final DrawManager drawManager,
                                      final PotManager potManager,
-                                     final ClosureManager closureManager,
-                                     final Turn turnModel) {
+                                     final ClosureManager closureManager) {
         this.gameController = gameController;
         this.drawManager = drawManager;
         this.potManager = potManager;
         this.closureManager = closureManager;
-        this.turnModel = turnModel;
         this.closureValidator = new ClosureValidator();
         this.combinationValidator = new CombinationValidator();
         this.setHandler = new SetHandler();
