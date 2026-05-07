@@ -105,7 +105,7 @@ public final class GameWiring {
         discardButton.setOnDiscardAction(discardActionCtrl::handle);
 
         final PutCombinationController putCombinationCtrl = new PutCombinationController(
-                this.gameController, drawManager, potManager, closureManager);
+                this.gameController, drawManager, potManager, closureManager, turnModel);
 
         final PutCombinationNotifier putNotifier = new PutCombinationNotifierImpl(view.getFrame());
         final PutCombinationActionController putActionCtrl = new PutCombinationActionController(
