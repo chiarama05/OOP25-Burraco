@@ -30,6 +30,7 @@ public class PutCombinationController {
     private final DrawManager drawManager;
     private final PotManager potManager;
     private final ClosureManager closureManager;
+    private final Turn turnModel;
     private final ClosureValidator closureValidator;
     private final CombinationValidator combinationValidator;
     private final SetHandler setHandler;
@@ -53,6 +54,7 @@ public class PutCombinationController {
         this.drawManager = drawManager;
         this.potManager = potManager;
         this.closureManager = closureManager;
+        this.turnModel = turnModel;
         this.closureValidator = new ClosureValidator();
         this.combinationValidator = new CombinationValidator();
         this.setHandler = new SetHandler();
