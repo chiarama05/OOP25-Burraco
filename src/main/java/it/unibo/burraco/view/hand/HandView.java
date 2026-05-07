@@ -38,6 +38,13 @@ public interface HandView {
     void setCardSelectionListener(CardSelectionListener listener);
 
     /**
+     * Updates the hand with a new list of cards and clears the current selection.
+     *
+     * @param hand the new list of cards to display
+     */
+    void updateHand(List<Card> hand);
+
+    /**
      * Inner interface for handling card selection events within the HandView.
      */
     @FunctionalInterface

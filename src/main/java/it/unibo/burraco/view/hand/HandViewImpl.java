@@ -45,6 +45,7 @@ public final class HandViewImpl extends JPanel implements HandView {
 
     private final transient SelectionCardManager selectionManager;
     private transient CardSelectionListener cardSelectionListener;
+    private transient List<Card> currentHand = new ArrayList<>();
 
     /**
      * Constructs a HandViewImpl with a specific selection manager.
@@ -59,6 +60,7 @@ public final class HandViewImpl extends JPanel implements HandView {
 
     @Override
     public void refreshHand(final List<Card> hand) {
+        this.currentHand = new ArrayList<>(hand);
         this.removeAll();
 
         final List<Card> cardsToRender = new ArrayList<>(hand);
@@ -141,6 +143,12 @@ public final class HandViewImpl extends JPanel implements HandView {
         this.cardSelectionListener = listener;
     }
 
+    @Override
+    public void updateHand(final List<Card> hand) {
+        this.refreshHand(hand);
+        this.selectionManager.clearSelection();
+    }
+
     /**
      * Helper method to retrieve a single selected card.
      *
@@ -149,15 +157,5 @@ public final class HandViewImpl extends JPanel implements HandView {
     public Card getSingleSelectedCard() {
         final List<Card> selected = this.getSelectedCards();
         return selected.size() == 1 ? selected.get(0) : null;
-    }
-
-    /**
-     * Updates the hand and clears the current selection.
-     *
-     * @param hand the new list of cards to display
-     */
-    public void updateHand(final List<Card> hand) {
-        this.refreshHand(hand);
-        this.selectionManager.clearSelection();
     }
 }

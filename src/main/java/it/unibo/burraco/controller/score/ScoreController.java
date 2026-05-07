@@ -117,6 +117,9 @@ public final class ScoreController {
      * @param matchOver true if the entire match has concluded.
      */
     private void showScoreView(final boolean matchOver) {
+        this.tableView.getPlayer1HandView().updateHand(this.player1.getHand());
+        this.tableView.getPlayer2HandView().updateHand(this.player2.getHand());
+        
         final ScoreView view = this.viewProvider.create(
                 this.player1, this.player2, this.nameP1, this.nameP2,
                 this.targetScore, this.score, this.tableView, matchOver
