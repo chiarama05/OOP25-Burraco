@@ -38,14 +38,13 @@ class DiscardActionControllerTest {
         final DiscardController logic = mock(DiscardController.class);
         final DiscardResult errorResult = mock(DiscardResult.class);
 
-        final String errorMsg = "error_msg";
         when(errorResult.isValid()).thenReturn(false);
-        when(errorResult.getMessage()).thenReturn(errorMsg);
+        when(errorResult.getStatus()).thenReturn(DiscardResult.Status.NOT_DRAWN);
         when(logic.tryDiscard(any())).thenReturn(errorResult);
 
         final DiscardActionController actionCtrl = new DiscardActionController(logic);
         actionCtrl.handle(view, true);
 
-        verify(view).onDiscardError(errorMsg);
+        verify(view).onDiscardError(DiscardResult.Status.NOT_DRAWN);
     }
 }

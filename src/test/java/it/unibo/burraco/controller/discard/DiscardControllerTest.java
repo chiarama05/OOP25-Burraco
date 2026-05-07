@@ -58,7 +58,7 @@ class DiscardControllerTest {
         final DiscardResult result = this.controller.tryDiscard(List.of(mock(Card.class)));
 
         assertFalse(result.isValid(), "Discard should be invalid if player hasn't drawn");
-        assertEquals("must_draw", result.getMessage());
+        assertEquals(DiscardResult.Status.NOT_DRAWN, result.getStatus()); // era "must_draw"
     }
 
     @Test
@@ -69,7 +69,7 @@ class DiscardControllerTest {
         final DiscardResult result = this.controller.tryDiscard(multipleCards);
 
         assertFalse(result.isValid(), "Discard should be invalid if multiple cards are selected");
-        assertEquals("select_one", result.getMessage());
+        assertEquals(DiscardResult.Status.SELECT_ONE, result.getStatus()); // era "select_one"
     }
 
     @Test

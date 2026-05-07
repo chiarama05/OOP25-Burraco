@@ -28,11 +28,11 @@ public final class DeckNotifierImpl implements DeckNotifier {
                 "You have already drawn a card this turn!";
             case EMPTY_DECK ->
                 "The deck is empty! You must draw from the discard pile.";
-            default -> null;
+            default ->
+                throw new IllegalArgumentException(
+                    "Unexpected draw error status: " + result.getStatus());
         };
 
-        if (message != null) {
-            JOptionPane.showMessageDialog(parent, message, "Draw Error", JOptionPane.WARNING_MESSAGE);
-        }
-    }
+    JOptionPane.showMessageDialog(parent, message, "Draw Error", JOptionPane.WARNING_MESSAGE);
+}
 }

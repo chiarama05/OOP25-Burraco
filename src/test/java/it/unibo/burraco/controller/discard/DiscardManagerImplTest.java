@@ -46,7 +46,7 @@ class DiscardManagerImplTest {
     void testDiscardNullCard() {
         final DiscardResult result = discardManager.discard(player, null);
         assertFalse(result.isValid());
-        assertEquals("NOT_SELECTED", result.getMessage());
+        assertEquals(DiscardResult.Status.NOT_SELECTED, result.getStatus()); // riga 49: era getMessage()
     }
 
     @Test
@@ -55,8 +55,10 @@ class DiscardManagerImplTest {
         when(player.getHand()).thenReturn(List.of(card));
         when(player.getBurracoCount()).thenReturn(0);
         when(player.isInPot()).thenReturn(true);
+
         final DiscardResult result = discardManager.discard(player, card);
-        if ("NO_BURRACO_ERROR".equals(result.getMessage())) {
+
+        if (result.getStatus() == DiscardResult.Status.NO_BURRACO_ERROR) { // riga 59: era getMessage()
             assertFalse(result.isValid());
             verify(discardPile).drawLast();
             verify(player).addCardHand(card);
@@ -69,10 +71,11 @@ class DiscardManagerImplTest {
         when(player.getHand()).thenReturn(List.of(card));
         when(player.getBurracoCount()).thenReturn(1);
         when(player.isInPot()).thenReturn(true);
+
         final DiscardResult result = discardManager.discard(player, card);
+
         if (result.isGameWon()) {
             assertTrue(result.isValid());
-            assertTrue(result.isTurnEnds());
             verify(discardPile).add(card);
         }
     }

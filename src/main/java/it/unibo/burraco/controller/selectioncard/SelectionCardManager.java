@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import it.unibo.burraco.controller.combination.CombinationValidator;
 import it.unibo.burraco.model.card.Card;
-import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.view.notification.selection.SelectionNotifier;
-import it.unibo.burraco.view.selection.SelectionView;
 
 /**
  * Manages the state of cards selected by the user in the UI.
@@ -17,16 +13,7 @@ import it.unibo.burraco.view.selection.SelectionView;
  */
 public class SelectionCardManager {
 
-    /** Internal storage for selected cards, ensuring uniqueness via ArrayList. */
     private final List<Card> selectedCards = new ArrayList<>();
-    private final CombinationValidator combinationValidator;
-
-    /**
-     * Constructs a new SelectionCardManager and initializes its validator.
-     */
-    public SelectionCardManager() {
-        this.combinationValidator = new CombinationValidator();
-    }
 
     /**
      * Adds a card to the selection if not present, or removes it if already selected.
@@ -34,7 +21,7 @@ public class SelectionCardManager {
      * @param card the card to toggle.
      */
     public void toggleSelection(final Card card) {
-        final boolean removed = this.selectedCards.removeIf(c -> 
+        final boolean removed = this.selectedCards.removeIf(c ->
             System.identityHashCode(c) == System.identityHashCode(card));
         if (!removed) {
             this.selectedCards.add(card);
@@ -43,19 +30,17 @@ public class SelectionCardManager {
 
     /**
      * @param card the card to check.
-     * 
      * @return true if the specified card is currently in the selection set.
      */
     public boolean isSelected(final Card card) {
-        return this.selectedCards.stream().anyMatch(c -> 
+        return this.selectedCards.stream().anyMatch(c ->
             System.identityHashCode(c) == System.identityHashCode(card));
     }
 
     /**
-     * Returns an unmodifiable view of the selected cards to prevent
-     * external corruption of the internal state.
+     * Returns an unmodifiable view of the selected cards.
      *
-     * @return a read-only Set of selected cards.
+     * @return a read-only List of selected cards.
      */
     public List<Card> getSelectedCards() {
         return Collections.unmodifiableList(selectedCards);
@@ -78,52 +63,5 @@ public class SelectionCardManager {
      */
     public boolean isEmpty() {
         return this.selectedCards.isEmpty();
-    }
-
-    /**
-     * Validates the current selection and attempts to play it as a new combination.
-     * If valid, updates the player model and synchronizes the view.
-     *
-     * @param player   the player attempting the move.
-     * @param view     the view component to update on success.
-     * @param isPlayer1 boolean flag to identify which UI panel to update.
-     * @param notifier component to handle user feedback/errors.
-     */
-    public void processCombination(final Player player, final SelectionView view,
-                                   final boolean isPlayer1, final SelectionNotifier notifier) {
-
-        if (this.selectedCards.isEmpty()) {
-            notifier.notifySelectionError("EMPTY_SELECTION");
-            return;
-        }
-
-        final List<Card> cardsToPut = new ArrayList<>(selectedCards);
-
-        // Delegation to specialized validator
-        if (this.combinationValidator.isValidCombination(cardsToPut)) {
-            this.executeMove(player, view, isPlayer1, cardsToPut);
-        } else {
-            notifier.notifySelectionError("INVALID_COMBINATION");
-        }
-    }
-
-    /**
-     * Internal helper to execute the move once validated.
-     * Updates models and refreshes the UI.
-     *
-     * @param player     the player whose hand and combinations are updated.
-     * @param view       the view to refresh after the move.
-     * @param isPlayer1  flag identifying which player's panel to update.
-     * @param cardsToPut the validated list of cards to play as a combination.
-     */
-    private void executeMove(final Player player, final SelectionView view,
-                             final boolean isPlayer1, final List<Card> cardsToPut) {
-        player.removeCards(cardsToPut);
-        player.addCombination(cardsToPut);
-
-        view.addCombinationToPlayerPanel(cardsToPut, isPlayer1);
-        view.refreshHandPanel(isPlayer1, player.getHand());
-
-        this.clearSelection();
     }
 }

@@ -56,14 +56,12 @@ public class DiscardController {
      */
     public DiscardResult tryDiscard(final List<Card> selectedCards) {
 
-        // A player must draw from the deck or pile before discarding
         if (!this.drawManager.hasDrawn()) {
-            return new DiscardResult("must_draw");
+            return new DiscardResult(DiscardResult.Status.NOT_DRAWN);
         }
 
-        // Exactly one card must be discarded
         if (selectedCards.size() != 1) {
-            return new DiscardResult("select_one");
+            return new DiscardResult(DiscardResult.Status.SELECT_ONE);
         }
 
         final Player current = this.turnModel.getCurrentPlayer();

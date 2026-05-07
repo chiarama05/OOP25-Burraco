@@ -30,6 +30,7 @@ import it.unibo.burraco.view.discardcard.takediscard.TakeDiscardButton;
 import it.unibo.burraco.view.discardcard.takediscard.TakeDiscardView;
 import it.unibo.burraco.view.notification.deck.DeckNotifier;
 import it.unibo.burraco.view.notification.deck.DeckNotifierImpl;
+import it.unibo.burraco.view.notification.discard.DiscardNotifierImpl;
 import it.unibo.burraco.view.notification.game.GameNotifier;
 import it.unibo.burraco.view.notification.game.GameNotifierImpl;
 import it.unibo.burraco.view.notification.putcombination.PutCombinationNotifier;
@@ -98,8 +99,8 @@ public final class GameWiring {
 
         final DiscardActionController discardActionCtrl = new DiscardActionController(discardCoreLogic);
 
-        final DiscardButton discardButton = new DiscardButton(view, view.getDiscardView(), notifier);
-        discardButton.setIsPlayer1(turnModel.isPlayer1Turn());
+        final DiscardNotifierImpl discardNotifier = new DiscardNotifierImpl(view.getFrame());
+        final DiscardButton discardButton = new DiscardButton(view, view.getDiscardView(), discardNotifier);
 
         discardButton.setOnDiscardAction(discardActionCtrl::handle);
 

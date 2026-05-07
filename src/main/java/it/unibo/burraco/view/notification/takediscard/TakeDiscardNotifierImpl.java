@@ -32,5 +32,4 @@ public final class TakeDiscardNotifierImpl implements TakeDiscardNotifier {
 
         JOptionPane.showMessageDialog(parent, message, "Take Discard Error", JOptionPane.WARNING_MESSAGE);
     }
-
 }

@@ -1,8 +1,9 @@
 package it.unibo.burraco.view.discardcard.discard;
 
+import it.unibo.burraco.controller.discardcard.discard.DiscardResult;
 import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.view.notification.game.GameNotifier;
+import it.unibo.burraco.view.notification.discard.DiscardNotifier;
 import it.unibo.burraco.view.table.TableView;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public final class DiscardButton implements DiscardActionView {
 
     private final TableView view;
     private final DiscardView discardView;
-    private final GameNotifier notifier;
+    private final DiscardNotifier notifier;
     private boolean isP1;
     private BiConsumer<DiscardButton, Boolean> onDiscardAction;
 
@@ -29,13 +30,14 @@ public final class DiscardButton implements DiscardActionView {
      * @param discardView the component managing the discard pile display.
      * @param notifier the utility used to show alerts to the player.
      */
-    public DiscardButton(final TableView view, final DiscardView discardView, final GameNotifier notifier) {
+    public DiscardButton(final TableView view,
+                         final DiscardView discardView,
+                         final DiscardNotifier notifier) {
         this.view = view;
         this.discardView = discardView;
         this.notifier = notifier;
 
-        // Register a listener on the UI component to trigger the action callback
-        this.discardView.setDiscardListener(finalEvent -> {
+        this.discardView.setDiscardListener(e -> {
             if (this.onDiscardAction != null) {
                 this.onDiscardAction.accept(this, this.isP1);
             }
@@ -85,18 +87,8 @@ public final class DiscardButton implements DiscardActionView {
     }
 
     @Override
-    public void onDiscardError(final String errorCode) {
-        // Maps internal logic error codes to user-friendly notifications
-        switch (errorCode) {
-            case "must_draw":
-                this.notifier.notifyMustDraw();
-                break;
-            case "select_one":
-                this.notifier.notifySelectionError("Select only one card!");
-                break;
-            default:
-                this.notifier.notifySelectionError(errorCode);
-                break;
-        }
+    public void onDiscardError(final DiscardResult.Status status) {
+        this.notifier.notifyDiscardError(status);
     }
+
 }

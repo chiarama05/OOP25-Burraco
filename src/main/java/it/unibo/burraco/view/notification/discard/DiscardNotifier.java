@@ -3,17 +3,14 @@ package it.unibo.burraco.view.notification.discard;
 import it.unibo.burraco.controller.discardcard.discard.DiscardResult;
 
 /**
- * Interface responsible for notifying the user about errors
- * that occur during the card discarding process.
+ * Defines the contract for notifying the user of discard action errors.
  */
-@FunctionalInterface
 public interface DiscardNotifier {
 
     /**
-     * Notifies the user of an error during discard.
+     * Displays an error message corresponding to the given discard failure status.
      *
-     * @param result the result object containing the error message/code
+     * @param status the status describing why the discard failed
      */
-    void notifyDiscardError(DiscardResult result);
-
+    void notifyDiscardError(DiscardResult.Status status);
 }

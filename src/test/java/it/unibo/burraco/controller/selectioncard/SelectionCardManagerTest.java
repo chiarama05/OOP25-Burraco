@@ -3,28 +3,14 @@ package it.unibo.burraco.controller.selectioncard;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import it.unibo.burraco.model.card.Card;
-import it.unibo.burraco.model.card.CardImpl;
-import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.view.notification.selection.SelectionNotifier;
-import it.unibo.burraco.view.selection.SelectionView;
 
 class SelectionCardManagerTest {
-
-    private static final String SEVEN = "7";
-    private static final String HEARTS = "♥";
-    private static final String SPADES = "♠";
-    private static final String DIAMONDS = "♦";
 
     private SelectionCardManager selectionManager;
     private Card card1;
@@ -58,50 +44,6 @@ class SelectionCardManagerTest {
         this.selectionManager.toggleSelection(this.card2);
         this.selectionManager.clearSelection();
         assertEquals(0, this.selectionManager.getSelectionSize());
-        assertTrue(this.selectionManager.isEmpty());
-    }
-
-    @Test
-    void testProcessCombinationEmptySelection() {
-        final SelectionNotifier notifier = mock(SelectionNotifier.class);
-        final Player player = mock(Player.class);
-        final SelectionView view = mock(SelectionView.class);
-
-        this.selectionManager.processCombination(player, view, true, notifier);
-
-        verify(notifier).notifySelectionError("EMPTY_SELECTION");
-        verifyNoInteractions(player, view);
-    }
-
-    @Test
-    void testProcessCombinationInvalid() {
-        this.selectionManager.toggleSelection(this.card1);
-        final SelectionNotifier notifier = mock(SelectionNotifier.class);
-
-        this.selectionManager.processCombination(mock(Player.class), mock(SelectionView.class), true, notifier);
-
-        verify(notifier).notifySelectionError("INVALID_COMBINATION");
-    }
-
-    @Test
-    void testProcessCombinationSuccessFlow() {
-        final Card c1 = new CardImpl(HEARTS, SEVEN);
-        final Card c2 = new CardImpl(SPADES, SEVEN);
-        final Card c3 = new CardImpl(DIAMONDS, SEVEN);
-        this.selectionManager.toggleSelection(c1);
-        this.selectionManager.toggleSelection(c2);
-        this.selectionManager.toggleSelection(c3);
-
-        final Player player = mock(Player.class);
-        final SelectionView view = mock(SelectionView.class);
-        final SelectionNotifier notifier = mock(SelectionNotifier.class);
-
-        this.selectionManager.processCombination(player, view, true, notifier);
-
-        verify(player).removeCards(anyList());
-        verify(player).addCombination(anyList());
-        verify(view).addCombinationToPlayerPanel(anyList(), eq(true));
-        verify(view).refreshHandPanel(eq(true), any());
         assertTrue(this.selectionManager.isEmpty());
     }
 }

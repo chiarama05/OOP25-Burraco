@@ -28,11 +28,9 @@ public class DiscardActionController {
         final DiscardResult result = discardController.tryDiscard(view.getSelectedCards(isPlayer1));
 
         if (result.isValid()) {
-            // Update the UI in case of success
             view.onDiscardSuccess(result.getCurrentPlayer(), result.getUpdatedDiscardPile(), isPlayer1);
         } else {
-            // Inform the user about the error (didn't draw, multiple cards selected)
-            view.onDiscardError(result.getMessage());
+            view.onDiscardError(result.getStatus());  // era result.getMessage()
         }
     }
 }

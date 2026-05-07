@@ -12,40 +12,33 @@ import java.util.List;
  * and data required to update the UI.
  */
 public final class DiscardResult {
+    public enum Status {
+        NOT_DRAWN,
+        SELECT_ONE,
+        NOT_SELECTED,
+        NOT_IN_HAND,
+        NO_BURRACO_ERROR,
+        SUCCESS
+    }
 
     private final boolean valid;
-    private final boolean turnEnds;
     private final boolean gameWon;
-    private final String message;
+    private final Status status;
     private final List<Card> updatedDiscardPile;
     private final Player currentPlayer;
 
-    /**
-     * Constructor for a failed discard attempt.
-     *
-     * @param message the error message or reason for failure.
-     */
-    public DiscardResult(final String message) {
+    public DiscardResult(final Status status) {
         this.valid = false;
-        this.turnEnds = false;
         this.gameWon = false;
-        this.message = message;
+        this.status = status;
         this.updatedDiscardPile = null;
         this.currentPlayer = null;
     }
 
-    /**
-     * Constructor for a successful discard attempt.
-     *
-     * @param pile the updated state of the discard pile.
-     * @param player the player who performed the action.
-     * @param gameWon true if this discard triggers a round or match victory.
-     */
     public DiscardResult(final List<Card> pile, final Player player, final boolean gameWon) {
         this.valid = true;
-        this.turnEnds = true;
         this.gameWon = gameWon;
-        this.message = null;
+        this.status = Status.SUCCESS;
         this.updatedDiscardPile = pile;
         this.currentPlayer = player;
     }
@@ -58,24 +51,14 @@ public final class DiscardResult {
     }
 
     /**
-     * @return true if the current player's turn should conclude.
-     */
-    public boolean isTurnEnds() {
-        return this.turnEnds;
-    }
-
-    /**
      * @return true if the move resulted in winning the round or game.
      */
     public boolean isGameWon() {
         return this.gameWon;
     }
 
-    /**
-     * @return the error message if the move was invalid.
-     */
-    public String getMessage() {
-        return this.message;
+    public Status  getStatus() { 
+        return this.status; 
     }
 
     /**
