@@ -6,6 +6,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 import it.unibo.burraco.view.colorbutton.RoundedGradientButton;
 
@@ -18,6 +20,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.text.AttributeSet;
 
 /**
  * Swing-based implementation of the SetUpMenuView.
@@ -70,6 +74,8 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
     private static final int SCORE_2 = 1505;
     private static final int SCORE_3 = 2005;
 
+    private static final int MAX_NAME_LENGTH = 20;
+
     private final JFrame frame;
     private final OnConfigurationCompleteListener listener;
     private final List<JButton> scoreButtons = new ArrayList<>();
@@ -87,6 +93,23 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
         this.frame = new JFrame("Game Configuration");
         this.setupUI();
     }
+
+    private JTextField createNameField(final String defaultText) {
+        final PlainDocument doc = new PlainDocument() {
+            @Override
+            public void insertString(final int offs, final String str, final AttributeSet a)
+                    throws BadLocationException {
+                if (str != null && (getLength() + str.length()) <= MAX_NAME_LENGTH) {
+                    super.insertString(offs, str, a);
+                }
+            }
+        };
+    final JTextField field = new JTextField(doc, defaultText, FIELD_FONT_SIZE);
+    field.setFont(new Font(FONT_NAME, Font.PLAIN, FIELD_FONT_SIZE));
+    field.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
+    field.setHorizontalAlignment(JTextField.LEFT);
+    return field;
+}
 
     /**
      * Initializes components and sets up the GridBagLayout.
@@ -126,7 +149,7 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
         gbc.gridy = GRID_Y_PLAYER1_LABEL;
         panel.add(this.createLabel("Name Player 1:"), gbc);
         gbc.gridy = GRID_Y_PLAYER1_FIELD;
-        this.name1 = new JTextField("Player 1", FIELD_FONT_SIZE);
+        this.name1 = this.createNameField("Player 1");
         this.name1.setFont(new Font(FONT_NAME, Font.PLAIN, FIELD_FONT_SIZE));
         this.name1.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
         this.name1.setHorizontalAlignment(JTextField.LEFT);
@@ -135,7 +158,7 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
         gbc.gridy = GRID_Y_PLAYER2_LABEL;
         panel.add(this.createLabel("Name Player 2:"), gbc);
         gbc.gridy = GRID_Y_PLAYER2_FIELD;
-        this.name2 = new JTextField("Player 2", FIELD_FONT_SIZE);
+        this.name2 = this.createNameField("Player 2");
         this.name2.setFont(new Font(FONT_NAME, Font.PLAIN, FIELD_FONT_SIZE));
         this.name2.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
         this.name2.setHorizontalAlignment(JTextField.LEFT);
