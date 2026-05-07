@@ -28,11 +28,11 @@ import it.unibo.burraco.view.deck.DeckButton;
 import it.unibo.burraco.view.discardcard.discard.DiscardButton;
 import it.unibo.burraco.view.discardcard.takediscard.TakeDiscardButton;
 import it.unibo.burraco.view.discardcard.takediscard.TakeDiscardView;
+import it.unibo.burraco.view.notification.closure.ClosureNotifier;
+import it.unibo.burraco.view.notification.closure.ClosureNotifierImpl;
 import it.unibo.burraco.view.notification.deck.DeckNotifier;
 import it.unibo.burraco.view.notification.deck.DeckNotifierImpl;
 import it.unibo.burraco.view.notification.discard.DiscardNotifierImpl;
-import it.unibo.burraco.view.notification.game.GameNotifier;
-import it.unibo.burraco.view.notification.game.GameNotifierImpl;
 import it.unibo.burraco.view.notification.putcombination.PutCombinationNotifier;
 import it.unibo.burraco.view.notification.putcombination.PutCombinationNotifierImpl;
 import it.unibo.burraco.view.notification.takediscard.TakeDiscardNotifier;
@@ -64,7 +64,7 @@ public final class GameWiring {
             final int targetScore, final InitialDistributionView distributionView) {
 
         final GameModel gameModel = new GameModelImpl(nameP1, nameP2);
-        final GameNotifier notifier = new GameNotifierImpl(view.getFrame());
+        final ClosureNotifier notifier = new ClosureNotifierImpl(view.getFrame());
 
         this.gameController = new GameController(gameModel, soundController);
 
