@@ -30,7 +30,7 @@ public class DiscardActionController {
         if (result.isValid()) {
             view.onDiscardSuccess(result.getCurrentPlayer(), result.getUpdatedDiscardPile(), isPlayer1);
         } else {
-            view.onDiscardError(result.getStatus());  // era result.getMessage()
+            view.onDiscardError(result.getStatus()); 
         }
     }
 }
