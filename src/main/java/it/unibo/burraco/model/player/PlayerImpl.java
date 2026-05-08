@@ -70,7 +70,12 @@ public final class PlayerImpl implements Player {
 
     @Override
     public void removeCardHand(final Card c) {
-        hand.remove(c);
+        for (int i = 0; i < this.hand.size(); i++) {
+            if (this.hand.get(i) == c) {
+                this.hand.remove(i);
+                return;
+            }
+        }
     }
 
     @Override

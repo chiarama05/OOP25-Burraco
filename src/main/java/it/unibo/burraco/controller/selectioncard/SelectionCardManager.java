@@ -16,25 +16,24 @@ public class SelectionCardManager {
     private final List<Card> selectedCards = new ArrayList<>();
 
     /**
-     * Adds a card to the selection if not present, or removes it if already selected.
-     *
-     * @param card the card to toggle.
-     */
+    * Adds a card to the selection if not present, or removes it if already selected.
+    * Uses reference equality (==) to distinguish between cards with identical values.
+    *
+    * @param card the card to toggle.
+    */
     public void toggleSelection(final Card card) {
-        final boolean removed = this.selectedCards.removeIf(c ->
-            System.identityHashCode(c) == System.identityHashCode(card));
+        final boolean removed = this.selectedCards.removeIf(c -> c == card);
         if (!removed) {
             this.selectedCards.add(card);
         }
     }
 
     /**
-     * @param card the card to check.
-     * @return true if the specified card is currently in the selection set.
-     */
+    * @param card the card to check.
+    * @return true if the specified card instance is currently in the selection set.
+    */
     public boolean isSelected(final Card card) {
-        return this.selectedCards.stream().anyMatch(c ->
-            System.identityHashCode(c) == System.identityHashCode(card));
+        return this.selectedCards.stream().anyMatch(c -> c == card);
     }
 
     /**
