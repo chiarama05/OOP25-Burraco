@@ -2,7 +2,7 @@ package it.unibo.burraco.controller.pot;
 
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.turn.Turn;
-import it.unibo.burraco.view.notification.pot.PotNotifier;
+import it.unibo.burraco.view.pot.PotNotifier;
 import it.unibo.burraco.view.pot.PotView;
 
 /**
@@ -35,14 +35,10 @@ public class PotManager {
      */
     public boolean handlePot(final boolean isDiscard) {
         final Player p = this.model.getCurrentPlayer();
-
-        if (p.getHand().isEmpty() && !p.isInPot()) {
-            p.setInPot(true);
-            p.drawPot();
-
-            this.notifier.notifyPotTaken(p.getName(), isDiscard); // era view.showPotMessage
+        if (p.isInPot()) {
+            this.notifier.notifyPotTaken(p.getName(), isDiscard);
             this.view.markPotTaken(this.model.isPlayer1Turn());
-
+            
             if (!isDiscard) {
                 this.view.refreshHandPanel(this.model.isPlayer1Turn(), p.getHand());
             }

@@ -15,6 +15,8 @@ public interface Player {
      */
     String getName();
 
+    void updateCombination(List<Card> oldCombo, List<Card> newCombo);
+
     /**
      * Returns the cards currently in the player's hand.
      *

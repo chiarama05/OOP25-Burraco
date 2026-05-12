@@ -1,14 +1,24 @@
 package it.unibo.burraco.model;
 
+import it.unibo.burraco.model.card.Card;
 import it.unibo.burraco.model.deck.Deck;
 import it.unibo.burraco.model.deck.DeckImpl;
 import it.unibo.burraco.model.discard.DiscardPile;
 import it.unibo.burraco.model.discard.DiscardPileImpl;
+import it.unibo.burraco.model.move.Move;
+import it.unibo.burraco.model.move.MoveResult;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.player.PlayerImpl;
+import it.unibo.burraco.model.rules.ClosureState;
+import it.unibo.burraco.model.rules.ClosureValidator;
+import it.unibo.burraco.model.rules.CombinationValidator;
+import it.unibo.burraco.model.rules.SetHandler;
+import it.unibo.burraco.model.rules.StraightUtils;
 import it.unibo.burraco.model.turn.Turn;
 import it.unibo.burraco.model.turn.TurnImpl;
-import it.unibo.burraco.model.card.Card;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public final class GameModelImpl implements GameModel{
 
@@ -17,6 +27,12 @@ public final class GameModelImpl implements GameModel{
     private final Deck deck;
     private final DiscardPile discardPile;
     private final Turn turn;
+    private final CombinationValidator combinationValidator = new CombinationValidator();
+    private final ClosureValidator closureValidator = new ClosureValidator();
+    private final StraightUtils straightUtils = new StraightUtils();
+    private final SetHandler setHandler = new SetHandler();
+    private boolean drawnThisTurn = false;
+    private Player winner;
 
     public GameModelImpl(final String name1, final String name2) {
         this.p1 = new PlayerImpl(name1);
@@ -24,40 +40,6 @@ public final class GameModelImpl implements GameModel{
         this.deck = new DeckImpl();
         this.discardPile = new DiscardPileImpl();
         this.turn = new TurnImpl(p1, p2);
-    }
-
-    @Override
-    public void initializeGame() {
-        this.deck.reset();
-        this.discardPile.getCards().clear();
-        this.p1.resetForNewRound();
-        this.p2.resetForNewRound();
-        // Qui andrebbe la logica di distribuzione iniziale
-    }
-
-    @Override
-    public Card drawFromDeck() {
-        final Card c = deck.draw();
-        getCurrentPlayer().addCardHand(c);
-        return c;
-    }
-
-    @Override
-    public void drawFromDiscardPile() {
-        final Player p = getCurrentPlayer();
-        discardPile.getCards().forEach(p::addCardHand);
-        discardPile.getCards().clear();
-    }
-
-    @Override
-    public void discardCard(final Card card) {
-        getCurrentPlayer().removeCardHand(card);
-        discardPile.add(card);
-    }
-
-    @Override
-    public void nextTurn() {
-        this.turn.nextTurn();
     }
 
     @Override
@@ -71,15 +53,179 @@ public final class GameModelImpl implements GameModel{
     }
 
     @Override
-    public Player getPlayer2() { return p2; }
+    public Player getPlayer2() { 
+        return p2; 
+    }
+
     @Override
-    public Deck getCommonDeck() { return deck; }
+    public Deck getCommonDeck() { 
+        return deck; 
+    }
+
     @Override
-    public DiscardPile getDiscardPile() { return discardPile; }
+    public DiscardPile getDiscardPile() { 
+        return discardPile; 
+    }
+
     @Override
-    public Turn getTurn() { return turn; }
+    public Turn getTurn() { 
+        return turn; 
+    }
+
     @Override
-    public boolean isPlayer1(final Player player) { return p1.equals(player); }
+    public boolean isPlayer1(final Player player) { 
+        return p1.equals(player); 
+    }
+
     @Override
-    public boolean isGameOver() { return turn.isGameFinished(); }
+    public boolean isGameOver() { 
+        return turn.isGameFinished(); 
+    }
+
+    @Override
+    public MoveResult validateMove(final Move move) {
+        final Player current = getCurrentPlayer();
+        switch (move.getType()) {
+
+            case DRAW_DECK:
+            case DRAW_DISCARD:
+                if (drawnThisTurn) return MoveResult.error(MoveResult.Status.ALREADY_DRAWN); 
+                return MoveResult.ok();
+
+            case PUT_COMBINATION: {
+                if (!drawnThisTurn) return MoveResult.error(MoveResult.Status.NOT_DRAWN);
+                final List<Card> cards = move.getSelectedCards();
+                if (cards.isEmpty()) return MoveResult.error(MoveResult.Status.NO_CARDS_SELECTED);
+                if (closureValidator.wouldGetStuckAfterPutCombo(current, cards, cards.size()))
+                    return MoveResult.error(MoveResult.Status.WOULD_GET_STUCK);
+                if (!combinationValidator.isValidCombination(cards))
+                    return MoveResult.error(MoveResult.Status.INVALID_COMBINATION);
+                return MoveResult.ok();
+            }
+
+            case ATTACH: {
+                if (!drawnThisTurn) return MoveResult.error(MoveResult.Status.NOT_DRAWN);
+                final List<Card> sel = move.getSelectedCards();
+                final List<Card> target = move.getTargetCombination();
+                if (sel.isEmpty()) return MoveResult.error(MoveResult.Status.NO_CARDS_SELECTED);
+                if (closureValidator.wouldGetStuckAfterAttach(current, sel, target.size()))
+                    return MoveResult.error(MoveResult.Status.WOULD_GET_STUCK);
+                final List<Card> hypo = new ArrayList<>(target);
+                hypo.addAll(sel);
+                if (!combinationValidator.isValidCombination(hypo))
+                    return MoveResult.error(MoveResult.Status.INVALID_COMBINATION);
+                return MoveResult.ok();
+            }
+
+            case DISCARD: {
+                if (!drawnThisTurn) return MoveResult.error(MoveResult.Status.NOT_DRAWN);
+                if (move.getSelectedCards().size() != 1)
+                    return MoveResult.error(MoveResult.Status.NO_CARDS_SELECTED);
+                return MoveResult.ok();
+            }
+
+            default:
+                return MoveResult.error(MoveResult.Status.INVALID_MOVE);
+        }
+    }
+
+    @Override
+    public MoveResult applyMove(final Move move) {
+        final Player current = getCurrentPlayer();
+        final boolean isP1 = isPlayer1(current);
+
+        switch (move.getType()) {
+
+            case DRAW_DECK: {
+                final Card c = deck.draw();
+                current.addCardHand(c);
+                drawnThisTurn = true;
+                return MoveResult.ok();
+            }
+
+            case DRAW_DISCARD: {
+                discardPile.getCards().forEach(current::addCardHand);
+                discardPile.reset();
+                drawnThisTurn = true;
+                return MoveResult.ok();
+            }
+
+            case PUT_COMBINATION: {
+                List<Card> processed = new ArrayList<>(move.getSelectedCards());
+                if (straightUtils.isSameSeed(processed) && !setHandler.isValid(processed)) {
+                    processed = straightUtils.orderStraight(processed);
+                }
+                current.addCombination(processed);
+                current.removeCards(move.getSelectedCards());
+                return evaluateClosureState(current, processed, isP1);
+            }
+
+            case ATTACH: {
+                final List<Card> sel = move.getSelectedCards();
+                final List<Card> updatedTarget = new ArrayList<>(move.getTargetCombination());
+                updatedTarget.addAll(sel);
+                current.updateCombination(move.getTargetCombination(), updatedTarget);
+                current.removeCards(sel);
+                return evaluateClosureState(current, updatedTarget, isP1);
+            }
+            case DISCARD: {
+                final Card card = move.getSelectedCards().get(0);
+                current.removeCardHand(card);
+                discardPile.add(card);
+
+                if (current.getHand().isEmpty() && !current.isInPot()) {
+                    current.drawPot();
+                    return MoveResult.success(MoveResult.Status.SUCCESS_TAKE_POT, Collections.emptyList(), isP1);
+                }
+
+                if (closureValidator.evaluateAfterDiscard(current) == ClosureState.ROUND_WON) {
+                    this.winner = current;
+                    turn.setGameFinished(true);
+                    return MoveResult.success(MoveResult.Status.ROUND_WON, Collections.emptyList(), isP1);
+                }
+                return MoveResult.ok();
+            }
+
+            default:
+                return MoveResult.error(MoveResult.Status.INVALID_MOVE);
+        }
+    }
+
+    private MoveResult evaluateClosureState(final Player p,
+                                             final List<Card> combo,
+                                             final boolean isP1) {
+        final ClosureState state = closureValidator.evaluate(p);
+        if (state == ClosureState.ZERO_CARDS_NO_POT) {
+            p.drawPot();  
+            return MoveResult.success(MoveResult.Status.SUCCESS_TAKE_POT, combo, isP1);
+        }
+        if (state == ClosureState.CAN_CLOSE) {
+            this.winner = p;
+            turn.setGameFinished(true);
+            return MoveResult.success(MoveResult.Status.SUCCESS_CLOSE, combo, isP1);
+        }
+        if (state == ClosureState.ZERO_CARDS_NO_BURRACO) {
+            return MoveResult.success(MoveResult.Status.SUCCESS_STUCK, combo, isP1);
+        }
+        final boolean burraco = combo.size() >= 7;
+        return MoveResult.success(burraco ? MoveResult.Status.SUCCESS_BURRACO
+                : MoveResult.Status.SUCCESS, combo, isP1);
+    }
+
+    @Override
+    public void nextTurn() {
+        turn.nextTurn();
+        drawnThisTurn = false;
+    }
+
+    @Override
+    public boolean hasDrawn() { return drawnThisTurn; }
+
+    @Override
+    public Player getWinner() { return winner; }
+
+    @Override
+    public void resetDrawnFlag() {
+        this.drawnThisTurn = false;
+    }
 }

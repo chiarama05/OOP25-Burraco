@@ -36,17 +36,14 @@ public final class DistributionManagerImpl implements DistributionManager {
             pot2.add(deck.draw());
         }
 
-        // Assign the generated pots to the respective players
         player1.addToPot(pot1);
         player2.addToPot(pot2);
 
-        // The discard pile starts with the first card from the remaining deck
         modelDiscardPile.add(deck.draw());
     }
 
     @Override
     public List<Card> getInitialDiscardPile() {
-        // Returns a defensive copy of the internal discard pile list
         return new ArrayList<>(discardPile);
     }
 }

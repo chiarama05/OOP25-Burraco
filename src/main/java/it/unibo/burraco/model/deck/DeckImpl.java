@@ -67,4 +67,15 @@ public final class DeckImpl implements Deck {
         return Collections.unmodifiableList(cards);
     }
 
+    @Override
+    public List<Card> drawPot() {
+        final List<Card> pot = new ArrayList<>();
+        for (int i = 0; i < 11; i++) {
+            if (!cards.isEmpty()) {
+                pot.add(cards.remove(0));
+            }
+        }
+        return pot;
+    }
+
 }

@@ -1,8 +1,8 @@
 package it.unibo.burraco.view.distribution;
 
-import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
 import it.unibo.burraco.model.card.Card;
-import it.unibo.burraco.view.discardcard.discard.DiscardView;
+import it.unibo.burraco.view.SelectionCardManager;
+import it.unibo.burraco.view.discard.DiscardView;
 import it.unibo.burraco.view.hand.HandView;
 import it.unibo.burraco.view.hand.HandViewImpl;
 

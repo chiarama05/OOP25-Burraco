@@ -1,7 +1,8 @@
 package it.unibo.burraco.view.hand;
 
-import it.unibo.burraco.controller.selectioncard.SelectionCardManager;
 import it.unibo.burraco.model.card.Card;
+import it.unibo.burraco.view.SelectionCardManager;
+
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.BorderFactory;
@@ -145,8 +146,7 @@ public final class HandViewImpl extends JPanel implements HandView {
 
     @Override
     public void updateHand(final List<Card> hand) {
-        this.refreshHand(hand);
-        this.selectionManager.clearSelection();
+        this.refreshHand(hand); 
     }
 
     /**

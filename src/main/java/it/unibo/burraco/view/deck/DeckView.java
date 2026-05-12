@@ -12,9 +12,7 @@ import java.awt.Dimension;
  * Swing panel representing the deck button in the game UI.
  */
 public final class DeckView extends JPanel {
-
-    private static final long serialVersionUID = 1L;
-
+    
     private static final int FLOW_HGAP = 5;
     private static final int FLOW_VGAP = 5;
     private static final int FONT_SIZE = 18;

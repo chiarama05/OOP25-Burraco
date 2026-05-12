@@ -36,4 +36,6 @@ public interface Deck {
      * Resets the deck to its initial state, regenerating and reshuffling all cards.
      */
     void reset();
+
+    public List<Card> drawPot();
 }

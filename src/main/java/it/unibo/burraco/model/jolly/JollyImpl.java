@@ -2,8 +2,8 @@ package it.unibo.burraco.model.jolly;
 
 import java.util.List;
 
-import it.unibo.burraco.controller.combination.straight.StraightUtils;
 import it.unibo.burraco.model.card.Card;
+import it.unibo.burraco.model.rules.StraightUtils;
 
 /**
  * Implementation of the Jolly interface.

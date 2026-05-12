@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import it.unibo.burraco.model.card.Card;
+import it.unibo.burraco.view.SelectionCardManager;
 
 class SelectionCardManagerTest {
 

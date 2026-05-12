@@ -1,14 +1,10 @@
 package it.unibo.burraco.controller.score;
 
 import java.util.function.Consumer;
-
-import it.unibo.burraco.controller.distributioncard.DistributionManagerImpl;
-import it.unibo.burraco.controller.distributioncard.InitialDistributionController;
-import it.unibo.burraco.controller.game.GameController;
-import it.unibo.burraco.controller.round.ResetManagerImpl;
+import java.util.function.Supplier;
 import it.unibo.burraco.controller.round.RoundController;
-import it.unibo.burraco.controller.round.RoundControllerImpl;
 import it.unibo.burraco.controller.sound.SoundController;
+import it.unibo.burraco.model.GameModel;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.score.Score;
 import it.unibo.burraco.view.score.ScoreView;
@@ -28,28 +24,12 @@ public final class ScoreController {
     private final String nameP1;
     private final String nameP2;
     private final TableView tableView;
-    private final GameController gameController;
     private final int targetScore;
     private final SoundController soundController;
-    private final InitialDistributionView distributionView;
     private final ViewProvider viewProvider;
+    private Supplier<RoundController> roundFactory;
+    private final GameModel model;
 
-    /**
-     * Constructs the ScoreController with all required dependencies.
-     *
-     * @param score            the scoring model
-     * @param player1          the first player
-     * @param player2          the second player
-     * @param nameP1           the display name of Player 1
-     * @param nameP2           the display name of Player 2
-     * @param tableView        the main table view, used by the score screen to navigate back
-     * @param gameController   the game controller, used to reset state for a new round
-     * @param soundController  the sound controller for victory/round-end audio
-     * @param targetScore      the cumulative score threshold that ends the match
-     * @param distributionView the distribution view, re-used when starting a new round
-     * @param uiThreadRunner   a consumer that schedules tasks on the UI thread (e.g. {@code SwingUtilities::invokeLater})
-     * @param viewProvider     a factory for creating the {@link ScoreView}
-     */
     public ScoreController(
         final Score score,
         final Player player1,
@@ -57,7 +37,7 @@ public final class ScoreController {
         final String nameP1,
         final String nameP2,
         final TableView tableView,
-        final GameController gameController,
+        final GameModel model,
         final SoundController soundController,
         final int targetScore,
         final InitialDistributionView distributionView,
@@ -70,12 +50,16 @@ public final class ScoreController {
         this.nameP1 = nameP1;
         this.nameP2 = nameP2;
         this.tableView = tableView;
-        this.gameController = gameController;
         this.soundController = soundController;
         this.targetScore = targetScore;
-        this.distributionView = distributionView;
         this.viewProvider = viewProvider;
+        this.model = model;
     }
+
+    public void setRoundFactory(final Supplier<RoundController> factory) {
+        this.roundFactory = factory;
+    }
+
 
     /**
      * Triggers the end-of-round procedures: calculates points, updates match totals,
@@ -127,17 +111,9 @@ public final class ScoreController {
 
         view.setOnNextAction(() -> {
             view.close();
-            this.gameController.getModel().getTurn().resetForNewRound();
-
-            final RoundController roundController = new RoundControllerImpl(
-                this.tableView, new ResetManagerImpl(), this.player1, this.player2,
-                this.gameController,
-                new InitialDistributionController(new DistributionManagerImpl()),
-                this.distributionView
-            );
-
-            roundController.processNewRound();
-            this.tableView.refreshTurnLabel(true);
+            this.model.getTurn().resetForNewRound();
+            this.roundFactory.get().processNewRound();
+            tableView.refreshTurnLabel(true);
         });
         view.display();
     }

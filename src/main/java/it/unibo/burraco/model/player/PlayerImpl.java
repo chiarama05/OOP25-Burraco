@@ -40,6 +40,33 @@ public final class PlayerImpl implements Player {
         this.matchTotalScore += points;
     }
 
+@Override
+public void updateCombination(final List<Card> oldCombo, final List<Card> newCombo) {
+    for (int i = 0; i < this.combinations.size(); i++) {
+        if (sameCardReferences(this.combinations.get(i), oldCombo)) {
+            this.combinations.set(i, new ArrayList<>(newCombo));
+            return;
+        }
+    }
+}
+
+private boolean sameCardReferences(final List<Card> a, final List<Card> b) {
+    if (a.size() != b.size()) return false;
+    final List<Card> copy = new ArrayList<>(a);
+    for (final Card c : b) {
+        boolean found = false;
+        for (int j = 0; j < copy.size(); j++) {
+            if (copy.get(j) == c) {  
+                copy.remove(j);
+                found = true;
+                break;
+            }
+        }
+        if (!found) return false;
+    }
+    return true;
+}
+
     @Override
     public int getMatchTotalScore() {
         return this.matchTotalScore;
@@ -100,9 +127,8 @@ public final class PlayerImpl implements Player {
         combinations.add(new ArrayList<>(comb));
     }
 
-    @Override
     public List<List<Card>> getCombinations() {
-        return new ArrayList<>(this.combinations);
+        return this.combinations;
     }
 
     @Override

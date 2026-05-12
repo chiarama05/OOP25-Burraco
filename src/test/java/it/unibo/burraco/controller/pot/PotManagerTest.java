@@ -18,7 +18,7 @@ import it.unibo.burraco.model.card.CardImpl;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.turn.Turn;
-import it.unibo.burraco.view.notification.pot.PotNotifier;
+import it.unibo.burraco.view.pot.PotNotifier;
 import it.unibo.burraco.view.pot.PotView;
 
 class PotManagerTest {
