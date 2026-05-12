@@ -2,8 +2,8 @@ package it.unibo.burraco.controller.pot;
 
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.turn.Turn;
-import it.unibo.burraco.view.pot.PotNotifier;
-import it.unibo.burraco.view.pot.PotView;
+import it.unibo.burraco.view.table.pot.PotNotifier;
+import it.unibo.burraco.view.table.pot.PotView;
 
 /**
  * Controller class responsible for managing the transition to the pot (pozzetto).

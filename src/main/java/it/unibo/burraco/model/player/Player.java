@@ -2,7 +2,7 @@ package it.unibo.burraco.model.player;
 
 import java.util.List;
 
-import it.unibo.burraco.model.card.Card;
+import it.unibo.burraco.model.cards.Card;
 
 /**
  * Defines the contract for a player in the Burraco game.

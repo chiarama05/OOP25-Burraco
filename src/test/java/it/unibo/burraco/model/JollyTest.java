@@ -9,9 +9,9 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import it.unibo.burraco.model.card.Card;
-import it.unibo.burraco.model.card.CardImpl;
-import it.unibo.burraco.model.jolly.JollyImpl;
+import it.unibo.burraco.model.cards.Card;
+import it.unibo.burraco.model.cards.CardImpl;
+import it.unibo.burraco.model.cards.JollyImpl;
 
 class JollyTest {
     private static final String HEARTS = "♥";

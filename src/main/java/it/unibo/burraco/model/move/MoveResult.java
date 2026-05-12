@@ -1,9 +1,10 @@
 package it.unibo.burraco.model.move;
 
-import it.unibo.burraco.model.card.Card;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import it.unibo.burraco.model.cards.Card;
 
 public final class MoveResult {
 

@@ -2,7 +2,8 @@ package it.unibo.burraco.model.player;
 
 import java.util.ArrayList;
 import java.util.List;
-import it.unibo.burraco.model.card.Card;
+
+import it.unibo.burraco.model.cards.Card;
 
 /**
  * Implementation of the {@link Player} interface.

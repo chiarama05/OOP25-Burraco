@@ -1,7 +1,7 @@
 package it.unibo.burraco.controller.round;
 
-import it.unibo.burraco.model.deck.Deck;
-import it.unibo.burraco.model.discard.DiscardPile;
+import it.unibo.burraco.model.cards.Deck;
+import it.unibo.burraco.model.cards.DiscardPile;
 import it.unibo.burraco.model.player.Player;
 
 /**

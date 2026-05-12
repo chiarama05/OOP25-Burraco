@@ -2,7 +2,8 @@ package it.unibo.burraco.model.rules;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import it.unibo.burraco.model.card.Card;
+
+import it.unibo.burraco.model.cards.Card;
 
 /**
  * Handler class responsible for validating and managing card combinations of type "Set".

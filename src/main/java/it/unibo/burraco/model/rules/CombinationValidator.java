@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import it.unibo.burraco.model.card.Card;
-import it.unibo.burraco.model.card.CardImpl;
+import it.unibo.burraco.model.cards.Card;
+import it.unibo.burraco.model.cards.CardImpl;
 
 /**
  * Utility class responsible for validating whether a set of cards

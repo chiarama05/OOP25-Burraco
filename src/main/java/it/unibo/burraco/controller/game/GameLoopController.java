@@ -2,12 +2,12 @@ package it.unibo.burraco.controller.game;
 
 import it.unibo.burraco.controller.pot.PotManager;
 import it.unibo.burraco.controller.score.ScoreController;
-import it.unibo.burraco.controller.sound.SoundController;
 import it.unibo.burraco.model.GameModel;
 import it.unibo.burraco.model.move.Move;
 import it.unibo.burraco.model.move.MoveResult;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.BurracoView;
+import it.unibo.burraco.view.components.sound.SoundView;
 
 import javax.swing.SwingUtilities;
 import java.lang.reflect.InvocationTargetException;
@@ -18,13 +18,13 @@ public final class GameLoopController {
 
     private final GameModel model;
     private final BurracoView view;
-    private final SoundController sound;
+    private final SoundView sound;
     private final PotManager potManager;
     private final ScoreController scoreController;
 
     public GameLoopController(final GameModel model,
                                final BurracoView view,
-                               final SoundController sound,
+                               final SoundView sound,
                                final PotManager potManager,
                                final ScoreController scoreController) {
         this.model = model;
@@ -48,8 +48,11 @@ public final class GameLoopController {
             final boolean isP1 = model.isPlayer1(current);
 
             if (isStartOfTurn) {
-                SwingUtilities.invokeLater(() -> view.wakeUp(current, isP1));
-                try { Thread.sleep(150); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+                try {
+                    SwingUtilities.invokeAndWait(() -> view.wakeUp(current, isP1));
+                } catch (InvocationTargetException | InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
 
             Move move = waitForMove();
@@ -72,8 +75,6 @@ public final class GameLoopController {
             if (finalMove.getType() == Move.Type.DISCARD && !model.isGameOver()) {
                 model.nextTurn();
                 isStartOfTurn = true;
-            } else if (result.getStatus() == MoveResult.Status.SUCCESS_TAKE_POT) {
-                isStartOfTurn = false;
             } else {
                 isStartOfTurn = false;
             }

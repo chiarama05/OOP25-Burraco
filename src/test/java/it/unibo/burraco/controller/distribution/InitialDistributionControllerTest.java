@@ -5,10 +5,10 @@ import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.Test;
 
-import it.unibo.burraco.controller.distributioncard.DistributionManagerImpl;
-import it.unibo.burraco.controller.distributioncard.InitialDistributionController;
-import it.unibo.burraco.model.deck.Deck;
-import it.unibo.burraco.model.discard.DiscardPile;
+import it.unibo.burraco.controller.distribution.DistributionManagerImpl;
+import it.unibo.burraco.controller.distribution.InitialDistributionController;
+import it.unibo.burraco.model.cards.Deck;
+import it.unibo.burraco.model.cards.DiscardPile;
 import it.unibo.burraco.model.player.Player;
 
 class InitialDistributionControllerTest {

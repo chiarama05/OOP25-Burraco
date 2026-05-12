@@ -1,9 +1,9 @@
 package it.unibo.burraco.controller.round;
 
-import it.unibo.burraco.controller.distributioncard.InitialDistributionController;
+import it.unibo.burraco.controller.distribution.InitialDistributionController;
 import it.unibo.burraco.model.GameModel;
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.view.distribution.InitialDistributionView;
+import it.unibo.burraco.view.scenes.InitialDistributionView;
 import it.unibo.burraco.view.table.TableView;
 
 public final class RoundControllerImpl implements RoundController {

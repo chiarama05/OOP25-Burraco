@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-import it.unibo.burraco.model.card.Card;
-import it.unibo.burraco.model.card.CardImpl;
+import it.unibo.burraco.model.cards.Card;
+import it.unibo.burraco.model.cards.CardImpl;
 import it.unibo.burraco.model.score.CardPoint;
 
 class CardPointTest {

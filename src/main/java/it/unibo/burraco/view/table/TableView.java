@@ -1,8 +1,8 @@
 package it.unibo.burraco.view.table;
 
 import it.unibo.burraco.view.BurracoView;
-import it.unibo.burraco.view.deck.DeckView;
-import it.unibo.burraco.view.discard.DiscardView;
+import it.unibo.burraco.view.table.deck.DeckView;
+import it.unibo.burraco.view.table.discard.DiscardView;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;

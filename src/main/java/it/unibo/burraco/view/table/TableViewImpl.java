@@ -1,17 +1,17 @@
 package it.unibo.burraco.view.table;
 
 import it.unibo.burraco.model.GameModel;
-import it.unibo.burraco.model.card.Card;
+import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.model.move.Move;
 import it.unibo.burraco.model.move.MoveResult;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.SelectionCardManager;
-import it.unibo.burraco.view.attach.AttachButtonFactory;
-import it.unibo.burraco.view.deck.DeckView;
-import it.unibo.burraco.view.discard.DiscardView;
-import it.unibo.burraco.view.discard.DiscardViewImpl;
-import it.unibo.burraco.view.distribution.InitialDistributionView;
-import it.unibo.burraco.view.hand.HandView;
+import it.unibo.burraco.view.components.attach.AttachButtonFactory;
+import it.unibo.burraco.view.scenes.InitialDistributionView;
+import it.unibo.burraco.view.table.deck.DeckView;
+import it.unibo.burraco.view.table.discard.DiscardView;
+import it.unibo.burraco.view.table.discard.DiscardViewImpl;
+import it.unibo.burraco.view.table.hand.HandView;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;

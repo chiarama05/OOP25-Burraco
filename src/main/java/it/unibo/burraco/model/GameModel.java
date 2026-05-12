@@ -2,8 +2,8 @@ package it.unibo.burraco.model;
 
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.turn.Turn;
-import it.unibo.burraco.model.deck.Deck;
-import it.unibo.burraco.model.discard.DiscardPile;
+import it.unibo.burraco.model.cards.Deck;
+import it.unibo.burraco.model.cards.DiscardPile;
 import it.unibo.burraco.model.move.Move;
 import it.unibo.burraco.model.move.MoveResult;
 

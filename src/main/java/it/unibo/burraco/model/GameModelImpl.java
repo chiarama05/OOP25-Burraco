@@ -1,10 +1,10 @@
 package it.unibo.burraco.model;
 
-import it.unibo.burraco.model.card.Card;
-import it.unibo.burraco.model.deck.Deck;
-import it.unibo.burraco.model.deck.DeckImpl;
-import it.unibo.burraco.model.discard.DiscardPile;
-import it.unibo.burraco.model.discard.DiscardPileImpl;
+import it.unibo.burraco.model.cards.Card;
+import it.unibo.burraco.model.cards.Deck;
+import it.unibo.burraco.model.cards.DeckImpl;
+import it.unibo.burraco.model.cards.DiscardPile;
+import it.unibo.burraco.model.cards.DiscardPileImpl;
 import it.unibo.burraco.model.move.Move;
 import it.unibo.burraco.model.move.MoveResult;
 import it.unibo.burraco.model.player.Player;

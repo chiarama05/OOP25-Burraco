@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import it.unibo.burraco.model.card.CardImpl;
+import it.unibo.burraco.model.cards.CardImpl;
 
 class CardTest {
 

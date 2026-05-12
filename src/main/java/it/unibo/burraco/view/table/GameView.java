@@ -1,8 +1,9 @@
 package it.unibo.burraco.view.table;
 
-import it.unibo.burraco.model.card.Card;
-import it.unibo.burraco.view.hand.HandView;
-import it.unibo.burraco.view.pot.PotView;
+import it.unibo.burraco.model.cards.Card;
+import it.unibo.burraco.view.table.hand.HandView;
+import it.unibo.burraco.view.table.pot.PotView;
+
 import java.util.List;
 
 public interface GameView extends PotView {

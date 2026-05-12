@@ -14,12 +14,12 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import it.unibo.burraco.model.card.CardImpl;
+import it.unibo.burraco.model.cards.CardImpl;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.turn.Turn;
-import it.unibo.burraco.view.pot.PotNotifier;
-import it.unibo.burraco.view.pot.PotView;
+import it.unibo.burraco.view.table.pot.PotNotifier;
+import it.unibo.burraco.view.table.pot.PotView;
 
 class PotManagerTest {
 

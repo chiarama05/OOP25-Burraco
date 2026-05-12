@@ -2,7 +2,8 @@ package it.unibo.burraco.model.score;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import it.unibo.burraco.model.card.Card;
+
+import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.model.player.Player;
 
 /**

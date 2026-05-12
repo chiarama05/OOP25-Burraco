@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import it.unibo.burraco.model.card.Card;
+import it.unibo.burraco.model.cards.Card;
 
 /**
  * Manages the state of cards selected by the user in the UI.

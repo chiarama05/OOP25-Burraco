@@ -1,8 +1,9 @@
 package it.unibo.burraco.model.rules;
 
 import java.util.List;
+
+import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.model.card.Card;
 
 /**
  * Utility class to validate the state of the game regarding round closure.

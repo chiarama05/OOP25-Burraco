@@ -1,6 +1,6 @@
 package it.unibo.burraco.model.score;
 
-import it.unibo.burraco.model.card.Card;
+import it.unibo.burraco.model.cards.Card;
 
 /**
  * Utility class to manage point values and numerical conversions

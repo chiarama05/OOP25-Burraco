@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import it.unibo.burraco.model.card.Card;
+import it.unibo.burraco.model.cards.Card;
 
 /**
  * Utility class responsible for determining whether one or more cards

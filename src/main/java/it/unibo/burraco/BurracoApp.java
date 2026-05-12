@@ -3,13 +3,13 @@ package it.unibo.burraco;
 import javax.swing.SwingUtilities;
 
 import it.unibo.burraco.controller.game.GameWiring;
-import it.unibo.burraco.controller.sound.SoundController;
-import it.unibo.burraco.controller.sound.SoundControllerImpl;
-import it.unibo.burraco.view.start.OnConfigurationCompleteListener;
-import it.unibo.burraco.view.start.SetUpMenuView;
-import it.unibo.burraco.view.start.SetUpMenuViewImpl;
-import it.unibo.burraco.view.start.StartMenuView;
-import it.unibo.burraco.view.start.StartMenuViewImpl;
+import it.unibo.burraco.view.components.sound.SoundView;
+import it.unibo.burraco.view.components.sound.SoundViewImpl;
+import it.unibo.burraco.view.scenes.OnConfigurationCompleteListener;
+import it.unibo.burraco.view.scenes.SetUpMenuView;
+import it.unibo.burraco.view.scenes.SetUpMenuViewImpl;
+import it.unibo.burraco.view.scenes.StartMenuView;
+import it.unibo.burraco.view.scenes.StartMenuViewImpl;
 import it.unibo.burraco.view.table.TableViewImpl;
 
 /**
@@ -56,7 +56,7 @@ public final class BurracoApp {
     private static void startGame(final String nameP1,
                                    final String nameP2,
                                    final int targetScore) {
-        final SoundController sound = new SoundControllerImpl();
+        final SoundView sound = new SoundViewImpl();
         final TableViewImpl tableView = new TableViewImpl(nameP1, nameP2);
 
         new GameWiring(nameP1, nameP2, tableView, sound, targetScore,
