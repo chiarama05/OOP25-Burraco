@@ -1,13 +1,12 @@
 package it.unibo.burraco.view.table;
 
-import it.unibo.burraco.model.GameModel;
+import it.unibo.burraco.model.GameState;
 import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.model.move.Move;
 import it.unibo.burraco.model.move.MoveResult;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.SelectionCardManager;
 import it.unibo.burraco.view.components.attach.AttachButtonFactory;
-import it.unibo.burraco.view.scenes.InitialDistributionView;
 import it.unibo.burraco.view.table.deck.DeckView;
 import it.unibo.burraco.view.table.discard.DiscardView;
 import it.unibo.burraco.view.table.discard.DiscardViewImpl;
@@ -58,7 +57,7 @@ public final class TableViewImpl implements TableView {
     private final JPanel deckPanel;
     private final String nameP1;
     private final String nameP2;
-    private final InitialDistributionView initDist;
+    private final TableSetUpView initDist;
     private final DiscardView discardView;
     private final DeckView deckView;
     private final JButton takeDiscardBtn;
@@ -99,7 +98,7 @@ public final class TableViewImpl implements TableView {
         this.deckView     = new DeckView();
         this.deckPanel    = new JPanel(new BorderLayout());
         this.deckPanel.setBackground(LIGHT_GREEN);
-        this.initDist = new InitialDistributionView(discardPanel, sel);
+        this.initDist = new TableSetUpView();
         this.frame.add(
                 new PlayerAreaView(buildDiscardScroll(), deckView, deckPanel, LIGHT_GREEN),
                 BorderLayout.SOUTH);
@@ -114,12 +113,15 @@ public final class TableViewImpl implements TableView {
                 new ControlPanelView(takeDiscardBtn, putComboBtn, discardBtn, LIGHT_GREEN),
                 BorderLayout.EAST);
 
-        // ── Frame finalisation ─────────────────────────────────────────────
         this.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.frame.setMinimumSize(new Dimension(FRAME_MIN_W, FRAME_MIN_H));
         this.frame.setVisible(true);
 
-        this.attachButtonFactory = new AttachButtonFactory(this, this.frame);
+        this.attachButtonFactory = new AttachButtonFactory(targetCards -> {
+            final List<Card> selected = new ArrayList<>(
+                getHandViewForCurrentPlayer(currentIsPlayer1).getSelectedCards());
+            complete(new Move(Move.Type.ATTACH, selected, new ArrayList<>(targetCards)));
+        });
         wireButtons();
     }
 
@@ -155,15 +157,12 @@ public final class TableViewImpl implements TableView {
         return this.pendingFuture;
     }
 
-    @Override
-    public void refresh(final GameModel model) {
-        final Player current = model.getCurrentPlayer();
-        final boolean isP1   = model.isPlayer1(current);
-        this.currentIsPlayer1 = isP1;
-        redrawAllCombinations(model);
-        getHandViewForCurrentPlayer(isP1).clearSelection();
-        refreshHandPanel(isP1, current.getHand());
-        discardView.updateDiscardPile(model.getDiscardPile().getCards());
+    public void refresh(final GameState state) {
+        this.currentIsPlayer1 = state.isP1Turn();
+        redrawAllCombinations(state.getP1Combinations(), state.getP2Combinations());
+        getHandViewForCurrentPlayer(state.isP1Turn()).clearSelection();
+        refreshHandPanel(state.isP1Turn(), state.getCurrentHand());
+        discardView.updateDiscardPile(state.getDiscardPile());
     }
 
     @Override
@@ -208,6 +207,7 @@ public final class TableViewImpl implements TableView {
 
     @Override
     public void startNewRound() {
+        this.firstWakeUp = true;
         this.combPanel1.removeAll();
         this.combPanel2.removeAll();
         this.discardPanel.removeAll();
@@ -318,7 +318,9 @@ public final class TableViewImpl implements TableView {
     }
 
     /** Required by {@code GameWiring} to pass the distribution view to wiring. */
-    public InitialDistributionView getInitDist() { return this.initDist; }
+    public TableSetUpView getInitDist() { 
+        return this.initDist; 
+    }
 
     /** Resolves a nullable/blank player name to a safe fallback. */
     private static String resolved(final String name, final String fallback) {
@@ -368,17 +370,17 @@ public final class TableViewImpl implements TableView {
         }
     }
 
-    private void redrawAllCombinations(final GameModel model) {
+    private void redrawAllCombinations(
+            final List<List<Card>> p1Combos,
+            final List<List<Card>> p2Combos) {
         this.combPanel1.removeAll();
         this.combPanel2.removeAll();
-
-        for (final List<Card> combo : model.getPlayer1().getCombinations()) {
+        for (final List<Card> combo : p1Combos) {
             addComboToPanel(new ArrayList<>(combo), true);
         }
-        for (final List<Card> combo : model.getPlayer2().getCombinations()) {
+        for (final List<Card> combo : p2Combos) {
             addComboToPanel(new ArrayList<>(combo), false);
         }
-
         this.frame.revalidate();
         this.frame.repaint();
     }

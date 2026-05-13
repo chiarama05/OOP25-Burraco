@@ -3,6 +3,7 @@ package it.unibo.burraco.controller.game;
 import it.unibo.burraco.controller.pot.PotManager;
 import it.unibo.burraco.controller.score.ScoreController;
 import it.unibo.burraco.model.GameModel;
+import it.unibo.burraco.model.GameState;
 import it.unibo.burraco.model.move.Move;
 import it.unibo.burraco.model.move.MoveResult;
 import it.unibo.burraco.model.player.Player;
@@ -79,23 +80,32 @@ public final class GameLoopController {
                 isStartOfTurn = false;
             }
         }
-
-        final Player winner = model.getWinner();
-        SwingUtilities.invokeLater(() -> view.showWinner(winner));
         scoreController.onRoundEnd();
     }
 
     private void handleResult(final MoveResult result, final Move move) {
-    switch (result.getStatus()) {
-        case SUCCESS_BURRACO -> sound.playBurracoSound();
-        case SUCCESS_TAKE_POT -> {
-            final boolean isDiscard = move.getType() == Move.Type.DISCARD;
-            potManager.handlePot(isDiscard);
+        switch (result.getStatus()) {
+            case SUCCESS_BURRACO -> sound.playBurracoSound();
+            case SUCCESS_TAKE_POT -> {
+                final boolean isDiscard = move.getType() == Move.Type.DISCARD;
+                potManager.handlePot(isDiscard);
+            }
+            case ROUND_WON -> sound.playRoundEndSound();
+            default -> { }
         }
-        case ROUND_WON -> sound.playRoundEndSound();
-        default -> { }
+        view.refresh(buildGameState());
     }
-    view.refresh(model);
+
+    private GameState buildGameState() {
+        final Player current = model.getCurrentPlayer();
+        final boolean isP1 = model.isPlayer1(current);
+        return new GameState(
+            model.getPlayer1().getCombinations(),
+            model.getPlayer2().getCombinations(),
+            isP1,
+            current.getHand(),
+            model.getDiscardPile().getCards()
+        );
     }
 
     private Move waitForMove() {

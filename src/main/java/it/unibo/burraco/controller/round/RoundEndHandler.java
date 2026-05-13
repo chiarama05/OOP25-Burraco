@@ -4,9 +4,8 @@ import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.score.Score;
 import it.unibo.burraco.view.components.sound.SoundView;
 import it.unibo.burraco.view.scenes.ScoreView;
+import it.unibo.burraco.view.scenes.ScoreViewProvider;
 import it.unibo.burraco.view.table.TableView;
-import it.unibo.burraco.controller.score.ScoreController;
-import it.unibo.burraco.controller.score.ScoreController.ViewProvider;
 
 import javax.swing.SwingUtilities;
 
@@ -24,8 +23,8 @@ public final class RoundEndHandler {
     private final TableView tableView;
     private final SoundView soundView;
     private final int targetScore;
-    private final ViewProvider viewProvider;
-    private RoundController roundFactory;
+    private final ScoreViewProvider viewProvider;
+    private Runnable onNewRound;
 
     public RoundEndHandler(
             final Score score,
@@ -36,7 +35,7 @@ public final class RoundEndHandler {
             final TableView tableView,
             final SoundView soundView,
             final int targetScore,
-            final ViewProvider viewProvider) {
+            final ScoreViewProvider viewProvider) {
         this.score = score;
         this.player1 = player1;
         this.player2 = player2;
@@ -48,8 +47,8 @@ public final class RoundEndHandler {
         this.viewProvider = viewProvider;
     }
 
-    public void setRoundFactory(final RoundController factory) {
-        this.roundFactory = factory;
+    public void setOnNewRound(final Runnable action) {
+        this.onNewRound = action;
     }
 
     /**
@@ -81,8 +80,9 @@ public final class RoundEndHandler {
 
         view.setOnNextAction(() -> {
             view.close();
-            roundFactory.processNewRound();
-            tableView.refreshTurnLabel(true);
+            if (onNewRound != null) {
+                onNewRound.run();
+            }
         });
         view.display();
     }

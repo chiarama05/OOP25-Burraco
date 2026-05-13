@@ -39,5 +39,5 @@ public interface GameModel {
 
     boolean hasDrawn();
 
-    void resetDrawnFlag();
+    void resetForNewRound();
 }

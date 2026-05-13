@@ -3,7 +3,7 @@ package it.unibo.burraco.controller.round;
 import it.unibo.burraco.controller.distribution.InitialDistributionController;
 import it.unibo.burraco.model.GameModel;
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.view.scenes.InitialDistributionView;
+import it.unibo.burraco.view.table.TableSetUpView;
 import it.unibo.burraco.view.table.TableView;
 
 public final class RoundControllerImpl implements RoundController {
@@ -14,7 +14,7 @@ public final class RoundControllerImpl implements RoundController {
     private final Player player2;
     private final GameModel model;
     private final InitialDistributionController distributionController;
-    private final InitialDistributionView distributionView;
+    private final TableSetUpView distributionView;
 
     public RoundControllerImpl(final TableView tableView,
                                 final ResetManager resetManager,
@@ -22,7 +22,7 @@ public final class RoundControllerImpl implements RoundController {
                                 final Player p2,
                                 final GameModel model,
                                 final InitialDistributionController distributionController,
-                                final InitialDistributionView distributionView) {
+                                final TableSetUpView distributionView) {
         this.tableView = tableView;
         this.resetManager = resetManager;
         this.player1 = p1;
@@ -39,7 +39,7 @@ public final class RoundControllerImpl implements RoundController {
             this.model.getCommonDeck(),
             this.model.getDiscardPile());
 
-        this.model.resetDrawnFlag();
+        this.model.resetForNewRound();
 
         this.tableView.startNewRound();
 

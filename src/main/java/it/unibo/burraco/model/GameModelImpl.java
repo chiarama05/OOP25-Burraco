@@ -108,6 +108,10 @@ public final class GameModelImpl implements GameModel{
                 final List<Card> sel = move.getSelectedCards();
                 final List<Card> target = move.getTargetCombination();
                 if (sel.isEmpty()) return MoveResult.error(MoveResult.Status.NO_CARDS_SELECTED);
+
+                if (!current.ownsCombination(target))
+                    return MoveResult.error(MoveResult.Status.WRONG_PLAYER);
+
                 if (closureValidator.wouldGetStuckAfterAttach(current, sel, target.size()))
                     return MoveResult.error(MoveResult.Status.WOULD_GET_STUCK);
                 final List<Card> hypo = new ArrayList<>(target);
@@ -157,17 +161,19 @@ public final class GameModelImpl implements GameModel{
                 }
                 current.addCombination(processed);
                 current.removeCards(move.getSelectedCards());
-                return evaluateClosureState(current, processed, isP1);
+                return evaluateClosureState(current, processed, isP1, 0); 
             }
 
             case ATTACH: {
                 final List<Card> sel = move.getSelectedCards();
+                final int previousSize = move.getTargetCombination().size();
                 final List<Card> updatedTarget = new ArrayList<>(move.getTargetCombination());
                 updatedTarget.addAll(sel);
                 current.updateCombination(move.getTargetCombination(), updatedTarget);
                 current.removeCards(sel);
-                return evaluateClosureState(current, updatedTarget, isP1);
+                return evaluateClosureState(current, updatedTarget, isP1, previousSize);
             }
+
             case DISCARD: {
                 final Card card = move.getSelectedCards().get(0);
                 current.removeCardHand(card);
@@ -192,11 +198,12 @@ public final class GameModelImpl implements GameModel{
     }
 
     private MoveResult evaluateClosureState(final Player p,
-                                             final List<Card> combo,
-                                             final boolean isP1) {
+                                            final List<Card> combo,
+                                            final boolean isP1,
+                                            final int previousSize) {
         final ClosureState state = closureValidator.evaluate(p);
         if (state == ClosureState.ZERO_CARDS_NO_POT) {
-            p.drawPot();  
+            p.drawPot();
             return MoveResult.success(MoveResult.Status.SUCCESS_TAKE_POT, combo, isP1);
         }
         if (state == ClosureState.CAN_CLOSE) {
@@ -207,8 +214,8 @@ public final class GameModelImpl implements GameModel{
         if (state == ClosureState.ZERO_CARDS_NO_BURRACO) {
             return MoveResult.success(MoveResult.Status.SUCCESS_STUCK, combo, isP1);
         }
-        final boolean burraco = combo.size() >= 7;
-        return MoveResult.success(burraco ? MoveResult.Status.SUCCESS_BURRACO
+        final boolean newBurraco = previousSize < 7 && combo.size() >= 7;
+        return MoveResult.success(newBurraco ? MoveResult.Status.SUCCESS_BURRACO
                 : MoveResult.Status.SUCCESS, combo, isP1);
     }
 
@@ -225,7 +232,9 @@ public final class GameModelImpl implements GameModel{
     public Player getWinner() { return winner; }
 
     @Override
-    public void resetDrawnFlag() {
+    public void resetForNewRound() {
+        this.turn.resetForNewRound();
         this.drawnThisTurn = false;
+        this.winner = null;
     }
 }

@@ -42,7 +42,7 @@ public class SetHandler {
             return false;
         }
 
-        final long wildcardCount = cards.stream().filter(this::isWildcard).count();
+        final long wildcardCount = cards.stream().filter(SetHandler::isWildcard).count();
         if (wildcardCount > 1) {
             return false;
         }
@@ -63,7 +63,7 @@ public class SetHandler {
             return false;
         }
 
-        final long wildcards = set.stream().filter(this::isWildcard).count();
+        final long wildcards = set.stream().filter(SetHandler::isWildcard).count();
 
         if (isWildcard(newCard)) {
             return wildcards < 1;
@@ -83,7 +83,7 @@ public class SetHandler {
      * @param c the card to check
      * @return true if the card is a Jolly or a 2
      */
-    private boolean isWildcard(final Card c) {
+    private static boolean isWildcard(final Card c) {
         return JOLLY.equalsIgnoreCase(c.getValue()) || TWO.equals(c.getValue());
     }
 }

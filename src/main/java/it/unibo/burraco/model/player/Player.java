@@ -125,4 +125,6 @@ public interface Player {
      * Resets the player's state for a new round.
      */
     void resetForNewRound();
+
+    boolean ownsCombination(List<Card> combo);
 }

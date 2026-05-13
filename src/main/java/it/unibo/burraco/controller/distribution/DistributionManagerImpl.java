@@ -16,7 +16,6 @@ import it.unibo.burraco.model.player.Player;
 public final class DistributionManagerImpl implements DistributionManager {
 
     private static final int INITIAL_HAND_SIZE = 11;
-    private final List<Card> discardPile = new ArrayList<>();
 
     @Override
     public void distributeInitialCards(final Player player1,
@@ -41,10 +40,5 @@ public final class DistributionManagerImpl implements DistributionManager {
         player2.addToPot(pot2);
 
         modelDiscardPile.add(deck.draw());
-    }
-
-    @Override
-    public List<Card> getInitialDiscardPile() {
-        return new ArrayList<>(discardPile);
     }
 }

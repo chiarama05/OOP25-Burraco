@@ -128,6 +128,7 @@ private boolean sameCardReferences(final List<Card> a, final List<Card> b) {
         combinations.add(new ArrayList<>(comb));
     }
 
+    @Override
     public List<List<Card>> getCombinations() {
         return this.combinations;
     }
@@ -171,5 +172,11 @@ private boolean sameCardReferences(final List<Card> a, final List<Card> b) {
     @Override
     public boolean hasCard(final Card card) {
         return hand.contains(card);
+    }
+
+    @Override
+    public boolean ownsCombination(final List<Card> combo) {
+        return this.combinations.stream()
+            .anyMatch(c -> sameCardReferences(c, combo));
     }
 }

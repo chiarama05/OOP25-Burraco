@@ -1,12 +1,10 @@
 package it.unibo.burraco.view.components.attach;
-
+ 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.burraco.model.cards.Card;
-import it.unibo.burraco.model.move.Move;
 import it.unibo.burraco.model.rules.StraightUtils;
 import it.unibo.burraco.view.components.BurracoStyleManager;
-import it.unibo.burraco.view.table.TableView;
-
+ 
 import javax.swing.JButton;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -18,11 +16,17 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
+ 
+/**
+ * A button representing a combination on the table.
+ * When clicked, it fires an {@link AttachListener} with the combination's cards.
+ *
+ * This class has no knowledge of Move, CompletableFuture, or hand selection —
+ * those concerns belong to the wiring layer (TableViewImpl).
+ */
 @SuppressFBWarnings("Se")
 public final class AttachButton extends JButton {
-
+ 
     private static final long serialVersionUID = 1L;
     private static final int FIXED_WIDTH = 64;
     private static final int VERTICAL_STRUT_SIZE = 8;
@@ -36,52 +40,42 @@ public final class AttachButton extends JButton {
     private static final int LINE_THICKNESS = 1;
     private static final String JOLLY_VALUE = "Jolly";
     private static final String TWO_VALUE = "2";
-
+ 
     private final transient List<Card> cards;
-    private final transient TableView tableView;
     private final boolean isPlayer1Owner;
     private final transient StraightUtils straightUtils;
-
+ 
+    /**
+     * Constructs an AttachButton.
+     *
+     * @param initialCards   the cards that form this combination
+     * @param isPlayer1Owner true if this combination belongs to Player 1
+     * @param listener       callback invoked when the button is clicked;
+     *                       receives the combination's current card list
+     */
     public AttachButton(final List<Card> initialCards,
-                        final TableView tableView,
-                        final boolean isPlayer1Owner) {
+                        final boolean isPlayer1Owner,
+                        final AttachListener listener) {
         this.cards = new ArrayList<>(initialCards);
-        this.tableView = tableView;
         this.isPlayer1Owner = isPlayer1Owner;
         this.straightUtils = new StraightUtils();
-
+ 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.WHITE);
         this.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.GRAY, LINE_THICKNESS),
                 BorderFactory.createEmptyBorder(BORDER_PADDING, GAP, BORDER_PADDING, GAP)));
         this.updateVisuals();
-
-this.addActionListener(e -> {
-    final CompletableFuture<Move> future = tableView.getPendingFuture();
-    if (future != null && !future.isDone()) {
-
-        if (tableView.isCurrentPlayer1() != this.isPlayer1Owner) {
-            javax.swing.JOptionPane.showMessageDialog(
-                tableView.getFrame(),
-                "Puoi attaccare carte solo alle tue combinazioni.",
-                "Mossa non valida",
-                javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        final List<Card> selected = new ArrayList<>(
-                tableView.getHandViewForCurrentPlayer(tableView.isCurrentPlayer1())
-                         .getSelectedCards());
-        future.complete(new Move(Move.Type.ATTACH, selected,
-                new ArrayList<>(this.cards)));
+ 
+        // The button notifies the listener with its cards.
+        // It does not know about Move, hand views, or futures.
+        this.addActionListener(e -> listener.onAttachRequested(new ArrayList<>(this.cards)));
     }
-});
-    }
-
+ 
+    /** Refreshes the visual representation based on the current card list. */
     public void updateVisuals() {
         this.removeAll();
-
+ 
         if (this.straightUtils.isSameSeed(cards)
                 && this.straightUtils.isValidStraight(new ArrayList<>(cards))) {
             final List<Card> ordered = this.straightUtils.orderStraight(new ArrayList<>(this.cards));
@@ -95,10 +89,10 @@ this.addActionListener(e -> {
                 .map(Card::getValue)
                 .findFirst()
                 .orElse(null);
-
+ 
             final List<Card> naturals = new ArrayList<>();
             final List<Card> wildcards = new ArrayList<>();
-
+ 
             for (final Card c : this.cards) {
                 final boolean isWild = JOLLY_VALUE.equalsIgnoreCase(c.getValue())
                     || TWO_VALUE.equals(c.getValue()) && !TWO_VALUE.equals(baseValue);
@@ -114,23 +108,23 @@ this.addActionListener(e -> {
             this.cards.addAll(wildcards);
             this.cards.addAll(naturals);
         }
-
+ 
         this.setBorder(BorderFactory.createCompoundBorder(
                 BurracoStyleManager.getBurracoBorder(this.cards),
                 BorderFactory.createEmptyBorder(BORDER_PADDING, GAP, BORDER_PADDING, GAP)));
         this.setBackground(BurracoStyleManager.getBurracoBackground(this.cards));
-
+ 
         for (final Card c : this.cards) {
-            this.renderCardLabel(c);
+            renderCardLabel(c);
         }
         this.revalidate();
         this.repaint();
     }
-
+ 
     private void renderCardLabel(final Card c) {
         final boolean isJolly = JOLLY_VALUE.equalsIgnoreCase(c.getValue());
         final JLabel label = new JLabel(isJolly ? c.getSeed() : c.toString());
-
+ 
         if (isJolly) {
             label.setFont(new Font("Segoe UI Symbol", Font.BOLD, FONT_SIZE_JOLLY));
             label.setForeground(new Color(COLOR_JOLLY_R, COLOR_JOLLY_G, COLOR_JOLLY_B));
@@ -147,22 +141,29 @@ this.addActionListener(e -> {
         this.add(label);
         this.add(Box.createVerticalStrut(VERTICAL_STRUT_SIZE));
     }
-
+ 
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(FIXED_WIDTH, super.getPreferredSize().height);
     }
-
+ 
     @Override
     public Dimension getMaximumSize() {
         return new Dimension(FIXED_WIDTH, super.getPreferredSize().height);
     }
-
+ 
     @Override
     public Dimension getMinimumSize() {
         return new Dimension(FIXED_WIDTH, super.getMinimumSize().height);
     }
-
-    public List<Card> getCards() { return this.cards; }
-    public boolean isPlayer1Owner() { return this.isPlayer1Owner; }
+ 
+    /** Returns the cards currently displayed in this combination button. */
+    public List<Card> getCards() {
+        return new ArrayList<>(this.cards);
+    }
+ 
+    /** Returns true if this combination belongs to Player 1. */
+    public boolean isPlayer1Owner() {
+        return this.isPlayer1Owner;
+    }
 }

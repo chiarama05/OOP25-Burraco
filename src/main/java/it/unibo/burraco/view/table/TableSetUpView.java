@@ -1,4 +1,4 @@
-package it.unibo.burraco.view.scenes;
+package it.unibo.burraco.view.table;
 
 import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.view.SelectionCardManager;
@@ -16,20 +16,14 @@ import java.util.List;
  * It manages the transition from the distribution logic to the UI by
  * synchronizing both players' hands and the discard pile.
  */
-public final class InitialDistributionView {
+public final class TableSetUpView {
 
     private final HandView handPlayer1;
     private final HandView handPlayer2;
 
-    /**
-     * Initializes the view components for player hands.
-     * 
-     * @param discardPanel context panel for the discard pile.
-     * @param selectionManager the manager shared between hands to handle card selection.
-     */
-    public InitialDistributionView(final JPanel discardPanel, final SelectionCardManager selectionManager) {
-        this.handPlayer1 = new HandViewImpl(selectionManager);
-        this.handPlayer2 = new HandViewImpl(selectionManager);
+    public TableSetUpView() {
+        this.handPlayer1 = new HandViewImpl(new SelectionCardManager());
+        this.handPlayer2 = new HandViewImpl(new SelectionCardManager());
     }
 
     /**
@@ -61,7 +55,6 @@ public final class InitialDistributionView {
      */
     public void refresh(final List<Card> hand1, final List<Card> hand2,
                         final DiscardView discardView, final List<Card> discardPile) {
-        // Delegating refresh logic to the respective hand components
         this.handPlayer1.refreshHand(new ArrayList<>(hand1));
         this.handPlayer2.refreshHand(new ArrayList<>(hand2));
 

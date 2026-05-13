@@ -268,7 +268,11 @@ public final class ScoreViewImpl implements ScoreView {
 
     @Override
     public void display() {
+        this.frame.setLocationRelativeTo(this.tableFrame);
+        this.frame.setAlwaysOnTop(true);
         this.frame.setVisible(true);
+        this.frame.toFront();
+        this.frame.requestFocus();
     }
 
     @Override

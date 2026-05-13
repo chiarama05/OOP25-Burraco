@@ -12,12 +12,6 @@ public enum ClosureState {
     OK,
 
     /**
-     * The player finished all hand cards but has NOT yet taken the pot.
-     * The pot must be drawn on-the-fly.
-     */
-    MUST_TAKE_POT,
-
-    /**
      * The player has taken the pot and has at least one Burraco.
      * They are now allowed to close by discarding their last card.
      */
