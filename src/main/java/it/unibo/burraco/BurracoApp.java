@@ -1,7 +1,7 @@
 package it.unibo.burraco;
-
+ 
 import javax.swing.SwingUtilities;
-
+ 
 import it.unibo.burraco.controller.distribution.DistributionManagerImpl;
 import it.unibo.burraco.controller.distribution.InitialDistributionController;
 import it.unibo.burraco.controller.game.GameLoopController;
@@ -18,87 +18,90 @@ import it.unibo.burraco.model.score.ScoreImpl;
 import it.unibo.burraco.view.BurracoView;
 import it.unibo.burraco.view.components.sound.SoundView;
 import it.unibo.burraco.view.components.sound.SoundViewImpl;
-import it.unibo.burraco.view.scenes.SetUpMenuView;
 import it.unibo.burraco.view.scenes.OnConfigurationCompleteListener;
 import it.unibo.burraco.view.scenes.ScoreViewImpl;
+import it.unibo.burraco.view.scenes.SetUpMenuView;
 import it.unibo.burraco.view.scenes.SetUpMenuViewImpl;
 import it.unibo.burraco.view.scenes.StartMenuView;
 import it.unibo.burraco.view.scenes.StartMenuViewImpl;
-import it.unibo.burraco.view.table.TableSetUpView;
+import it.unibo.burraco.view.table.DistributionView;
 import it.unibo.burraco.view.table.TableViewImpl;
 import it.unibo.burraco.view.table.pot.PotNotifierImpl;
-
+ 
 /**
  * Main application class and composition root.
  * Handles navigation between menus and wires all components together
  * when a game session starts.
  */
 public final class BurracoApp {
-
+ 
     private BurracoApp() { }
-
-    /**
-     * Main entry point of the application.
-     *
-     * @param args command line arguments
-     */
+ 
     public static void main(final String[] args) {
         SwingUtilities.invokeLater(BurracoApp::showStartMenu);
     }
-
+ 
     private static void showStartMenu() {
         final StartMenuView startMenu = new StartMenuViewImpl(BurracoApp::showSetupMenu);
         startMenu.display();
     }
-
+ 
     private static void showSetupMenu() {
         final OnConfigurationCompleteListener listener = new OnConfigurationCompleteListener() {
-
             @Override
             public void onConfigComplete(final int targetScore,
                                          final String nameP1,
                                          final String nameP2) {
                 startGame(nameP1, nameP2, targetScore);
             }
-
+ 
             @Override
             public void onBackClicked() {
                 showStartMenu();
             }
         };
-
         final SetUpMenuView setupMenu = new SetUpMenuViewImpl(listener);
         setupMenu.display();
     }
-
+ 
     private static void startGame(final String nameP1,
                                    final String nameP2,
                                    final int targetScore) {
-
+ 
         final SoundView sound = new SoundViewImpl();
+ 
+        // --- View ---
         final TableViewImpl tableView = new TableViewImpl(nameP1, nameP2);
-        final TableSetUpView distributionView = tableView.getInitDist();
-
+ 
+        // distributionView typed as the interface, not the concrete class
+        final DistributionView distributionView = tableView.getInitDist();
+ 
+        // --- Model ---
         final GameModel model = new GameModelImpl(nameP1, nameP2);
         final Player p1 = model.getPlayer1();
         final Player p2 = model.getPlayer2();
-
+ 
+        // --- Initial distribution ---
         final InitialDistributionController distribution =
                 new InitialDistributionController(new DistributionManagerImpl());
         distribution.distribute(p1, p2, model.getCommonDeck(), model.getDiscardPile());
-
+ 
+        // Refresh hands (no DiscardView param — decoupled)
         distributionView.refresh(
                 p1.getHand(),
                 p2.getHand(),
-                tableView.getDiscardView(),
                 model.getDiscardPile().getCards());
+ 
+        // Update discard pile once, explicitly
+        tableView.updateDiscardPile(model.getDiscardPile().getCards());
         tableView.refreshHandPanel(true, p1.getHand());
-
+ 
+        // --- Controllers ---
         final PotNotifierImpl potNotifier = new PotNotifierImpl(tableView.getFrame());
         final PotManager potManager = new PotManager(model.getTurn(), tableView, potNotifier);
-
+ 
         final Score score = new ScoreImpl();
-
+ 
         final RoundEndHandler roundEndHandler = new RoundEndHandler(
                 score,
                 p1, p2,
@@ -106,20 +109,17 @@ public final class BurracoApp {
                 tableView,
                 sound,
                 targetScore,
-                (playerA, playerB, n1, n2, target, s, tv, over) ->
-                        new ScoreViewImpl(playerA, playerB, n1, n2, target, s, tv, over));
-
-        final ScoreController scoreController = new ScoreController(
-                score, p1, p2, roundEndHandler);
-
+                // ScoreViewProvider: lambda now uses ScoreSnapshot, no Player or Score
+                (snap1, snap2, target, tv, over) ->
+                        new ScoreViewImpl(snap1, snap2, target, tv, over));
+ 
+        final ScoreController scoreController =
+                new ScoreController(score, p1, p2, roundEndHandler);
+ 
         final BurracoView burracoView = tableView;
         final GameLoopController loop = new GameLoopController(
-                model,
-                burracoView,
-                sound,
-                potManager,
-                scoreController);
-
+                model, burracoView, sound, potManager, scoreController);
+ 
         final RoundControllerImpl roundCtrl = new RoundControllerImpl(
                 tableView,
                 new ResetManagerImpl(),
@@ -127,7 +127,7 @@ public final class BurracoApp {
                 model,
                 new InitialDistributionController(new DistributionManagerImpl()),
                 distributionView);
-
+ 
         scoreController.setOnNewRound(() -> {
             roundCtrl.processNewRound();
             loop.start();

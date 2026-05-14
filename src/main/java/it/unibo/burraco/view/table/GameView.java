@@ -17,4 +17,5 @@ public interface GameView extends PotView {
     HandView getPlayer1HandView();
     HandView getPlayer2HandView();
     HandView getHandViewForCurrentPlayer(boolean isPlayer1);
+    void showFinalHands(List<Card> hand1, List<Card> hand2);
 }

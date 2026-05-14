@@ -45,14 +45,6 @@ public final class AttachButton extends JButton {
     private final boolean isPlayer1Owner;
     private final transient StraightUtils straightUtils;
  
-    /**
-     * Constructs an AttachButton.
-     *
-     * @param initialCards   the cards that form this combination
-     * @param isPlayer1Owner true if this combination belongs to Player 1
-     * @param listener       callback invoked when the button is clicked;
-     *                       receives the combination's current card list
-     */
     public AttachButton(final List<Card> initialCards,
                         final boolean isPlayer1Owner,
                         final AttachListener listener) {
@@ -67,12 +59,9 @@ public final class AttachButton extends JButton {
                 BorderFactory.createEmptyBorder(BORDER_PADDING, GAP, BORDER_PADDING, GAP)));
         this.updateVisuals();
  
-        // The button notifies the listener with its cards.
-        // It does not know about Move, hand views, or futures.
         this.addActionListener(e -> listener.onAttachRequested(new ArrayList<>(this.cards)));
     }
  
-    /** Refreshes the visual representation based on the current card list. */
     public void updateVisuals() {
         this.removeAll();
  
@@ -142,28 +131,10 @@ public final class AttachButton extends JButton {
         this.add(Box.createVerticalStrut(VERTICAL_STRUT_SIZE));
     }
  
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(FIXED_WIDTH, super.getPreferredSize().height);
-    }
+    @Override public Dimension getPreferredSize() { return new Dimension(FIXED_WIDTH, super.getPreferredSize().height); }
+    @Override public Dimension getMaximumSize()   { return new Dimension(FIXED_WIDTH, super.getPreferredSize().height); }
+    @Override public Dimension getMinimumSize()   { return new Dimension(FIXED_WIDTH, super.getMinimumSize().height); }
  
-    @Override
-    public Dimension getMaximumSize() {
-        return new Dimension(FIXED_WIDTH, super.getPreferredSize().height);
-    }
- 
-    @Override
-    public Dimension getMinimumSize() {
-        return new Dimension(FIXED_WIDTH, super.getMinimumSize().height);
-    }
- 
-    /** Returns the cards currently displayed in this combination button. */
-    public List<Card> getCards() {
-        return new ArrayList<>(this.cards);
-    }
- 
-    /** Returns true if this combination belongs to Player 1. */
-    public boolean isPlayer1Owner() {
-        return this.isPlayer1Owner;
-    }
+    public List<Card> getCards() { return new ArrayList<>(this.cards); }
+    public boolean isPlayer1Owner() { return this.isPlayer1Owner; }
 }

@@ -4,9 +4,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import org.junit.jupiter.api.Test;
-
-import it.unibo.burraco.controller.distribution.DistributionManagerImpl;
-import it.unibo.burraco.controller.distribution.InitialDistributionController;
 import it.unibo.burraco.model.cards.Deck;
 import it.unibo.burraco.model.cards.DiscardPile;
 import it.unibo.burraco.model.player.Player;

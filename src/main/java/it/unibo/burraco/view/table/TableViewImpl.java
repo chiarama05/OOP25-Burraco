@@ -79,8 +79,6 @@ public final class TableViewImpl implements TableView {
         this.nameP1 = resolved(n1, "Player 1");
         this.nameP2 = resolved(n2, "Player 2");
 
-        final SelectionCardManager sel = new SelectionCardManager();
-
         this.frame = new JFrame("Burraco - OOP Project");
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.frame.setLayout(new BorderLayout());
@@ -404,4 +402,11 @@ public final class TableViewImpl implements TableView {
         JOptionPane.showMessageDialog(this.frame, message, title,
                 JOptionPane.INFORMATION_MESSAGE);
     }
+
+    @Override
+    public void showFinalHands(final List<Card> hand1, final List<Card> hand2) {
+        getPlayer1HandView().updateHand(new ArrayList<>(hand1));
+        getPlayer2HandView().updateHand(new ArrayList<>(hand2));
+    }
+ 
 }

@@ -87,22 +87,4 @@ public final class CardImpl implements Card {
             default -> -1;
         };
     }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        final CardImpl card = (CardImpl) o;
-
-        return java.util.Objects.equals(seed, card.seed) && java.util.Objects.equals(value, card.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return java.util.Objects.hash(seed, value);
-    }
 }

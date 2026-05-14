@@ -1,6 +1,5 @@
 package it.unibo.burraco.controller.score;
 
-import it.unibo.burraco.controller.round.RoundController;
 import it.unibo.burraco.controller.round.RoundEndHandler;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.score.Score;
