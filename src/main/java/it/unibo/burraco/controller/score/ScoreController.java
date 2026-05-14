@@ -5,8 +5,9 @@ import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.score.Score;
 
 /**
- * Responsible only for score calculation and delegating
- * end-of-round logic to RoundEndHandler.
+ * Controller responsible for the high-level management of scoring at the end of a round.
+ * It acts as an intermediary that triggers the mathematical calculation of scores 
+ * within the Model and then delegates the UI presentation to the {@link RoundEndHandler}.
  */
 public final class ScoreController {
 
@@ -15,6 +16,14 @@ public final class ScoreController {
     private final Player player2;
     private final RoundEndHandler roundEndHandler;
 
+    /**
+     * Constructs a ScoreController.
+     * 
+     * @param score            the model component containing scoring rules and logic
+     * @param player1          the first player model
+     * @param player2          the second player model
+     * @param roundEndHandler  the handler responsible for the visual end-of-round sequence
+     */
     public ScoreController(
             final Score score,
             final Player player1,
@@ -26,12 +35,19 @@ public final class ScoreController {
         this.roundEndHandler = roundEndHandler;
     }
 
+    /**
+     * Forwards the new round action to the encapsulated {@link RoundEndHandler}.
+     * 
+     * @param action the {@link Runnable} to be executed for a new round
+     */
     public void setOnNewRound(final Runnable action) {
         this.roundEndHandler.setOnNewRound(action);
     }
+
     /**
-     * Calculates round scores, updates match totals, then delegates
-     * end-of-round presentation to RoundEndHandler.
+     * Handles the transition of scores from the current round to the match total.
+     * It calculates the round points for each player, updates their total match 
+     * standing, and triggers the final display sequence.
      */
     public void onRoundEnd() {
         final int roundS1 = score.calculateFinalScore(player1);

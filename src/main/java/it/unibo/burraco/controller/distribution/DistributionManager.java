@@ -5,20 +5,22 @@ import it.unibo.burraco.model.cards.DiscardPile;
 import it.unibo.burraco.model.player.Player;
 
 /**
- * Interface defining the contract for the initial card distribution.
- * It manages the setup of players' hands, side pots, and the starting discard pile.
+ * Defines the contract for managing the initial card distribution logic.
+ * Responsibility includes populating players' hands, creating side pots, 
+ * and setting up the initial state of the discard pile and deck.
  */
 public interface DistributionManager {
 
     /**
-     * Executes the initial setup of the match.
-     * Draws cards from the deck to fill players' hands, create side pots,
-     * and initialize the discard pile.
+     * Executes the initial setup of a match.
+     * This method modifies the state of the provided players, deck, and discard pile.
      *
-     * @param player1 the first player.
-     * @param player2 the second player.
-     * @param deck the game deck to draw from.
-     * @param modelDiscardPile the discard pile model to be initialized.
+     * @param player1          the first player to receive cards
+     * @param player2          the second player to receive cards
+     * @param deck             the source deck from which cards are drawn; 
+     *                         will be depleted during distribution
+     * @param modelDiscardPile the discard pile to be initialized with the first card
+     * @throws IllegalStateException if the deck does not contain enough cards for setup
      */
     void distributeInitialCards(Player player1,
                                 Player player2,

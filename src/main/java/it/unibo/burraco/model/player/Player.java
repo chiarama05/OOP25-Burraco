@@ -126,5 +126,11 @@ public interface Player {
      */
     void resetForNewRound();
 
+    /**
+     * Verifies if a specific combination on the table belongs to this player.
+     *
+     * @param combo the combination to check.
+     * @return true if owned by the player, false otherwise.
+     */
     boolean ownsCombination(List<Card> combo);
 }

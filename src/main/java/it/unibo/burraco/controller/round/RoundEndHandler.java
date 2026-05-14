@@ -12,13 +12,10 @@ import javax.swing.SwingUtilities;
 import java.util.ArrayList;
  
 /**
- * Handles the end-of-round sequence: sound playback, snapshot construction,
- * and score display.
- *
- * <p><b>MVC contract:</b> this class holds references to {@code Player} and
- * {@code Score} (model layer) because it is a Controller component. Its sole
- * responsibility is to transform model data into {@link ScoreSnapshot} DTOs
- * and hand those — never the raw model objects — to the View.
+ * Controller responsible for orchestrating the end-of-round sequence.
+ * It manages the transition from the active game table to the score display, 
+ * handles victory sound logic, and ensures that the View receives data 
+ * only through immutable DTOs ({@link ScoreSnapshot}).
  */
 public final class RoundEndHandler {
  
@@ -33,6 +30,19 @@ public final class RoundEndHandler {
     private final ScoreViewProvider viewProvider;
     private Runnable onNewRound;
  
+    /**
+     * Constructs a RoundEndHandler with the necessary model and view components.
+     * 
+     * @param score         the scoring logic component
+     * @param player1       the first player model
+     * @param player2       the second player model
+     * @param nameP1        display name for player 1
+     * @param nameP2        display name for player 2
+     * @param tableView     the main game table view
+     * @param soundView     the sound manager for audio feedback
+     * @param targetScore   the score threshold to win the match
+     * @param viewProvider  factory for creating the score display scene
+     */
     public RoundEndHandler(
             final Score score,
             final Player player1,
@@ -54,14 +64,20 @@ public final class RoundEndHandler {
         this.viewProvider = viewProvider;
     }
  
+    /**
+     * Configures the action to be performed when a player chooses to 
+     * proceed to a new round from the score view.
+     * 
+     * @param action a {@link Runnable} representing the next game phase logic
+     */
     public void setOnNewRound(final Runnable action) {
         this.onNewRound = action;
     }
  
     /**
-     * Executes the full end-of-round sequence.
-     * Builds {@link ScoreSnapshot} objects here so the View never touches
-     * the model directly.
+     * Executes the end-of-round sequence.
+     * Calculates final scores, determines if the match has ended, 
+     * triggers audio feedback, and initiates the transition to the score view.
      */
     public void handle() {
         final boolean matchOver =
@@ -77,21 +93,23 @@ public final class RoundEndHandler {
         final ScoreSnapshot snap2 = buildSnapshot(player2, nameP2, p2Wins);
  
         if (matchOver) {
-            // Play victory sound on a dedicated thread, then show score on EDT
             new Thread(() -> {
                 soundView.playVictorySound();
                 SwingUtilities.invokeLater(() -> showScoreView(snap1, snap2, true));
             }).start();
         } else {
-            // Round-end sound is already played by GameLoopController on ROUND_WON;
-            // here we only open the score view.
             SwingUtilities.invokeLater(() -> showScoreView(snap1, snap2, false));
         }
     }
-    
+
     /**
-     * Transforms model data into a display-ready {@link ScoreSnapshot}.
-     * All calculations happen here, in the Controller layer.
+     * Maps the current state of a {@link Player} and the {@link Score} rules 
+     * into a read-only {@link ScoreSnapshot}.
+     * 
+     * @param p        the player to process
+     * @param name     the player's name
+     * @param isWinner true if this player reached the target score and won the match
+     * @return a DTO containing all necessary data for the score view
      */
     private ScoreSnapshot buildSnapshot(final Player p,
                                         final String name,
@@ -112,13 +130,16 @@ public final class RoundEndHandler {
     }
  
     /**
-     * Shows the final hands via a single encapsulated TableView call,
-     * then creates and displays the score window.
+     * Updates the table view with final hands and displays the score scene.
+     * Synchronizes with the Event Dispatch Thread for UI safety.
+     * 
+     * @param snap1     snapshot of player 1
+     * @param snap2     snapshot of player 2
+     * @param matchOver true if the entire match has concluded
      */
     private void showScoreView(final ScoreSnapshot snap1,
                                final ScoreSnapshot snap2,
                                final boolean matchOver) {
-        // Single call — TableViewImpl manages its own sub-components internally.
         tableView.showFinalHands(snap1.finalHand(), snap2.finalHand());
  
         final ScoreView view = viewProvider.create(snap1, snap2, targetScore, tableView, matchOver);

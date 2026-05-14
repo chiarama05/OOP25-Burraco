@@ -20,6 +20,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Concrete implementation of the {@link GameModel} facade.
+ * Coordinates the game flow by managing the players, the deck, the discard pile, 
+ * and turn transitions. It relies on specialized validators to enforce 
+ * Burraco-specific rules and closure conditions.
+ */
 public final class GameModelImpl implements GameModel{
 
     private final Player p1;
@@ -34,6 +40,12 @@ public final class GameModelImpl implements GameModel{
     private boolean drawnThisTurn = false;
     private Player winner;
 
+    /**
+     * Initializes a new match with two players and a fresh deck.
+     * 
+     * @param name1 name of the first player
+     * @param name2 name of the second player
+     */
     public GameModelImpl(final String name1, final String name2) {
         this.p1 = new PlayerImpl(name1);
         this.p2 = new PlayerImpl(name2);
@@ -197,6 +209,16 @@ public final class GameModelImpl implements GameModel{
         }
     }
 
+    /**
+     * Internal helper to evaluate the player's state after a card-placing action.
+     * Handles side pot acquisition, "stuck" hand detection, and burraco creation.
+     * 
+     * @param p            the player who moved
+     * @param combo        the combination affected by the move
+     * @param isP1         true if the player is player 1
+     * @param previousSize the size of the combination before the move
+     * @return a specific MoveResult representing the new game state
+     */
     private MoveResult evaluateClosureState(final Player p,
                                             final List<Card> combo,
                                             final boolean isP1,
@@ -226,10 +248,14 @@ public final class GameModelImpl implements GameModel{
     }
 
     @Override
-    public boolean hasDrawn() { return drawnThisTurn; }
+    public boolean hasDrawn() {
+        return drawnThisTurn;
+    }
 
     @Override
-    public Player getWinner() { return winner; }
+    public Player getWinner() {
+        return winner; 
+    }
 
     @Override
     public void resetForNewRound() {

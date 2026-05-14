@@ -9,9 +9,9 @@ import it.unibo.burraco.model.cards.DiscardPile;
 import it.unibo.burraco.model.player.Player;
 
 /**
- * Concrete implementation of the {@link DistributionManager}.
- * Handles the sequential drawing of cards to ensure a fair and rule-compliant
- * start of a Burraco round.
+ * Concrete implementation of {@link DistributionManager}.
+ * It follows the standard Burraco rules: 11 cards to each player,
+ * 11 cards for each side pot (pozzetto), and one starting card in the discard pile.
  */
 public final class DistributionManagerImpl implements DistributionManager {
 
