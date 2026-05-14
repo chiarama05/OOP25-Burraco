@@ -1,4 +1,4 @@
-package it.unibo.burraco.model;
+package it.unibo.burraco.model.cards;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -9,11 +9,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import it.unibo.burraco.model.cards.Card;
-import it.unibo.burraco.model.cards.CardImpl;
-import it.unibo.burraco.model.cards.DiscardPile;
-import it.unibo.burraco.model.cards.DiscardPileImpl;
 
 class DiscardPileTest {
 

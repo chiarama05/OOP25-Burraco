@@ -5,7 +5,6 @@ import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.model.move.Move;
 import it.unibo.burraco.model.move.MoveResult;
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.view.SelectionCardManager;
 import it.unibo.burraco.view.components.attach.AttachButtonFactory;
 import it.unibo.burraco.view.table.deck.DeckView;
 import it.unibo.burraco.view.table.discard.DiscardView;

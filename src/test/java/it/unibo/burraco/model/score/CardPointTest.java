@@ -1,4 +1,4 @@
-package it.unibo.burraco.model;
+package it.unibo.burraco.model.score;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.model.cards.CardImpl;
-import it.unibo.burraco.model.score.CardPoint;
 
 class CardPointTest {
     private static final String HEARTS = "♥";

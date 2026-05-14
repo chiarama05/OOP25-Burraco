@@ -1,4 +1,4 @@
-package it.unibo.burraco.model;
+package it.unibo.burraco.model.turn;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.model.cards.CardImpl;
 import it.unibo.burraco.model.player.PlayerImpl;
-import it.unibo.burraco.model.turn.TurnImpl;
 
 class TurnTest {
     private static final String NAME_P1 = "Alice";

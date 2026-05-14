@@ -1,4 +1,4 @@
-package it.unibo.burraco.model;
+package it.unibo.burraco.model.cards;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -11,9 +11,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import it.unibo.burraco.model.cards.Card;
-import it.unibo.burraco.model.cards.DeckImpl;
 
 class DeckTest {
     private static final int FULL_DECK_SIZE = 108;
