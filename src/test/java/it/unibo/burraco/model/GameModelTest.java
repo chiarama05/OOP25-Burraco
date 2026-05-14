@@ -21,9 +21,10 @@ import it.unibo.burraco.model.player.Player;
 
 class GameModelTest {
 
-    private GameModel game;
     private static final String P1_NAME = "Alice";
     private static final String P2_NAME = "Bob";
+
+    private GameModel game;
 
     @BeforeEach
     void setUp() {
@@ -41,32 +42,27 @@ class GameModelTest {
 
     @Test
     void testTurnTransition() {
-        Player first = game.getCurrentPlayer();
+        final Player first = game.getCurrentPlayer();
         game.nextTurn();
-        Player second = game.getCurrentPlayer();
-        
+        final Player second = game.getCurrentPlayer();
         assertNotEquals(first, second, "Il giocatore deve cambiare dopo nextTurn().");
     }
 
     @Test
     void testDrawFromDeck() {
-        Move drawMove = new Move(Type.DRAW_DECK, Collections.emptyList(), Collections.emptyList());
-        
+        final Move drawMove = new Move(Type.DRAW_DECK, Collections.emptyList(), Collections.emptyList());
         assertTrue(game.validateMove(drawMove).isValid());
-        
-        int handSizeBefore = game.getCurrentPlayer().getHand().size();
+        final int handSizeBefore = game.getCurrentPlayer().getHand().size();
         game.applyMove(drawMove);
-        
         assertTrue(game.hasDrawn());
         assertEquals(handSizeBefore + 1, game.getCurrentPlayer().getHand().size());
     }
 
     @Test
     void testCannotDrawTwice() {
-        Move drawMove = new Move(Type.DRAW_DECK, Collections.emptyList(), Collections.emptyList());
+        final Move drawMove = new Move(Type.DRAW_DECK, Collections.emptyList(), Collections.emptyList());
         game.applyMove(drawMove);
-        
-        MoveResult secondDraw = game.validateMove(drawMove);
+        final MoveResult secondDraw = game.validateMove(drawMove);
         assertFalse(secondDraw.isValid());
         assertEquals(MoveResult.Status.ALREADY_DRAWN, secondDraw.getStatus());
     }
@@ -74,13 +70,10 @@ class GameModelTest {
     @Test
     void testDiscard() {
         game.applyMove(new Move(Type.DRAW_DECK, Collections.emptyList(), Collections.emptyList()));
-        
-        Player current = game.getCurrentPlayer();
-        Card toDiscard = current.getHand().get(0);
-        
-        Move discardMove = new Move(Type.DISCARD, List.of(toDiscard), Collections.emptyList());
-        
-        MoveResult result = game.applyMove(discardMove);
+        final Player current = game.getCurrentPlayer();
+        final Card toDiscard = current.getHand().get(0);
+        final Move discardMove = new Move(Type.DISCARD, List.of(toDiscard), Collections.emptyList());
+        final MoveResult result = game.applyMove(discardMove);
         assertTrue(result.isValid());
         assertFalse(current.getHand().contains(toDiscard), "La carta deve essere stata rimossa dalla mano.");
     }
@@ -88,10 +81,8 @@ class GameModelTest {
     @Test
     void testPutCombinationValidation() {
         game.applyMove(new Move(Type.DRAW_DECK, Collections.emptyList(), Collections.emptyList()));
-        
-        Move emptyCombo = new Move(Type.PUT_COMBINATION, Collections.emptyList(), Collections.emptyList());
-        MoveResult result = game.validateMove(emptyCombo);
-        
+        final Move emptyCombo = new Move(Type.PUT_COMBINATION, Collections.emptyList(), Collections.emptyList());
+        final MoveResult result = game.validateMove(emptyCombo);
         assertFalse(result.isValid());
         assertEquals(MoveResult.Status.NO_CARDS_SELECTED, result.getStatus());
     }
@@ -100,7 +91,6 @@ class GameModelTest {
     void testResetRound() {
         game.applyMove(new Move(Type.DRAW_DECK, Collections.emptyList(), Collections.emptyList()));
         game.resetForNewRound();
-        
         assertFalse(game.hasDrawn());
         assertNull(game.getWinner());
     }

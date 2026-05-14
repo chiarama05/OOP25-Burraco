@@ -2,7 +2,14 @@ package it.unibo.burraco.controller.pot;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +35,6 @@ class PotManagerTest {
         player = mock(Player.class);
 
         when(model.getCurrentPlayer()).thenReturn(player);
-        
         potManager = new PotManager(model, view, notifier);
     }
 
@@ -38,13 +44,11 @@ class PotManagerTest {
         when(player.getName()).thenReturn("Alice");
         when(model.isPlayer1Turn()).thenReturn(true);
 
-        boolean result = potManager.handlePot(true);
+        final boolean result = potManager.handlePot(true);
 
         assertTrue(result);
-        
         verify(notifier).notifyPotTaken("Alice", true);
         verify(view).markPotTaken(true);
-        
         verify(view, never()).refreshHandPanel(anyBoolean(), any());
     }
 
@@ -53,11 +57,10 @@ class PotManagerTest {
         when(player.isInPot()).thenReturn(true);
         when(model.isPlayer1Turn()).thenReturn(false);
 
-        boolean result = potManager.handlePot(false);
+        final boolean result = potManager.handlePot(false);
 
         assertTrue(result);
         verify(view).markPotTaken(false);
-        
         verify(view).refreshHandPanel(eq(false), any());
     }
 
@@ -65,10 +68,9 @@ class PotManagerTest {
     void testHandlePotWhenNotEligible() {
         when(player.isInPot()).thenReturn(false);
 
-        boolean result = potManager.handlePot(true);
+        final boolean result = potManager.handlePot(true);
 
         assertFalse(result);
-        
         verifyNoInteractions(notifier);
         verifyNoInteractions(view);
     }

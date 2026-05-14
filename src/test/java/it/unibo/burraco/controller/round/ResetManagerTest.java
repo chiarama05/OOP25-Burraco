@@ -1,6 +1,7 @@
 package it.unibo.burraco.controller.round;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import org.junit.jupiter.api.Test;
 import it.unibo.burraco.model.cards.Deck;
 import it.unibo.burraco.model.cards.DiscardPile;
@@ -10,12 +11,12 @@ class ResetManagerTest {
 
     @Test
     void testResetRoundOrchestration() {
-        Player p1 = mock(Player.class);
-        Player p2 = mock(Player.class);
-        Deck deck = mock(Deck.class);
-        DiscardPile discardPile = mock(DiscardPile.class);
+        final Player p1 = mock(Player.class);
+        final Player p2 = mock(Player.class);
+        final Deck deck = mock(Deck.class);
+        final DiscardPile discardPile = mock(DiscardPile.class);
 
-        ResetManager resetManager = new ResetManagerImpl();
+        final ResetManager resetManager = new ResetManagerImpl();
 
         resetManager.resetRound(p1, p2, deck, discardPile);
 
