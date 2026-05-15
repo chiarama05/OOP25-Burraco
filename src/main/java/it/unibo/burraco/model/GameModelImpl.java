@@ -153,6 +153,13 @@ public final class GameModelImpl implements GameModel{
         switch (move.getType()) {
 
             case DRAW_DECK: {
+                if (deck.isEmpty()) {
+                    turn.setGameFinished(true);
+                    return MoveResult.success(
+                    MoveResult.Status.DECK_EMPTY,
+                    Collections.emptyList(),
+                    isP1);
+                }
                 final Card c = deck.draw();
                 current.addCardHand(c);
                 drawnThisTurn = true;

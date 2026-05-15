@@ -1,6 +1,5 @@
 package it.unibo.burraco.view.table;
 
-import it.unibo.burraco.view.BurracoView;
 import it.unibo.burraco.view.table.deck.DeckView;
 import it.unibo.burraco.view.table.discard.DiscardView;
 

@@ -41,8 +41,7 @@ public final class TableSetUpView implements DistributionView {
      */
     @Override
     public void refresh(final List<Card> hand1,
-                        final List<Card> hand2,
-                        final List<Card> discardPile) {
+                        final List<Card> hand2) {
         this.handPlayer1.refreshHand(new ArrayList<>(hand1));
         this.handPlayer2.refreshHand(new ArrayList<>(hand2));
     }

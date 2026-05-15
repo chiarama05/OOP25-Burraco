@@ -1,25 +1,30 @@
 package it.unibo.burraco.controller.game;
 
+import it.unibo.burraco.controller.CombinationDisplaySorter;
+import it.unibo.burraco.controller.GameState;
 import it.unibo.burraco.controller.pot.PotManager;
 import it.unibo.burraco.controller.score.ScoreController;
 import it.unibo.burraco.model.GameModel;
-import it.unibo.burraco.model.GameState;
+import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.model.move.Move;
 import it.unibo.burraco.model.move.MoveResult;
 import it.unibo.burraco.model.player.Player;
-import it.unibo.burraco.view.BurracoView;
 import it.unibo.burraco.view.components.sound.SoundView;
+import it.unibo.burraco.view.table.BurracoView;
+import it.unibo.burraco.view.table.MoveError;
 
 import javax.swing.SwingUtilities;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 /**
- * Main controller that manages the game cycle of a Burraco match.
- * It runs the game logic in a dedicated background thread to keep the 
- * UI responsive, orchestrating the interaction between the model, the view, 
- * and sub-controllers like the score and pot managers.
+ * Main controller managing the game cycle.
+ * Extracts all data from the model before crossing into the view layer —
+ * the view never receives Player or MoveResult directly.
  */
 public final class GameLoopController {
 
@@ -28,21 +33,13 @@ public final class GameLoopController {
     private final SoundView sound;
     private final PotManager potManager;
     private final ScoreController scoreController;
+    private final CombinationDisplaySorter displaySorter = new CombinationDisplaySorter();
 
-    /**
-     * Creates a new GameLoopController with the required components.
-     * 
-     * @param model           the game model containing business logic and state
-     * @param view            the main view interface for user interaction
-     * @param sound           the sound system for audio feedback
-     * @param potManager      the controller responsible for "pozzetti" management
-     * @param scoreController the controller responsible for end-of-round scoring
-     */
     public GameLoopController(final GameModel model,
-                               final BurracoView view,
-                               final SoundView sound,
-                               final PotManager potManager,
-                               final ScoreController scoreController) {
+                              final BurracoView view,
+                              final SoundView sound,
+                              final PotManager potManager,
+                              final ScoreController scoreController) {
         this.model = model;
         this.view = view;
         this.sound = sound;
@@ -50,20 +47,12 @@ public final class GameLoopController {
         this.scoreController = scoreController;
     }
 
-    /**
-     * Starts the game loop in a new daemon thread.
-     */
     public void start() {
         final Thread gameThread = new Thread(this::loop);
         gameThread.setDaemon(true);
         gameThread.start();
     }
 
-    /**
-     * Core game loop logic. Executes turns sequentially, handles move validation,
-     * updates the model, and synchronizes with the Event Dispatch Thread (EDT) 
-     * for view updates until the game is over.
-     */
     private void loop() {
         boolean isStartOfTurn = true;
 
@@ -72,8 +61,10 @@ public final class GameLoopController {
             final boolean isP1 = model.isPlayer1(current);
 
             if (isStartOfTurn) {
+                final String name = current.getName();
+                final var hand = current.getHand();
                 try {
-                    SwingUtilities.invokeAndWait(() -> view.wakeUp(current, isP1));
+                    SwingUtilities.invokeAndWait(() -> view.wakeUp(name, isP1, hand));
                 } catch (InvocationTargetException | InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
@@ -82,7 +73,7 @@ public final class GameLoopController {
             Move move = waitForMove();
             MoveResult validation = model.validateMove(move);
             while (!validation.isValid()) {
-                final MoveResult err = validation;
+                final MoveError err = toMoveError(validation.getStatus());
                 SwingUtilities.invokeLater(() -> view.showMoveError(err));
                 move = waitForMove();
                 validation = model.validateMove(move);
@@ -96,6 +87,7 @@ public final class GameLoopController {
             } catch (InvocationTargetException | InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
+
             if (finalMove.getType() == Move.Type.DISCARD && !model.isGameOver()) {
                 model.nextTurn();
                 isStartOfTurn = true;
@@ -106,13 +98,6 @@ public final class GameLoopController {
         scoreController.onRoundEnd();
     }
 
-    /**
-     * Processes the result of a move, triggering sounds, pot management, 
-     * and UI refreshes based on the status.
-     * 
-     * @param result the result of the applied move
-     * @param move   the move that was executed
-     */
     private void handleResult(final MoveResult result, final Move move) {
         switch (result.getStatus()) {
             case SUCCESS_BURRACO -> sound.playBurracoSound();
@@ -121,35 +106,33 @@ public final class GameLoopController {
                 potManager.handlePot(isDiscard);
             }
             case ROUND_WON -> sound.playRoundEndSound();
+            case DECK_EMPTY -> sound.playRoundEndSound();
             default -> { }
         }
         view.refresh(buildGameState());
     }
 
-    /**
-     * Creates a snapshot of the current game status to update the view.
-     * 
-     * @return a {@link GameState} object containing data for the View
-     */
     private GameState buildGameState() {
-        final Player current = model.getCurrentPlayer();
-        final boolean isP1 = model.isPlayer1(current);
-        return new GameState(
-            model.getPlayer1().getCombinations(),
-            model.getPlayer2().getCombinations(),
-            isP1,
-            current.getHand(),
-            model.getDiscardPile().getCards()
-        );
-    }
+    final Player current = model.getCurrentPlayer();
+    final boolean isP1 = model.isPlayer1(current);
 
-    /**
-     * Pauses the game thread and waits for a move to be provided by the View 
-     * via a {@link CompletableFuture}.
-     * 
-     * @return the {@link Move} selected by the player
-     * @throws IllegalStateException if the wait is interrupted
-     */
+    final List<List<Card>> p1Sorted = model.getPlayer1().getCombinations().stream()
+            .map(c -> displaySorter.sortForDisplay(new ArrayList<>(c)))
+            .collect(Collectors.toList());
+
+    final List<List<Card>> p2Sorted = model.getPlayer2().getCombinations().stream()
+            .map(c -> displaySorter.sortForDisplay(new ArrayList<>(c)))
+            .collect(Collectors.toList());
+
+    return new GameState(
+        p1Sorted,
+        p2Sorted,
+        isP1,
+        current.getHand(),
+        model.getDiscardPile().getCards()
+    );
+}
+
     private Move waitForMove() {
         final CompletableFuture<Move> future = new CompletableFuture<>();
         SwingUtilities.invokeLater(() -> view.setMoveFuture(future));
@@ -159,5 +142,21 @@ public final class GameLoopController {
             Thread.currentThread().interrupt();
             throw new IllegalStateException("Game loop interrupted", e);
         }
+    }
+
+    /**
+     * The only place where model enum and view enum meet — in the controller,
+     * which is allowed to know both sides.
+     */
+    private static MoveError toMoveError(final MoveResult.Status status) {
+        return switch (status) {
+            case ALREADY_DRAWN       -> MoveError.ALREADY_DRAWN;
+            case NOT_DRAWN           -> MoveError.NOT_DRAWN;
+            case NO_CARDS_SELECTED   -> MoveError.NO_CARDS_SELECTED;
+            case INVALID_COMBINATION -> MoveError.INVALID_COMBINATION;
+            case WOULD_GET_STUCK     -> MoveError.WOULD_GET_STUCK;
+            case WRONG_PLAYER        -> MoveError.WRONG_PLAYER;
+            default                  -> MoveError.UNKNOWN;
+        };
     }
 }

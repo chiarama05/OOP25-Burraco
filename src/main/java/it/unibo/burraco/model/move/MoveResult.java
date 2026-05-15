@@ -30,7 +30,8 @@ public final class MoveResult {
         SUCCESS_TAKE_POT,
         SUCCESS_CLOSE,
         SUCCESS_STUCK,
-        ROUND_WON
+        ROUND_WON,
+        DECK_EMPTY
     }
 
     private final Status status;
@@ -77,12 +78,13 @@ public final class MoveResult {
      * @return true if the move was applied, false if it was rejected
      */
     public boolean isValid() {
-        return status == Status.SUCCESS
-            || status == Status.SUCCESS_BURRACO
-            || status == Status.SUCCESS_TAKE_POT
-            || status == Status.SUCCESS_CLOSE
-            || status == Status.SUCCESS_STUCK
-            || status == Status.ROUND_WON;
+    return status == Status.SUCCESS
+        || status == Status.SUCCESS_BURRACO
+        || status == Status.SUCCESS_TAKE_POT
+        || status == Status.SUCCESS_CLOSE
+        || status == Status.SUCCESS_STUCK
+        || status == Status.ROUND_WON
+        || status == Status.DECK_EMPTY;
     }
 
     /**

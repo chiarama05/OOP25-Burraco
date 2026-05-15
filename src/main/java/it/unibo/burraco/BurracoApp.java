@@ -15,7 +15,6 @@ import it.unibo.burraco.model.GameModelImpl;
 import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.model.score.Score;
 import it.unibo.burraco.model.score.ScoreImpl;
-import it.unibo.burraco.view.BurracoView;
 import it.unibo.burraco.view.components.sound.SoundView;
 import it.unibo.burraco.view.components.sound.SoundViewImpl;
 import it.unibo.burraco.view.scenes.OnConfigurationCompleteListener;
@@ -24,6 +23,7 @@ import it.unibo.burraco.view.scenes.SetUpMenuView;
 import it.unibo.burraco.view.scenes.SetUpMenuViewImpl;
 import it.unibo.burraco.view.scenes.StartMenuView;
 import it.unibo.burraco.view.scenes.StartMenuViewImpl;
+import it.unibo.burraco.view.table.BurracoView;
 import it.unibo.burraco.view.table.DistributionView;
 import it.unibo.burraco.view.table.TableViewImpl;
 import it.unibo.burraco.view.table.pot.PotNotifierImpl;
@@ -70,33 +70,23 @@ public final class BurracoApp {
  
         final SoundView sound = new SoundViewImpl();
  
-        // --- View ---
         final TableViewImpl tableView = new TableViewImpl(nameP1, nameP2);
  
-        // distributionView typed as the interface, not the concrete class
         final DistributionView distributionView = tableView.getInitDist();
  
-        // --- Model ---
         final GameModel model = new GameModelImpl(nameP1, nameP2);
         final Player p1 = model.getPlayer1();
         final Player p2 = model.getPlayer2();
- 
-        // --- Initial distribution ---
+
         final InitialDistributionController distribution =
                 new InitialDistributionController(new DistributionManagerImpl());
         distribution.distribute(p1, p2, model.getCommonDeck(), model.getDiscardPile());
  
-        // Refresh hands (no DiscardView param — decoupled)
-        distributionView.refresh(
-                p1.getHand(),
-                p2.getHand(),
-                model.getDiscardPile().getCards());
- 
-        // Update discard pile once, explicitly
+        distributionView.refresh(p1.getHand(), p2.getHand());
+
         tableView.updateDiscardPile(model.getDiscardPile().getCards());
         tableView.refreshHandPanel(true, p1.getHand());
- 
-        // --- Controllers ---
+
         final PotNotifierImpl potNotifier = new PotNotifierImpl(tableView.getFrame());
         final PotManager potManager = new PotManager(model.getTurn(), tableView, potNotifier);
  
@@ -109,7 +99,6 @@ public final class BurracoApp {
                 tableView,
                 sound,
                 targetScore,
-                // ScoreViewProvider: lambda now uses ScoreSnapshot, no Player or Score
                 (snap1, snap2, target, tv, over) ->
                         new ScoreViewImpl(snap1, snap2, target, tv, over));
  
@@ -121,12 +110,10 @@ public final class BurracoApp {
                 model, burracoView, sound, potManager, scoreController);
  
         final RoundControllerImpl roundCtrl = new RoundControllerImpl(
-                tableView,
-                new ResetManagerImpl(),
-                p1, p2,
-                model,
-                new InitialDistributionController(new DistributionManagerImpl()),
-                distributionView);
+        tableView, new ResetManagerImpl(),
+        model,
+        new InitialDistributionController(new DistributionManagerImpl()),
+        distributionView);
  
         scoreController.setOnNewRound(() -> {
             roundCtrl.processNewRound();

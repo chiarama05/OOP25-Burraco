@@ -36,5 +36,5 @@ public interface DistributionView {
      * @param hand2       cards dealt to Player 2
      * @param discardPile initial discard pile (informational, passed through)
      */
-    void refresh(List<Card> hand1, List<Card> hand2, List<Card> discardPile);
+    void refresh(List<Card> hand1, List<Card> hand2);
 }

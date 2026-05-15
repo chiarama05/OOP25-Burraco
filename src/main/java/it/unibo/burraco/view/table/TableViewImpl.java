@@ -1,10 +1,8 @@
 package it.unibo.burraco.view.table;
 
-import it.unibo.burraco.model.GameState;
+import it.unibo.burraco.controller.GameState;
 import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.model.move.Move;
-import it.unibo.burraco.model.move.MoveResult;
-import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.components.attach.AttachButtonFactory;
 import it.unibo.burraco.view.table.deck.DeckView;
 import it.unibo.burraco.view.table.discard.DiscardView;
@@ -123,7 +121,9 @@ public final class TableViewImpl implements TableView {
     }
 
     @Override
-    public void wakeUp(final Player player, final boolean isPlayer1) {
+    public void wakeUp(final String playerName,
+                    final boolean isPlayer1,
+                    final List<Card> hand) {
         this.currentIsPlayer1 = isPlayer1;
         getHandViewForCurrentPlayer(isPlayer1).clearSelection();
 
@@ -134,15 +134,16 @@ public final class TableViewImpl implements TableView {
         if (firstWakeUp) {
             firstWakeUp = false;
             JOptionPane.showMessageDialog(frame,
-                    (isPlayer1 ? nameP1 : nameP2) + ", it's your turn!\nPress OK when ready.",
+                    playerName + ", it's your turn!\nPress OK when ready.",
                     "Game start", JOptionPane.INFORMATION_MESSAGE);
         } else {
             switchHand(isPlayer1);
         }
 
         refreshTurnLabel(isPlayer1);
-        refreshHandPanel(isPlayer1, player.getHand());
+        refreshHandPanel(isPlayer1, hand);
     }
+
 
     @Override
     public void setMoveFuture(final CompletableFuture<Move> future) {
@@ -163,25 +164,18 @@ public final class TableViewImpl implements TableView {
     }
 
     @Override
-    public void showMoveError(final MoveResult error) {
-        final String msg = switch (error.getStatus()) {
+    public void showMoveError(final MoveError error) {
+        final String msg = switch (error) {
             case ALREADY_DRAWN       -> "You already drew this turn.";
             case NOT_DRAWN           -> "You must draw before playing.";
             case NO_CARDS_SELECTED   -> "Select at least one card.";
             case INVALID_COMBINATION -> "Invalid combination.";
             case WOULD_GET_STUCK     -> "This move would leave you stuck.";
             case WRONG_PLAYER        -> "It's not your turn.";
-            default                  -> "Invalid move: " + error.getStatus();
+            case UNKNOWN             -> "Invalid move.";
         };
         JOptionPane.showMessageDialog(this.frame, msg,
                 "Invalid move", JOptionPane.WARNING_MESSAGE);
-    }
-
-    @Override
-    public void showWinner(final Player winner) {
-        JOptionPane.showMessageDialog(this.frame,
-                "Game over!\nWinner: " + winner.getName(),
-                "End of game", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
