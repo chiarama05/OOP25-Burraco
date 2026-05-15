@@ -6,7 +6,8 @@ import it.unibo.burraco.model.score.Score;
 import it.unibo.burraco.view.components.sound.SoundView;
 import it.unibo.burraco.view.scenes.ScoreView;
 import it.unibo.burraco.view.scenes.ScoreViewProvider;
-import it.unibo.burraco.view.table.TableView;
+import it.unibo.burraco.view.table.BurracoView;
+import it.unibo.burraco.view.table.SwingTableAccess;
  
 import javax.swing.SwingUtilities;
 import java.util.ArrayList;
@@ -24,7 +25,8 @@ public final class RoundEndHandler {
     private final Player player2;
     private final String nameP1;
     private final String nameP2;
-    private final TableView tableView;
+    private final BurracoView tableView;
+    private final SwingTableAccess swingAccess;
     private final SoundView soundView;
     private final int targetScore;
     private final ScoreViewProvider viewProvider;
@@ -49,16 +51,18 @@ public final class RoundEndHandler {
             final Player player2,
             final String nameP1,
             final String nameP2,
-            final TableView tableView,
+            final BurracoView tableView,
+            final SwingTableAccess swingAccess,
             final SoundView soundView,
             final int targetScore,
             final ScoreViewProvider viewProvider) {
+        this.tableView   = tableView;
+        this.swingAccess = swingAccess;
         this.score        = score;
         this.player1      = player1;
         this.player2      = player2;
         this.nameP1       = nameP1;
         this.nameP2       = nameP2;
-        this.tableView    = tableView;
         this.soundView    = soundView;
         this.targetScore  = targetScore;
         this.viewProvider = viewProvider;
@@ -142,7 +146,7 @@ public final class RoundEndHandler {
                                final boolean matchOver) {
         tableView.showFinalHands(snap1.finalHand(), snap2.finalHand());
  
-        final ScoreView view = viewProvider.create(snap1, snap2, targetScore, tableView, matchOver);
+        final ScoreView view = viewProvider.create(snap1, snap2, targetScore, swingAccess, matchOver);
         view.setOnNextAction(() -> {
             view.close();
             if (onNewRound != null) {

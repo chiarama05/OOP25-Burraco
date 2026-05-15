@@ -2,7 +2,7 @@ package it.unibo.burraco.view.scenes;
  
 import it.unibo.burraco.controller.score.ScoreSnapshot;
 import it.unibo.burraco.view.components.RoundedGradientButton;
-import it.unibo.burraco.view.table.TableView;
+import it.unibo.burraco.view.table.SwingTableAccess;
  
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -76,11 +76,11 @@ public final class ScoreViewImpl implements ScoreView {
             final ScoreSnapshot snap1,
             final ScoreSnapshot snap2,
             final int targetScore,
-            final TableView tableView,
+            final SwingTableAccess swingAccess,
             final boolean matchOver) {
         this.frame = new JFrame("Burraco - Final Standings");
         this.targetScore = targetScore;
-        this.tableFrame = tableView.getFrame();
+        this.tableFrame = swingAccess.getFrame();
         this.setupUI(snap1, snap2, matchOver);
     }
  

@@ -1,7 +1,7 @@
 package it.unibo.burraco.controller.game;
 
-import it.unibo.burraco.controller.CombinationDisplaySorter;
-import it.unibo.burraco.controller.GameState;
+import it.unibo.burraco.controller.display.CombinationDisplaySorter;
+import it.unibo.burraco.controller.display.GameState;
 import it.unibo.burraco.controller.pot.PotManager;
 import it.unibo.burraco.controller.score.ScoreController;
 import it.unibo.burraco.model.GameModel;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * Extracts all data from the model before crossing into the view layer —
  * the view never receives Player or MoveResult directly.
  */
-public final class GameLoopController {
+public final class GameLoopController implements GameController {
 
     private final GameModel model;
     private final BurracoView view;
@@ -47,6 +47,7 @@ public final class GameLoopController {
         this.scoreController = scoreController;
     }
 
+    @Override
     public void start() {
         final Thread gameThread = new Thread(this::loop);
         gameThread.setDaemon(true);

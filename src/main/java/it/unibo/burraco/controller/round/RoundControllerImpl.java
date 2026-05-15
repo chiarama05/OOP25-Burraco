@@ -1,35 +1,32 @@
 package it.unibo.burraco.controller.round;
- 
+
 import it.unibo.burraco.controller.distribution.InitialDistributionController;
 import it.unibo.burraco.model.GameModel;
 import it.unibo.burraco.model.player.Player;
+import it.unibo.burraco.view.table.BurracoView;
 import it.unibo.burraco.view.table.DistributionView;
-import it.unibo.burraco.view.table.TableView;
- 
+
 /**
  * Concrete implementation of {@link RoundController}.
- * This class orchestrates the complete transition between rounds by coordinating 
- * the reset of the model, the redistribution of cards, and the synchronization 
- * of the graphical interfaces.
  */
 public final class RoundControllerImpl implements RoundController {
 
-    private final TableView tableView;
+    private final BurracoView tableView;
     private final ResetManager resetManager;
     private final GameModel model;
     private final InitialDistributionController distributionController;
     private final DistributionView distributionView;
 
-    public RoundControllerImpl(final TableView tableView,
+    public RoundControllerImpl(final BurracoView tableView,
                                 final ResetManager resetManager,
                                 final GameModel model,
                                 final InitialDistributionController distributionController,
                                 final DistributionView distributionView) {
-        this.tableView             = tableView;
-        this.resetManager          = resetManager;
-        this.model                 = model;
+        this.tableView              = tableView;
+        this.resetManager           = resetManager;
+        this.model                  = model;
         this.distributionController = distributionController;
-        this.distributionView      = distributionView;
+        this.distributionView       = distributionView;
     }
 
     @Override

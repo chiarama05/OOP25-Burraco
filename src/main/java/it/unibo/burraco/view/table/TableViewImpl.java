@@ -1,6 +1,6 @@
 package it.unibo.burraco.view.table;
 
-import it.unibo.burraco.controller.GameState;
+import it.unibo.burraco.controller.display.GameState;
 import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.model.move.Move;
 import it.unibo.burraco.view.components.attach.AttachButtonFactory;
@@ -32,7 +32,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public final class TableViewImpl implements TableView {
+public final class TableViewImpl implements BurracoView, SwingTableAccess {
 
     private static final int FRAME_MIN_W    = 900;
     private static final int FRAME_MIN_H    = 650;
@@ -146,6 +146,15 @@ public final class TableViewImpl implements TableView {
 
 
     @Override
+    public void notifyPotTaken(final String playerName, final boolean isDiscard) {
+    final String msg = isDiscard
+        ? playerName + " You took the pot! You'll see the new cards next turn."
+        : playerName + " You took the pot on fly! Keep playing.";
+    JOptionPane.showMessageDialog(this.frame, msg,
+            "Pot", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    @Override
     public void setMoveFuture(final CompletableFuture<Move> future) {
         this.pendingFuture = future;
     }
@@ -242,7 +251,6 @@ public final class TableViewImpl implements TableView {
         this.deckPanel.repaint();
     }
 
-    @Override
     public void addCombinationToPlayerPanel(final List<Card> cards, final boolean isP1) {
         addComboToPanel(new ArrayList<>(cards), isP1);
         this.frame.revalidate();
@@ -251,7 +259,6 @@ public final class TableViewImpl implements TableView {
 
     @Override
     public void updateDiscardPile(final List<Card> cards) {
-        this.discardPanel.removeAll();
         this.discardView.updateDiscardPile(new ArrayList<>(cards));
         this.discardPanel.revalidate();
         this.discardPanel.repaint();
@@ -265,47 +272,20 @@ public final class TableViewImpl implements TableView {
         this.frame.repaint();
     }
 
-    @Override
     public HandView getHandViewForCurrentPlayer(final boolean isPlayer1) {
         return isPlayer1 ? getPlayer1HandView() : getPlayer2HandView();
     }
 
-    @Override
     public HandView getPlayer1HandView() {
         return this.initDist.getPlayer1HandView();
     }
 
-    @Override
     public HandView getPlayer2HandView() {
         return this.initDist.getPlayer2HandView();
     }
 
     @Override public JFrame getFrame() { 
         return this.frame; 
-    }
-
-    @Override public JButton getPutComboBtn() { 
-        return this.putComboBtn; 
-    }
-
-    @Override public JButton     getTakeDiscardBtn() { 
-        return this.takeDiscardBtn; 
-    }
-
-    @Override public DeckView getDeckView() { 
-        return this.deckView; 
-    }
-
-    @Override public DiscardView getDiscardView() { 
-        return this.discardView; 
-    }
-
-    @Override public JPanel getDiscardPanel() { 
-        return this.discardPanel; 
-    }
-
-    @Override public boolean isCurrentPlayer1() { 
-        return this.currentIsPlayer1; 
     }
 
     /** Required by {@code GameWiring} to pass the distribution view to wiring. */

@@ -1,4 +1,4 @@
-package it.unibo.burraco.controller;
+package it.unibo.burraco.controller.display;
 
 import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.model.rules.StraightUtils;

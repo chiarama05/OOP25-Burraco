@@ -26,15 +26,6 @@ public interface DistributionView {
      * @return HandView for Player 2
      */
     HandView getPlayer2HandView();
- 
-    /**
-     * Refreshes both hands with the dealt cards.
-     * The discard pile is updated separately by the caller via
-     * {@code TableView.updateDiscardPile()}.
-     *
-     * @param hand1       cards dealt to Player 1
-     * @param hand2       cards dealt to Player 2
-     * @param discardPile initial discard pile (informational, passed through)
-     */
+
     void refresh(List<Card> hand1, List<Card> hand2);
 }
