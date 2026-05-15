@@ -52,7 +52,9 @@ public final class PlayerImpl implements Player {
     }
 
     private boolean sameCardReferences(final List<Card> a, final List<Card> b) {
-        if (a.size() != b.size()) return false;
+        if (a.size() != b.size()) {
+            return false;
+        }
         final List<Card> copy = new ArrayList<>(a);
         for (final Card c : b) {
             boolean found = false;

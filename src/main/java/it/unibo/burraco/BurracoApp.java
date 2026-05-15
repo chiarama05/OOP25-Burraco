@@ -65,6 +65,13 @@ public final class BurracoApp {
         setupMenu.display();
     }
 
+    /**
+     * Wires all components and starts a new game session.
+     *
+     * @param nameP1      display name for player 1
+     * @param nameP2      display name for player 2
+     * @param targetScore the score threshold required to win the match
+     */
     private static void startGame(final String nameP1,
                                    final String nameP2,
                                    final int targetScore) {

@@ -29,9 +29,22 @@ public final class GameState {
         this.discardPile = discardPile;
     }
 
-    public List<List<Card>> getP1Combinations() { return p1Combinations; }
-    public List<List<Card>> getP2Combinations() { return p2Combinations; }
-    public boolean isP1Turn()                   { return isP1Turn; }
-    public List<Card> getCurrentHand()          { return currentHand; }
-    public List<Card> getDiscardPile()          { return discardPile; }
+    public List<List<Card>> getP1Combinations() {
+        return p1Combinations;
+    }
+
+    public List<List<Card>> getP2Combinations() {
+        return p2Combinations;
+    }
+
+    public boolean isP1Turn() {
+        return isP1Turn;
+    }
+    public List<Card> getCurrentHand() {
+        return currentHand;
+    }
+
+    public List<Card> getDiscardPile() {
+        return discardPile;
+    }
 }

@@ -16,27 +16,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Button representing a combination on the table.
- * Orders cards for display using only the Card interface —
- * no model.rules import, no domain logic here.
+ * Constructs an AttachButton displaying the given combination.
  *
- * Straight detection: same seed + distinct values among naturals.
- * Set detection: everything else.
+ * @param initialCards  the cards forming the combination
+ * @param isPlayer1Owner true if the combination belongs to Player 1
+ * @param listener      the callback invoked when this button is clicked
  */
 @SuppressFBWarnings("Se")
 public final class AttachButton extends JButton {
     
-    private static final int FIXED_WIDTH     = 64;
-    private static final int VERTICAL_STRUT  = 8;
+    private static final long serialVersionUID = 1L;
+    private static final int FIXED_WIDTH = 64;
+    private static final int VERTICAL_STRUT = 8;
     private static final int FONT_SIZE_JOLLY = 28;
     private static final int FONT_SIZE_NORMAL = 22;
-    private static final int COLOR_JOLLY_R   = 219;
-    private static final int COLOR_JOLLY_G   = 112;
-    private static final int COLOR_JOLLY_B   = 147;
-    private static final int GAP             = 5;
-    private static final int BORDER_PADDING  = 10;
-    private static final int LINE_THICKNESS  = 1;
-    private static final String JOLLY_VALUE  = "Jolly";
+    private static final int COLOR_JOLLY_R = 219;
+    private static final int COLOR_JOLLY_G = 112;
+    private static final int COLOR_JOLLY_B = 147;
+    private static final int GAP = 5;
+    private static final int BORDER_PADDING = 10;
+    private static final int LINE_THICKNESS = 1;
+    private static final String JOLLY_VALUE = "Jolly";
 
     private final transient List<Card> cards;
     private final boolean isPlayer1Owner;
@@ -89,16 +89,25 @@ public final class AttachButton extends JButton {
         this.add(Box.createVerticalStrut(VERTICAL_STRUT));
     }
 
-    @Override public Dimension getPreferredSize() {
+    @Override
+    public Dimension getPreferredSize() {
         return new Dimension(FIXED_WIDTH, super.getPreferredSize().height);
     }
-    @Override public Dimension getMaximumSize() {
+
+    @Override
+    public Dimension getMaximumSize() {
         return new Dimension(FIXED_WIDTH, super.getPreferredSize().height);
     }
-    @Override public Dimension getMinimumSize() {
+    @Override
+    public Dimension getMinimumSize() {
         return new Dimension(FIXED_WIDTH, super.getMinimumSize().height);
     }
 
-    public List<Card> getCards()    { return new ArrayList<>(this.cards); }
-    public boolean isPlayer1Owner() { return this.isPlayer1Owner; }
+    public List<Card> getCards() {
+        return new ArrayList<>(this.cards);
+    }
+
+    public boolean isPlayer1Owner() {
+        return this.isPlayer1Owner;
+    }
 }

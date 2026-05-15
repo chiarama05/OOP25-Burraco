@@ -12,7 +12,8 @@ import java.awt.Dimension;
  * Swing panel representing the deck button in the game UI.
  */
 public final class DeckView extends JPanel {
-    
+
+    private static final long serialVersionUID = 1L; 
     private static final int FLOW_HGAP = 5;
     private static final int FLOW_VGAP = 5;
     private static final int FONT_SIZE = 18;
@@ -20,7 +21,6 @@ public final class DeckView extends JPanel {
     private static final int BUTTON_HEIGHT = 100;
     private static final int BORDER_THICKNESS = 1;
     private static final int SHADOW_THICKNESS = 4;
-
     private static final String FONT_NAME = "Arial";
 
     private final JButton deckButton;
