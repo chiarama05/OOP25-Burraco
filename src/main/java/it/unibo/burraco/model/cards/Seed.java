@@ -12,11 +12,11 @@ package it.unibo.burraco.model.cards;
  */
 public enum Seed {
 
-    SPADES  ("♠"),
-    HEARTS  ("♥"),
-    CLUBS   ("♣"),
+    SPADES("♠"),
+    HEARTS("♥"),
+    CLUBS("♣"),
     DIAMONDS("♦"),
-    JOKER   ("♕");   // used exclusively by Jolly cards
+    JOKER("♕");   // used exclusively by Jolly cards
 
     private final String symbol;
 

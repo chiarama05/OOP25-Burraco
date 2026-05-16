@@ -151,13 +151,13 @@ public final class GameLoopController implements GameController {
      */
     private static MoveError toMoveError(final MoveResult.Status status) {
         return switch (status) {
-            case ALREADY_DRAWN       -> MoveError.ALREADY_DRAWN;
-            case NOT_DRAWN           -> MoveError.NOT_DRAWN;
-            case NO_CARDS_SELECTED   -> MoveError.NO_CARDS_SELECTED;
+            case ALREADY_DRAWN -> MoveError.ALREADY_DRAWN;
+            case NOT_DRAWN -> MoveError.NOT_DRAWN;
+            case NO_CARDS_SELECTED -> MoveError.NO_CARDS_SELECTED;
             case INVALID_COMBINATION -> MoveError.INVALID_COMBINATION;
-            case WOULD_GET_STUCK     -> MoveError.WOULD_GET_STUCK;
-            case WRONG_PLAYER        -> MoveError.WRONG_PLAYER;
-            default                  -> MoveError.UNKNOWN;
+            case WOULD_GET_STUCK -> MoveError.WOULD_GET_STUCK;
+            case WRONG_PLAYER -> MoveError.WRONG_PLAYER;
+            default -> MoveError.UNKNOWN;
         };
     }
 }

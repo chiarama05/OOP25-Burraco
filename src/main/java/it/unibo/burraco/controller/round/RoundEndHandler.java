@@ -56,15 +56,15 @@ public final class RoundEndHandler {
             final SoundView soundView,
             final int targetScore,
             final ScoreViewProvider viewProvider) {
-        this.tableView   = tableView;
+        this.tableView = tableView;
         this.swingAccess = swingAccess;
-        this.score        = score;
-        this.player1      = player1;
-        this.player2      = player2;
-        this.nameP1       = nameP1;
-        this.nameP2       = nameP2;
-        this.soundView    = soundView;
-        this.targetScore  = targetScore;
+        this.score = score;
+        this.player1 = player1;
+        this.player2 = player2;
+        this.nameP1 = nameP1;
+        this.nameP2 = nameP2;
+        this.soundView = soundView;
+        this.targetScore = targetScore;
         this.viewProvider = viewProvider;
     }
  

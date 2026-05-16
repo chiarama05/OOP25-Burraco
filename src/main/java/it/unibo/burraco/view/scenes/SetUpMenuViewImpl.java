@@ -104,12 +104,12 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
                 }
             }
         };
-    final JTextField field = new JTextField(doc, defaultText, FIELD_FONT_SIZE);
-    field.setFont(new Font(FONT_NAME, Font.PLAIN, FIELD_FONT_SIZE));
-    field.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
-    field.setHorizontalAlignment(JTextField.LEFT);
-    return field;
-}
+        final JTextField field = new JTextField(doc, defaultText, FIELD_FONT_SIZE);
+        field.setFont(new Font(FONT_NAME, Font.PLAIN, FIELD_FONT_SIZE));
+        field.setPreferredSize(new Dimension(FIELD_WIDTH, FIELD_HEIGHT));
+        field.setHorizontalAlignment(JTextField.LEFT);
+        return field;
+    }
 
     /**
      * Initializes components and sets up the GridBagLayout.

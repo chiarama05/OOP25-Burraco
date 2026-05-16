@@ -91,7 +91,7 @@ public final class BurracoApp {
         final Player p1 = model.getPlayer1();
         final Player p2 = model.getPlayer2();
 
-        final BurracoView burracoView   = tableView;
+        final BurracoView burracoView = tableView;
         final SwingTableAccess swingAccess = tableView;
 
         final PotManager potManager = new PotManager(model.getTurn(), burracoView);

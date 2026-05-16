@@ -39,10 +39,10 @@ public final class MoveValidator {
                                final boolean drawn) {
         return switch (move.getType()) {
             case DRAW_DECK, DRAW_DISCARD -> validateDraw(drawn);
-            case PUT_COMBINATION         -> validatePutCombination(move, current, drawn);
-            case ATTACH                  -> validateAttach(move, current, drawn);
-            case DISCARD                 -> validateDiscard(move, drawn);
-            default                      -> MoveResult.error(MoveResult.Status.INVALID_MOVE);
+            case PUT_COMBINATION -> validatePutCombination(move, current, drawn);
+            case ATTACH -> validateAttach(move, current, drawn);
+            case DISCARD -> validateDiscard(move, drawn);
+            default -> MoveResult.error(MoveResult.Status.INVALID_MOVE);
         };
     }
 
@@ -79,7 +79,7 @@ public final class MoveValidator {
             return MoveResult.error(MoveResult.Status.NOT_DRAWN);
         }
         final List<Card> selected = move.getSelectedCards();
-        final List<Card> target   = move.getTargetCombination();
+        final List<Card> target = move.getTargetCombination();
         if (selected.isEmpty()) {
             return MoveResult.error(MoveResult.Status.NO_CARDS_SELECTED);
         }

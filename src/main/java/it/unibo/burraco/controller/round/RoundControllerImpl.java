@@ -29,11 +29,11 @@ public final class RoundControllerImpl implements RoundController {
                                final GameModel model,
                                final InitialDistributionController distributionController,
                                final DistributionView distributionView) {
-        this.tableView              = tableView;
-        this.resetManager           = resetManager;
-        this.model                  = model;
+        this.tableView = tableView;
+        this.resetManager = resetManager;
+        this.model = model;
         this.distributionController = distributionController;
-        this.distributionView       = distributionView;
+        this.distributionView = distributionView;
     }
 
     @Override

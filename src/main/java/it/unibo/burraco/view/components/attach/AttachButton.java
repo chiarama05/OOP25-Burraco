@@ -27,13 +27,13 @@ public final class AttachButton extends JButton {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int FIXED_WIDTH       = 64;
-    private static final int VERTICAL_STRUT    = 8;
-    private static final int FONT_SIZE_JOLLY   = 28;
-    private static final int FONT_SIZE_NORMAL  = 22;
-    private static final int GAP               = 5;
-    private static final int BORDER_PADDING    = 10;
-    private static final int LINE_THICKNESS    = 1;
+    private static final int FIXED_WIDTH = 64;
+    private static final int VERTICAL_STRUT = 8;
+    private static final int FONT_SIZE_JOLLY = 28;
+    private static final int FONT_SIZE_NORMAL = 22;
+    private static final int GAP = 5;
+    private static final int BORDER_PADDING = 10;
+    private static final int LINE_THICKNESS = 1;
 
     private static final Color JOLLY_COLOR =
             new Color(219, 112, 147);
@@ -90,7 +90,7 @@ public final class AttachButton extends JButton {
      */
     private void renderCardLabel(final Card c) {
         final boolean isJolly = c.getValue().isJolly();
-        final String  text    = isJolly ? c.getSeed().getSymbol() : c.toString();
+        final String text = isJolly ? c.getSeed().getSymbol() : c.toString();
 
         final JLabel label = new JLabel(text);
 

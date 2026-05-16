@@ -21,9 +21,9 @@ import it.unibo.burraco.model.cards.Seed;
  */
 public final class StraightUtils {
 
-    private static final int ACE_LOW_VALUE  = 1;
+    private static final int ACE_LOW_VALUE = 1;
     private static final int ACE_HIGH_VALUE = 14;
-    private static final int TWO_VALUE      = 2;
+    private static final int TWO_VALUE = 2;
     private static final int MIN_STRAIGHT_SIZE = 3;
 
     /**
@@ -107,7 +107,7 @@ public final class StraightUtils {
             }
         }
 
-        final List<Integer> aceLow  = real.stream()
+        final List<Integer> aceLow = real.stream()
                 .map(c -> mapValue(c, true)).sorted().collect(Collectors.toList());
         final List<Integer> aceHigh = real.stream()
                 .map(c -> mapValue(c, false)).sorted().collect(Collectors.toList());
@@ -142,8 +142,8 @@ public final class StraightUtils {
             return false;
         }
         final Seed suit = two.getSeed();
-        final boolean hasAce   = straight.stream()
-                .anyMatch(c -> c.getValue() == CardValue.ACE   && c.getSeed() == suit);
+        final boolean hasAce = straight.stream()
+                .anyMatch(c -> c.getValue() == CardValue.ACE && c.getSeed() == suit);
         final boolean hasThree = straight.stream()
                 .anyMatch(c -> c.getValue() == CardValue.THREE && c.getSeed() == suit);
         return hasAce || hasThree;
@@ -221,7 +221,7 @@ public final class StraightUtils {
      */
     private List<Card> buildOrdering(final List<Card> sequence, final boolean forceTwosAsWild) {
         final List<Card> wilds = new ArrayList<>();
-        final List<Card> real  = new ArrayList<>();
+        final List<Card> real = new ArrayList<>();
         boolean naturalTwoUsed = false;
 
         for (final Card c : sequence) {
@@ -264,7 +264,7 @@ public final class StraightUtils {
         }
 
         final List<Card> wildsCopy = new ArrayList<>(wilds);
-        final List<Card> result    = new ArrayList<>();
+        final List<Card> result = new ArrayList<>();
         for (int i = 0; i < real.size(); i++) {
             result.add(real.get(i));
             if (i < real.size() - 1) {
@@ -277,8 +277,8 @@ public final class StraightUtils {
         }
 
         while (!wildsCopy.isEmpty()) {
-            final Card w       = wildsCopy.remove(0);
-            final int lastVal  = mapValue(result.get(result.size() - 1), aceLow);
+            final Card w = wildsCopy.remove(0);
+            final int lastVal = mapValue(result.get(result.size() - 1), aceLow);
             final int firstVal = mapValue(result.get(0), aceLow);
             if (lastVal < ACE_HIGH_VALUE) {
                 result.add(w);
@@ -328,7 +328,7 @@ public final class StraightUtils {
                 continue;
             }
             if (anchor.getValue() == CardValue.ACE) {
-                if (ACE_LOW_VALUE  + index - i == TWO_VALUE
+                if (ACE_LOW_VALUE + index - i == TWO_VALUE
                  || ACE_HIGH_VALUE + index - i == TWO_VALUE) {
                     return true;
                 }

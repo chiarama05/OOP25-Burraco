@@ -26,24 +26,24 @@ public final class HandViewImpl extends JPanel implements HandView {
 
     private static final long serialVersionUID = 1L;
 
-    private static final int GAP               = 5;
-    private static final int CARD_WIDTH        = 65;
-    private static final int CARD_HEIGHT       = 90;
-    private static final int PREF_CARD_STEP    = 70;
+    private static final int GAP = 5;
+    private static final int CARD_WIDTH = 65;
+    private static final int CARD_HEIGHT = 90;
+    private static final int PREF_CARD_STEP = 70;
     private static final int PREF_WIDTH_OFFSET = 20;
-    private static final int PANEL_HEIGHT      = 105;
+    private static final int PANEL_HEIGHT = 105;
 
-    private static final int JOLLY_FONT_SIZE   = 27;
-    private static final int NORMAL_FONT_SIZE  = 19;
+    private static final int JOLLY_FONT_SIZE = 27;
+    private static final int NORMAL_FONT_SIZE = 19;
     private static final int HOVER_BORDER_THICKNESS = 2;
-    private static final int HOVER_OFFSET      = 2;
+    private static final int HOVER_OFFSET = 2;
 
-    private static final Color PANEL_BG    = new Color(180, 220, 180);
+    private static final Color PANEL_BG = new Color(180, 220, 180);
     private static final Color JOLLY_COLOR = new Color(219, 112, 147);
-    private static final Color HOVER_BG    = new Color(255, 255, 225);
+    private static final Color HOVER_BG = new Color(255, 255, 225);
     private static final Color HOVER_BORDER = new Color(240, 230, 140);
 
-    private static final String JOLLY_FONT  = "Segoe UI Symbol";
+    private static final String JOLLY_FONT = "Segoe UI Symbol";
     private static final String NORMAL_FONT = "Monospaced";
 
     private final transient SelectionCardManager selectionManager;
@@ -83,7 +83,7 @@ public final class HandViewImpl extends JPanel implements HandView {
      */
     private JButton buildCardButton(final Card c) {
         final boolean isJolly = c.getValue().isJolly();
-        final String  text    = isJolly ? c.getSeed().getSymbol() : c.toString();
+        final String text = isJolly ? c.getSeed().getSymbol() : c.toString();
 
         final JButton btn = new JButton(text);
 

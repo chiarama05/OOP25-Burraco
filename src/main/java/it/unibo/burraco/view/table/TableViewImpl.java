@@ -34,18 +34,18 @@ import java.util.concurrent.CompletableFuture;
 
 public final class TableViewImpl implements BurracoView, SwingTableAccess {
 
-    private static final int FRAME_MIN_W    = 900;
-    private static final int FRAME_MIN_H    = 650;
-    private static final int DISCARD_W      = 400;
-    private static final int DISCARD_H      = 110;
-    private static final int RIGID_AREA_W   = 5;
-    private static final int    FONT_TURN   = 25;
-    private static final int    FONT_HAND   = 18;
-    private static final String FONT_NAME   = "Arial";
+    private static final int FRAME_MIN_W = 900;
+    private static final int FRAME_MIN_H = 650;
+    private static final int DISCARD_W = 400;
+    private static final int DISCARD_H = 110;
+    private static final int RIGID_AREA_W = 5;
+    private static final int FONT_TURN = 25;
+    private static final int FONT_HAND = 18;
+    private static final String FONT_NAME = "Arial";
     private static final Color LIGHT_GREEN = new Color(180, 220, 180);
     private static final int TITLE_JUST = 0;
-    private static final int TITLE_POS  = 0;
-    private static final int BORDER_PX  = 1;
+    private static final int TITLE_POS = 0;
+    private static final int BORDER_PX = 1;
     private final JFrame frame;
     private final JLabel turnLabel;
     private final JPanel combPanel1;
@@ -61,7 +61,7 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
     private final JButton putComboBtn;
     private final AttachButtonFactory attachButtonFactory;
 
-    private boolean firstWakeUp      = true;
+    private boolean firstWakeUp = true;
     private boolean currentIsPlayer1 = true;
     private CompletableFuture<Move> pendingFuture;
 
@@ -90,8 +90,8 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
         this.frame.add(board, BorderLayout.CENTER);
 
         this.discardPanel = new JPanel();
-        this.deckView     = new DeckView();
-        this.deckPanel    = new JPanel(new BorderLayout());
+        this.deckView = new DeckView();
+        this.deckPanel = new JPanel(new BorderLayout());
         this.deckPanel.setBackground(LIGHT_GREEN);
         this.initDist = new TableSetUpView();
         this.frame.add(
@@ -99,7 +99,7 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
                 BorderLayout.SOUTH);
 
         this.takeDiscardBtn = new JButton("TAKE DISCARD");
-        this.putComboBtn    = new JButton("PUT COMBINATION");
+        this.putComboBtn = new JButton("PUT COMBINATION");
         final DiscardViewImpl dvImpl = new DiscardViewImpl(discardPanel, new JPanel());
         this.discardView = dvImpl;
         final JButton discardBtn = (JButton) dvImpl.getActionPanel().getComponent(0);
@@ -170,13 +170,13 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
     @Override
     public void showMoveError(final MoveError error) {
         final String msg = switch (error) {
-            case ALREADY_DRAWN       -> "You already drew this turn.";
-            case NOT_DRAWN           -> "You must draw before playing.";
-            case NO_CARDS_SELECTED   -> "Select at least one card.";
+            case ALREADY_DRAWN -> "You already drew this turn.";
+            case NOT_DRAWN -> "You must draw before playing.";
+            case NO_CARDS_SELECTED -> "Select at least one card.";
             case INVALID_COMBINATION -> "Invalid combination.";
-            case WOULD_GET_STUCK     -> "This move would leave you stuck.";
-            case WRONG_PLAYER        -> "It's not your turn.";
-            case UNKNOWN             -> "Invalid move.";
+            case WOULD_GET_STUCK -> "This move would leave you stuck.";
+            case WRONG_PLAYER -> "It's not your turn.";
+            case UNKNOWN -> "Invalid move.";
         };
         JOptionPane.showMessageDialog(this.frame, msg,
                 "Invalid move", JOptionPane.WARNING_MESSAGE);
@@ -262,7 +262,7 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
     @Override
     public void markPotTaken(final boolean isP1) {
         final JPanel target = isP1 ? combPanel1 : combPanel2;
-        final String name   = isP1 ? nameP1 : nameP2;
+        final String name = isP1 ? nameP1 : nameP2;
         ((TitledBorder) target.getBorder()).setTitle(name + " [POT TAKEN]");
         this.frame.repaint();
     }
@@ -376,5 +376,4 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
         getPlayer1HandView().updateHand(new ArrayList<>(hand1));
         getPlayer2HandView().updateHand(new ArrayList<>(hand2));
     }
- 
 }
