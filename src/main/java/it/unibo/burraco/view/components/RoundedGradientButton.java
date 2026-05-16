@@ -40,13 +40,11 @@ public final class RoundedGradientButton extends JButton {
      */
     public RoundedGradientButton(final String text) {
         super(text);
-        // Disable default Swing rendering to use custom painting
         this.setContentAreaFilled(false);
         this.setFocusPainted(false);
         this.setBorderPainted(false);
         this.setOpaque(false);
 
-        // Add mouse listener to handle hover state transitions
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(final MouseEvent evt) {
@@ -73,13 +71,11 @@ public final class RoundedGradientButton extends JButton {
     protected void paintComponent(final Graphics g) {
         final Graphics2D g2 = (Graphics2D) g.create();
 
-        // Enable anti-aliasing for smooth rounded corners
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         final float radius = Math.max(this.getWidth(), this.getHeight());
         final Color[] colors = {this.innerColor, this.outerColor};
 
-        // Create a radial gradient centered in the button
         final RadialGradientPaint rgp = new RadialGradientPaint(
             new Point2D.Double(this.getWidth() / 2.0, this.getHeight() / 2.0),
             radius / GRADIENT_RADIUS_RATIO,
@@ -87,18 +83,14 @@ public final class RoundedGradientButton extends JButton {
             colors
         );
 
-        // Draw the background
         g2.setPaint(rgp);
         g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ARC_SIZE, ARC_SIZE);
 
-        // Draw the border with a darker shade
         g2.setColor(BORDER_COLOR);
         g2.setStroke(new BasicStroke(STROKE_WIDTH));
         g2.drawRoundRect(0, 0, this.getWidth() - 1, this.getHeight() - 1, ARC_SIZE, ARC_SIZE);
 
         g2.dispose();
-
-        // Render the button text and other standard components
         super.paintComponent(g);
     }
 }

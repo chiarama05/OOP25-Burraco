@@ -11,17 +11,23 @@ import it.unibo.burraco.model.player.Player;
 /**
  * Standard implementation of the Burraco scoring system.
  * Handles bonuses for clean/dirty burracos, closures, and penalties for uncollected pots.
- *
  * All raw string comparisons have been replaced with
  * {@link CardValue} and {@link Seed} enum references.
  */
 public final class ScoreImpl implements Score {
 
-    private static final int CLOSURE_BONUS      = 100;
+    private static final int CLOSURE_BONUS = 100;
     private static final int CLEAN_BURRACO_BONUS = 200;
     private static final int DIRTY_BURRACO_BONUS = 100;
-    private static final int NO_POT_PENALTY      = -100;
-    private static final int BURRACO_MIN_CARDS   = 7;
+    private static final int NO_POT_PENALTY = -100;
+    private static final int BURRACO_MIN_CARDS = 7;
+
+    /**
+     * Default constructor for ScoreImpl.
+     */
+    public ScoreImpl() {
+        // Explicit constructor required by standard Checkstyle rules
+    }
 
     @Override
     public int calculateFinalScore(final Player player) {

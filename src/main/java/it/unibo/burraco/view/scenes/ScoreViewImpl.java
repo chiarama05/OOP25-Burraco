@@ -26,37 +26,35 @@ import javax.swing.border.EmptyBorder;
  
 /**
  * Swing implementation of the ScoreView interface.
- *
- * <p>Receives only {@link ScoreSnapshot} objects — plain data containers
- * pre-computed by the Controller. No {@code Player} or {@code Score}
- * model references are used here.
+ * Receives only {@link ScoreSnapshot} objects — plain data containers
+ * pre-computed by the Controller.
  */
 public final class ScoreViewImpl implements ScoreView {
  
-    private static final int FRAME_WIDTH        = 650;
-    private static final int FRAME_HEIGHT       = 750;
-    private static final int BORDER_PADDING     = 20;
-    private static final int GRID_GAP           = 30;
-    private static final int TITLE_FONT_SIZE    = 28;
+    private static final int FRAME_WIDTH = 650;
+    private static final int FRAME_HEIGHT = 750;
+    private static final int BORDER_PADDING = 20;
+    private static final int GRID_GAP = 30;
+    private static final int TITLE_FONT_SIZE = 28;
     private static final int TITLE_BOTTOM_BORDER = 40;
-    private static final int NAME_FONT_SIZE     = 22;
-    private static final int NAME_STRUT         = 20;
-    private static final int BUTTON_FONT_SIZE   = 18;
-    private static final int BUTTON_WIDTH       = 500;
-    private static final int BUTTON_HEIGHT      = 60;
-    private static final int BUTTON_TOP_BORDER  = 40;
-    private static final int BUTTON_BOT_BORDER  = 10;
-    private static final int ROW_FONT_SIZE      = 16;
-    private static final int ROW_MAX_WIDTH      = 250;
-    private static final int ROW_MAX_HEIGHT     = 30;
-    private static final int SEPARATOR_STRUT    = 10;
-    private static final int SEPARATOR_HEIGHT   = 10;
+    private static final int NAME_FONT_SIZE = 22;
+    private static final int NAME_STRUT = 20;
+    private static final int BUTTON_FONT_SIZE = 18;
+    private static final int BUTTON_WIDTH = 500;
+    private static final int BUTTON_HEIGHT = 60;
+    private static final int BUTTON_TOP_BORDER = 40;
+    private static final int BUTTON_BOT_BORDER = 10;
+    private static final int ROW_FONT_SIZE = 16;
+    private static final int ROW_MAX_WIDTH = 250;
+    private static final int ROW_MAX_HEIGHT = 30;
+    private static final int SEPARATOR_STRUT = 10;
+    private static final int SEPARATOR_HEIGHT = 10;
  
-    private static final Color BACKGROUND_COLOR  = new Color(0, 102, 51);
-    private static final Color TITLE_COLOR       = new Color(255, 182, 193);
-    private static final Color GRADIENT_TOP      = new Color(53, 102, 73);
-    private static final Color GRADIENT_BOTTOM   = new Color(94, 153, 115);
-    private static final Color ACCENT_COLOR      = new Color(219, 112, 147);
+    private static final Color BACKGROUND_COLOR = new Color(0, 102, 51);
+    private static final Color TITLE_COLOR = new Color(255, 182, 193);
+    private static final Color GRADIENT_TOP = new Color(53, 102, 73);
+    private static final Color GRADIENT_BOTTOM = new Color(94, 153, 115);
+    private static final Color ACCENT_COLOR = new Color(219, 112, 147);
  
     private final JFrame frame;
     private final JFrame tableFrame;
@@ -66,11 +64,11 @@ public final class ScoreViewImpl implements ScoreView {
     /**
      * Constructs a new ScoreViewImpl from pre-computed snapshots.
      *
-     * @param snap1     display data for Player 1
-     * @param snap2     display data for Player 2
+     * @param snap1       display data for Player 1
+     * @param snap2       display data for Player 2
      * @param targetScore score threshold required to win the match
-     * @param tableView reference to the main table (for positioning)
-     * @param matchOver {@code true} if the match has concluded
+     * @param swingAccess reference to the main table frame utilities
+     * @param matchOver   true if the match has concluded
      */
     public ScoreViewImpl(
             final ScoreSnapshot snap1,
@@ -89,6 +87,13 @@ public final class ScoreViewImpl implements ScoreView {
         this.nextAction = action;
     }
  
+    /**
+     * Initializes and positions all the graphical components of the window.
+     *
+     * @param snap1     display data for Player 1
+     * @param snap2     display data for Player 2
+     * @param matchOver true if the match has concluded
+     */
     private void setupUI(
             final ScoreSnapshot snap1,
             final ScoreSnapshot snap2,
@@ -150,6 +155,12 @@ public final class ScoreViewImpl implements ScoreView {
         this.frame.add(mainPanel);
     }
  
+    /**
+     * Creates a column panel containing the statistics for a specific player.
+     *
+     * @param snap the score data container of the player
+     * @return a JPanel configured with the data rows
+     */
     private JPanel createPlayerStatsPanel(final ScoreSnapshot snap) {
         final JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -166,12 +177,12 @@ public final class ScoreViewImpl implements ScoreView {
         panel.add(nameLabel);
         panel.add(Box.createVerticalStrut(NAME_STRUT));
  
-        panel.add(createRow("Cards on Table",   String.valueOf(snap.cardsOnTable()),       false));
-        panel.add(createRow("Clean Burraco",    String.valueOf(snap.cleanBurracoPoints()), false));
-        panel.add(createRow("Dirty Burraco",    String.valueOf(snap.dirtyBurracoPoints()), false));
-        panel.add(createRow("Closure Bonus",    String.valueOf(snap.closureBonus()),        false));
-        panel.add(createRow("Pot Penalty",      String.valueOf(snap.potPenalty()),          false));
-        panel.add(createRow("Cards in Hand",    "-" + snap.cardsInHandPenalty(),           false));
+        panel.add(createRow("Cards on Table", String.valueOf(snap.cardsOnTable()), false));
+        panel.add(createRow("Clean Burraco", String.valueOf(snap.cleanBurracoPoints()), false));
+        panel.add(createRow("Dirty Burraco", String.valueOf(snap.dirtyBurracoPoints()), false));
+        panel.add(createRow("Closure Bonus", String.valueOf(snap.closureBonus()), false));
+        panel.add(createRow("Pot Penalty", String.valueOf(snap.potPenalty()), false));
+        panel.add(createRow("Cards in Hand", "-" + snap.cardsInHandPenalty(), false));
  
         panel.add(Box.createVerticalStrut(SEPARATOR_STRUT));
         final JSeparator sep = new JSeparator();
@@ -186,6 +197,14 @@ public final class ScoreViewImpl implements ScoreView {
         return panel;
     }
  
+    /**
+     * Helper to create an aligned text row representing a score entry.
+     *
+     * @param label the title or description text
+     * @param value the numeric value to print
+     * @param bold  true if the font should be rendered bold
+     * @return a transparent row panel
+     */
     private JPanel createRow(final String label, final String value, final boolean bold) {
         final JPanel row = new JPanel(new BorderLayout());
         row.setOpaque(false);
@@ -218,6 +237,9 @@ public final class ScoreViewImpl implements ScoreView {
         this.frame.dispose();
     }
  
+    /**
+     * Custom panel that overrides painting to draw a smooth gradient background.
+     */
     private static final class BackgroundPanel extends JPanel {
         private static final long serialVersionUID = 1L;
  

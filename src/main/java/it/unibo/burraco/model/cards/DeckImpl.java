@@ -12,17 +12,17 @@ import java.util.List;
 public final class DeckImpl implements Deck {
 
     private static final Seed[] STANDARD_SEEDS = {
-        Seed.SPADES, Seed.HEARTS, Seed.CLUBS, Seed.DIAMONDS
+        Seed.SPADES, Seed.HEARTS, Seed.CLUBS, Seed.DIAMONDS,
     };
 
     private static final CardValue[] STANDARD_VALUES = {
-        CardValue.ACE,   CardValue.TWO,   CardValue.THREE, CardValue.FOUR,
-        CardValue.FIVE,  CardValue.SIX,   CardValue.SEVEN, CardValue.EIGHT,
-        CardValue.NINE,  CardValue.TEN,   CardValue.JACK,  CardValue.QUEEN,
-        CardValue.KING
+        CardValue.ACE, CardValue.TWO, CardValue.THREE, CardValue.FOUR,
+        CardValue.FIVE, CardValue.SIX, CardValue.SEVEN, CardValue.EIGHT,
+        CardValue.NINE, CardValue.TEN, CardValue.JACK, CardValue.QUEEN,
+        CardValue.KING,
     };
 
-    private static final int DECK_COPIES   = 2;
+    private static final int DECK_COPIES = 2;
     private static final int JOLLY_PER_DECK = 2;
 
     private final List<Card> cards;
@@ -32,13 +32,13 @@ public final class DeckImpl implements Deck {
      */
     public DeckImpl() {
         this.cards = new ArrayList<>();
-        initializeDeck();
+        this.initializeDeck();
     }
 
     @Override
     public void reset() {
         this.cards.clear();
-        initializeDeck();
+        this.initializeDeck();
     }
 
     /**
@@ -68,11 +68,11 @@ public final class DeckImpl implements Deck {
 
     @Override
     public boolean isEmpty() {
-        return cards.isEmpty();
+        return this.cards.isEmpty();
     }
 
     @Override
     public List<Card> getCards() {
-        return Collections.unmodifiableList(cards);
+        return Collections.unmodifiableList(this.cards);
     }
 }
