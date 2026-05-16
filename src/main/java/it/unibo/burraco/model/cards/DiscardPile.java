@@ -11,14 +11,14 @@ public interface DiscardPile {
     /**
      * Adds a single card to the top of the discard pile.
      *
-     * @param card the card to be discarded.
+     * @param card the card to be discarded
      */
     void add(Card card);
 
     /**
      * Adds a collection of cards to the discard pile.
      *
-     * @param cards the list of cards to add.
+     * @param cards the list of cards to add
      */
     void addAll(List<Card> cards);
 
@@ -32,14 +32,14 @@ public interface DiscardPile {
     /**
      * Provides the list of cards currently in the discard pile.
      *
-     * @return a list containing the cards in discard order.
+     * @return a list containing the cards in discard order
      */
     List<Card> getCards();
 
     /**
      * Checks whether the discard pile contains any cards.
      *
-     * @return true if the pile is empty, false otherwise.
+     * @return true if the pile is empty, false otherwise
      */
     boolean isEmpty();
 

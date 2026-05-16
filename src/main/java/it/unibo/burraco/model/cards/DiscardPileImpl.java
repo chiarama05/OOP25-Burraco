@@ -19,6 +19,7 @@ public final class DiscardPileImpl implements DiscardPile {
         this.cards.add(card);
     }
 
+    @Override
     public void addAll(final List<Card> cardsToAdd) {
         this.cards.addAll(cardsToAdd);
     }
@@ -26,7 +27,6 @@ public final class DiscardPileImpl implements DiscardPile {
     @Override
     public Card drawLast() {
         if (!cards.isEmpty()) {
-            // Removes the element at the last available index
             return cards.remove(cards.size() - 1);
         }
         return null;
@@ -34,7 +34,6 @@ public final class DiscardPileImpl implements DiscardPile {
 
     @Override
     public List<Card> getCards() {
-        // Returns the reference to the internal list of cards
         return new ArrayList<>(this.cards);
     }
 

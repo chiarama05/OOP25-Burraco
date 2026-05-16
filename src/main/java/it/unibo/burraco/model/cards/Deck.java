@@ -10,24 +10,23 @@ import java.util.List;
 public interface Deck {
 
     /**
-     * Draws and removes a card from the deck.
+     * Draws and removes a card from the top of the deck.
      * 
-     * @return the drawn card.
+     * @return the drawn {@link Card}, or null if the deck is empty.
      */
     Card draw();
 
     /**
      * Checks whether the deck contains any cards.
      * 
-     * @return true if the deck is empty, false otherwise.
+     * @return true if the deck is empty, false otherwise
      */
     boolean isEmpty();
 
     /**
      * Returns the list of cards currently in the deck.
-     * Note: Depending on implementation, this may return a copy.
      * 
-     * @return a list of cards in the deck.
+     * @return a list of cards in the deck
      */
     List<Card> getCards();
 

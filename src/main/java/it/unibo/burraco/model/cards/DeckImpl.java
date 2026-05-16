@@ -28,16 +28,13 @@ public final class DeckImpl implements Deck {
     private final List<Card> cards;
 
     /**
-     * Constructs a new DeckImpl and initializes the full deck.
+     * Constructs a new DeckImpl and initializes the full deck with shuffled cards.
      */
     public DeckImpl() {
         this.cards = new ArrayList<>();
         initializeDeck();
     }
 
-    /**
-     * Clears the deck and regenerates it from scratch, including a new shuffle.
-     */
     @Override
     public void reset() {
         this.cards.clear();

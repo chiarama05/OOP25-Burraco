@@ -5,8 +5,9 @@ import java.util.List;
 
 /**
  * Immutable snapshot of the current game status.
- * Built by the controller, consumed by the view.
- * Lives in controller — same pattern as ScoreSnapshot in controller.score.
+ * Built by the controller and consumed by the view layer.
+ * This class follows the same architectural pattern as ScoreSnapshot 
+ * in the score controller package.
  */
 public final class GameState {
 
@@ -16,6 +17,17 @@ public final class GameState {
     private final List<Card> currentHand;
     private final List<Card> discardPile;
 
+    /**
+     * Constructs a new GameState snapshot.
+     * To guarantee true immutability, the collections provided should ideally be 
+     * unmodifiable or defensively copied prior to initialization.
+     *
+     * @param p1Combinations the list of card combinations melded by player 1
+     * @param p2Combinations the list of card combinations melded by player 2
+     * @param isP1Turn       true if it is currently player 1's turn, false otherwise
+     * @param currentHand    the list of cards currently held in the active player's hand
+     * @param discardPile    the list of cards currently present in the discard pile
+     */
     public GameState(
             final List<List<Card>> p1Combinations,
             final List<List<Card>> p2Combinations,
@@ -29,22 +41,48 @@ public final class GameState {
         this.discardPile = discardPile;
     }
 
+    /**
+     * Returns the combinations melded by player 1.
+     *
+     * @return a list of card lists representing player 1's table status
+     */
     public List<List<Card>> getP1Combinations() {
-        return p1Combinations;
+        return this.p1Combinations;
     }
 
+    /**
+     * Returns the combinations melded by player 2.
+     *
+     * @return a list of card lists representing player 2's table status
+     */
     public List<List<Card>> getP2Combinations() {
-        return p2Combinations;
+        return this.p2Combinations;
     }
 
+    /**
+     * Checks if it is currently player 1's turn.
+     *
+     * @return true if it is player 1's turn, false if it is player 2's turn
+     */
     public boolean isP1Turn() {
-        return isP1Turn;
+        return this.isP1Turn;
     }
+    
+    /**
+     * Returns the hand of the current active player.
+     *
+     * @return a list of cards currently held by the player whose turn it is
+     */
     public List<Card> getCurrentHand() {
-        return currentHand;
+        return this.currentHand;
     }
 
+    /**
+     * Returns the current state of the discard pile.
+     *
+     * @return a list of cards containing all elements in the discard pile
+     */
     public List<Card> getDiscardPile() {
-        return discardPile;
+        return this.discardPile;
     }
 }
