@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import it.unibo.burraco.model.cards.Card;
+import it.unibo.burraco.model.cards.CardValue;
 
 /**
  * Utility class responsible for determining whether one or more cards
@@ -38,9 +39,9 @@ public final class AttachHandler {
         }
 
         final List<Card> realCards = combination.stream()
-            .filter(c -> !"Jolly".equalsIgnoreCase(c.getValue()) && !"2".equals(c.getValue()))
+            .filter(c -> !c.getValue().isJolly() && c.getValue() != CardValue.TWO)
             .collect(Collectors.toList());
-
+            
         final boolean hasDuplicateValues = realCards.stream()
             .map(Card::getValue)
             .collect(Collectors.toSet()).size() < realCards.size();

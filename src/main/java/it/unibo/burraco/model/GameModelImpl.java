@@ -12,6 +12,7 @@ import it.unibo.burraco.model.player.PlayerImpl;
 import it.unibo.burraco.model.rules.ClosureState;
 import it.unibo.burraco.model.rules.ClosureValidator;
 import it.unibo.burraco.model.rules.CombinationValidator;
+import it.unibo.burraco.model.rules.MoveValidator;
 import it.unibo.burraco.model.rules.SetHandler;
 import it.unibo.burraco.model.rules.StraightUtils;
 import it.unibo.burraco.model.turn.Turn;
@@ -39,6 +40,7 @@ public final class GameModelImpl implements GameModel {
     private final SetHandler setHandler = new SetHandler();
     private boolean drawnThisTurn;
     private Player winner;
+    private final MoveValidator moveValidator;
 
     private static final int BURRACO_MIN_CARDS = 7;
 
@@ -54,6 +56,7 @@ public final class GameModelImpl implements GameModel {
         this.deck = new DeckImpl();
         this.discardPile = new DiscardPileImpl();
         this.turn = new TurnImpl(p1, p2);
+        this.moveValidator = new MoveValidator(combinationValidator, closureValidator);
     }
 
     @Override
@@ -98,67 +101,9 @@ public final class GameModelImpl implements GameModel {
 
     @Override
     public MoveResult validateMove(final Move move) {
-        final Player current = getCurrentPlayer();
-        switch (move.getType()) {
-
-            case DRAW_DECK:
-            case DRAW_DISCARD:
-                if (drawnThisTurn) {
-                    return MoveResult.error(MoveResult.Status.ALREADY_DRAWN); 
-                }
-                return MoveResult.ok();
-            case PUT_COMBINATION: {
-                if (!drawnThisTurn) {
-                    return MoveResult.error(MoveResult.Status.NOT_DRAWN);
-                }
-                final List<Card> cards = move.getSelectedCards();
-                if (cards.isEmpty()) {
-                    return MoveResult.error(MoveResult.Status.NO_CARDS_SELECTED);
-                }
-                if (closureValidator.wouldGetStuckAfterPutCombo(current, cards, cards.size())) {
-                    return MoveResult.error(MoveResult.Status.WOULD_GET_STUCK);
-                }
-                if (!combinationValidator.isValidCombination(cards)) {
-                    return MoveResult.error(MoveResult.Status.INVALID_COMBINATION);
-                }
-                return MoveResult.ok();
-            }
-            case ATTACH: {
-                if (!drawnThisTurn) {
-                    return MoveResult.error(MoveResult.Status.NOT_DRAWN);
-                }
-                final List<Card> sel = move.getSelectedCards();
-                final List<Card> target = move.getTargetCombination();
-                if (sel.isEmpty()) {
-                    return MoveResult.error(MoveResult.Status.NO_CARDS_SELECTED);
-                }
-                if (!current.ownsCombination(target)) {
-                    return MoveResult.error(MoveResult.Status.WRONG_PLAYER);
-                }
-                if (closureValidator.wouldGetStuckAfterAttach(current, sel, target.size())) {
-                    return MoveResult.error(MoveResult.Status.WOULD_GET_STUCK);
-                }
-                final List<Card> hypo = new ArrayList<>(target);
-                hypo.addAll(sel);
-                if (!combinationValidator.isValidCombination(hypo)) {
-                    return MoveResult.error(MoveResult.Status.INVALID_COMBINATION);
-                }
-                return MoveResult.ok();
-            }
-            case DISCARD: {
-                if (!drawnThisTurn) {
-                    return MoveResult.error(MoveResult.Status.NOT_DRAWN);
-                }
-                if (move.getSelectedCards().size() != 1) {
-                    return MoveResult.error(MoveResult.Status.NO_CARDS_SELECTED);
-                }
-                return MoveResult.ok();
-            }
-            default:
-                return MoveResult.error(MoveResult.Status.INVALID_MOVE);
-        }
+        return moveValidator.validate(move, getCurrentPlayer(), drawnThisTurn);
     }
-
+    
     @Override
     public MoveResult applyMove(final Move move) {
         final Player current = getCurrentPlayer();

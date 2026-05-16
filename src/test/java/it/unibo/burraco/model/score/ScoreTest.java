@@ -8,27 +8,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import it.unibo.burraco.model.cards.CardImpl;
+import it.unibo.burraco.model.cards.CardValue;
+import it.unibo.burraco.model.cards.Seed;
 import it.unibo.burraco.model.player.PlayerImpl;
 
 class ScoreTest {
-    private static final String HEARTS = "♥";
-    private static final String JOLLY_SEED = "♕";
 
     private static final int CLEAN_BONUS = 200;
     private static final int DIRTY_BONUS = 100;
     private static final int CLOSURE_BONUS = 100;
     private static final int NO_POT_PENALTY = -100;
-
-    private static final String V3 = "3";
-    private static final String V4 = "4";
-    private static final String V5 = "5";
-    private static final String V6 = "6";
-    private static final String V7 = "7";
-    private static final String V8 = "8";
-    private static final String V9 = "9";
-    private static final String VA = "A";
-    private static final String V2 = "2";
-    private static final String VK = "K";
 
     private static final int HAND_VALUE_THREE_CARDS = 30;
     private static final int SCORE_NO_POT = 245;
@@ -58,18 +47,18 @@ class ScoreTest {
 
     @Test
     void testRemainingHandValueWithCards() {
-        this.player.addCardHand(new CardImpl(HEARTS, VA));
-        this.player.addCardHand(new CardImpl(HEARTS, VK));
-        this.player.addCardHand(new CardImpl(HEARTS, V3));
+        this.player.addCardHand(new CardImpl(Seed.HEARTS, CardValue.ACE));
+        this.player.addCardHand(new CardImpl(Seed.HEARTS, CardValue.KING));
+        this.player.addCardHand(new CardImpl(Seed.HEARTS, CardValue.THREE));
         assertEquals(HAND_VALUE_THREE_CARDS, this.score.calculateRemainingHandValue(this.player));
     }
 
     @Test
     void testCardsOnTableWithCombinations() {
         this.player.addCombination(List.of(
-                new CardImpl(HEARTS, VA),
-                new CardImpl(HEARTS, VK),
-                new CardImpl(HEARTS, V3)
+                new CardImpl(Seed.HEARTS, CardValue.ACE),
+                new CardImpl(Seed.HEARTS, CardValue.KING),
+                new CardImpl(Seed.HEARTS, CardValue.THREE)
         ));
         assertEquals(HAND_VALUE_THREE_CARDS, this.score.calculateOnlyCardsOnTable(this.player));
     }
@@ -77,10 +66,10 @@ class ScoreTest {
     @Test
     void testCleanBurracoNoTwosNoJolly() {
         this.player.addCombination(List.of(
-                new CardImpl(HEARTS, V3), new CardImpl(HEARTS, V4),
-                new CardImpl(HEARTS, V5), new CardImpl(HEARTS, V6),
-                new CardImpl(HEARTS, V7), new CardImpl(HEARTS, V8),
-                new CardImpl(HEARTS, V9)
+                new CardImpl(Seed.HEARTS, CardValue.THREE), new CardImpl(Seed.HEARTS, CardValue.FOUR),
+                new CardImpl(Seed.HEARTS, CardValue.FIVE), new CardImpl(Seed.HEARTS, CardValue.SIX),
+                new CardImpl(Seed.HEARTS, CardValue.SEVEN), new CardImpl(Seed.HEARTS, CardValue.EIGHT),
+                new CardImpl(Seed.HEARTS, CardValue.NINE)
         ));
         assertEquals(CLEAN_BONUS, this.score.calculateBurracoBonus(this.player));
         assertEquals(1, this.score.countCleanBurraco(this.player));
@@ -90,10 +79,10 @@ class ScoreTest {
     @Test
     void testCleanBurracoWithTwoInNaturalPosition() {
         this.player.addCombination(List.of(
-                new CardImpl(HEARTS, VA), new CardImpl(HEARTS, V2),
-                new CardImpl(HEARTS, V3), new CardImpl(HEARTS, V4),
-                new CardImpl(HEARTS, V5), new CardImpl(HEARTS, V6),
-                new CardImpl(HEARTS, V7)
+                new CardImpl(Seed.HEARTS, CardValue.ACE), new CardImpl(Seed.HEARTS, CardValue.TWO),
+                new CardImpl(Seed.HEARTS, CardValue.THREE), new CardImpl(Seed.HEARTS, CardValue.FOUR),
+                new CardImpl(Seed.HEARTS, CardValue.FIVE), new CardImpl(Seed.HEARTS, CardValue.SIX),
+                new CardImpl(Seed.HEARTS, CardValue.SEVEN)
         ));
         assertEquals(CLEAN_BONUS, this.score.calculateBurracoBonus(this.player));
         assertEquals(1, this.score.countCleanBurraco(this.player));
@@ -102,10 +91,10 @@ class ScoreTest {
     @Test
     void testDirtyBurracoWithJolly() {
         this.player.addCombination(List.of(
-                new CardImpl(JOLLY_SEED, "Jolly"),
-                new CardImpl(HEARTS, V3), new CardImpl(HEARTS, V4),
-                new CardImpl(HEARTS, V5), new CardImpl(HEARTS, V6),
-                new CardImpl(HEARTS, V7), new CardImpl(HEARTS, V8)
+                new CardImpl(Seed.JOKER, CardValue.JOLLY),
+                new CardImpl(Seed.HEARTS, CardValue.THREE), new CardImpl(Seed.HEARTS, CardValue.FOUR),
+                new CardImpl(Seed.HEARTS, CardValue.FIVE), new CardImpl(Seed.HEARTS, CardValue.SIX),
+                new CardImpl(Seed.HEARTS, CardValue.SEVEN), new CardImpl(Seed.HEARTS, CardValue.EIGHT)
         ));
         assertEquals(DIRTY_BONUS, this.score.calculateBurracoBonus(this.player));
         assertEquals(1, this.score.countDirtyBurraco(this.player));
@@ -114,10 +103,10 @@ class ScoreTest {
     @Test
     void testFinalScoreNoPotPenaltyApplied() {
         this.player.addCombination(List.of(
-                new CardImpl(HEARTS, V3), new CardImpl(HEARTS, V4),
-                new CardImpl(HEARTS, V5), new CardImpl(HEARTS, V6),
-                new CardImpl(HEARTS, V7), new CardImpl(HEARTS, V8),
-                new CardImpl(HEARTS, V9)
+                new CardImpl(Seed.HEARTS, CardValue.THREE), new CardImpl(Seed.HEARTS, CardValue.FOUR),
+                new CardImpl(Seed.HEARTS, CardValue.FIVE), new CardImpl(Seed.HEARTS, CardValue.SIX),
+                new CardImpl(Seed.HEARTS, CardValue.SEVEN), new CardImpl(Seed.HEARTS, CardValue.EIGHT),
+                new CardImpl(Seed.HEARTS, CardValue.NINE)
         ));
         assertEquals(SCORE_NO_POT, this.score.calculateFinalScore(this.player));
     }
@@ -126,10 +115,10 @@ class ScoreTest {
     void testFinalScoreFullScenario() {
         this.player.setInPot(true);
         this.player.addCombination(List.of(
-                new CardImpl(HEARTS, V3), new CardImpl(HEARTS, V4),
-                new CardImpl(HEARTS, V5), new CardImpl(HEARTS, V6),
-                new CardImpl(HEARTS, V7), new CardImpl(HEARTS, V8),
-                new CardImpl(HEARTS, V9)
+                new CardImpl(Seed.HEARTS, CardValue.THREE), new CardImpl(Seed.HEARTS, CardValue.FOUR),
+                new CardImpl(Seed.HEARTS, CardValue.FIVE), new CardImpl(Seed.HEARTS, CardValue.SIX),
+                new CardImpl(Seed.HEARTS, CardValue.SEVEN), new CardImpl(Seed.HEARTS, CardValue.EIGHT),
+                new CardImpl(Seed.HEARTS, CardValue.NINE)
         ));
         assertEquals(SCORE_FULL, this.score.calculateFinalScore(this.player));
     }

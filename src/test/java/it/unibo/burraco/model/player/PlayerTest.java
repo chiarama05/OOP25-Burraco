@@ -12,12 +12,12 @@ import org.junit.jupiter.api.Test;
 
 import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.model.cards.CardImpl;
+import it.unibo.burraco.model.cards.CardValue;
+import it.unibo.burraco.model.cards.Seed;
 
 class PlayerTest {
     private static final String PLAYER_NAME = "Alice";
     private static final String DEFAULT_NAME = "Player";
-    private static final String HEARTS = "♥";
-    private static final String SPADES = "♠";
     private static final int SCORE_FIRST = 10;
     private static final int SCORE_SECOND = 25;
     private static final int SCORE_TOTAL = 35;
@@ -26,16 +26,16 @@ class PlayerTest {
     private static final int COMBO_SIZE = 2;
 
     private PlayerImpl player;
-    private CardImpl aceOfHearts;
-    private CardImpl kingOfHearts;
-    private CardImpl twoOfSpades;
+    private Card aceOfHearts;
+    private Card kingOfHearts;
+    private Card twoOfSpades;
 
     @BeforeEach
     void init() {
         this.player = new PlayerImpl(PLAYER_NAME);
-        this.aceOfHearts = new CardImpl(HEARTS, "A");
-        this.kingOfHearts = new CardImpl(HEARTS, "K");
-        this.twoOfSpades = new CardImpl(SPADES, "2");
+        this.aceOfHearts = new CardImpl(Seed.HEARTS, CardValue.ACE);
+        this.kingOfHearts = new CardImpl(Seed.HEARTS, CardValue.KING);
+        this.twoOfSpades = new CardImpl(Seed.SPADES, CardValue.TWO);
     }
 
     @Test

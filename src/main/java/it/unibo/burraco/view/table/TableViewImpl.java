@@ -159,11 +159,6 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
         this.pendingFuture = future;
     }
 
-    @Override
-    public CompletableFuture<Move> getPendingFuture() {
-        return this.pendingFuture;
-    }
-
     public void refresh(final GameState state) {
         this.currentIsPlayer1 = state.isP1Turn();
         redrawAllCombinations(state.getP1Combinations(), state.getP2Combinations());

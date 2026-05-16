@@ -1,10 +1,10 @@
 package it.unibo.burraco.view.table;
  
 import it.unibo.burraco.model.cards.Card;
-import it.unibo.burraco.view.SelectionCardManager;
 import it.unibo.burraco.view.table.hand.HandView;
 import it.unibo.burraco.view.table.hand.HandViewImpl;
- 
+import it.unibo.burraco.view.table.hand.SelectionCardManager;
+
 import java.util.ArrayList;
 import java.util.List;
 

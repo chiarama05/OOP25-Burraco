@@ -7,24 +7,19 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.model.cards.CardImpl;
+import it.unibo.burraco.model.cards.CardValue;
+import it.unibo.burraco.model.cards.Seed;
 
 class StraightUtilsTest {
-    private static final String HEARTS = "♥";
-    private static final String SPADES = "♠";
-    private static final String JOLLY_SEED = "♕";
-    private static final String JOLLY_VAL = "Jolly";
-    private static final String VAL_4 = "4";
-    private static final String VAL_5 = "5";
-    private static final String VAL_6 = "6";
 
     private final StraightUtils utils = new StraightUtils();
 
     @Test
     void testSimpleStraight() {
         final List<Card> straight = List.of(
-            new CardImpl(HEARTS, VAL_4), 
-            new CardImpl(HEARTS, VAL_5), 
-            new CardImpl(HEARTS, VAL_6)
+            new CardImpl(Seed.HEARTS, CardValue.FOUR), 
+            new CardImpl(Seed.HEARTS, CardValue.FIVE), 
+            new CardImpl(Seed.HEARTS, CardValue.SIX)
         );
         assertTrue(utils.isValidStraight(straight));
     }
@@ -32,9 +27,9 @@ class StraightUtilsTest {
     @Test
     void testStraightWithJolly() {
         final List<Card> straight = List.of(
-            new CardImpl(HEARTS, VAL_4), 
-            new CardImpl(JOLLY_SEED, JOLLY_VAL), 
-            new CardImpl(HEARTS, VAL_6)
+            new CardImpl(Seed.HEARTS, CardValue.FOUR), 
+            new CardImpl(Seed.JOKER, CardValue.JOLLY), 
+            new CardImpl(Seed.HEARTS, CardValue.SIX)
         );
         assertTrue(utils.isValidStraight(straight));
     }
@@ -42,9 +37,9 @@ class StraightUtilsTest {
     @Test
     void testDifferentSeedsInvalid() {
         final List<Card> straight = List.of(
-            new CardImpl(HEARTS, VAL_4), 
-            new CardImpl(SPADES, VAL_5), 
-            new CardImpl(HEARTS, VAL_6)
+            new CardImpl(Seed.HEARTS, CardValue.FOUR), 
+            new CardImpl(Seed.SPADES, CardValue.FIVE), 
+            new CardImpl(Seed.HEARTS, CardValue.SIX)
         );
         assertFalse(utils.isSameSeed(straight));
     }

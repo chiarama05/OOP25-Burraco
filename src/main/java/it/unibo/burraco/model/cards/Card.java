@@ -12,14 +12,14 @@ public interface Card {
      *
      * @return the seed of the card
      */
-    String getSeed();
+    Seed getSeed();
 
     /**
      * Returns the value of the card (e.g. "A", "10", "K").
      *
      * @return the face value of the card
      */
-    String getValue();
+    CardValue getValue();
 
     /**
      * Returns the numerical representation of the card's value.

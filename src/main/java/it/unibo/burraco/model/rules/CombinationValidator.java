@@ -6,16 +6,19 @@ import java.util.stream.Collectors;
 
 import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.model.cards.CardImpl;
+import it.unibo.burraco.model.cards.CardValue;
 
 /**
  * Utility class responsible for validating whether a set of cards
  * forms a legal game combination (Straight or Set) according to the rules.
+ *
+ * <p>All raw string comparisons have been replaced with
+ * {@link CardValue} enum references and its helper predicates.
  */
 public final class CombinationValidator {
 
-    private static final String JOLLY_LITERAL = "Jolly";
-    private static final String TWO_LITERAL = "2";
     private static final int MIN_COMBO_SIZE = 3;
+
     private final SetHandler setHandler;
     private final StraightUtils straightUtils;
 
@@ -23,14 +26,14 @@ public final class CombinationValidator {
      * Constructs a new CombinationValidator and initializes its internal handlers.
      */
     public CombinationValidator() {
-        this.setHandler = new SetHandler();
+        this.setHandler    = new SetHandler();
         this.straightUtils = new StraightUtils();
     }
 
     /**
      * Validates a combination of cards.
      * Checks for minimum size, type of combination (Straight/Set),
-     * and the correct usage of wildcards (Jolly and 2).
+     * and the correct usage of wildcards (Jolly and Two).
      *
      * @param cards the list of cards to validate
      * @return true if the combination is valid, false otherwise
@@ -41,55 +44,57 @@ public final class CombinationValidator {
         }
 
         final List<Card> realCards = cards.stream()
-            .filter(c -> !JOLLY_LITERAL.equalsIgnoreCase(c.getValue()) && !TWO_LITERAL.equals(c.getValue()))
-            .collect(Collectors.toList());
+                .filter(c -> !c.getValue().isPotentialWildcard())
+                .collect(Collectors.toList());
 
         final boolean hasDuplicateValues = realCards.stream()
-            .map(Card::getValue)
-            .collect(Collectors.toSet()).size() < realCards.size();
+                .map(Card::getValue)
+                .collect(Collectors.toSet()).size() < realCards.size();
 
         if (hasDuplicateValues && this.setHandler.isValid(cards)) {
             final long wildcardsInSet = cards.stream()
-                .filter(c -> JOLLY_LITERAL.equalsIgnoreCase(c.getValue()) || TWO_LITERAL.equals(c.getValue()))
-                .count();
+                    .filter(c -> c.getValue().isPotentialWildcard())
+                    .count();
             return wildcardsInSet <= 1;
         }
+
         if (this.straightUtils.isSameSeed(cards)) {
             final List<Card> ordered = this.straightUtils.orderStraight(new ArrayList<>(cards));
             int effectiveWildcards = 0;
             for (int i = 0; i < ordered.size(); i++) {
                 final Card c = ordered.get(i);
-                if (JOLLY_LITERAL.equalsIgnoreCase(c.getValue())) {
+                if (c.getValue().isJolly()) {
                     effectiveWildcards++;
-                } else if (TWO_LITERAL.equals(c.getValue())
+                } else if (c.getValue() == CardValue.TWO
                         && !this.straightUtils.isPositionallyNatural(i, ordered)) {
                     effectiveWildcards++;
                 }
             }
             return effectiveWildcards <= 1 && this.straightUtils.isValidStraight(cards);
         }
+
         if (this.setHandler.isValid(cards)) {
             final long wildcardsInSet = cards.stream()
-                .filter(c -> JOLLY_LITERAL.equalsIgnoreCase(c.getValue()) || TWO_LITERAL.equals(c.getValue()))
-                .count();
+                    .filter(c -> c.getValue().isPotentialWildcard())
+                    .count();
             return wildcardsInSet <= 1;
         }
+
         return false;
     }
 
     /**
-     * Determines if a specific card is acting as a wildcard.
+     * Determines if a specific card is acting as a wildcard within its combination.
      *
-     * @param c the card to check
-     * @param context the combination of cards the card belongs to
-     * @return true if the card is a Joker or a "2" used as a wildcard, false otherwise
+     * @param c       the card to check
+     * @param context the combination the card belongs to
+     * @return true if the card is a Jolly or a Two used as a wildcard
      */
     public boolean isWildcard(final Card c, final List<Card> context) {
-
-        if (JOLLY_LITERAL.equalsIgnoreCase(c.getValue())) {
+        if (c.getValue().isJolly()) {
             return true;
         }
-        if (!TWO_LITERAL.equals(c.getValue())) {
+        if (c.getValue() != CardValue.TWO) {
             return false;
         }
         if (c instanceof CardImpl && ((CardImpl) c).isUsedAsWildcard()) {
@@ -97,12 +102,12 @@ public final class CombinationValidator {
         }
 
         final List<Card> realCards = context.stream()
-            .filter(r -> !JOLLY_LITERAL.equalsIgnoreCase(r.getValue()) && !TWO_LITERAL.equals(r.getValue()))
-            .collect(Collectors.toList());
+                .filter(r -> !r.getValue().isPotentialWildcard())
+                .collect(Collectors.toList());
 
         final boolean hasDuplicateValues = realCards.stream()
-            .map(Card::getValue)
-            .collect(Collectors.toSet()).size() < realCards.size();
+                .map(Card::getValue)
+                .collect(Collectors.toSet()).size() < realCards.size();
 
         if (hasDuplicateValues || !this.straightUtils.isSameSeed(context)) {
             return true;

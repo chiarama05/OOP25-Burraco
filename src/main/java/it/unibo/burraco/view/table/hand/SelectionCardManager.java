@@ -1,4 +1,4 @@
-package it.unibo.burraco.view;
+package it.unibo.burraco.view.table.hand;
 
 import java.util.ArrayList;
 import java.util.Collections;

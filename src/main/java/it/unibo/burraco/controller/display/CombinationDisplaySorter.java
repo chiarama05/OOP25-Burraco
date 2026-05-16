@@ -1,6 +1,7 @@
 package it.unibo.burraco.controller.display;
 
 import it.unibo.burraco.model.cards.Card;
+import it.unibo.burraco.model.cards.CardValue;
 import it.unibo.burraco.model.rules.StraightUtils;
 
 import java.util.ArrayList;
@@ -11,11 +12,11 @@ import java.util.List;
  * Sorts combinations into display order before they enter the GameState DTO.
  * Lives in the controller — the only layer allowed to use model.rules.
  * The view receives cards already ordered.
+ *
+ * <p>All raw string comparisons have been replaced with
+ * {@link CardValue} enum references and its helper predicates.
  */
 public final class CombinationDisplaySorter {
-
-    private static final String JOLLY = "Jolly";
-    private static final String TWO = "2";
 
     private final StraightUtils straightUtils = new StraightUtils();
 
@@ -39,34 +40,34 @@ public final class CombinationDisplaySorter {
 
     /**
      * Sorts a set-type combination for display.
-     * Wildcards (Jolly and any 2 not acting as a natural card) are placed first,
+     * Wildcards (Jolly and any Two not acting as a natural card) are placed first,
      * followed by natural cards sorted by numerical value in descending order.
-     * If all cards are wildcards, baseValue is null and every 2 is treated as
-     * a wildcard — {@link String#equals} on null safely returns false.
+     * If all cards are wildcards, {@code baseValue} is null and every Two is treated
+     * as a wildcard — enum equality on null safely returns false.
      *
      * @param cards the set combination to sort
      * @return a new list with wildcards first, then naturals in descending rank order
      */
     private List<Card> sortAsSet(final List<Card> cards) {
-        final String baseValue = cards.stream()
-            .filter(c -> !JOLLY.equalsIgnoreCase(c.getValue())
-                      && !TWO.equals(c.getValue()))
-            .map(Card::getValue)
-            .findFirst()
-            .orElse(null);
+        final CardValue baseValue = cards.stream()
+                .filter(c -> !c.getValue().isPotentialWildcard())
+                .map(Card::getValue)
+                .findFirst()
+                .orElse(null);
 
         final List<Card> wildcards = new ArrayList<>();
-        final List<Card> naturals = new ArrayList<>();
+        final List<Card> naturals  = new ArrayList<>();
 
         for (final Card c : cards) {
-            final boolean isWild = JOLLY.equalsIgnoreCase(c.getValue())
-                || (TWO.equals(c.getValue()) && !TWO.equals(baseValue));
+            final boolean isWild = c.getValue().isJolly()
+                    || (c.getValue() == CardValue.TWO && c.getValue() != baseValue);
             if (isWild) {
                 wildcards.add(c);
             } else {
                 naturals.add(c);
             }
         }
+
         naturals.sort((a, b) ->
                 Integer.compare(b.getNumericalValue(), a.getNumericalValue()));
 

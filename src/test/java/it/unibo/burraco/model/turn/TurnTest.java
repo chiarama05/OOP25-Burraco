@@ -11,13 +11,13 @@ import org.junit.jupiter.api.Test;
 
 import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.model.cards.CardImpl;
+import it.unibo.burraco.model.cards.CardValue;
+import it.unibo.burraco.model.cards.Seed;
 import it.unibo.burraco.model.player.PlayerImpl;
 
 class TurnTest {
     private static final String NAME_P1 = "Alice";
     private static final String NAME_P2 = "Bob";
-    private static final String HEARTS = "♥";
-    private static final String SPADES = "♠";
 
     private PlayerImpl player1;
     private PlayerImpl player2;
@@ -73,10 +73,10 @@ class TurnTest {
     @Test
     void testCanCloseConditions() {
         final List<Card> burraco = List.of(
-            new CardImpl(HEARTS, "3"), new CardImpl(HEARTS, "4"),
-            new CardImpl(HEARTS, "5"), new CardImpl(HEARTS, "6"),
-            new CardImpl(HEARTS, "7"), new CardImpl(HEARTS, "8"),
-            new CardImpl(HEARTS, "9")
+            new CardImpl(Seed.HEARTS, CardValue.THREE), new CardImpl(Seed.HEARTS, CardValue.FOUR),
+            new CardImpl(Seed.HEARTS, CardValue.FIVE), new CardImpl(Seed.HEARTS, CardValue.SIX),
+            new CardImpl(Seed.HEARTS, CardValue.SEVEN), new CardImpl(Seed.HEARTS, CardValue.EIGHT),
+            new CardImpl(Seed.HEARTS, CardValue.NINE)
         );
 
         assertFalse(this.turn.canClose());
@@ -97,10 +97,10 @@ class TurnTest {
         this.turn.nextTurn();
         this.player2.setInPot(true);
         final List<Card> burraco = List.of(
-            new CardImpl(SPADES, "3"), new CardImpl(SPADES, "4"),
-            new CardImpl(SPADES, "5"), new CardImpl(SPADES, "6"),
-            new CardImpl(SPADES, "7"), new CardImpl(SPADES, "8"),
-            new CardImpl(SPADES, "9")
+            new CardImpl(Seed.SPADES, CardValue.THREE), new CardImpl(Seed.SPADES, CardValue.FOUR),
+            new CardImpl(Seed.SPADES, CardValue.FIVE), new CardImpl(Seed.SPADES, CardValue.SIX),
+            new CardImpl(Seed.SPADES, CardValue.SEVEN), new CardImpl(Seed.SPADES, CardValue.EIGHT),
+            new CardImpl(Seed.SPADES, CardValue.NINE)
         );
         this.player2.addCombination(burraco);
         assertTrue(this.turn.canClose());

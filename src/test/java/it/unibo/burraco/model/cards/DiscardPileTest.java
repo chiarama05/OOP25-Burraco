@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Test;
 
 class DiscardPileTest {
 
-    private static final String HEARTS = "♥";
-
     private DiscardPile discardPile;
 
-    private Card makeCard(final String seed, final String value) {
+    private Card makeCard(final Seed seed, final CardValue value) {
         return new CardImpl(seed, value);
     }
 
@@ -33,7 +31,7 @@ class DiscardPileTest {
 
     @Test
     void testAddSingleCard() {
-        final Card c = this.makeCard(HEARTS, "A");
+        final Card c = this.makeCard(Seed.HEARTS, CardValue.ACE);
         this.discardPile.add(c);
 
         final List<Card> cards = this.discardPile.getCards();
@@ -43,8 +41,8 @@ class DiscardPileTest {
 
     @Test
     void testTakeAll() {
-        this.discardPile.add(new CardImpl(HEARTS, "5"));
-        this.discardPile.add(new CardImpl("♣", "Q"));
+        this.discardPile.add(new CardImpl(Seed.HEARTS, CardValue.FIVE));
+        this.discardPile.add(new CardImpl(Seed.CLUBS, CardValue.QUEEN));
 
         final List<Card> allCards = this.discardPile.getCards();
         assertEquals(2, allCards.size());
@@ -62,8 +60,8 @@ class DiscardPileTest {
 
     @Test
     void testReset() {
-        this.discardPile.add(this.makeCard("♠", "J"));
-        this.discardPile.add(this.makeCard(HEARTS, "10"));
+        this.discardPile.add(this.makeCard(Seed.SPADES, CardValue.JACK));
+        this.discardPile.add(this.makeCard(Seed.HEARTS, CardValue.TEN));
 
         assertFalse(this.discardPile.isEmpty());
         this.discardPile.reset();

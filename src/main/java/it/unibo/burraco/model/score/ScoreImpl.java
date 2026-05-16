@@ -4,22 +4,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import it.unibo.burraco.model.cards.Card;
+import it.unibo.burraco.model.cards.CardValue;
+import it.unibo.burraco.model.cards.Seed;
 import it.unibo.burraco.model.player.Player;
 
 /**
  * Standard implementation of the Burraco scoring system.
  * Handles bonuses for clean/dirty burracos, closures, and penalties for uncollected pots.
+ *
+ * <p>All raw string comparisons have been replaced with
+ * {@link CardValue} and {@link Seed} enum references.
  */
 public final class ScoreImpl implements Score {
 
-    private static final int CLOSURE_BONUS = 100;
+    private static final int CLOSURE_BONUS      = 100;
     private static final int CLEAN_BURRACO_BONUS = 200;
     private static final int DIRTY_BURRACO_BONUS = 100;
-    private static final int NO_POT_PENALTY = -100;
-    private static final int BURRACO_MIN_CARDS = 7;
-
-    private static final String JOLLY = "Jolly";
-    private static final String TWO = "2";
+    private static final int NO_POT_PENALTY      = -100;
+    private static final int BURRACO_MIN_CARDS   = 7;
 
     @Override
     public int calculateFinalScore(final Player player) {
@@ -45,29 +47,27 @@ public final class ScoreImpl implements Score {
         int bonus = 0;
         for (final List<Card> combination : player.getCombinations()) {
             if (combination.size() >= BURRACO_MIN_CARDS) {
-                if (isCleanBurraco(combination)) {
-                    bonus += CLEAN_BURRACO_BONUS;
-                } else {
-                    bonus += DIRTY_BURRACO_BONUS;
-                }
+                bonus += isCleanBurraco(combination)
+                        ? CLEAN_BURRACO_BONUS
+                        : DIRTY_BURRACO_BONUS;
             }
         }
         return bonus;
     }
 
     /**
-     * Determines if a burraco is clean (no wildcards, or 2 in natural position).
+     * Determines if a burraco is clean (no wildcards, or a Two in natural position).
      *
-     * @param combination the list of cards forming the burraco.
-     * @return true if the burraco is clean, false otherwise.
+     * @param combination the list of cards forming the burraco
+     * @return true if the burraco is clean, false otherwise
      */
     private boolean isCleanBurraco(final List<Card> combination) {
-        if (combination.stream().anyMatch(c -> JOLLY.equals(c.getValue()))) {
+        if (combination.stream().anyMatch(c -> c.getValue().isJolly())) {
             return false;
         }
 
         final List<Card> twos = combination.stream()
-                .filter(c -> TWO.equals(c.getValue()))
+                .filter(c -> c.getValue() == CardValue.TWO)
                 .collect(Collectors.toList());
 
         if (twos.isEmpty()) {
@@ -77,22 +77,21 @@ public final class ScoreImpl implements Score {
             return false;
         }
 
-        final Card two = twos.get(0);
-        return isTwoInNaturalPosition(two, combination);
+        return isTwoInNaturalPosition(twos.get(0), combination);
     }
 
     /**
-     * Verifies if a '2' acts as a natural card in a sequence of the same suit.
+     * Verifies if a Two acts as a natural card in a sequence of the same suit.
      *
-     * @param two the card with value "2".
-     * @param combination the full combination to check.
-     * @return true if the '2' is in natural position, false otherwise.
+     * @param two         the Two card to check
+     * @param combination the full combination to evaluate
+     * @return true if the Two is in natural position, false otherwise
      */
     private boolean isTwoInNaturalPosition(final Card two, final List<Card> combination) {
-        final String suit = two.getSeed();
+        final Seed suit = two.getSeed();
 
         final boolean sameSuit = combination.stream()
-                .allMatch(c -> c.getSeed().equals(suit));
+                .allMatch(c -> c.getSeed() == suit);
         if (!sameSuit) {
             return false;
         }
@@ -113,33 +112,30 @@ public final class ScoreImpl implements Score {
     @Override
     public int countCleanBurraco(final Player player) {
         return (int) player.getCombinations().stream()
-                .filter(c -> c.size() >= BURRACO_MIN_CARDS && isCleanBurraco(c)).count();
+                .filter(c -> c.size() >= BURRACO_MIN_CARDS && isCleanBurraco(c))
+                .count();
     }
 
     @Override
     public int countDirtyBurraco(final Player player) {
         return (int) player.getCombinations().stream()
-                .filter(c -> c.size() >= BURRACO_MIN_CARDS && !isCleanBurraco(c)).count();
+                .filter(c -> c.size() >= BURRACO_MIN_CARDS && !isCleanBurraco(c))
+                .count();
     }
 
     @Override
     public int calculateRemainingHandValue(final Player player) {
-        int total = 0;
-        for (final Card card : player.getHand()) {
-            total += CardPoint.getCardPoints(card);
-        }
-        return total;
+        return player.getHand().stream()
+                .mapToInt(CardPoint::getCardPoints)
+                .sum();
     }
 
     @Override
     public int calculateOnlyCardsOnTable(final Player player) {
-        int total = 0;
-        for (final List<Card> combination : player.getCombinations()) {
-            for (final Card card : combination) {
-                total += CardPoint.getCardPoints(card);
-            }
-        }
-        return total;
+        return player.getCombinations().stream()
+                .flatMap(List::stream)
+                .mapToInt(CardPoint::getCardPoints)
+                .sum();
     }
 
     @Override

@@ -5,25 +5,19 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
-import it.unibo.burraco.model.score.CardPoint;
 
 class CardTest {
 
-    private static final String RANK_A = "A";
-    private static final String HEARTS = "♥";
-    private static final String SPADES = "♠";
-    private static final String JOLLY_SEED = "♕";
-
     @Test
     void testConstructorAndGetters() {
-        final CardImpl card = new CardImpl(HEARTS, RANK_A);
-        assertEquals(HEARTS, card.getSeed());
-        assertEquals(RANK_A, card.getValue());
+        final CardImpl card = new CardImpl(Seed.HEARTS, CardValue.ACE);
+        assertEquals(Seed.HEARTS, card.getSeed());
+        assertEquals(CardValue.ACE, card.getValue());
     }
 
     @Test
     void testWildcardStatus() {
-        final CardImpl card = new CardImpl(HEARTS, "2");
+        final CardImpl card = new CardImpl(Seed.HEARTS, CardValue.TWO);
         assertFalse(card.isUsedAsWildcard(), "Default status should be false");
         
         card.setAsWildcard(true);
@@ -32,16 +26,18 @@ class CardTest {
 
     @Test
     void testToString() {
-        final CardImpl card = new CardImpl(SPADES, RANK_A);
+        final CardImpl card = new CardImpl(Seed.SPADES, CardValue.ACE);
         assertEquals("A♠", card.toString());
+        
+        final CardImpl jolly = new CardImpl(Seed.JOKER, CardValue.JOLLY);
+        assertEquals("Jolly♕", jolly.toString());
     }
 
     @Test
     void testGetNumericalValue() {
-        assertEquals(CardPoint.RANK_ACE, new CardImpl(HEARTS, RANK_A).getNumericalValue());
-        assertEquals(CardPoint.RANK_TWO, new CardImpl(HEARTS, "2").getNumericalValue());
-        assertEquals(CardPoint.RANK_KING, new CardImpl(HEARTS, "K").getNumericalValue());
-        assertEquals(0, new CardImpl(JOLLY_SEED, "Jolly").getNumericalValue());
-        assertEquals(-1, new CardImpl(HEARTS, "Invalid").getNumericalValue());
+        assertEquals(1, new CardImpl(Seed.HEARTS, CardValue.ACE).getNumericalValue());
+        assertEquals(2, new CardImpl(Seed.HEARTS, CardValue.TWO).getNumericalValue());
+        assertEquals(13, new CardImpl(Seed.HEARTS, CardValue.KING).getNumericalValue());
+        assertEquals(0, new CardImpl(Seed.JOKER, CardValue.JOLLY).getNumericalValue());
     }
 }

@@ -1,18 +1,17 @@
 package it.unibo.burraco.model.rules;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import it.unibo.burraco.model.cards.Card;
 
 /**
  * Handler class responsible for validating and managing card combinations of type "Set".
  * A Set consists of cards with the same numerical value but different seeds.
+ *
+ * <p>All raw string comparisons for wildcards have been replaced with
+ * {@link it.unibo.burraco.model.cards.CardValue#isPotentialWildcard()}.
  */
 public class SetHandler {
-
-    private static final String JOLLY = "Jolly";
-    private static final String TWO = "2";
 
     /**
      * Constructs a new SetHandler.
@@ -23,7 +22,7 @@ public class SetHandler {
 
     /**
      * Validates if a given list of cards forms a legal Set.
-     * A Set is valid if all natural cards have the same value and there is 
+     * A Set is valid if all natural cards have the same value and there is
      * at most one wildcard (Jolly or 2).
      *
      * @param cards the list of cards to validate
@@ -36,7 +35,7 @@ public class SetHandler {
 
         final List<Card> naturalCards = cards.stream()
                 .filter(c -> !isWildcard(c))
-                .collect(Collectors.toList());
+                .toList();
 
         if (naturalCards.isEmpty()) {
             return false;
@@ -47,8 +46,8 @@ public class SetHandler {
             return false;
         }
 
-        final String baseValue = naturalCards.get(0).getValue();
-        return naturalCards.stream().allMatch(c -> c.getValue().equals(baseValue));
+        final var baseValue = naturalCards.get(0).getValue();
+        return naturalCards.stream().allMatch(c -> c.getValue() == baseValue);
     }
 
     /**
@@ -72,18 +71,17 @@ public class SetHandler {
         return set.stream()
                 .filter(c -> !isWildcard(c))
                 .findFirst()
-                .map(c -> c.getValue().equals(newCard.getValue()))
-                .orElse(true); 
+                .map(c -> c.getValue() == newCard.getValue())
+                .orElse(true);
     }
 
     /**
-     * Internal helper to identify wildcards in a Set context.
-     * In a Set, any "Jolly" or any "2" (Pinella) is always considered a wildcard.
-     * 
+     * In a Set, any Jolly or any Two is always a wildcard.
+     *
      * @param c the card to check
-     * @return true if the card is a Jolly or a 2
+     * @return true if the card is a potential wildcard
      */
     private static boolean isWildcard(final Card c) {
-        return JOLLY.equalsIgnoreCase(c.getValue()) || TWO.equals(c.getValue());
+        return c.getValue().isPotentialWildcard();
     }
 }

@@ -6,8 +6,24 @@ import java.util.List;
 
 /**
  * Standard Burraco deck implementation.
+ * Uses {@link Seed} and {@link CardValue} enums instead of raw strings,
+ * eliminating magic literals from card construction.
  */
 public final class DeckImpl implements Deck {
+
+    private static final Seed[] STANDARD_SEEDS = {
+        Seed.SPADES, Seed.HEARTS, Seed.CLUBS, Seed.DIAMONDS
+    };
+
+    private static final CardValue[] STANDARD_VALUES = {
+        CardValue.ACE,   CardValue.TWO,   CardValue.THREE, CardValue.FOUR,
+        CardValue.FIVE,  CardValue.SIX,   CardValue.SEVEN, CardValue.EIGHT,
+        CardValue.NINE,  CardValue.TEN,   CardValue.JACK,  CardValue.QUEEN,
+        CardValue.KING
+    };
+
+    private static final int DECK_COPIES   = 2;
+    private static final int JOLLY_PER_DECK = 2;
 
     private final List<Card> cards;
 
@@ -32,17 +48,15 @@ public final class DeckImpl implements Deck {
      * Builds the full deck: two sets of 52 cards plus 2 Jokers each, then shuffles.
      */
     private void initializeDeck() {
-        final String[] seeds = {"♠", "♥", "♣", "♦"};
-        final String[] values = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-
-        for (int j = 0; j < 2; j++) {
-            for (final String seed : seeds) {
-                for (final String value : values) {
+        for (int copy = 0; copy < DECK_COPIES; copy++) {
+            for (final Seed seed : STANDARD_SEEDS) {
+                for (final CardValue value : STANDARD_VALUES) {
                     cards.add(new CardImpl(seed, value));
                 }
             }
-            cards.add(new CardImpl("♕", "Jolly"));
-            cards.add(new CardImpl("♕", "Jolly"));
+            for (int j = 0; j < JOLLY_PER_DECK; j++) {
+                cards.add(new CardImpl(Seed.JOKER, CardValue.JOLLY));
+            }
         }
         Collections.shuffle(cards);
     }

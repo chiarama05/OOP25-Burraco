@@ -11,10 +11,12 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.model.cards.CardImpl;
+import it.unibo.burraco.model.cards.CardValue;
+import it.unibo.burraco.model.cards.Seed;
 
 class MoveTest {
 
-    private final Card testCard = new CardImpl("♥", "A");
+    private final Card testCard = new CardImpl(Seed.HEARTS, CardValue.ACE);
 
     @Test
     void testMoveConstructionAndImmutability() {
@@ -31,7 +33,8 @@ class MoveTest {
     @Test
     void testMoveWithTarget() {
         final List<Card> selected = List.of(testCard);
-        final List<Card> target = List.of(new CardImpl("♠", "2"));
+        // Aggiornato l'inserimento della carta target usando gli Enum
+        final List<Card> target = List.of(new CardImpl(Seed.SPADES, CardValue.TWO));
         final Move move = new Move(Move.Type.ATTACH, selected, target);
 
         assertEquals(1, move.getTargetCombination().size());

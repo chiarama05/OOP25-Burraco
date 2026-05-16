@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 
 import it.unibo.burraco.model.cards.Card;
 import it.unibo.burraco.model.cards.CardImpl;
+import it.unibo.burraco.model.cards.CardValue;
+import it.unibo.burraco.model.cards.Seed;
 
 class CardPointTest {
-    private static final String HEARTS = "♥";
-    private static final String JOLLY_SEED = "♕";
     private static final int JOLLY_POINTS = 30;
     private static final int TWO_POINTS = 20;
     private static final int ACE_POINTS = 15;
@@ -21,53 +21,56 @@ class CardPointTest {
 
     @Test
     void testJollyWorth30() {
-        final Card jolly = new CardImpl(JOLLY_SEED, "Jolly");
+        final Card jolly = new CardImpl(Seed.JOKER, CardValue.JOLLY);
         assertEquals(JOLLY_POINTS, CardPoint.getCardPoints(jolly));
     }
 
     @Test
     void testTwoWorth20() {
-        final Card two = new CardImpl(HEARTS, "2");
+        final Card two = new CardImpl(Seed.HEARTS, CardValue.TWO);
         assertEquals(TWO_POINTS, CardPoint.getCardPoints(two));
     }
 
     @Test
     void testAceWorth15() {
-        final Card ace = new CardImpl(HEARTS, "A");
+        final Card ace = new CardImpl(Seed.HEARTS, CardValue.ACE);
         assertEquals(ACE_POINTS, CardPoint.getCardPoints(ace));
     }
 
     @Test
     void testHighCardsWorth10() {
-        final String[] highValues = {"K", "Q", "J", "10", "9", "8"};
-        for (final String value : highValues) {
-            final Card card = new CardImpl(HEARTS, value);
+        final CardValue[] highValues = {
+            CardValue.KING, CardValue.QUEEN, CardValue.JACK, 
+            CardValue.TEN, CardValue.NINE, CardValue.EIGHT
+        };
+        for (final CardValue value : highValues) {
+            final Card card = new CardImpl(Seed.HEARTS, value);
             assertEquals(HIGH_CARD_POINTS, CardPoint.getCardPoints(card), "Expected 10 points for value: " + value);
         }
     }
 
     @Test
     void testLowCardsWorth5() {
-        final String[] lowValues = {"7", "6", "5", "4", "3"};
-        for (final String value : lowValues) {
-            final Card card = new CardImpl(HEARTS, value);
+        final CardValue[] lowValues = {
+            CardValue.SEVEN, CardValue.SIX, CardValue.FIVE, CardValue.FOUR, CardValue.THREE
+        };
+        for (final CardValue value : lowValues) {
+            final Card card = new CardImpl(Seed.HEARTS, value);
             assertEquals(LOW_CARD_POINTS, CardPoint.getCardPoints(card), "Expected 5 points for value: " + value);
         }
     }
 
     @Test
-    void testUnknownValueWorth0() {
-        final Card unknown = new CardImpl(HEARTS, "InvalidValue");
-        assertEquals(0, CardPoint.getCardPoints(unknown));
-    }
-
-    @Test
     void testToIntMapping() {
-        final String[] values = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+        final CardValue[] values = {
+            CardValue.ACE, CardValue.TWO, CardValue.THREE, CardValue.FOUR, CardValue.FIVE, 
+            CardValue.SIX, CardValue.SEVEN, CardValue.EIGHT, CardValue.NINE, CardValue.TEN, 
+            CardValue.JACK, CardValue.QUEEN, CardValue.KING
+        };
         final int[] expected = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
 
         for (int i = 0; i < values.length; i++) {
-            final Card card = new CardImpl(HEARTS, values[i]);
+            final Card card = new CardImpl(Seed.HEARTS, values[i]);
             assertEquals(expected[i], CardPoint.toInt(card),
                 "Rank-to-int mapping failed for value: " + values[i]);
         }
@@ -75,14 +78,8 @@ class CardPointTest {
 
     @Test
     void testToIntThrowsOnJolly() {
-        final Card jolly = new CardImpl(JOLLY_SEED, "Jolly");
+        final Card jolly = new CardImpl(Seed.JOKER, CardValue.JOLLY);
         assertThrows(IllegalArgumentException.class, () -> CardPoint.toInt(jolly));
-    }
-
-    @Test
-    void testToIntThrowsOnUnknownValue() {
-        final Card unknown = new CardImpl(HEARTS, "InvalidValue");
-        assertThrows(IllegalArgumentException.class, () -> CardPoint.toInt(unknown));
     }
 
     @Test

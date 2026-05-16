@@ -16,31 +16,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Constructs an AttachButton displaying the given combination.
+ * A button that displays a combination of cards and fires an {@link AttachListener}
+ * when clicked.
  *
- * @param initialCards  the cards forming the combination
- * @param isPlayer1Owner true if the combination belongs to Player 1
- * @param listener      the callback invoked when this button is clicked
+ * <p>Card value and seed checks now use {@link it.unibo.burraco.model.cards.CardValue}
+ * and {@link it.unibo.burraco.model.cards.Seed} enum predicates instead of raw strings.
  */
 @SuppressFBWarnings("Se")
 public final class AttachButton extends JButton {
-    
+
     private static final long serialVersionUID = 1L;
-    private static final int FIXED_WIDTH = 64;
-    private static final int VERTICAL_STRUT = 8;
-    private static final int FONT_SIZE_JOLLY = 28;
-    private static final int FONT_SIZE_NORMAL = 22;
-    private static final int COLOR_JOLLY_R = 219;
-    private static final int COLOR_JOLLY_G = 112;
-    private static final int COLOR_JOLLY_B = 147;
-    private static final int GAP = 5;
-    private static final int BORDER_PADDING = 10;
-    private static final int LINE_THICKNESS = 1;
-    private static final String JOLLY_VALUE = "Jolly";
+
+    private static final int FIXED_WIDTH       = 64;
+    private static final int VERTICAL_STRUT    = 8;
+    private static final int FONT_SIZE_JOLLY   = 28;
+    private static final int FONT_SIZE_NORMAL  = 22;
+    private static final int GAP               = 5;
+    private static final int BORDER_PADDING    = 10;
+    private static final int LINE_THICKNESS    = 1;
+
+    private static final Color JOLLY_COLOR =
+            new Color(219, 112, 147);
 
     private final transient List<Card> cards;
     private final boolean isPlayer1Owner;
 
+    /**
+     * Constructs an AttachButton displaying the given combination.
+     *
+     * @param initialCards    the cards forming the combination
+     * @param isPlayer1Owner  true if the combination belongs to Player 1
+     * @param listener        the callback invoked when this button is clicked
+     */
     public AttachButton(final List<Card> initialCards,
                         final boolean isPlayer1Owner,
                         final AttachListener listener) {
@@ -56,34 +63,45 @@ public final class AttachButton extends JButton {
         this.addActionListener(e -> listener.onAttachRequested(new ArrayList<>(this.cards)));
     }
 
+    /**
+     * Refreshes the button's border, background and card labels.
+     */
     public void updateVisuals() {
-    this.removeAll();
+        this.removeAll();
 
-    this.setBorder(BorderFactory.createCompoundBorder(
-            BurracoStyleManager.getBurracoBorder(this.cards),
-            BorderFactory.createEmptyBorder(BORDER_PADDING, GAP, BORDER_PADDING, GAP)));
-    this.setBackground(BurracoStyleManager.getBurracoBackground(this.cards));
+        this.setBorder(BorderFactory.createCompoundBorder(
+                BurracoStyleManager.getBurracoBorder(this.cards),
+                BorderFactory.createEmptyBorder(BORDER_PADDING, GAP, BORDER_PADDING, GAP)));
+        this.setBackground(BurracoStyleManager.getBurracoBackground(this.cards));
 
-    for (final Card c : this.cards) {
-        renderCardLabel(c);
+        for (final Card c : this.cards) {
+            renderCardLabel(c);
+        }
+        this.revalidate();
+        this.repaint();
     }
-    this.revalidate();
-    this.repaint();
-}
 
+    /**
+     * Renders a single card as a {@link JLabel} inside the button.
+     * Jollies are shown as their seed symbol in pink; all other cards
+     * use their standard string representation with red for Hearts/Diamonds.
+     *
+     * @param c the card to render
+     */
     private void renderCardLabel(final Card c) {
-        final boolean isJolly = JOLLY_VALUE.equalsIgnoreCase(c.getValue());
-        final JLabel label = new JLabel(isJolly ? c.getSeed() : c.toString());
+        final boolean isJolly = c.getValue().isJolly();
+        final String  text    = isJolly ? c.getSeed().getSymbol() : c.toString();
+
+        final JLabel label = new JLabel(text);
 
         if (isJolly) {
             label.setFont(new Font("Segoe UI Symbol", Font.BOLD, FONT_SIZE_JOLLY));
-            label.setForeground(new Color(COLOR_JOLLY_R, COLOR_JOLLY_G, COLOR_JOLLY_B));
+            label.setForeground(JOLLY_COLOR);
         } else {
             label.setFont(new Font("Monospaced", Font.BOLD, FONT_SIZE_NORMAL));
-            final String s = c.toString();
-            label.setForeground(
-                (s.contains("♥") || s.contains("♦")) ? Color.RED : Color.BLACK);
+            label.setForeground(c.getSeed().isRed() ? Color.RED : Color.BLACK);
         }
+
         label.setAlignmentX(CENTER_ALIGNMENT);
         this.add(label);
         this.add(Box.createVerticalStrut(VERTICAL_STRUT));
@@ -98,15 +116,24 @@ public final class AttachButton extends JButton {
     public Dimension getMaximumSize() {
         return new Dimension(FIXED_WIDTH, super.getPreferredSize().height);
     }
+
     @Override
     public Dimension getMinimumSize() {
         return new Dimension(FIXED_WIDTH, super.getMinimumSize().height);
     }
 
+    /**
+     * Returns a defensive copy of the cards displayed by this button.
+     *
+     * @return the cards in this combination
+     */
     public List<Card> getCards() {
         return new ArrayList<>(this.cards);
     }
 
+    /**
+     * @return true if this combination belongs to Player 1
+     */
     public boolean isPlayer1Owner() {
         return this.isPlayer1Owner;
     }
