@@ -12,7 +12,7 @@ import it.unibo.burraco.model.player.Player;
  * Standard implementation of the Burraco scoring system.
  * Handles bonuses for clean/dirty burracos, closures, and penalties for uncollected pots.
  *
- * <p>All raw string comparisons have been replaced with
+ * All raw string comparisons have been replaced with
  * {@link CardValue} and {@link Seed} enum references.
  */
 public final class ScoreImpl implements Score {
@@ -56,7 +56,7 @@ public final class ScoreImpl implements Score {
     }
 
     /**
-     * Determines if a burraco is clean (no wildcards, or a Two in natural position).
+     * Determines if a burraco is clean (no wildcards, or a two in natural position).
      *
      * @param combination the list of cards forming the burraco
      * @return true if the burraco is clean, false otherwise
@@ -85,7 +85,7 @@ public final class ScoreImpl implements Score {
      *
      * @param two         the Two card to check
      * @param combination the full combination to evaluate
-     * @return true if the Two is in natural position, false otherwise
+     * @return true if the two is in natural position, false otherwise
      */
     private boolean isTwoInNaturalPosition(final Card two, final List<Card> combination) {
         final Seed suit = two.getSeed();

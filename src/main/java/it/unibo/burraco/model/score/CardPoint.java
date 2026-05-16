@@ -6,10 +6,6 @@ import it.unibo.burraco.model.cards.CardValue;
 /**
  * Utility class to manage point values and numerical conversions
  * for cards based on Burraco rules.
- *
- * <p>All string comparisons and RANK_* constants have been removed:
- * numerical ranks now live in {@link CardValue#getNumericalValue()},
- * and point values are resolved via an exhaustive switch on {@link CardValue}.
  */
 public final class CardPoint {
 
@@ -21,6 +17,8 @@ public final class CardPoint {
 
     /**
      * Private constructor to prevent instantiation of a utility class.
+     *
+     * @throws UnsupportedOperationException if called
      */
     private CardPoint() {
         throw new UnsupportedOperationException("Utility class");

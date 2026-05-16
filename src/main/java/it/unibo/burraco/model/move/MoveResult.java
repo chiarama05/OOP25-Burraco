@@ -14,8 +14,8 @@ import it.unibo.burraco.model.cards.Card;
 public final class MoveResult {
 
     /**
-     * Enumeration of all possible outcomes for a move, including error states
-     * and specific success triggers (like taking a pot or winning).
+     * Enumeration of all possible outcomes for a move.
+     * Includes error states, generic validation, and specific success triggers.
      */
     public enum Status {
         NOT_DRAWN,
@@ -38,7 +38,9 @@ public final class MoveResult {
     private final List<Card> processedCards;
     private final boolean player1;
 
-    
+    /**
+     * Private constructor to instantiate a MoveResult.
+     */
     private MoveResult(final Status status, final List<Card> cards, final boolean player1) {
         this.status = status;
         this.processedCards = new ArrayList<>(cards);
@@ -47,6 +49,7 @@ public final class MoveResult {
 
     /**
      * Creates a generic success result.
+     * 
      * @return a SUCCESS MoveResult
      */
     public static MoveResult ok() {
@@ -55,6 +58,7 @@ public final class MoveResult {
 
     /**
      * Creates an error result with a specific status.
+     * 
      * @param s the error status
      * @return an error MoveResult
      */
@@ -64,6 +68,7 @@ public final class MoveResult {
 
     /**
      * Creates a detailed success result.
+     * 
      * @param s     the specific success status
      * @param cards the cards involved in the operation
      * @param p1    true if the actor was player 1, false otherwise
@@ -75,6 +80,7 @@ public final class MoveResult {
 
     /**
      * Checks if the status represents a successful operation.
+     * 
      * @return true if the move was applied, false if it was rejected
      */
     public boolean isValid() {
@@ -88,23 +94,29 @@ public final class MoveResult {
     }
 
     /**
-     * @return the specific status of the result
+     * Returns the specific status of the result.
+     * 
+     * @return the status enum value
      */
     public Status getStatus() {
-        return status;
+        return this.status;
     }
 
     /**
-     * @return an unmodifiable list of cards processed during the move
+     * Returns an unmodifiable list of cards processed during the move.
+     * 
+     * @return an unmodifiable view of processed cards
      */
     public List<Card> getProcessedCards() {
-        return Collections.unmodifiableList(processedCards);
+        return Collections.unmodifiableList(this.processedCards);
     }
 
     /** 
-     * @return true if player 1 performed the move, false if player 2
+     * Checks if player 1 performed the move.
+     * 
+     * @return true if player 1 performed the move, false if player 2 did
      */
     public boolean isPlayer1() { 
-        return player1; 
+        return this.player1; 
     }
 }

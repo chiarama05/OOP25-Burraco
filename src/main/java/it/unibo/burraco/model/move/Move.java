@@ -29,8 +29,8 @@ public final class Move {
     private final List<Card> targetCombination;
 
     /**
-     * Constructs a move that doesn't require a target combination 
-     * (e.g., drawing or discarding).
+     * Constructs a move that doesn't require a target combination.
+     * Used typically for drawing or discarding actions.
      *
      * @param type          the type of action
      * @param selectedCards the cards involved in the action
@@ -42,12 +42,12 @@ public final class Move {
     }
 
     /**
-     * Constructs a move that involves a target combination on the table 
-     * (e.g., attaching cards).
+     * Constructs a move that involves a target combination on the table.
+     * Used typically for attaching cards to existing melds.
      *
-     * @param type          the type of action
-     * @param selected      the cards to be moved from the hand
-     * @param target        the existing combination on the table to modify
+     * @param type     the type of action
+     * @param selected the cards to be moved from the hand
+     * @param target   the existing combination on the table to modify
      */
     public Move(final Type type, final List<Card> selected, final List<Card> target) {
         this.type = type;
@@ -56,23 +56,29 @@ public final class Move {
     }
 
     /** 
-     * @return the type of this move 
+     * Returns the type of this move.
+     * 
+     * @return the move type
      */
     public Type getType() { 
-        return type; 
+        return this.type; 
     }
 
     /** 
-     * @return an unmodifiable view of the cards selected for this move
+     * Returns an unmodifiable view of the cards selected for this move.
+     * 
+     * @return an unmodifiable list of selected cards
      */
     public List<Card> getSelectedCards() { 
-        return Collections.unmodifiableList(selectedCards); 
+        return Collections.unmodifiableList(this.selectedCards); 
     }
 
     /**
-     * @return an unmodifiable view of the target combination, if any 
+     * Returns an unmodifiable view of the target combination, if any.
+     * 
+     * @return an unmodifiable list of the target combination cards
      */
     public List<Card> getTargetCombination() { 
-        return Collections.unmodifiableList(targetCombination); 
+        return Collections.unmodifiableList(this.targetCombination); 
     }
 }
