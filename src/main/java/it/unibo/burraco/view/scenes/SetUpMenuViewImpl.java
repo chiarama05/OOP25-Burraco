@@ -183,7 +183,12 @@ public final class SetUpMenuViewImpl implements SetUpMenuView {
         playBtn.setPreferredSize(new Dimension(PLAY_BTN_WIDTH, PLAY_BTN_HEIGHT));
         playBtn.addActionListener(e -> {
             if (this.selectedScore == -1) {
-                JOptionPane.showMessageDialog(this.frame, "Please select a victory score first!");
+                JOptionPane.showMessageDialog(
+                    this.frame,
+                    "Please select a victory score first!",
+                    "Warning",
+                    JOptionPane.WARNING_MESSAGE
+            );
             } else {
                 close();
                 this.listener.onConfigComplete(this.selectedScore, this.name1.getText(), this.name2.getText());

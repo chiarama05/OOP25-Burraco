@@ -33,6 +33,10 @@ import it.unibo.burraco.view.table.TableViewImpl;
  * Main application class and composition root.
  * Handles navigation between menus and wires all components together
  * when a game session starts.
+ *
+ * Card distribution and view initialisation for the first round are now
+ * handled by {@link RoundControllerImpl#processNewRound()}, keeping
+ * {@code startGame} focused solely on wiring.
  */
 public final class BurracoApp {
 
@@ -67,6 +71,8 @@ public final class BurracoApp {
 
     /**
      * Wires all components and starts a new game session.
+     * The first round — like every subsequent round — is started via
+     * {@link RoundControllerImpl#processNewRound()}.
      *
      * @param nameP1      display name for player 1
      * @param nameP2      display name for player 2
@@ -85,15 +91,7 @@ public final class BurracoApp {
         final Player p1 = model.getPlayer1();
         final Player p2 = model.getPlayer2();
 
-        final InitialDistributionController distribution =
-                new InitialDistributionController(new DistributionManagerImpl());
-        distribution.distribute(p1, p2, model.getCommonDeck(), model.getDiscardPile());
-
-        distributionView.refresh(p1.getHand(), p2.getHand());
-        tableView.updateDiscardPile(model.getDiscardPile().getCards());
-        tableView.refreshHandPanel(true, p1.getHand());
-
-        final BurracoView burracoView = tableView;
+        final BurracoView burracoView   = tableView;
         final SwingTableAccess swingAccess = tableView;
 
         final PotManager potManager = new PotManager(model.getTurn(), burracoView);
@@ -103,7 +101,7 @@ public final class BurracoApp {
         final RoundEndHandler roundEndHandler = new RoundEndHandler(
                 score, p1, p2, nameP1, nameP2,
                 burracoView, swingAccess, sound,
-                targetScore,                  
+                targetScore,
                 (snap1, snap2, target, sa, over) ->
                         new ScoreViewImpl(snap1, snap2, target, sa, over));
 
@@ -124,6 +122,7 @@ public final class BurracoApp {
             roundCtrl.processNewRound();
             loop.start();
         });
+        roundCtrl.processNewRound();
         loop.start();
     }
 }
