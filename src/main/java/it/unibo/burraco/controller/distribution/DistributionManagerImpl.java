@@ -11,7 +11,7 @@ import it.unibo.burraco.model.player.Player;
 /**
  * Concrete implementation of {@link DistributionManager}.
  * It follows the standard Burraco rules: 11 cards to each player,
- * 11 cards for each side pot (pozzetto), and one starting card in the discard pile.
+ * 11 cards for each side pot, and one starting card in the discard pile.
  */
 public final class DistributionManagerImpl implements DistributionManager {
 

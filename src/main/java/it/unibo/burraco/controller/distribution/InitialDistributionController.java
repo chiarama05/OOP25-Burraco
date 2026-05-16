@@ -6,7 +6,7 @@ import it.unibo.burraco.model.player.Player;
 
 /**
  * Controller that coordinates the initial card distribution phase.
- * It serves as an abstraction layer that delegates the distribution logic 
+ * It serves as an abstraction layer that delegates the distribution logic
  * to an implementation of {@link DistributionManager}.
  */
 public class InitialDistributionController {

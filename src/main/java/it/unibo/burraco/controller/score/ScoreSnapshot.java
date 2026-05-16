@@ -19,7 +19,9 @@ import java.util.List;
  * @param roundTotal          the final sum of points for the current round
  * @param matchTotal          the cumulative score including previous rounds
  * @param isWinner            true if the player has won the entire match
- * @param finalHand           a read-only list of cards remaining in the hand at closure
+ * @param finalHand           a read-only list of cards remaining in the hand at closure.
+ *                            To guarantee immutability, this should be defensive-copied
+ *                            (e.g., via List.copyOf) before initialization.
  */
 public record ScoreSnapshot(
         String playerName,
