@@ -10,6 +10,8 @@ import java.awt.Dimension;
 
 /**
  * Swing panel representing the deck button in the game UI.
+ * This class isolates the graphical representation of the draw pile
+ * from the main game table layout.
  */
 public final class DeckView extends JPanel {
 
@@ -48,7 +50,7 @@ public final class DeckView extends JPanel {
     /**
      * Returns the deck button so that external components can register listeners on it.
      *
-     * @return the deck {@link JButton}
+     * @return the deck button instance
      */
     public JButton getDeckButton() {
         return this.deckButton;

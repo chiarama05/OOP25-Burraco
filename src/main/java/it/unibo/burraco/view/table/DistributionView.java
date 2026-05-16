@@ -6,10 +6,6 @@ import java.util.List;
  
 /**
  * View interface for the initial card-distribution phase.
- *
- * Replaces the direct dependency on the concrete {@link TableSetUpView} class,
- * and removes the erroneous {@code DiscardView} parameter that created
- * View-to-View coupling.
  */
 public interface DistributionView {
  
@@ -27,5 +23,11 @@ public interface DistributionView {
      */
     HandView getPlayer2HandView();
 
+    /**
+     * Refreshes the graphical representations of both players' hands.
+     *
+     * @param hand1 the list of cards currently held by Player 1
+     * @param hand2 the list of cards currently held by Player 2
+     */
     void refresh(List<Card> hand1, List<Card> hand2);
 }

@@ -1,9 +1,7 @@
 package it.unibo.burraco.view.table.discard;
 
 import java.util.List;
-
 import it.unibo.burraco.model.cards.Card;
-
 import java.awt.event.ActionListener;
 
 /**
