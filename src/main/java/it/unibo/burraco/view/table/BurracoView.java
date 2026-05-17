@@ -2,7 +2,6 @@ package it.unibo.burraco.view.table;
 
 import it.unibo.burraco.controller.display.GameState;
 import it.unibo.burraco.model.cards.Card;
-import it.unibo.burraco.model.move.Move;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -23,12 +22,13 @@ public interface BurracoView {
      */
     void wakeUp(String playerName, boolean isPlayer1, List<Card> hand);
 
+
     /**
-     * Links a completable future to capture the next user action as a game move.
+     * Injects the future the view must complete when the player confirms an action.
      *
-     * @param future the future that will be completed when the player performs a move
+     * @param future the future to complete with a {@link ViewAction}
      */
-    void setMoveFuture(CompletableFuture<Move> future);
+    void setActionFuture(CompletableFuture<ViewAction> future);
 
     /**
      * Completely refreshes the table components based on the given game state snapshot.
