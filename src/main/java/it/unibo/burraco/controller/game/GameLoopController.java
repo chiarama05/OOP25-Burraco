@@ -25,15 +25,11 @@ import java.util.stream.Collectors;
 
 /**
  * Main controller managing the game cycle.
- *
- * <p>Responsibilities of this class with respect to the MVC boundary:</p>
- * <ul>
- *   <li>Receives {@link ViewAction} from the View (view-layer DTO, no model types).</li>
- *   <li>Translates {@link ViewAction} → {@link Move} via {@link #toMove(ViewAction)}
- *       — the only place where the two layers meet.</li>
- *   <li>Extracts all data from the Model before crossing into the view layer —
- *       the view never receives {@code Player} or {@code MoveResult} directly.</li>
- * </ul>
+ * Receives {@link ViewAction} from the View (view-layer DTO, no model types),
+ * translates them into {@link Move} via {@link #toMove(ViewAction)} — the only
+ * place where the two layers meet — and extracts all data from the Model before
+ * crossing into the view layer, so the view never receives {@code Player} or
+ * {@code MoveResult} directly.
  */
 public final class GameLoopController implements GameController {
 
@@ -44,6 +40,15 @@ public final class GameLoopController implements GameController {
     private final ScoreController scoreController;
     private final CombinationDisplaySorter displaySorter = new CombinationDisplaySorter();
 
+    /**
+     * Constructs a GameLoopController wiring the model, view and supporting services.
+     *
+     * @param model           the game model facade
+     * @param view            the main table view
+     * @param sound           the sound feedback component
+     * @param potManager      the handler for pot acquisition events
+     * @param scoreController the controller managing end-of-round scoring
+     */
     public GameLoopController(final GameModel model,
                               final BurracoView view,
                               final SoundView sound,
@@ -79,14 +84,8 @@ public final class GameLoopController implements GameController {
                     Thread.currentThread().interrupt();
                 }
             }
-
-            // 1. Wait for the player's intent from the view (a ViewAction)
             ViewAction action = waitForAction();
-
-            // 2. Translate ViewAction → Move (controller responsibility)
             Move move = toMove(action);
-
-            // 3. Validate
             MoveResult validation = model.validateMove(move);
             while (!validation.isValid()) {
                 final MoveError err = toMoveError(validation.getStatus());
@@ -95,17 +94,14 @@ public final class GameLoopController implements GameController {
                 move   = toMove(action);
                 validation = model.validateMove(move);
             }
-
-            // 4. Apply and handle result
-            final MoveResult result   = model.applyMove(move);
-            final Move finalMove      = move;
+            final MoveResult result = model.applyMove(move);
+            final Move finalMove = move;
 
             try {
                 SwingUtilities.invokeAndWait(() -> handleResult(result, finalMove));
             } catch (InvocationTargetException | InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-
             if (finalMove.getType() == Move.Type.DISCARD && !model.isGameOver()) {
                 model.nextTurn();
                 isStartOfTurn = true;
@@ -123,13 +119,18 @@ public final class GameLoopController implements GameController {
                 final boolean isDiscard = move.getType() == Move.Type.DISCARD;
                 potManager.handlePot(isDiscard);
             }
-            case ROUND_WON  -> sound.playRoundEndSound();
+            case ROUND_WON -> sound.playRoundEndSound();
             case DECK_EMPTY -> sound.playRoundEndSound();
             default -> { }
         }
         view.refresh(buildGameState());
     }
 
+    /**
+     * Builds an immutable snapshot of the current game state for the view.
+     *
+     * @return a {@link GameState} reflecting the current table, hand and discard pile
+     */
     private GameState buildGameState() {
         final Player current = model.getCurrentPlayer();
         final boolean isP1   = model.isPlayer1(current);
@@ -187,20 +188,23 @@ public final class GameLoopController implements GameController {
                 new Move(Move.Type.DISCARD, action.getSelectedCards());
         };
     }
-
+    
     /**
      * Maps a model {@link MoveResult.Status} to a view-layer {@link MoveError}.
      * The only place where model enum and view enum meet — in the controller.
+     *
+     * @param status the model-layer status to translate
+     * @return the corresponding view-layer {@link MoveError}
      */
     private static MoveError toMoveError(final MoveResult.Status status) {
         return switch (status) {
-            case ALREADY_DRAWN       -> MoveError.ALREADY_DRAWN;
-            case NOT_DRAWN           -> MoveError.NOT_DRAWN;
-            case NO_CARDS_SELECTED   -> MoveError.NO_CARDS_SELECTED;
+            case ALREADY_DRAWN -> MoveError.ALREADY_DRAWN;
+            case NOT_DRAWN -> MoveError.NOT_DRAWN;
+            case NO_CARDS_SELECTED -> MoveError.NO_CARDS_SELECTED;
             case INVALID_COMBINATION -> MoveError.INVALID_COMBINATION;
-            case WOULD_GET_STUCK     -> MoveError.WOULD_GET_STUCK;
-            case WRONG_PLAYER        -> MoveError.WRONG_PLAYER;
-            default                  -> MoveError.UNKNOWN;
+            case WOULD_GET_STUCK -> MoveError.WOULD_GET_STUCK;
+            case WRONG_PLAYER -> MoveError.WRONG_PLAYER;
+            default -> MoveError.UNKNOWN;
         };
     }
 }

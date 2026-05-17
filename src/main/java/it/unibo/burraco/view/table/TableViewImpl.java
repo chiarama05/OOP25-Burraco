@@ -67,7 +67,7 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
     private final JButton putComboBtn;
     private final AttachButtonFactory attachButtonFactory;
 
-    private boolean firstWakeUp      = true;
+    private boolean firstWakeUp = true;
     private boolean currentIsPlayer1 = true;
     private CompletableFuture<ViewAction> pendingFuture;
 
