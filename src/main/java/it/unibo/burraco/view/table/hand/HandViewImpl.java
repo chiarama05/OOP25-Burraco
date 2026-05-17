@@ -15,12 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implementation of {@link HandView}.
- * Displays cards as interactive {@link JButton} components, handling visual
- * feedback for selection, hover effects, and Jolly-specific styling.
- *
- * <p>Card value and seed checks now use {@link it.unibo.burraco.model.cards.CardValue}
- * and {@link it.unibo.burraco.model.cards.Seed} enum predicates instead of raw strings.
+ * Implementation of HandView.
+ * Displays cards as interactive button components, handling visual
+ * feedback for selection, hover effects and Jolly-specific styling.
+ * Card value and seed checks use CardValue and Seed enum predicates
+ * instead of raw strings.
  */
 public final class HandViewImpl extends JPanel implements HandView {
 
@@ -79,7 +78,7 @@ public final class HandViewImpl extends JPanel implements HandView {
      * Creates a styled, interactive button for a single card.
      *
      * @param c the card to render
-     * @return the configured {@link JButton}
+     * @return the configured button
      */
     private JButton buildCardButton(final Card c) {
         final boolean isJolly = c.getValue().isJolly();
@@ -152,9 +151,9 @@ public final class HandViewImpl extends JPanel implements HandView {
     }
 
     /**
-     * Helper method to retrieve a single selected card.
+     * Returns the selected card if exactly one is selected, null otherwise.
      *
-     * @return the selected {@link Card} if exactly one is selected, null otherwise
+     * @return the single selected card, or null
      */
     public Card getSingleSelectedCard() {
         final List<Card> selected = this.getSelectedCards();

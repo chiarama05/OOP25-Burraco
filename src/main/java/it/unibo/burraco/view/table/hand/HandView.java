@@ -13,40 +13,40 @@ import it.unibo.burraco.model.cards.Card;
 public interface HandView {
 
     /**
-     * Refreshes the visual representation of the hand based on the provided list of cards.
+     * Refreshes the visual representation of the hand with the provided cards.
      *
-     * @param hand the current list of {@link Card} objects to display
+     * @param hand the current list of {@link Card} to display
      */
     void refreshHand(List<Card> hand);
 
     /**
-     * Returns the set of cards currently selected by the user in the view.
+     * Returns the list of cards currently selected by the user in the view.
      *
-     * @return a {@link Set} of selected {@link Card} objects
+     * @return the selected cards
      */
     List<Card> getSelectedCards();
 
     /**
-     * Resets the selection status, deselecting all cards currently in the hand.
+     * Deselects all cards currently selected in the hand.
      */
     void clearSelection();
 
     /**
      * Sets a listener to handle card selection events.
      *
-     * @param listener the {@link CardSelectionListener} to notify on interaction
+     * @param listener the listener to notify on card interaction
      */
     void setCardSelectionListener(CardSelectionListener listener);
 
     /**
-     * Updates the hand with a new list of cards and clears the current selection.
+     * Updates the hand with a new list of cards.
      *
      * @param hand the new list of cards to display
      */
     void updateHand(List<Card> hand);
 
     /**
-     * Inner interface for handling card selection events within the HandView.
+     * Functional interface for handling card selection events within the HandView.
      */
     @FunctionalInterface
     interface CardSelectionListener {
