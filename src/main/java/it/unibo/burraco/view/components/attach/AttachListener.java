@@ -6,11 +6,9 @@ import java.util.List;
 /**
  * Callback invoked when the player clicks on a combination button
  * to attach cards to it.
- *
  * The view fires this event with the target combination cards;
- * the wiring layer (TableViewImpl) handles selecting the hand cards,
+ * the wiring layer handles selecting the hand cards,
  * building the Move, and completing the pending future.
- * AttachButton knows nothing about Move or CompletableFuture.
  */
 @FunctionalInterface
 public interface AttachListener {

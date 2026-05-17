@@ -16,11 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A button that displays a combination of cards and fires an {@link AttachListener}
- * when clicked.
- *
- * <p>Card value and seed checks now use {@link it.unibo.burraco.model.cards.CardValue}
- * and {@link it.unibo.burraco.model.cards.Seed} enum predicates instead of raw strings.
+ * A button that displays a combination of cards and fires an AttachListener when clicked.
+ * Card value and seed checks use CardValue and Seed enum predicates instead of raw strings.
  */
 @SuppressFBWarnings("Se")
 public final class AttachButton extends JButton {
@@ -44,9 +41,9 @@ public final class AttachButton extends JButton {
     /**
      * Constructs an AttachButton displaying the given combination.
      *
-     * @param initialCards    the cards forming the combination
-     * @param isPlayer1Owner  true if the combination belongs to Player 1
-     * @param listener        the callback invoked when this button is clicked
+     * @param initialCards the cards forming the combination
+     * @param isPlayer1Owner true if the combination belongs to Player 1
+     * @param listener the callback invoked when this button is clicked
      */
     public AttachButton(final List<Card> initialCards,
                         final boolean isPlayer1Owner,
@@ -132,6 +129,8 @@ public final class AttachButton extends JButton {
     }
 
     /**
+     * Returns true if this combination belongs to Player 1.
+     *
      * @return true if this combination belongs to Player 1
      */
     public boolean isPlayer1Owner() {
