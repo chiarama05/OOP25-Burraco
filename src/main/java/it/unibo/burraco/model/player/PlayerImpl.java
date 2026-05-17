@@ -59,13 +59,15 @@ public final class PlayerImpl implements Player {
         for (final Card c : b) {
             boolean found = false;
             for (int j = 0; j < copy.size(); j++) {
-                if (copy.get(j) == c) {  
+                if (copy.get(j) == c) {
                     copy.remove(j);
                     found = true;
                     break;
                 }
             }
-            if (!found) return false;
+            if (!found) {
+                return false;
+            }
         }
         return true;
     }

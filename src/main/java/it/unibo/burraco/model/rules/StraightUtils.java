@@ -15,7 +15,6 @@ import it.unibo.burraco.model.cards.Seed;
 /**
  * Utility class that provides helper methods to validate and order
  * straight (sequence) combinations in card games.
- *
  * All raw string comparisons have been replaced with
  * {@link CardValue} and {@link Seed} enum references.
  */

@@ -67,7 +67,7 @@ public final class GameState {
     public boolean isP1Turn() {
         return this.isP1Turn;
     }
-    
+
     /**
      * Returns the hand of the current active player.
      *
