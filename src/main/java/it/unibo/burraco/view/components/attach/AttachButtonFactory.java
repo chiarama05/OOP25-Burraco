@@ -5,9 +5,8 @@ import it.unibo.burraco.model.cards.Card;
 import java.util.List;
  
 /**
- * Creates {@link AttachButton} instances wired with an {@link AttachListener}.
- * The factory no longer receives a TableView or JFrame reference —
- * the listener is provided by the caller (TableViewImpl) at creation time,
+ * Creates AttachButton instances wired with an AttachListener.
+ * The listener is provided by the caller at creation time,
  * keeping AttachButton fully decoupled from the rest of the view infrastructure.
  */
 public final class AttachButtonFactory {
@@ -26,7 +25,7 @@ public final class AttachButtonFactory {
     /**
      * Creates an {@link AttachButton} for the given combination.
      *
-     * @param cards     the cards forming the combination
+     * @param cards the cards forming the combination
      * @param isPlayer1 true if the combination belongs to Player 1
      * @return a ready-to-add button
      */
