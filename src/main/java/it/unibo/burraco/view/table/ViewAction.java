@@ -10,7 +10,6 @@ import java.util.List;
  * Immutable DTO representing a player's intended action.
  * Built by the View, consumed by the Controller, which translates it into a
  * {@link it.unibo.burraco.model.move.Move}.
- *
  * The View may still reference {@link Card} (a model entity) because cards
  * are the fundamental data being displayed — but it never references
  * {@code Move} or {@code Move.Type}.
