@@ -22,7 +22,6 @@ public interface BurracoView {
      */
     void wakeUp(String playerName, boolean isPlayer1, List<Card> hand);
 
-
     /**
      * Injects the future the view must complete when the player confirms an action.
      *

@@ -29,6 +29,8 @@ import java.util.List;
  */
 public final class GameModelImpl implements GameModel {
 
+    private static final int BURRACO_MIN_CARDS = 7;
+
     private final Player p1;
     private final Player p2;
     private final Deck deck;
@@ -41,8 +43,6 @@ public final class GameModelImpl implements GameModel {
     private boolean drawnThisTurn;
     private Player winner;
     private final MoveValidator moveValidator;
-
-    private static final int BURRACO_MIN_CARDS = 7;
 
     /**
      * Initializes a new match with two players and a fresh deck.
@@ -103,7 +103,7 @@ public final class GameModelImpl implements GameModel {
     public MoveResult validateMove(final Move move) {
         return moveValidator.validate(move, getCurrentPlayer(), drawnThisTurn);
     }
-    
+
     @Override
     public MoveResult applyMove(final Move move) {
         final Player current = getCurrentPlayer();
