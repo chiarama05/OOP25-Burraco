@@ -40,6 +40,10 @@ public final class MoveResult {
 
     /**
      * Private constructor to instantiate a MoveResult.
+     *
+     * @param status  the outcome status of the move
+     * @param cards   the list of cards processed or affected by the move
+     * @param player1 true if the action was performed by player 1, false for player 2
      */
     private MoveResult(final Status status, final List<Card> cards, final boolean player1) {
         this.status = status;
