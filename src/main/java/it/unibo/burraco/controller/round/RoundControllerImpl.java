@@ -7,12 +7,10 @@ import it.unibo.burraco.view.table.BurracoView;
 import it.unibo.burraco.view.table.DistributionView;
 
 /**
- * Concrete implementation of {@link RoundController}.
- *
- * <p>Every round — including the very first — passes through
- * {@link #processNewRound()}, guaranteeing a single code path
- * from start to finish. On the first call the reset step is skipped
- * because no previous state exists to clear.</p>
+ * Concrete implementation of RoundController.
+ * Every round, including the very first, passes through processNewRound,
+ * guaranteeing a single code path. On the first call the reset step is skipped
+ * because no previous state exists to clear.
  */
 public final class RoundControllerImpl implements RoundController {
 
@@ -24,6 +22,15 @@ public final class RoundControllerImpl implements RoundController {
 
     private boolean isFirstRound = true;
 
+    /**
+     * Constructs a RoundControllerImpl with all required collaborators.
+     *
+     * @param tableView the main game table view
+     * @param resetManager the component responsible for resetting round state
+     * @param model the game model
+     * @param distributionController the controller handling initial card distribution
+     * @param distributionView the view component displaying the distributed hands
+     */
     public RoundControllerImpl(final BurracoView tableView,
                                final ResetManager resetManager,
                                final GameModel model,

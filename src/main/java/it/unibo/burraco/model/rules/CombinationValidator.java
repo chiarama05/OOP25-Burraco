@@ -9,11 +9,8 @@ import it.unibo.burraco.model.cards.CardImpl;
 import it.unibo.burraco.model.cards.CardValue;
 
 /**
- * Utility class responsible for validating whether a set of cards
- * forms a legal game combination (Straight or Set) according to the rules.
- *
- * <p>All raw string comparisons have been replaced with
- * {@link CardValue} enum references and its helper predicates.
+ * Utility class that validates whether a set of cards forms a legal
+ * combination according to Burraco rules, either a straight or a set.
  */
 public final class CombinationValidator {
 
@@ -86,7 +83,7 @@ public final class CombinationValidator {
     /**
      * Determines if a specific card is acting as a wildcard within its combination.
      *
-     * @param c       the card to check
+     * @param c the card to check
      * @param context the combination the card belongs to
      * @return true if the card is a Jolly or a Two used as a wildcard
      */

@@ -1,8 +1,9 @@
 package it.unibo.burraco.model.cards;
 
 /**
- * Implementation of the {@link Card} interface.
- * Represents a concrete playing card with a seed and a value.
+ * Concrete implementation of Card.
+ * Represents a playing card with a fixed suit and face value,
+ * and tracks whether the card is currently acting as a wildcard.
  */
 public final class CardImpl implements Card {
 
@@ -45,6 +46,12 @@ public final class CardImpl implements Card {
         return this.value;
     }
 
+    /**
+     * Returns a string representation of the card,
+     * combining the face value display and the suit symbol.
+     *
+     * @return the string representation of the card
+     */
     @Override
     public String toString() {
         return value.getDisplay() + seed.getSymbol();
