@@ -8,7 +8,7 @@ import it.unibo.burraco.model.cards.Card;
  * Handler class responsible for validating and managing card combinations of type "Set".
  * A Set consists of cards with the same numerical value but different seeds.
  *
- * <p>All raw string comparisons for wildcards have been replaced with
+ * All raw string comparisons for wildcards have been replaced with
  * {@link it.unibo.burraco.model.cards.CardValue#isPotentialWildcard()}.
  */
 public class SetHandler {

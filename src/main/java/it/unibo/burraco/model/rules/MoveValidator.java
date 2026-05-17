@@ -8,6 +8,11 @@ import it.unibo.burraco.model.player.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Validates player moves against the current game state without mutating it.
+ * Delegates combination rules to {@link CombinationValidator} and closure
+ * conditions to {@link ClosureValidator}.
+ */
 public final class MoveValidator {
  
     private final CombinationValidator combinationValidator;

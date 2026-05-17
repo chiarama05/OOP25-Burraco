@@ -12,10 +12,12 @@ import it.unibo.burraco.model.player.Player;
 import it.unibo.burraco.view.components.sound.SoundView;
 import it.unibo.burraco.view.table.BurracoView;
 import it.unibo.burraco.view.table.MoveError;
+import it.unibo.burraco.view.table.ViewAction;
 
 import javax.swing.SwingUtilities;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -23,8 +25,15 @@ import java.util.stream.Collectors;
 
 /**
  * Main controller managing the game cycle.
- * Extracts all data from the model before crossing into the view layer —
- * the view never receives Player or MoveResult directly.
+ *
+ * <p>Responsibilities of this class with respect to the MVC boundary:</p>
+ * <ul>
+ *   <li>Receives {@link ViewAction} from the View (view-layer DTO, no model types).</li>
+ *   <li>Translates {@link ViewAction} → {@link Move} via {@link #toMove(ViewAction)}
+ *       — the only place where the two layers meet.</li>
+ *   <li>Extracts all data from the Model before crossing into the view layer —
+ *       the view never receives {@code Player} or {@code MoveResult} directly.</li>
+ * </ul>
  */
 public final class GameLoopController implements GameController {
 
@@ -59,11 +68,11 @@ public final class GameLoopController implements GameController {
 
         while (!model.isGameOver()) {
             final Player current = model.getCurrentPlayer();
-            final boolean isP1 = model.isPlayer1(current);
+            final boolean isP1   = model.isPlayer1(current);
 
             if (isStartOfTurn) {
                 final String name = current.getName();
-                final var hand = current.getHand();
+                final var hand    = current.getHand();
                 try {
                     SwingUtilities.invokeAndWait(() -> view.wakeUp(name, isP1, hand));
                 } catch (InvocationTargetException | InterruptedException e) {
@@ -71,17 +80,25 @@ public final class GameLoopController implements GameController {
                 }
             }
 
-            Move move = waitForMove();
+            // 1. Wait for the player's intent from the view (a ViewAction)
+            ViewAction action = waitForAction();
+
+            // 2. Translate ViewAction → Move (controller responsibility)
+            Move move = toMove(action);
+
+            // 3. Validate
             MoveResult validation = model.validateMove(move);
             while (!validation.isValid()) {
                 final MoveError err = toMoveError(validation.getStatus());
                 SwingUtilities.invokeLater(() -> view.showMoveError(err));
-                move = waitForMove();
+                action = waitForAction();
+                move   = toMove(action);
                 validation = model.validateMove(move);
             }
 
-            final MoveResult result = model.applyMove(move);
-            final Move finalMove = move;
+            // 4. Apply and handle result
+            final MoveResult result   = model.applyMove(move);
+            final Move finalMove      = move;
 
             try {
                 SwingUtilities.invokeAndWait(() -> handleResult(result, finalMove));
@@ -106,7 +123,7 @@ public final class GameLoopController implements GameController {
                 final boolean isDiscard = move.getType() == Move.Type.DISCARD;
                 potManager.handlePot(isDiscard);
             }
-            case ROUND_WON -> sound.playRoundEndSound();
+            case ROUND_WON  -> sound.playRoundEndSound();
             case DECK_EMPTY -> sound.playRoundEndSound();
             default -> { }
         }
@@ -114,29 +131,31 @@ public final class GameLoopController implements GameController {
     }
 
     private GameState buildGameState() {
-    final Player current = model.getCurrentPlayer();
-    final boolean isP1 = model.isPlayer1(current);
+        final Player current = model.getCurrentPlayer();
+        final boolean isP1   = model.isPlayer1(current);
 
-    final List<List<Card>> p1Sorted = model.getPlayer1().getCombinations().stream()
-            .map(c -> displaySorter.sortForDisplay(new ArrayList<>(c)))
-            .collect(Collectors.toList());
+        final List<List<Card>> p1Sorted = model.getPlayer1().getCombinations().stream()
+                .map(c -> displaySorter.sortForDisplay(new ArrayList<>(c)))
+                .collect(Collectors.toList());
 
-    final List<List<Card>> p2Sorted = model.getPlayer2().getCombinations().stream()
-            .map(c -> displaySorter.sortForDisplay(new ArrayList<>(c)))
-            .collect(Collectors.toList());
+        final List<List<Card>> p2Sorted = model.getPlayer2().getCombinations().stream()
+                .map(c -> displaySorter.sortForDisplay(new ArrayList<>(c)))
+                .collect(Collectors.toList());
 
-    return new GameState(
-        p1Sorted,
-        p2Sorted,
-        isP1,
-        current.getHand(),
-        model.getDiscardPile().getCards()
-    );
-}
+        return new GameState(
+                p1Sorted,
+                p2Sorted,
+                isP1,
+                current.getHand(),
+                model.getDiscardPile().getCards());
+    }
 
-    private Move waitForMove() {
-        final CompletableFuture<Move> future = new CompletableFuture<>();
-        SwingUtilities.invokeLater(() -> view.setMoveFuture(future));
+    /**
+     * Waits for the view to signal a player action via the injected future.
+     */
+    private ViewAction waitForAction() {
+        final CompletableFuture<ViewAction> future = new CompletableFuture<>();
+        SwingUtilities.invokeLater(() -> view.setActionFuture(future));
         try {
             return future.get();
         } catch (final InterruptedException | ExecutionException e) {
@@ -146,18 +165,42 @@ public final class GameLoopController implements GameController {
     }
 
     /**
-     * The only place where model enum and view enum meet — in the controller,
-     * which is allowed to know both sides.
+     * Translates a view-layer {@link ViewAction} into a model-layer {@link Move}.
+     * This is the single point where the two layers meet in the controller.
+     *
+     * @param action the action expressed by the view
+     * @return the corresponding Move for the model
+     */
+    private static Move toMove(final ViewAction action) {
+        return switch (action.getType()) {
+            case DRAW_DECK ->
+                new Move(Move.Type.DRAW_DECK, Collections.emptyList());
+            case DRAW_DISCARD ->
+                new Move(Move.Type.DRAW_DISCARD, Collections.emptyList());
+            case PUT_COMBINATION ->
+                new Move(Move.Type.PUT_COMBINATION, action.getSelectedCards());
+            case ATTACH ->
+                new Move(Move.Type.ATTACH,
+                         action.getSelectedCards(),
+                         action.getTargetCombination());
+            case DISCARD ->
+                new Move(Move.Type.DISCARD, action.getSelectedCards());
+        };
+    }
+
+    /**
+     * Maps a model {@link MoveResult.Status} to a view-layer {@link MoveError}.
+     * The only place where model enum and view enum meet — in the controller.
      */
     private static MoveError toMoveError(final MoveResult.Status status) {
         return switch (status) {
-            case ALREADY_DRAWN -> MoveError.ALREADY_DRAWN;
-            case NOT_DRAWN -> MoveError.NOT_DRAWN;
-            case NO_CARDS_SELECTED -> MoveError.NO_CARDS_SELECTED;
+            case ALREADY_DRAWN       -> MoveError.ALREADY_DRAWN;
+            case NOT_DRAWN           -> MoveError.NOT_DRAWN;
+            case NO_CARDS_SELECTED   -> MoveError.NO_CARDS_SELECTED;
             case INVALID_COMBINATION -> MoveError.INVALID_COMBINATION;
-            case WOULD_GET_STUCK -> MoveError.WOULD_GET_STUCK;
-            case WRONG_PLAYER -> MoveError.WRONG_PLAYER;
-            default -> MoveError.UNKNOWN;
+            case WOULD_GET_STUCK     -> MoveError.WOULD_GET_STUCK;
+            case WRONG_PLAYER        -> MoveError.WRONG_PLAYER;
+            default                  -> MoveError.UNKNOWN;
         };
     }
 }

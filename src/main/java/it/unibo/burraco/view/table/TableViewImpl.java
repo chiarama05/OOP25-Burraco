@@ -2,7 +2,6 @@ package it.unibo.burraco.view.table;
 
 import it.unibo.burraco.controller.display.GameState;
 import it.unibo.burraco.model.cards.Card;
-import it.unibo.burraco.model.move.Move;
 import it.unibo.burraco.view.components.attach.AttachButtonFactory;
 import it.unibo.burraco.view.table.deck.DeckView;
 import it.unibo.burraco.view.table.discard.DiscardView;
@@ -32,6 +31,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Swing implementation of {@link BurracoView}.
+ * This class has no dependency on {@code Move} or {@code Move.Type}.
+ * All player actions are expressed as {@link ViewAction} objects,
+ * which the Controller translates into model moves.
+ */
 public final class TableViewImpl implements BurracoView, SwingTableAccess {
 
     private static final int FRAME_MIN_W = 900;
@@ -46,6 +51,7 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
     private static final int TITLE_JUST = 0;
     private static final int TITLE_POS = 0;
     private static final int BORDER_PX = 1;
+
     private final JFrame frame;
     private final JLabel turnLabel;
     private final JPanel combPanel1;
@@ -61,16 +67,15 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
     private final JButton putComboBtn;
     private final AttachButtonFactory attachButtonFactory;
 
-    private boolean firstWakeUp = true;
+    private boolean firstWakeUp      = true;
     private boolean currentIsPlayer1 = true;
-    private CompletableFuture<Move> pendingFuture;
-
+    private CompletableFuture<ViewAction> pendingFuture;
 
     /**
      * Builds the full game table and makes it visible.
      *
-     * @param n1 display name for Player 1 (fallback: "Player 1")
-     * @param n2 display name for Player 2 (fallback: "Player 2")
+     * @param n1 display name for Player 1
+     * @param n2 display name for Player 2
      */
     public TableViewImpl(final String n1, final String n2) {
         this.nameP1 = resolved(n1, "Player 1");
@@ -114,16 +119,16 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
 
         this.attachButtonFactory = new AttachButtonFactory(targetCards -> {
             final List<Card> selected = new ArrayList<>(
-                getHandViewForCurrentPlayer(currentIsPlayer1).getSelectedCards());
-            complete(new Move(Move.Type.ATTACH, selected, new ArrayList<>(targetCards)));
+                    getHandViewForCurrentPlayer(currentIsPlayer1).getSelectedCards());
+            complete(new ViewAction(PlayerAction.ATTACH, selected, new ArrayList<>(targetCards)));
         });
         wireButtons();
     }
 
     @Override
     public void wakeUp(final String playerName,
-                    final boolean isPlayer1,
-                    final List<Card> hand) {
+                       final boolean isPlayer1,
+                       final List<Card> hand) {
         this.currentIsPlayer1 = isPlayer1;
         getHandViewForCurrentPlayer(isPlayer1).clearSelection();
 
@@ -144,21 +149,12 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
         refreshHandPanel(isPlayer1, hand);
     }
 
-
     @Override
-    public void notifyPotTaken(final String playerName, final boolean isDiscard) {
-    final String msg = isDiscard
-        ? playerName + " You took the pot! You'll see the new cards next turn."
-        : playerName + " You took the pot on fly! Keep playing.";
-    JOptionPane.showMessageDialog(this.frame, msg,
-            "Pot", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    @Override
-    public void setMoveFuture(final CompletableFuture<Move> future) {
+    public void setActionFuture(final CompletableFuture<ViewAction> future) {
         this.pendingFuture = future;
     }
 
+    @Override
     public void refresh(final GameState state) {
         this.currentIsPlayer1 = state.isP1Turn();
         redrawAllCombinations(state.getP1Combinations(), state.getP2Combinations());
@@ -180,6 +176,15 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
         };
         JOptionPane.showMessageDialog(this.frame, msg,
                 "Invalid move", JOptionPane.WARNING_MESSAGE);
+    }
+
+    @Override
+    public void notifyPotTaken(final String playerName, final boolean isDiscard) {
+        final String msg = isDiscard
+                ? playerName + " You took the pot! You'll see the new cards next turn."
+                : playerName + " You took the pot on fly! Keep playing.";
+        JOptionPane.showMessageDialog(this.frame, msg,
+                "Pot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
@@ -246,12 +251,6 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
         this.deckPanel.repaint();
     }
 
-    public void addCombinationToPlayerPanel(final List<Card> cards, final boolean isP1) {
-        addComboToPanel(new ArrayList<>(cards), isP1);
-        this.frame.revalidate();
-        this.frame.repaint();
-    }
-
     @Override
     public void updateDiscardPile(final List<Card> cards) {
         this.discardView.updateDiscardPile(new ArrayList<>(cards));
@@ -267,28 +266,54 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
         this.frame.repaint();
     }
 
+    @Override
+    public void showFinalHands(final List<Card> hand1, final List<Card> hand2) {
+        getPlayer1HandView().updateHand(new ArrayList<>(hand1));
+        getPlayer2HandView().updateHand(new ArrayList<>(hand2));
+    }
+
+    @Override
+    public JFrame getFrame() {
+        return this.frame;
+    }
+
+    /**
+     * Returns the hand view for the player currently taking their turn.
+     *
+     * @param isPlayer1 true to return Player 1's hand view, false for Player 2's
+     * @return the {@link HandView} of the active player
+     */
     public HandView getHandViewForCurrentPlayer(final boolean isPlayer1) {
         return isPlayer1 ? getPlayer1HandView() : getPlayer2HandView();
     }
 
+    /**
+     * Returns the hand view for Player 1.
+     *
+     * @return Player 1's {@link HandView}
+     */
     public HandView getPlayer1HandView() {
         return this.initDist.getPlayer1HandView();
     }
 
+    /**
+     * Returns the hand view for Player 2.
+     *
+     * @return Player 2's {@link HandView}
+     */    
     public HandView getPlayer2HandView() {
         return this.initDist.getPlayer2HandView();
     }
 
-    @Override public JFrame getFrame() { 
-        return this.frame; 
+    /**
+     * Returns the distribution view used during initial card dealing.
+     *
+     * @return the {@link TableSetUpView} managing both players' hand panels
+     */
+    public TableSetUpView getInitDist() {
+        return this.initDist;
     }
 
-    /** Required by {@code GameWiring} to pass the distribution view to wiring. */
-    public TableSetUpView getInitDist() { 
-        return this.initDist; 
-    }
-
-    /** Resolves a nullable/blank player name to a safe fallback. */
     private static String resolved(final String name, final String fallback) {
         return (name == null || name.isBlank()) ? fallback : name;
     }
@@ -308,37 +333,38 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
         return s;
     }
 
-    /** Wires every button to complete the pending future with the right Move. */
+    /**
+     * Wires every button to complete the pending future with the right ViewAction.
+     * No Move or Move.Type here — only PlayerAction.
+     */
     private void wireButtons() {
         this.deckView.getDeckButton().addActionListener(e ->
-                complete(new Move(Move.Type.DRAW_DECK, Collections.emptyList())));
+                complete(new ViewAction(PlayerAction.DRAW_DECK, Collections.emptyList())));
 
         this.takeDiscardBtn.addActionListener(e ->
-                complete(new Move(Move.Type.DRAW_DISCARD, Collections.emptyList())));
+                complete(new ViewAction(PlayerAction.DRAW_DISCARD, Collections.emptyList())));
 
         this.putComboBtn.addActionListener(e -> {
             final List<Card> sel = new ArrayList<>(
                     getHandViewForCurrentPlayer(currentIsPlayer1).getSelectedCards());
-            complete(new Move(Move.Type.PUT_COMBINATION, sel));
+            complete(new ViewAction(PlayerAction.PUT_COMBINATION, sel));
         });
 
         this.discardView.setDiscardListener(e -> {
             final List<Card> sel = new ArrayList<>(
                     getHandViewForCurrentPlayer(currentIsPlayer1).getSelectedCards());
-            complete(new Move(Move.Type.DISCARD, sel));
+            complete(new ViewAction(PlayerAction.DISCARD, sel));
         });
     }
 
-    /** Thread-safe helper: completes the pending future if still open. */
-    private void complete(final Move move) {
+    private void complete(final ViewAction action) {
         if (this.pendingFuture != null && !this.pendingFuture.isDone()) {
-            this.pendingFuture.complete(move);
+            this.pendingFuture.complete(action);
         }
     }
 
-    private void redrawAllCombinations(
-            final List<List<Card>> p1Combos,
-            final List<List<Card>> p2Combos) {
+    private void redrawAllCombinations(final List<List<Card>> p1Combos,
+                                       final List<List<Card>> p2Combos) {
         this.combPanel1.removeAll();
         this.combPanel2.removeAll();
         for (final List<Card> combo : p1Combos) {
@@ -357,23 +383,5 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
         btn.setAlignmentY(Component.TOP_ALIGNMENT);
         panel.add(btn);
         panel.add(Box.createRigidArea(new Dimension(RIGID_AREA_W, 0)));
-    }
-
-    /**
-     * Displays a modal dialog with a score summary.
-     * Called only from {@code ScoreController} when no dedicated ScoreView is available.
-     *
-     * @param title   dialog title
-     * @param message dialog body
-     */
-    public void showScoreModal(final String title, final String message) {
-        JOptionPane.showMessageDialog(this.frame, message, title,
-                JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    @Override
-    public void showFinalHands(final List<Card> hand1, final List<Card> hand2) {
-        getPlayer1HandView().updateHand(new ArrayList<>(hand1));
-        getPlayer2HandView().updateHand(new ArrayList<>(hand2));
     }
 }
