@@ -1,9 +1,9 @@
 package it.unibo.burraco.model.cards;
 
 /**
- * The Card interface represents a generic playing card.
- * It defines the essential properties that every card must provide:
- * seed, value and numerical value.
+ * Represents a generic playing card in Burraco.
+ * Provides access to the card's suit, face value, numerical rank,
+ * and wildcard status.
  */
 public interface Card {
 

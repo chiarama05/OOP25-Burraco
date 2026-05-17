@@ -1,14 +1,8 @@
 package it.unibo.burraco.model.cards;
 
 /**
- * Enumerates every suit (seed) a card can belong to in Burraco.
- *
- * <p>Replaces the raw Unicode strings ({@code "♠"}, {@code "♥"}, etc.)
- * that were previously compared with {@link String#contains} in view classes
- * to decide foreground colour.
- *
- * <p>{@link #isRed()} centralises the red-suit check so the view never
- * needs to inspect symbol strings again.
+ * Enumerates every suit a card can belong to in Burraco.
+ * The JOKER suit is used exclusively by Jolly cards.
  */
 public enum Seed {
 
@@ -16,7 +10,7 @@ public enum Seed {
     HEARTS("♥"),
     CLUBS("♣"),
     DIAMONDS("♦"),
-    JOKER("♕");   // used exclusively by Jolly cards
+    JOKER("♕");
 
     private final String symbol;
 
@@ -25,7 +19,7 @@ public enum Seed {
     }
 
     /**
-     * The Unicode symbol for this suit (e.g. {@code "♠"}, {@code "♥"}).
+     * Returns the Unicode symbol for this suit, for example "♠" or "♥".
      *
      * @return the suit symbol
      */
@@ -34,17 +28,17 @@ public enum Seed {
     }
 
     /**
+     * Checks whether this suit should be rendered in red.
      * Hearts and Diamonds are conventionally displayed in red.
      *
-     * @return {@code true} if this suit should be rendered in red
+     * @return true if this suit is Hearts or Diamonds
      */
     public boolean isRed() {
         return this == HEARTS || this == DIAMONDS;
     }
 
     /**
-     * Returns the suit symbol, so that {@code card.getSeed().toString()}
-     * produces the same output as the old {@code card.getSeed()} string field.
+     * Returns the suit symbol as a string.
      *
      * @return the suit symbol
      */

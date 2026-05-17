@@ -41,11 +41,9 @@ public final class AttachHandler {
         final List<Card> realCards = combination.stream()
             .filter(c -> !c.getValue().isJolly() && c.getValue() != CardValue.TWO)
             .collect(Collectors.toList());
-            
         final boolean hasDuplicateValues = realCards.stream()
             .map(Card::getValue)
             .collect(Collectors.toSet()).size() < realCards.size();
-
         final List<Card> hypothetical = new ArrayList<>(combination);
         hypothetical.addAll(newCards);
 
@@ -57,10 +55,10 @@ public final class AttachHandler {
     }
 
     /**
-     * Overloaded method to check if a single card can be attached to a combination.
+     * Checks if a single card can be legally added to an existing combination.
      *
-     * @param combination the existing combination
-     * @param newCard the single card to attach
+     * @param combination the current combination on the table
+     * @param newCard the card to attempt to attach
      * @return true if the card can be attached, false otherwise
      */
     public boolean canAttach(final List<Card> combination, final Card newCard) {
