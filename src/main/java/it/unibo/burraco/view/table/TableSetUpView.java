@@ -8,11 +8,19 @@ import it.unibo.burraco.view.table.hand.SelectionCardManager;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Concrete implementation of {@link DistributionView} responsible for initializing
+ * and refreshing the components involved in the initial card-distribution phase.
+ */
 public final class TableSetUpView implements DistributionView {
  
     private final HandView handPlayer1;
     private final HandView handPlayer2;
- 
+
+    /**
+     * Constructs a new TableSetUpView and initializes the hand sub-views
+     * with their respective selection managers.
+     */
     public TableSetUpView() {
         this.handPlayer1 = new HandViewImpl(new SelectionCardManager());
         this.handPlayer2 = new HandViewImpl(new SelectionCardManager());
@@ -27,18 +35,7 @@ public final class TableSetUpView implements DistributionView {
     public HandView getPlayer2HandView() {
         return handPlayer2;
     }
- 
-    /**
-     * Updates both hand panels after the initial cards have been dealt.
-     *
-     * The {@code discardPile} parameter is accepted for completeness but is not
-     * rendered here: the caller is responsible for calling
-     * {@code TableView.updateDiscardPile()} after this method returns.
-     *
-     * @param hand1       cards to display in Player 1's hand
-     * @param hand2       cards to display in Player 2's hand
-     * @param discardPile the initial discard pile (not rendered here)
-     */
+
     @Override
     public void refresh(final List<Card> hand1,
                         final List<Card> hand2) {

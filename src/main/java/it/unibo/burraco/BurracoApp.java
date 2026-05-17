@@ -33,7 +33,6 @@ import it.unibo.burraco.view.table.TableViewImpl;
  * Main application class and composition root.
  * Handles navigation between menus and wires all components together
  * when a game session starts.
- *
  * Card distribution and view initialisation for the first round are now
  * handled by {@link RoundControllerImpl#processNewRound()}, keeping
  * {@code startGame} focused solely on wiring.
@@ -42,15 +41,27 @@ public final class BurracoApp {
 
     private BurracoApp() { }
 
+    /**
+     * Main entry point of the application.
+     * Launches the user interface inside the Event Dispatch Thread (EDT).
+     *
+     * @param args command line arguments (ignored)
+     */
     public static void main(final String[] args) {
         SwingUtilities.invokeLater(BurracoApp::showStartMenu);
     }
 
+    /**
+     * Instantiates and displays the initial main menu of the game.
+     */
     private static void showStartMenu() {
         final StartMenuView startMenu = new StartMenuViewImpl(BurracoApp::showSetupMenu);
         startMenu.display();
     }
 
+    /**
+     * Instantiates and displays the player configuration and setup menu.
+     */
     private static void showSetupMenu() {
         final OnConfigurationCompleteListener listener = new OnConfigurationCompleteListener() {
             @Override

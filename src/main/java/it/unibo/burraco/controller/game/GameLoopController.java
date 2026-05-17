@@ -73,11 +73,11 @@ public final class GameLoopController implements GameController {
 
         while (!model.isGameOver()) {
             final Player current = model.getCurrentPlayer();
-            final boolean isP1   = model.isPlayer1(current);
+            final boolean isP1 = model.isPlayer1(current);
 
             if (isStartOfTurn) {
                 final String name = current.getName();
-                final var hand    = current.getHand();
+                final var hand = current.getHand();
                 try {
                     SwingUtilities.invokeAndWait(() -> view.wakeUp(name, isP1, hand));
                 } catch (InvocationTargetException | InterruptedException e) {
@@ -91,7 +91,7 @@ public final class GameLoopController implements GameController {
                 final MoveError err = toMoveError(validation.getStatus());
                 SwingUtilities.invokeLater(() -> view.showMoveError(err));
                 action = waitForAction();
-                move   = toMove(action);
+                move = toMove(action);
                 validation = model.validateMove(move);
             }
             final MoveResult result = model.applyMove(move);
@@ -133,7 +133,7 @@ public final class GameLoopController implements GameController {
      */
     private GameState buildGameState() {
         final Player current = model.getCurrentPlayer();
-        final boolean isP1   = model.isPlayer1(current);
+        final boolean isP1 = model.isPlayer1(current);
 
         final List<List<Card>> p1Sorted = model.getPlayer1().getCombinations().stream()
                 .map(c -> displaySorter.sortForDisplay(new ArrayList<>(c)))
@@ -188,7 +188,7 @@ public final class GameLoopController implements GameController {
                 new Move(Move.Type.DISCARD, action.getSelectedCards());
         };
     }
-    
+
     /**
      * Maps a model {@link MoveResult.Status} to a view-layer {@link MoveError}.
      * The only place where model enum and view enum meet — in the controller.

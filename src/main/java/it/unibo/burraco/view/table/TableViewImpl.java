@@ -300,7 +300,7 @@ public final class TableViewImpl implements BurracoView, SwingTableAccess {
      * Returns the hand view for Player 2.
      *
      * @return Player 2's {@link HandView}
-     */    
+     */
     public HandView getPlayer2HandView() {
         return this.initDist.getPlayer2HandView();
     }
