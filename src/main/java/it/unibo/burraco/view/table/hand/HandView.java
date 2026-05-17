@@ -1,7 +1,6 @@
 package it.unibo.burraco.view.table.hand;
 
 import java.util.List;
-import java.util.Set;
 
 import it.unibo.burraco.model.cards.Card;
 
