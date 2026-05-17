@@ -9,12 +9,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Sorts combinations into display order before they enter the GameState DTO.
- * Lives in the controller — the only layer allowed to use model.rules.
- * The view receives cards already ordered.
- *
- * <p>All raw string comparisons have been replaced with
- * {@link CardValue} enum references and its helper predicates.
+ * Sorts combinations into display order before they are passed to the view.
+ * The view always receives cards already ordered, with no knowledge of sorting logic.
  */
 public final class CombinationDisplaySorter {
 
@@ -23,7 +19,7 @@ public final class CombinationDisplaySorter {
     /**
      * Sorts a combination of cards into the correct display order.
      * If the combination is a valid straight, cards are ordered by rank descending.
-     * Otherwise the combination is treated as a set and sorted via {@link #sortAsSet}.
+     * Otherwise the combination is treated as a set and sorted via sortAsSet.
      *
      * @param cards the combination to sort; must not be null
      * @return a new list with cards in display order
@@ -42,8 +38,6 @@ public final class CombinationDisplaySorter {
      * Sorts a set-type combination for display.
      * Wildcards (Jolly and any Two not acting as a natural card) are placed first,
      * followed by natural cards sorted by numerical value in descending order.
-     * If all cards are wildcards, {@code baseValue} is null and every Two is treated
-     * as a wildcard — enum equality on null safely returns false.
      *
      * @param cards the set combination to sort
      * @return a new list with wildcards first, then naturals in descending rank order
@@ -56,11 +50,11 @@ public final class CombinationDisplaySorter {
                 .orElse(null);
 
         final List<Card> wildcards = new ArrayList<>();
-        final List<Card> naturals  = new ArrayList<>();
+        final List<Card> naturals = new ArrayList<>();
 
         for (final Card c : cards) {
             final boolean isWild = c.getValue().isJolly()
-                    || (c.getValue() == CardValue.TWO && c.getValue() != baseValue);
+                    || c.getValue() == CardValue.TWO && c.getValue() != baseValue;
             if (isWild) {
                 wildcards.add(c);
             } else {

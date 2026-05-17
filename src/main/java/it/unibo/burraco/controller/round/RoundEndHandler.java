@@ -15,8 +15,7 @@ import java.util.ArrayList;
 /**
  * Controller responsible for orchestrating the end-of-round sequence.
  * It manages the transition from the active game table to the score display, 
- * handles victory sound logic, and ensures that the View receives data 
- * only through immutable DTOs ({@link ScoreSnapshot}).
+ * handles victory sound logic, and passes data to the view through immutable snapshots.
  */
 public final class RoundEndHandler {
  
@@ -35,15 +34,16 @@ public final class RoundEndHandler {
     /**
      * Constructs a RoundEndHandler with the necessary model and view components.
      * 
-     * @param score         the scoring logic component
-     * @param player1       the first player model
-     * @param player2       the second player model
-     * @param nameP1        display name for player 1
-     * @param nameP2        display name for player 2
-     * @param tableView     the main game table view
-     * @param soundView     the sound manager for audio feedback
-     * @param targetScore   the score threshold to win the match
-     * @param viewProvider  factory for creating the score display scene
+     * @param score the scoring logic component
+     * @param player1 the first player model
+     * @param player2 the second player model
+     * @param nameP1 display name for player 1
+     * @param nameP2 display name for player 2
+     * @param tableView the main game table view
+     * @param swingAccess the Swing access wrapper for EDT-safe operations
+     * @param soundView the sound manager for audio feedback
+     * @param targetScore the score threshold to win the match
+     * @param viewProvider factory for creating the score display scene
      */
     public RoundEndHandler(
             final Score score,
@@ -69,10 +69,9 @@ public final class RoundEndHandler {
     }
  
     /**
-     * Configures the action to be performed when a player chooses to 
-     * proceed to a new round from the score view.
-     * 
-     * @param action a {@link Runnable} representing the next game phase logic
+     * Configures the action to perform when the player chooses to start a new round.
+     *
+     * @param action the logic to execute when proceeding to the next round
      */
     public void setOnNewRound(final Runnable action) {
         this.onNewRound = action;
@@ -107,13 +106,12 @@ public final class RoundEndHandler {
     }
 
     /**
-     * Maps the current state of a {@link Player} and the {@link Score} rules 
-     * into a read-only {@link ScoreSnapshot}.
-     * 
-     * @param p        the player to process
-     * @param name     the player's name
-     * @param isWinner true if this player reached the target score and won the match
-     * @return a DTO containing all necessary data for the score view
+     * Builds an immutable snapshot of a player's end-of-round state.
+     *
+     * @param p the player to process
+     * @param name the player's display name
+     * @param isWinner true if this player won the match
+     * @return a snapshot containing all data needed by the score view
      */
     private ScoreSnapshot buildSnapshot(final Player p,
                                         final String name,
@@ -135,10 +133,9 @@ public final class RoundEndHandler {
  
     /**
      * Updates the table view with final hands and displays the score scene.
-     * Synchronizes with the Event Dispatch Thread for UI safety.
      * 
-     * @param snap1     snapshot of player 1
-     * @param snap2     snapshot of player 2
+     * @param snap1 snapshot of player 1
+     * @param snap2 snapshot of player 2
      * @param matchOver true if the entire match has concluded
      */
     private void showScoreView(final ScoreSnapshot snap1,
