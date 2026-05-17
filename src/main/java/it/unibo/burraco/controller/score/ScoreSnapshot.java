@@ -36,4 +36,3 @@ public record ScoreSnapshot(
         boolean isWinner,
         List<Card> finalHand
 ) { }
- 
