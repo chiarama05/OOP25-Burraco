@@ -7,7 +7,7 @@ package it.unibo.burraco.model.rules;
 public enum ClosureState {
 
     /**
-     * Everything is fine – the player can keep playing normally.
+     * Everything is fine, the player can keep playing normally.
      */
     OK,
 
@@ -19,20 +19,20 @@ public enum ClosureState {
 
     /**
      * The player would like to close but does not yet have a Burraco.
-     * They MUST keep playing.
+     * They must keep playing.
      */
     CANNOT_CLOSE_NO_BURRACO,
 
     /**
      * The player just played or attached cards and now has 0 cards left in hand
-     * WITHOUT having taken the pot yet.
+     * without having taken the pot yet.
      * They cannot close and must take the pot before discarding.
      */
     ZERO_CARDS_NO_POT,
 
     /**
      * The player has 0 cards left in hand, has taken the pot, but has NOT yet formed a Burraco.
-     * They cannot close and cannot discard – they must form a Burraco first.
+     * They cannot close and cannot discard, they must form a Burraco first.
      */
     ZERO_CARDS_NO_BURRACO,
 

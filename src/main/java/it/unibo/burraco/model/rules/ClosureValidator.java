@@ -14,10 +14,10 @@ public final class ClosureValidator {
     private static final int BURRACO_THRESHOLD = 7;
 
     /**
-     * Constructs a new ClosureValidator.
+     * Private constructor for utility class.
      */
     public ClosureValidator() {
-        // Default constructor
+        // Prevents instantiation
     }
 
     /**
@@ -65,7 +65,6 @@ public final class ClosureValidator {
             ? ClosureState.ROUND_WON
             : ClosureState.CANNOT_CLOSE_NO_BURRACO;
     }
-    // Mano vuota senza pozzetto: deve prendere il pozzetto
     if (player.getHand().isEmpty() && !player.isInPot()) {
         return ClosureState.ZERO_CARDS_NO_POT;
     }
